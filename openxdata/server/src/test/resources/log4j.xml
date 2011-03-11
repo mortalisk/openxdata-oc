@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.apache">
+		<level value="WARN" />
+	</logger>
+	
+	<!-- Hide unnecessary errors logged by Hibernate during unit testing -->
+	<logger name="org.hibernate.tool.hbm2ddl.SchemaExport">
+		<level value="FATAL" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<logger name="org.hibernate">
+		<level value="ERROR" />
+	</logger>
+	
+	<logger name="net.sf.ehcache">
+		<level value="ERROR" />
+	</logger>
+
+	<logger name="org.springframework">
+		<level value="ERROR" />
+	</logger>
+
+	<logger name="org.apache.fop">
+		<level value="DEBUG" />
+	</logger>
+	
+	<!-- Hide the useless MissingResourceException -->
+	<logger name="org.springframework.context.support.ResourceBundleMessageSource">
+		<level value="ERROR" />
+	</logger>
+	
+	<logger name="com.intel.bluetooth">
+        <level value="info" />
+    </logger>
+	
+	<logger name="org.openxdata">
+		<level value="DEBUG" />
+	</logger>
+	
+	<logger name="org.dbunit">
+		<level value="ERROR" />
+	</logger>
+	
+	<logger name="au.com.bytecode">
+		<level value="DEBUG" />
+	</logger>
+	
+	<root>
+		<level value="ERROR" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+</log4j:configuration>

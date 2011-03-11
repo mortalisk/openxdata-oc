@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODM FileOID="Surgical_HistoryD20090420122017+0300" Description="Cancer demo for testing epihandy server and mobile client" CreationDateTime="2009-04-20T12:20:17+03:00" FileType="Snapshot" ODMVersion="1.2" xmlns="http://www.cdisc.org/ns/odm/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.2 ODM1-2-1.xsd" >
+    <Study OID="S_CANCERDE">
+        <GlobalVariables>
+            <StudyName>Demonstration Protocol for Cancer Research</StudyName>
+            <StudyDescription>
+                Case Report Forms are based on the templates available
+from National Cancer 
+            </StudyDescription>
+            <ProtocolName>CancerDemo</ProtocolName>
+        </GlobalVariables>
+        <MetaDataVersion OID="v1.0.0" Name="MetaDataVersion_v1.0.0">
+            <Protocol>
+                <StudyEventRef StudyEventOID="SE_BREATHIN" OrderNumber="2" Mandatory="Yes"/>
+                <StudyEventRef StudyEventOID="SE_INITIALS" OrderNumber="3" Mandatory="Yes"/>
+                <StudyEventRef StudyEventOID="SE_INITIALV" OrderNumber="4" Mandatory="Yes"/>
+            </Protocol>
+            <StudyEventDef OID="SE_BREATHIN"  Name="breathing rate" Repeating="Yes" Type="Scheduled">
+                <FormRef FormOID="F_TBCF_V25" Mandatory="Yes"/>
+            </StudyEventDef>
+            <StudyEventDef OID="SE_INITIALS"  Name="initial screening" Repeating="No" Type="Common">
+                <FormRef FormOID="F_CANC_V10" Mandatory="Yes"/>
+            </StudyEventDef>
+            <StudyEventDef OID="SE_INITIALV"  Name="initial Visiting" Repeating="No" Type="Common">
+                <FormRef FormOID="F_CANC_5159_V10" Mandatory="Yes"/>
+            </StudyEventDef>
+            <FormDef OID="F_TBCF_V25" Name="Tb-cfr - v 2.5" Repeating="No">
+                <ItemGroupRef ItemGroupOID="IG_TBCF_UNGROUPED-F_TBCF_V25" Mandatory="No"/>
+            </FormDef>
+            <FormDef OID="F_CANC_V10" Name="CANCER-BASELINE MEDICAL/SURGICAL HISTORY - v1.0" Repeating="No">
+                <ItemGroupRef ItemGroupOID="IG_CANC_UNGROUPED-F_CANC_V10" Mandatory="No"/>
+            </FormDef>
+            <FormDef OID="F_CANC_5159_V10" Name="CANCER-PHYSICAL EXAM - v1.0" Repeating="No">
+                <ItemGroupRef ItemGroupOID="IG_CANC_UNGROUPED_8242-F_CANC_5159_V10" Mandatory="No"/>
+            </FormDef>
+            <ItemGroupDef OID="IG_TBCF_UNGROUPED-F_TBCF_V25" Name="F_TBCF_V25-Ungrouped" Repeating="No" SASDatasetName="UNGROUPE">
+                <ItemRef ItemOID="I_TBCF_NAME" OrderNumber="1" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_AGE" OrderNumber="2" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_WEIGHT" OrderNumber="3" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_DOB" OrderNumber="4" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_EDUCATION" OrderNumber="5" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_DRUG" OrderNumber="6" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_TBSTAGE" OrderNumber="7" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_DOYOUSPIT" OrderNumber="8" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_AREYOUMARRIADE" OrderNumber="9" Mandatory="No"/>
+            </ItemGroupDef>
+            <ItemGroupDef OID="IG_CANC_UNGROUPED-F_CANC_V10" Name="F_CANC_V10-Ungrouped" Repeating="No" SASDatasetName="UNGRO001">
+                <ItemRef ItemOID="I_CANC_CAN_BASE1" OrderNumber="1" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE2" OrderNumber="2" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE3" OrderNumber="3" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE4" OrderNumber="4" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE5" OrderNumber="5" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE6" OrderNumber="6" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE7" OrderNumber="7" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE8" OrderNumber="8" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE9" OrderNumber="9" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE10" OrderNumber="10" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE11" OrderNumber="11" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE12" OrderNumber="12" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE13" OrderNumber="13" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE14" OrderNumber="14" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE15" OrderNumber="15" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE16" OrderNumber="16" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE17" OrderNumber="17" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE18" OrderNumber="18" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE19" OrderNumber="19" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE20" OrderNumber="20" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE21" OrderNumber="21" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE22" OrderNumber="22" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE23" OrderNumber="23" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE24" OrderNumber="24" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE25" OrderNumber="25" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE26" OrderNumber="26" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE27" OrderNumber="27" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE28" OrderNumber="28" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE29" OrderNumber="29" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE30" OrderNumber="30" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE31" OrderNumber="31" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_BASE32" OrderNumber="32" Mandatory="No"/>
+            </ItemGroupDef>
+            <ItemGroupDef OID="IG_CANC_UNGROUPED_8242-F_CANC_5159_V10" Name="F_CANC_5159_V10-Ungrouped" Repeating="No" SASDatasetName="UNGRO002">
+                <ItemRef ItemOID="I_CANC_CAN_PHY1" OrderNumber="1" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY2" OrderNumber="2" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY3" OrderNumber="3" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY4" OrderNumber="4" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY5" OrderNumber="5" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY6" OrderNumber="6" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY7" OrderNumber="7" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY8" OrderNumber="8" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY9" OrderNumber="9" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY10" OrderNumber="10" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY11" OrderNumber="11" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY12" OrderNumber="12" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY13" OrderNumber="13" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY14" OrderNumber="14" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY15" OrderNumber="15" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY16" OrderNumber="16" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY17" OrderNumber="17" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY18" OrderNumber="18" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY19" OrderNumber="19" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY20" OrderNumber="20" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY21" OrderNumber="21" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY22" OrderNumber="22" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY23" OrderNumber="23" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY24" OrderNumber="24" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY25" OrderNumber="25" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY26" OrderNumber="26" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY27" OrderNumber="27" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY28" OrderNumber="28" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY29" OrderNumber="29" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY30" OrderNumber="30" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY31" OrderNumber="31" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY32" OrderNumber="32" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY33" OrderNumber="33" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY34" OrderNumber="34" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY35" OrderNumber="35" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY36" OrderNumber="36" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY37" OrderNumber="37" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY38" OrderNumber="38" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY39" OrderNumber="39" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY40" OrderNumber="40" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY41" OrderNumber="41" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY42" OrderNumber="42" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY43" OrderNumber="43" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY44" OrderNumber="44" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY45" OrderNumber="45" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY46" OrderNumber="46" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY47" OrderNumber="47" Mandatory="No"/>
+                <ItemRef ItemOID="I_CANC_CAN_PHY48" OrderNumber="48" Mandatory="No"/>
+            </ItemGroupDef>
+            <ItemDef OID="I_TBCF_NAME" Name="Name" DataType="text" Length="6" SASFieldName="Name" Comment="names of the patient">
+                <Question>
+                    <TranslatedText>
+                    Name
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_AGE" Name="Age" DataType="integer" Length="10" SASFieldName="Age" Comment="the current age">
+                <Question>
+                    <TranslatedText>
+                    Age
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_WEIGHT" Name="Weight" DataType="float" Length="32" SignificantDigits="6" SASFieldName="Weight" Comment="weight of the patient for testing">
+                <Question>
+                    <TranslatedText>
+                    Weight
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_DOB" Name="DOB" DataType="date" SASFieldName="DOB" Comment="date of bith">
+                <Question>
+                    <TranslatedText>
+                    Date of Birth
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_EDUCATION" Name="education" DataType="text" Length="1" SASFieldName="educatio" Comment="education level">
+                <Question>
+                    <TranslatedText>
+                    Education
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_31"/>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_DRUG" Name="DRUG" DataType="text" Length="29" SASFieldName="DRUG" Comment="the type of the DRUG taken">
+                <Question>
+                    <TranslatedText>
+                    DRUG
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_TBSTAGE" Name="TB stage" DataType="text" Length="1" SASFieldName="TB_stage" Comment="stage of TB">
+                <Question>
+                    <TranslatedText>
+                    TB stage
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_33"/>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_DOYOUSPIT" Name="Do you SPIT" DataType="text" Length="73" SASFieldName="Do_you_S" Comment="do you spit">
+                <Question>
+                    <TranslatedText>
+                    Do YOU SPIT
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_AREYOUMARRIADE" Name="Are you marriade" DataType="text" Length="1" SASFieldName="Are_you_" Comment="marital status">
+                <Question>
+                    <TranslatedText>
+                    Are you marriade
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_35"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE1" Name="can_base1" DataType="integer" Length="2" SASFieldName="can_base" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Body System  - H/E/E/N/T
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE2" Name="can_base2" DataType="text" Length="6" SASFieldName="can_b003" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE3" Name="can_base3" DataType="integer" Length="2" SASFieldName="can_b004" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Neck
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE4" Name="can_base4" DataType="text" Length="6" SASFieldName="can_b005" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE5" Name="can_base5" DataType="integer" Length="2" SASFieldName="can_b006" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Respiratory
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE6" Name="can_base6" DataType="text" Length="6" SASFieldName="can_b007" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE7" Name="can_base7" DataType="integer" Length="2" SASFieldName="can_b008" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Cardiovascular
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE8" Name="can_base8" DataType="text" Length="7" SASFieldName="can_b009" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE9" Name="can_base9" DataType="integer" Length="2" SASFieldName="can_b010" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Gastrointestinal
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE10" Name="can_base10" DataType="text" Length="7" SASFieldName="can_b011" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE11" Name="can_base11" DataType="integer" Length="2" SASFieldName="can_b012" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Musculoskeletal
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE12" Name="can_base12" DataType="text" Length="7" SASFieldName="can_b013" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE13" Name="can_base13" DataType="integer" Length="2" SASFieldName="can_b014" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Dermatologic
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE14" Name="can_base14" DataType="text" Length="7" SASFieldName="can_b015" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE15" Name="can_base15" DataType="integer" Length="2" SASFieldName="can_b016" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Hematopoietic/Lymph
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE16" Name="can_base16" DataType="text" Length="7" SASFieldName="can_b017" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE17" Name="can_base17" DataType="integer" Length="2" SASFieldName="can_b018" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Endocrine/Metabolic
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE18" Name="can_base18" DataType="text" Length="7" SASFieldName="can_b019" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE19" Name="can_base19" DataType="integer" Length="2" SASFieldName="can_b020" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Genitourinary
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE20" Name="can_base20" DataType="text" Length="7" SASFieldName="can_b021" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE21" Name="can_base21" DataType="integer" Length="2" SASFieldName="can_b022" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Breasts
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE22" Name="can_base22" DataType="text" Length="7" SASFieldName="can_b023" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE23" Name="can_base23" DataType="integer" Length="2" SASFieldName="can_b024" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Neurologic
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE24" Name="can_base24" DataType="text" Length="7" SASFieldName="can_b025" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE25" Name="can_base25" DataType="integer" Length="2" SASFieldName="can_b026" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Allergy/Drug Sensitivity
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE26" Name="can_base26" DataType="text" Length="7" SASFieldName="can_b027" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE27" Name="can_base27" DataType="integer" Length="2" SASFieldName="can_b028" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Specify Other Body System/Site  - Other Body Sysytem/Site
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE28" Name="can_base28" DataType="text" Length="19" SASFieldName="can_b029" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE29" Name="can_base29" DataType="integer" Length="2" SASFieldName="can_b030" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Other Body Sysytem/Site
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE30" Name="can_base30" DataType="text" Length="14" SASFieldName="can_b031" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE31" Name="can_base31" DataType="integer" Length="2" SASFieldName="can_b032" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Other Body Sysytem/Site
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_36"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_BASE32" Name="can_base32" DataType="text" Length="17" SASFieldName="can_b033" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY1" Name="can_phy1" DataType="text" Length="10" SASFieldName="can_phy1" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Examination Date (MM/DD/YYYY):
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY2" Name="can_phy2" DataType="float" Length="32" SignificantDigits="6" SASFieldName="can_phy2" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Height:
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY3" Name="can_phy3" DataType="float" Length="32" SignificantDigits="6" SASFieldName="can_phy3" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Weight:
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY4" Name="can_phy4" DataType="float" Length="32" SignificantDigits="6" SASFieldName="can_phy4" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Temperature:
+                    </TranslatedText>
+                </Question>
+                <RangeCheck Comparator="GE" SoftHard="Soft">
+                    <CheckValue>1</CheckValue>
+                    <ErrorMessage><TranslatedText>Please enter a temperature between 1 and 200</TranslatedText></ErrorMessage>
+                </RangeCheck>
+                <RangeCheck Comparator="LE" SoftHard="Soft">
+                    <CheckValue>200</CheckValue>
+                    <ErrorMessage><TranslatedText>Please enter a temperature between 1 and 200</TranslatedText></ErrorMessage>
+                </RangeCheck>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY5" Name="can_phy5" DataType="float" Length="32" SignificantDigits="6" SASFieldName="can_phy5" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Pulse Rate:
+                    </TranslatedText>
+                </Question>
+                <RangeCheck Comparator="GE" SoftHard="Soft">
+                    <CheckValue>1</CheckValue>
+                    <ErrorMessage><TranslatedText>Please enter a pulse rate between 1 and 999</TranslatedText></ErrorMessage>
+                </RangeCheck>
+                <RangeCheck Comparator="LE" SoftHard="Soft">
+                    <CheckValue>999</CheckValue>
+                    <ErrorMessage><TranslatedText>Please enter a pulse rate between 1 and 999</TranslatedText></ErrorMessage>
+                </RangeCheck>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY6" Name="can_phy6" DataType="float" Length="32" SignificantDigits="6" SASFieldName="can_phy6" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Respiration Rate:
+                    </TranslatedText>
+                </Question>
+                <RangeCheck Comparator="GE" SoftHard="Soft">
+                    <CheckValue>1</CheckValue>
+                    <ErrorMessage><TranslatedText>Please enter a respiration rate between 1 and 999</TranslatedText></ErrorMessage>
+                </RangeCheck>
+                <RangeCheck Comparator="LE" SoftHard="Soft">
+                    <CheckValue>999</CheckValue>
+                    <ErrorMessage><TranslatedText>Please enter a respiration rate between 1 and 999</TranslatedText></ErrorMessage>
+                </RangeCheck>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY7" Name="can_phy7" DataType="text" Length="6" SASFieldName="can_phy7" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Blood Pressure:(Systolic/Diastolic)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY8" Name="can_phy8" DataType="integer" Length="2" SASFieldName="can_phy8" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    ECOG Performance Status:
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_39"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY9" Name="can_phy9" DataType="integer" Length="2" SASFieldName="can_phy9" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Appearance
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY10" Name="can_phy10" DataType="text" Length="200" SASFieldName="can_p034" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY11" Name="can_phy11" DataType="integer" Length="2" SASFieldName="can_p035" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Skin
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY12" Name="can_phy12" DataType="text" Length="200" SASFieldName="can_p036" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY13" Name="can_phy13" DataType="integer" Length="2" SASFieldName="can_p037" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    H/E/E/N/T
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY14" Name="can_phy14" DataType="text" Length="200" SASFieldName="can_p038" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY15" Name="can_phy15" DataType="integer" Length="2" SASFieldName="can_p039" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Thyroid
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY16" Name="can_phy16" DataType="text" Length="200" SASFieldName="can_p040" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY17" Name="can_phy17" DataType="integer" Length="2" SASFieldName="can_p041" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Chest
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY18" Name="can_phy18" DataType="text" Length="49" SASFieldName="can_p042" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY19" Name="can_phy19" DataType="integer" Length="2" SASFieldName="can_p043" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Lungs
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY20" Name="can_phy20" DataType="text" Length="200" SASFieldName="can_p044" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY21" Name="can_phy21" DataType="integer" Length="2" SASFieldName="can_p045" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Breasts
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY22" Name="can_phy22" DataType="text" Length="200" SASFieldName="can_p046" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY23" Name="can_phy23" DataType="integer" Length="2" SASFieldName="can_p047" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Heart
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY24" Name="can_phy24" DataType="text" Length="200" SASFieldName="can_p048" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY25" Name="can_phy25" DataType="integer" Length="2" SASFieldName="can_p049" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Abdomen
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY26" Name="can_phy26" DataType="text" Length="200" SASFieldName="can_p050" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY27" Name="can_phy27" DataType="integer" Length="2" SASFieldName="can_p051" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Musculoskeletal
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY28" Name="can_phy28" DataType="text" Length="200" SASFieldName="can_p052" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY29" Name="can_phy29" DataType="integer" Length="2" SASFieldName="can_p053" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Genitalia
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY30" Name="can_phy30" DataType="text" Length="200" SASFieldName="can_p054" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY31" Name="can_phy31" DataType="integer" Length="2" SASFieldName="can_p055" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Pelvis
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY32" Name="can_phy32" DataType="text" Length="200" SASFieldName="can_p056" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY33" Name="can_phy33" DataType="integer" Length="2" SASFieldName="can_p057" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Rectal
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY34" Name="can_phy34" DataType="text" Length="200" SASFieldName="can_p058" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY35" Name="can_phy35" DataType="integer" Length="2" SASFieldName="can_p059" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Prostate
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY36" Name="can_phy36" DataType="text" Length="200" SASFieldName="can_p060" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY37" Name="can_phy37" DataType="integer" Length="2" SASFieldName="can_p061" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Vascular
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY38" Name="can_phy38" DataType="text" Length="200" SASFieldName="can_p062" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY39" Name="can_phy39" DataType="integer" Length="2" SASFieldName="can_p063" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Neurological
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY40" Name="can_phy40" DataType="text" Length="200" SASFieldName="can_p064" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY41" Name="can_phy41" DataType="integer" Length="2" SASFieldName="can_p065" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Lymph Nodes
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_40"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY42" Name="can_phy42" DataType="text" Length="200" SASFieldName="can_p066" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY43" Name="can_phy43" DataType="integer" Length="2" SASFieldName="can_p067" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Other Body System/Site
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_41"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY44" Name="can_phy44" DataType="text" Length="19" SASFieldName="can_p068" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY45" Name="can_phy45" DataType="integer" Length="2" SASFieldName="can_p069" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Other Body System/Site
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_41"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY46" Name="can_phy46" DataType="text" Length="4" SASFieldName="can_p070" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY47" Name="can_phy47" DataType="integer" Length="2" SASFieldName="can_p071" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Other Body System/Site
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_41"/>
+            </ItemDef>
+            <ItemDef OID="I_CANC_CAN_PHY48" Name="can_phy48" DataType="text" Length="4" SASFieldName="can_p072" Comment="label">
+                <Question>
+                    <TranslatedText>
+                    Comments:(Required if Abnormal)
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <CodeList OID="CL_31" Name="agent123" DataType="text" SASFormatName="$AGENT1X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Tertiary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Secondary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Primary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_33" Name="agent12" DataType="text" SASFormatName="$AGEN01X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage1</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage2</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage3</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_35" Name="agent0123" DataType="text" SASFormatName="$AGENT0X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">no</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">yes</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_36" Name="body12" DataType="integer" SASFormatName="BODY12X">
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Normal</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Abnormal</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue=".A">
+                    <Decode>
+                        <TranslatedText xml:lang="en">NA</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_39" Name="ecog01234" DataType="integer" SASFormatName="ECOG012X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">0</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">1</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">2</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="3">
+                    <Decode>
+                        <TranslatedText xml:lang="en">3</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="4">
+                    <Decode>
+                        <TranslatedText xml:lang="en">4</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue=".A">
+                    <Decode>
+                        <TranslatedText xml:lang="en">NA</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_40" Name="body123" DataType="integer" SASFormatName="BODY123X">
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Normal</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Abnormal</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="3">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Not Examined</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue=".A">
+                    <Decode>
+                        <TranslatedText xml:lang="en">NA</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_41" Name="body12" DataType="integer" SASFormatName="BODY102X">
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Normal</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Abnormal</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue=".A">
+                    <Decode>
+                        <TranslatedText xml:lang="en">NA</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+        </MetaDataVersion>
+    </Study>
+    <ClinicalData StudyOID="S_CANCERDE" MetaDataVersionOID="v1.0.0">
+    </ClinicalData>
+</ODM>

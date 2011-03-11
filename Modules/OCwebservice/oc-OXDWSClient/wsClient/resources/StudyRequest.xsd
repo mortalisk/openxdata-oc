@@ -1,0 +1,42 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:train="http://sample.com/tr/schemas"
+        elementFormDefault="qualified"
+        targetNamespace="http://sample.com/tr/schemas">
+    <xs:element name="StudyRequest">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="StudyDetails" type="train:StudyDetails"/>                       
+                <xs:element name="SubjectDetails" type="train:SubjectDetails"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="StudyDetails">
+        <xs:sequence>
+       	    <xs:element name="StudyNumber" type="xs:integer"/>
+            <xs:element name="CreationDate" type="xs:date"/>
+            <xs:element name="By" type="xs:string"/>                                  
+            <xs:element name="Study_Identity" type="xs:string"></xs:element>                                  
+        </xs:sequence>                                                                   
+    </xs:complexType>
+    <xs:complexType name="SubjectDetails">
+        <xs:sequence>
+            <xs:element name="NumberOfSubjects" type="xs:integer"/>
+			<xs:element name="MasterSubject" type="train:MasterSubject" minOccurs="1" maxOccurs="1"/>                              
+        </xs:sequence>                                                                   
+    </xs:complexType>
+    <xs:complexType name="MasterSubject">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="1"/>
+			<xs:element name="Age" type="xs:integer" minOccurs="1"/>
+			<xs:element name="Sex" type="xs:string" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="StudyResponse">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="Code" type="xs:string" minOccurs="1"/>                       
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,98 @@
+<project name = "Sliver" default = "jars" basedir = ".">
+	<property name = "wtk.home" value = "/opt/wtk2.2" />
+	<property name = "wtk.midp.version" value = "2.0" />
+	<property name = "wtk.cldc.version" value = "1.1" />
+	<property name = "wtk.bluetooth.enabled" value = "true" />
+	<property name = "wtk.optionalpda.enabled" value = "true" />
+	
+	<property name = "jetty" value = "true" />
+	<property name = "jsr82" value = "true" />
+	
+	<path id = "classpath">
+		<pathelement location = "lib/ksoap2-j2se-full-2.1.0_beta.jar" />
+	</path>
+	
+	<path id = "classpathME">
+		<pathelement location = "lib/ksoap2-j2me-core-2.1.0_beta.jar" />
+	</path>
+	
+	<path id = "classpathJetty">
+		<pathelement location = "lib/ksoap2-j2se-full-2.1.0_beta.jar" />
+		<pathelement location = "lib/jetty-6.0.1.jar" />
+		<pathelement location = "lib/jetty-util-6.0.1.jar" />
+		<pathelement location = "lib/servlet-api-2.5-6.0.1.jar" />
+	</path>
+		
+	<path id = "classpathJSR82">
+		<pathelement location = "lib/ksoap2-j2se-full-2.1.0_beta.jar" />
+		<pathelement location = "${wtk.home}/lib/jsr082.jar" />
+		<pathelement location = "${wtk.home}/lib/midpapi20.jar" />
+		<pathelement location = "${wtk.home}/lib/cldcapi11.jar" />
+	</path>
+	
+	<path id = "classpathJavadoc">
+		<pathelement location = "lib/ksoap2-j2se-full-2.1.0_beta.jar" />
+		<pathelement location = "lib/jetty-6.0.0rc1.jar" />
+		<pathelement location = "lib/jetty-util-6.0.0rc1.jar" />
+		<pathelement location = "lib/servlet-api-2.5-6.0.0rc1.jar" />
+		<pathelement location = "${wtk.home}/lib/midpapi20.jar" />
+		<pathelement location = "${wtk.home}/lib/cldcapi11.jar" />
+		<pathelement location = "${wtk.home}/lib/wma20.jar" />
+		<pathelement location = "${wtk.home}/lib/jsr082.jar" />
+	</path>
+	
+	<taskdef resource = "antenna.properties" classpath="lib/antenna-bin-0.9.14.jar" />
+
+	<target name = "buildSE">
+		<delete dir = "build/j2se" />
+		<mkdir dir = "build/j2se" />
+		
+		<javac srcdir = "src_j2se:src" destdir = "build/j2se" classpathref = "classpath" target = "1.3" source = "1.3" debug = "false" excludes = "**/Jetty*.java,**/L2CAP*.java,**/Bluetooth*.java" />
+	</target>
+
+	<target name = "buildME">
+		<delete dir = "build/j2me" />
+		<mkdir dir = "build/j2me" />
+			
+		<wtkbuild srcdir = "src_j2me:src" destdir = "build/j2me" preverify = "false" source = "1.2" classpathref = "classpathME" />
+	</target>
+	
+	<target name = "buildJetty" depends = "buildSE" if = "jetty">
+		<delete dir = "build/jetty" />
+		<mkdir dir = "build/jetty" />
+		
+		<javac srcdir = "src_j2se" destdir = "build/jetty" classpath = "build/j2se" classpathref = "classpathJetty" target = "1.3" source = "1.3" debug = "false" includes = "**/Jetty*.java" />
+	</target>
+		
+	<target name = "buildJSR82" depends = "buildSE" if = "jsr82">
+		<delete dir = "build/jsr82" />
+		<mkdir dir = "build/jsr82" />
+		
+		<javac srcdir = "src:src_j2se" destdir = "build/jsr82" classpath = "build/j2se" classpathref = "classpathJSR82" target = "1.3" source = "1.3" debug = "false" includes = "**/L2CAP*.java,**/Bluetooth*.java" />
+	</target>
+
+	<target name = "jars" description = "rebuild and repackage Sliver" depends = "jarsSE, jarsJetty, jarsJSR82, jarsME" />
+	
+	<target name = "jarsSE" depends = "buildSE"> 
+		<jar destfile = "jars/sliver-j2se.jar" basedir = "build/j2se" />
+	</target>
+	
+	<target name = "jarsME" depends = "buildME">
+		<jar jarfile = "jars/sliver-j2me.jar" basedir = "build/j2me" />
+	</target>
+
+	<target name = "jarsJetty" depends = "buildJetty" if = "jetty">
+		<jar destfile = "jars/sliver-jetty.jar" basedir = "build/jetty" />
+	</target>
+
+	<target name = "jarsJSR82" depends = "buildJSR82" if = "jsr82">
+		<jar destfile = "jars/sliver-jsr82.jar" basedir = "build/jsr82" />
+	</target>
+	
+	<target name = "javadoc" description = "rebuild Sliver's documentation" >
+		<javadoc packagenames = "edu.wustl.mobilab.sliver.*" destdir = "docs/api" author = "true" use = "true" version = "true" access = "public" classpathref = "classpathJavadoc">
+	        <sourcepath path = "src;src_j2me;src_j2se" />
+		</javadoc>
+	</target>
+	
+</project>

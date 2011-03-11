@@ -1,0 +1,73 @@
+body, html {
+  height: 100%;
+}
+
+.btn { 
+	color:#050; 
+  	font: bold 84% 'trebuchet ms',helvetica,sans-serif; }
+  	
+.FlexTable {
+  border-top: thin solid #c3d5fd;
+  border-left: thin solid #c3d5fd;
+  border-right: thin solid #c3d5fd;
+  border-bottom: thin solid #c3d5fd;
+  background-color:  #f3f3f4;
+}
+
+.FlexTable2 { 
+  border-left: thin solid #7fd7f7;
+  border-right: thin solid #7fd7f7;
+  border-bottom: thin solid #7fd7f7; 
+  background-color:  #f9f9f9;
+  
+}
+
+.input{size:40px;}
+
+.select{ font-size: 16px; font-family: Arial, Helvetica, sans-serif;  }
+
+.select2{ font-size: 14px; font-family: Arial, Helvetica, sans-serif; font-weight:100;}
+
+.FlexTable-Header {
+	background-color: #e8f2fe;
+	font: bold 100% 'trebuchet ms',helvetica,sans-serif;
+}
+
+.FlexTable-Header2 {
+ 	border-top: thin solid #7fd7f7;
+ 	border-left: thin solid #7fd7f7;
+  	border-right: thin solid #7fd7f7;  
+  	background-color: #e5f7fd;
+ 	font-size: 16px; font-family: Arial, Helvetica, sans-serif; font-weight:bold;
+
+}
+
+.FlexTable-OddRow {
+ 	background-color: #f8f8f9;
+}
+
+.FlexTable-EvenRow {
+	background-color:  #fff;
+}
+
+.FlexTable-Row {
+	background-color:  #fff;
+}
+
+.buttonposition{
+	position:fixed;}
+	
+.closeD {
+	position:fixed;	
+}
+
+.gwt-DialogBox {
+  border: 2px outset;
+  background-color: white;
+}
+
+.oxd-label {
+  background-color: #6AFB92;
+  background-repeat: repeat-x;  
+  font-family: Verdana,Arial,Helvetica,sans-serif;
+}

@@ -1,0 +1,2516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	<!-- 
+	
+		See http://www.liquibase.org/manual/home#available_database_refactorings 
+		for a list of supported elements and attributes 
+		
+	-->
+	
+	<changeSet author="Mark" id="mobile-menu-00">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-12';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding prompt text for downloading a specific language menu text
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-12"/>
+				<column name="name" value="Do you want to download the menu for this language?"/>
+				<column name="description" value="Download prompt text for downloading a specific language menu text"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-01">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-11';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding message to show lack of menu text translation for the selected language
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-11"/>
+				<column name="name" value="The server has no Menu Text"/>
+				<column name="description" value="Message to show lack of menu text translation for the selected language"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-02">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-10';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding prompt text for deleting the collected data for a particular form
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-10"/>
+				<column name="name" value="Do you really want to delete data collected on this form?"/>
+				<column name="description" value="Prompt text for deleting the collected data for a particular form"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-03">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-9';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Text label for data upload url
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-9"/>
+				<column name="name" value="Data upload url:"/>
+				<column name="description" value="Text label for data upload url"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-04">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-8';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Text label for Form Download url
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-8"/>
+				<column name="name" value="Forms download url:"/>
+				<column name="description" value="Text label for Forms Download url"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-05">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-7';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Text label for Users download url
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-7"/>
+				<column name="name" value="Users download url:"/>
+				<column name="description" value="Text label for Users download url"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-06">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-6';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification text for successful Download and Saving of Menu Text
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-6"/>
+				<column name="name" value="Menu text downloaded and saved successfully"/>
+				<column name="description" value="Notification text for successful Download and Saving of Menu Text"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-07">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-5';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification text shown during downloading Menu Text progress
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-5"/>
+				<column name="name" value="Downloading Menu Text"/>
+				<column name="description" value="Notification text shown during downloading Menu Text progress"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-08">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-4';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Text label for Menu Text Download
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-4"/>
+				<column name="name" value="Menu Text Download"/>
+				<column name="description" value="Text label for Menu Text Download"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-09">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-3';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Error Text for Missing Form Definition
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-3"/>
+				<column name="name" value="Menu Text Download"/>
+				<column name="description" value="Error Text for Missing Form Definition"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-10">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-2';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification text for missing languagae and prompt for subsequent download
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-2"/>
+				<column name="name" value="No languages found. Do you want to download them?"/>
+				<column name="description" value="Notification text for missing languagae and prompt for subsequent download"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-11">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='-1';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Selecting a Language
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="-1"/>
+				<column name="name" value="Select Language"/>
+				<column name="description" value="Label text for Selecting a Language"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-12">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='1';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Login
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="1"/>
+				<column name="name" value="Login"/>
+				<column name="description" value="Label text for Login"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-13">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='2';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for User Name
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="2"/>
+				<column name="name" value="User Name:"/>
+				<column name="description" value="Label text for User Name"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-14">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='3';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for User Name
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="3"/>
+				<column name="name" value="Password:"/>
+				<column name="description" value="Label text for Password"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-15">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='4';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Exit
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="4"/>
+				<column name="name" value="Exit"/>
+				<column name="description" value="Label text for Exit"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-16">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='5';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Exit
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="5"/>
+				<column name="name" value="Cancel"/>
+				<column name="description" value="Label text for Cancel"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-17">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='6';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for OK
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="6"/>
+				<column name="name" value="OK"/>
+				<column name="description" value="Label text for OK"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-18">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='7';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Edit
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="7"/>
+				<column name="name" value="Edit"/>
+				<column name="description" value="Label text for Edit"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-19">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='8';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for New
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="8"/>
+				<column name="name" value="New"/>
+				<column name="description" value="Label text for New"/>
+			</insert>
+	</changeSet>
+	
+		<changeSet author="Mark" id="mobile-menu-20">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='9';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Save
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="9"/>
+				<column name="name" value="Save"/>
+				<column name="description" value="Label text for Save"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-21">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='10';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Delete
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="10"/>
+				<column name="name" value="Delete"/>
+				<column name="description" value="Label text for Delete"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-22">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='11';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Back
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="11"/>
+				<column name="name" value="Back"/>
+				<column name="description" value="Label text for Back"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-23">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='12';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Yes
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="12"/>
+				<column name="name" value="Yes"/>
+				<column name="description" value="Label text for Yes"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-24">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='13';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for No
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="13"/>
+				<column name="name" value="No"/>
+				<column name="description" value="Label text for No"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-25">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='14';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Back to list
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="14"/>
+				<column name="name" value="Back to list"/>
+				<column name="description" value="Label text for Back to list"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-26">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='15';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Next
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="15"/>
+				<column name="name" value="Next"/>
+				<column name="description" value="Label text for Next"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-27_fix">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='16';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Previous
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="16"/>
+				<column name="name" value="Previous"/>
+				<column name="description" value="Label text for Previous"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-28">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='17';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for First
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="17"/>
+				<column name="name" value="First"/>
+				<column name="description" value="Label text for First"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-29">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='18';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Last
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="18"/>
+				<column name="name" value="Last"/>
+				<column name="description" value="Label text for Last"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-30">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='19';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Main Menu
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="19"/>
+				<column name="name" value="Main Menu"/>
+				<column name="description" value="Label text for Main Menu"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-31">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='20';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Select Study
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="20"/>
+				<column name="name" value="Select Study"/>
+				<column name="description" value="Label text for Select Study"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-32">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='21';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Select Form
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="21"/>
+				<column name="name" value="Select Form"/>
+				<column name="description" value="Label text for Select Form"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-33">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='22';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Download Studies
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="22"/>
+				<column name="name" value="Download Studies"/>
+				<column name="description" value="Label text for Download Studies"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-34">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='23';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Download Forms
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="23"/>
+				<column name="name" value="Download Forms"/>
+				<column name="description" value="Label text for Download Forms"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-35">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='24';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Upload Data
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="24"/>
+				<column name="name" value="Upload Data"/>
+				<column name="description" value="Label text for Upload Data"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-36">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='25';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Upload Data
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="25"/>
+				<column name="name" value="Upload Data"/>
+				<column name="description" value="Label text for Upload Data"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-37">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='26';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Settings
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="26"/>
+				<column name="name" value="Settings"/>
+				<column name="description" value="Label text for Settings"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-38">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='27';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Logout
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="27"/>
+				<column name="name" value="Logout"/>
+				<column name="description" value="Label text for Logout"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-39">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='28';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt Text form exiting the application with unsaved changes
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="28"/>
+				<column name="name" value="Do you really want to exit the application and lose any unsaved changes if any?"/>
+				<column name="description" value="LPrompt Text form exiting the application with unsaved changes"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-40">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='29';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for General
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="29"/>
+				<column name="name" value="General"/>
+				<column name="description" value="Label text for General"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-41">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='30';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Date Format
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="30"/>
+				<column name="name" value="Date Format"/>
+				<column name="description" value="Label text for Date Format"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-42">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='31';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Multimedia
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="31"/>
+				<column name="name" value="Multimedia"/>
+				<column name="description" value="Label text for Multimedia"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-43">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='32';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Language
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="32"/>
+				<column name="name" value="Language"/>
+				<column name="description" value="Label text for Language"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-44">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='33';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Connection
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="33"/>
+				<column name="name" value="Connection"/>
+				<column name="description" value="Label text for Connection"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-45">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='34';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Single Question Edit
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="34"/>
+				<column name="name" value="Single Question Edit"/>
+				<column name="description" value="Label text for Single Question Edit"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-46">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='35';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Numbering
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="35"/>
+				<column name="name" value="Numbering"/>
+				<column name="description" value="Label text for Numbering"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-47">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='36';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for OK on Right
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="36"/>
+				<column name="name" value="OK on Right"/>
+				<column name="description" value="Label text for OK on Right"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-48">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='37';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Delete After Upload
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="37"/>
+				<column name="name" value="Delete After Upload"/>
+				<column name="description" value="Label text for Delete After Upload"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-49">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='38';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Day First
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="38"/>
+				<column name="name" value="Day First"/>
+				<column name="description" value="Label text for Day First"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-50">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='39';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Month First
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="39"/>
+				<column name="name" value="Month First"/>
+				<column name="description" value="Label text for Month First"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-51">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='40';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Year First
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="40"/>
+				<column name="name" value="Year First"/>
+				<column name="description" value="Label text for Year First"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-52">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='41';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Download Menu
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="41"/>
+				<column name="name" value="Download Menu"/>
+				<column name="description" value="Label text for Download Menu"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-53">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='42';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Http
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="42"/>
+				<column name="name" value="Http"/>
+				<column name="description" value="Label text for Http"/>
+			</insert>
+	</changeSet>	
+	
+	<changeSet author="Mark" id="mobile-menu-54">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='43';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Bluetooth
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="43"/>
+				<column name="name" value="Bluetooth"/>
+				<column name="description" value="Label text for Bluetooth"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-55">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='44';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Picture Format eg jpeg
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="44"/>
+				<column name="name" value="Picture Format eg jpeg"/>
+				<column name="description" value="Label text for Picture Format eg jpeg"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-56">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='45';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Picture Width eg 320
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="45"/>
+				<column name="name" value="Picture Width eg 320"/>
+				<column name="description" value="Label text for Picture Width eg 320"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-57">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='46';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Picture Height eg 240
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="46"/>
+				<column name="name" value="Picture Height eg 240"/>
+				<column name="description" value="Label text for Picture Height eg 240"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-58">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='47';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Video Format
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="47"/>
+				<column name="name" value="Video Format"/>
+				<column name="description" value="Label text for Video Format"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-59">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='48';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Audio Format
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="48"/>
+				<column name="name" value="Audio Format"/>
+				<column name="description" value="Label text for Audio Format"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-60">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='49';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Encodings
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="49"/>
+				<column name="name" value="Encodings"/>
+				<column name="description" value="Label text for Encodings"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-61">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='50';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Study:
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="50"/>
+				<column name="name" value="Study:"/>
+				<column name="description" value="Label text for Study:"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-62">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='51';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for un-uploaded data on trying to download new Form Definitions
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="51"/>
+				<column name="name" value="has un-uploaded data. Please first upload or delete this data before getting new form definitions."/>
+				<column name="description" value="Notification for un-uploaded data on trying to download new Form Definitions"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-63">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='52';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding rompt for downloading Forms in a selected Study
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="52"/>
+				<column name="name" value="Do you really want to download forms in Study: ?"/>
+				<column name="description" value="Prompt for downloading Forms in a selected Study"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-64">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='53';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt for downloading studies generally without selecting a particular Study
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="53"/>
+				<column name="name" value="Do you really want to download forms?"/>
+				<column name="description" value="Prompt for downloading studies generally without selecting a particular Study"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-65">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='54';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification on trying to get a new item list yet there is un-uploaded data. Prompts for upload or deleting of this data.
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="54"/>
+				<column name="name" value="There is data which is not yet uploaded to the server. Please first upload or delete this data before getting a new list of"/>
+				<column name="description" value="Notification on trying to get a new item list yet there is un-uploaded data. Prompts for upload or deleting of this data."/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-66">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='55';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Forms
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="55"/>
+				<column name="name" value="Forms"/>
+				<column name="description" value="Label text for Forms"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-67">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='56';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Studies
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="56"/>
+				<column name="name" value="Studies"/>
+				<column name="description" value="Label text for Studies"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-68">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='57';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt for downloading a Study list
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="57"/>
+				<column name="name" value="Do you really want to download the list of studies?"/>
+				<column name="description" value="Prompt for downloading a Study list"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-69">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='58';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt for downloading a Languages list
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="58"/>
+				<column name="name" value="Do you really want to download the list of languages?"/>
+				<column name="description" value="Prompt for downloading a languages list"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-70">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='59';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for first download forms
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="59"/>
+				<column name="name" value="Please first download forms."/>
+				<column name="description" value="Notification for first download forms"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-71">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='60';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt for comfirmation of uploading of collected data.
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="60"/>
+				<column name="name" value="Do you really want to upload the collected data?"/>
+				<column name="description" value="Prompt for comfirmation of uploading of collected data."/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-72">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='61';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Study List Download
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="61"/>
+				<column name="name" value="Study List Download"/>
+				<column name="description" value="Label text for Study List Download"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-73">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='62';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Downloading Study List action/progress
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="62"/>
+				<column name="name" value="Downloading Study List"/>
+				<column name="description" value="Notification for Downloading Study List action/progress"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-74">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='63';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Form Download
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="63"/>
+				<column name="name" value="Form Download"/>
+				<column name="description" value="Label text for Form Download"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-75">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='64';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Downloading Forms
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="64"/>
+				<column name="name" value="Downloading Forms"/>
+				<column name="description" value="Notification for Downloading Forms action/progress"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-76">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='65';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Downloading Users
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="65"/>
+				<column name="name" value="Downloading Users"/>
+				<column name="description" value="Notification for Downloading Users action/progress"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-77">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='66';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Language Download
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="66"/>
+				<column name="name" value="Language Download"/>
+				<column name="description" value="Label text for Language Download"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-78">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='67';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Downloading Languages
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="67"/>
+				<column name="name" value="Downloading Languages"/>
+				<column name="description" value="Notification for Downloading Languages action/progress"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-79">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='68';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Data Upload
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="68"/>
+				<column name="name" value="Data Upload"/>
+				<column name="description" value="Label text for Data Upload"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-80">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='69';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Uploading Data
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="69"/>
+				<column name="name" value="Uploading Data"/>
+				<column name="description" value="Notification for Uploading Data"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-81">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='70';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for a failed upload due to non existent data (to upload)
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="70"/>
+				<column name="name" value="No data to upload"/>
+				<column name="description" value="Notification for a failed upload due to non existent data (to upload)"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-82">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='71';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification Error message on failing to Save downloaded Data
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="71"/>
+				<column name="name" value="Problem saving downloaded data"/>
+				<column name="description" value="Notification Error message on failing to Save downloaded Data"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-83">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='72';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Successful Download and Saving of Studies.
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="72"/>
+				<column name="name" value="Study(s) downloaded and saved successfully"/>
+				<column name="description" value="Notification for Successful Download and Saving of Studies"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-84">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='73';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Successful Download and Saving of User(s).
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="73"/>
+				<column name="name" value="User(s) downloaded and saved successfully"/>
+				<column name="description" value="Notification for Successful Download and Saving of User(s)"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-85">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='74';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Missing Forms in the Selected Study
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="74"/>
+				<column name="name" value="The server has no forms in the Selected Study:"/>
+				<column name="description" value="Notification for Missing Forms in the Selected Study"/>
+			</insert>
+	</changeSet>
+	
+		<changeSet author="Mark" id="mobile-menu-86">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='75';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Successful Download and Saving of Forms
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="75"/>
+				<column name="name" value="Form(s) downloaded and saved successfully"/>
+				<column name="description" value="Notification for Successful Download and Saving of Forms"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-87">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='76';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Missing Languages on the Server
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="76"/>
+				<column name="name" value="The server has no languages"/>
+				<column name="description" value="Notification for Missing Languages on the Server"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-88">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='77';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for successful Download and Saving of Languages
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="77"/>
+				<column name="name" value="Languages(s) downloaded and saved successfully"/>
+				<column name="description" value="Notification for successful Download and Saving of Languages"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-89">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='78';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Problems occurred during data upload
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="78"/>
+				<column name="name" value="Problem uploading data"/>
+				<column name="description" value="Notification for Problems occurred during data upload"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-90">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='79';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Successful Upload of Data
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="79"/>
+				<column name="name" value="Data uploaded successfully."/>
+				<column name="description" value="Notification for Successful Upload of Data"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-91">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='80';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Failed Data Upload
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="80"/>
+				<column name="name" value="Failed to upload data."/>
+				<column name="description" value="Notification for Failed Data Upload"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-92">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='81';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Problems during Local Data Store cleaning
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="81"/>
+				<column name="name" value="Data uploaded but problem occured cleaning local store"/>
+				<column name="description" value="Notification for Problems during Local Data Store cleaning"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-93">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='82';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for unknown Data Upload
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="82"/>
+				<column name="name" value="Unknown upload"/>
+				<column name="description" value="Notification for unknown Data Upload"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-94">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='83';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Connection Type
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="83"/>
+				<column name="name" value="Connection Type"/>
+				<column name="description" value="Label text for Connection Type"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-95">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='84';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Bluetooth Service ID
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="84"/>
+				<column name="name" value="Bluetooth Service ID:"/>
+				<column name="description" value="Label text for Bluetooth Service ID"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-96">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='85';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Bluetooth Device Name
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="85"/>
+				<column name="name" value="Bluetooth Device Name"/>
+				<column name="description" value="Label text for Bluetooth Device Name"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-97">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='86';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Problems Handling Request
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="86"/>
+				<column name="name" value="Problem handling request:"/>
+				<column name="description" value="Notification for Problems Handling Request"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-98">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='87';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Connecting to the Server
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="87"/>
+				<column name="name" value="Connecting to server........."/>
+				<column name="description" value="Notification for Connecting to the Server"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-99">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='88';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Successful Connection to Server and Transfering of Data
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="88"/>
+				<column name="name" value="Connected to server. Tranfering data........"/>
+				<column name="description" value="Notification for Successful Connection to Server and Transfering of Data"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-100">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='89';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Problem in Handling Streams
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="89"/>
+				<column name="name" value="Problem handling streams"/>
+				<column name="description" value="Notification for Problem in Handling Streams"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-101">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='90';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Problems occurred on Server while trying to Process Request
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="90"/>
+				<column name="name" value="Problems occured while processing request on server."/>
+				<column name="description" value="Notification for Problems occurred on Server while trying to Process Request"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-102">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='91';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Access Denied Notification
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="91"/>
+				<column name="name" value="Access denied"/>
+				<column name="description" value="Access Denied Notification"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-103">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='92';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Response Not OK
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="92"/>
+				<column name="name" value="Response code not OK="/>
+				<column name="description" value="Notification For Response Not OK"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-104">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='93';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Permission Denied Notification
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="93"/>
+				<column name="name" value="Permission denied"/>
+				<column name="description" value="Permission Denied Notification"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-105">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='94';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Getting Bluetooth Service URL
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="94"/>
+				<column name="name" value="Getting bluetooth Service URL........."/>
+				<column name="description" value="Notification For Getting Bluetooth Service URL"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-106">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='95';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Opening bluetooth service connection
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="95"/>
+				<column name="name" value="Opening bluetooth service connection"/>
+				<column name="description" value="Notification For Opening bluetooth service connection"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-107">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='96';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Getting streams
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="96"/>
+				<column name="name" value="Getting streams"/>
+				<column name="description" value="Notification For Getting streams"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-108">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='97';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Connection Opening Failure
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="97"/>
+				<column name="name" value="Failed to open connection"/>
+				<column name="description" value="Notification for Connection Opening Failure"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-109">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='98';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Problem occuring during Opening Of Streams
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="98"/>
+				<column name="name" value="Problem opening streams"/>
+				<column name="description" value="Notification For Problem occuring during Opening Of Streams"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-110">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='99';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt for Cancelling Current Operation
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="99"/>
+				<column name="name" value="Do you really want to cancel this operation?"/>
+				<column name="description" value="Prompt for Cancelling Current Operation"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-111">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='100';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Connection Settings
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="100"/>
+				<column name="name" value="Connection Settings"/>
+				<column name="description" value="Label text for Connection Settings"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-112">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='101';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Multimedia Playing
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="101"/>
+				<column name="name" value="Playing..........."/>
+				<column name="description" value="Notification For Multimedia Playing"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-113">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='102';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Initialization Problems
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="102"/>
+				<column name="name" value="Problem initializing="/>
+				<column name="description" value="Notification for Initialization Problems"/>
+			</insert>
+	</changeSet>
+	
+	
+	<changeSet author="Mark" id="mobile-menu-114">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='103';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Viewing Problems
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="103"/>
+				<column name="name" value="Problem viewing="/>
+				<column name="description" value="Notification for Viewing Problems"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-115">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='104';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification Message for Unsupported Features
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="104"/>
+				<column name="name" value="Feature not supported"/>
+				<column name="description" value="Notification Message for Unsupported Features"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-116">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='105';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Unsupported Video function on the client
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="105"/>
+				<column name="name" value="Not supported by this device. (No video control)"/>
+				<column name="description" value="Notification For Unsupported Video function on the client"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-117">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='106';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Problems Editing a given Item
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="106"/>
+				<column name="name" value="Problem editing:"/>
+				<column name="description" value="Notification For Problems Editing a given Item"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-118">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='107';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Recording Notification
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="107"/>
+				<column name="name" value="Recording..........."/>
+				<column name="description" value="Notification To Show Recording in Progress"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-119">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='108';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification to Show Problem Playing a Selected Item
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="108"/>
+				<column name="name" value="Problem playing:"/>
+				<column name="description" value="Notification to Show Problem Playing a Selected Item"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-120">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='109';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt for Deletion of Selected Item
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="109"/>
+				<column name="name" value="Do you really want to delete this?"/>
+				<column name="description" value="Prompt for Deletion of Selected Item"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-121">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='110';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification on Problem saving image
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="110"/>
+				<column name="name" value="Problem saving image:"/>
+				<column name="description" value="Notification on Problem saving image"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-122">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='111';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification on Problem saving recording
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="111"/>
+				<column name="name" value="Problem saving recording:"/>
+				<column name="description" value="Notification on Problem saving recording"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-123">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='112';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Data List
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="112"/>
+				<column name="name" value="Data List"/>
+				<column name="description" value="Label text for Data List"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-124">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='113';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification on Problem showing form data list.
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="113"/>
+				<column name="name" value="Problem showing Form Data List."/>
+				<column name="description" value="Notification on Problem showing form data list"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-125">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='114';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Prompt on Form Deletion
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="114"/>
+				<column name="name" value="Do you really want to delete the Selected Form:"/>
+				<column name="description" value="Prompt on Form Deletion"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-126">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='115';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification on Successful Form Saving
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="115"/>
+				<column name="name" value="Form Saved Successfully."/>
+				<column name="description" value="Notification on Successful Form Saving"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-127">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='116';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification indicating operation that needs a Selected Study yet there is none
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="116"/>
+				<column name="name" value="No study selected"/>
+				<column name="description" value="Notification indicating operation that needs a Selected Study yet there is none"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-128">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='117';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Missing Forms in Current Study
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="117"/>
+				<column name="name" value="No forms in current study"/>
+				<column name="description" value="Notification for Missing Forms in Current Study"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-129">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='118';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for Possible Sync disparities in Form Definitions that prevent the Data to be Displayed
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="118"/>
+				<column name="name" value="Problem displaying form data. Possibly data out of sync with form definition."/>
+				<column name="description" value="Notification for Possible Sync disparities in Form Definitions that prevent the Data beng Displayed"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-130">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='119';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Next Page
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="119"/>
+				<column name="name" value="Next Page"/>
+				<column name="description" value="Label text for Next Page"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-131">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='120';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Previous Page
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="120"/>
+				<column name="name" value="Previous Page"/>
+				<column name="description" value="Label text for Previous Page"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-132">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='121';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification on Problem Displaying Forms
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="121"/>
+				<column name="name" value="Problem displaying form"/>
+				<column name="description" value="Notification on Problems Displaying Forms"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-133">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='122';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification for No Visible Question found on the page
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="122"/>
+				<column name="name" value="No visible question found among the"/>
+				<column name="description" value="Notification for No Visible Question found on the page"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-134">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='123';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Label text for Questions
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="123"/>
+				<column name="name" value="questions"/>
+				<column name="description" value="Label text for questions"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-135">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='124';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification on Form Close with Unsaved Changes
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="124"/>
+				<column name="name" value="Do you want to close this form without saving any changes you may have made?"/>
+				<column name="description" value="Notification on Form Close with Unsaved Changes"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-136">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='125';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Missing Values(Questions with Question Marks)
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="125"/>
+				<column name="name" value="Please enter missing values. Those with question marks"/>
+				<column name="description" value="Notification For Missing Values(Questions with Question Marks)"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-137">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='126';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For requirement to answer atleast one question or Choose Cancel
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="126"/>
+				<column name="name" value="Please answer atleast one question or choose Cancel"/>
+				<column name="description" value="Notification For requirement to answer atleast one question or Cancel"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mobile-menu-138">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM mobile_menu where menu_id='127';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Notification For Failed Login
+		</comment>			
+			<insert tableName="mobile_menu">
+				<column name="menu_id" value="127"/>
+				<column name="name" value="Invalid User Name or Password"/>
+				<column name="description" value="Notification For Failed Login"/>
+			</insert>
+	</changeSet>
+		
+</databaseChangeLog>

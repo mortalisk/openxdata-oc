@@ -1,0 +1,39 @@
+<process name="HelloWorld" targetNamespace="http://jbpm.org/examples/hello"
+  xmlns:tns="http://jbpm.org/examples/hello"
+  xmlns:bpel="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+  xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+
+  <partnerLinks>
+    <!-- establishes the relationship with the caller agent -->
+    <partnerLink name="caller" partnerLinkType="tns:Greeter-Caller" myRole="Greeter" />
+  </partnerLinks>
+
+  <variables>
+    <!-- holds the incoming message -->
+    <variable name="request" messageType="tns:nameMessage" />
+    <!-- holds the outgoing message -->
+    <variable name="response" messageType="tns:greetingMessage" />
+  </variables>
+
+  <sequence name="MainSeq">
+
+    <!-- receive the name of a person -->
+    <receive name="ReceiveName" operation="sayHello" partnerLink="caller" 
+      portType="tns:Greeter" variable="request" createInstance="yes" />
+
+    <!-- compose a greeting phrase -->
+    <assign name="ComposeGreeting">
+      <copy>
+      	<from variable="request" part="name"  />
+        <!-- <from expression="concat('Hello, ', bpel:getVariableData('request', 'name'), '!')" /> -->
+        <to variable="response" part="greeting" />
+      </copy>
+    </assign>
+
+    <!-- send greeting back to caller -->
+    <reply name="SendGreeting" operation="sayHello" partnerLink="caller" 
+      portType="tns:Greeter" variable="response" />
+
+  </sequence>
+
+</process>

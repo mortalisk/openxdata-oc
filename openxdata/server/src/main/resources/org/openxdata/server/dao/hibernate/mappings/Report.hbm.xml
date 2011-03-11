@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openxdata.server.admin.model">
+
+	<class name="Report" table="report">
+	
+		<id name="reportId" type="int" column="report_id" unsaved-value="0">
+				<generator class="native">
+					 <param name="sequence">report_report_id_seq</param>
+				</generator>
+		</id>
+
+		<discriminator column="report_id" insert="false" />
+		
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
+		
+		<property name="description" type="java.lang.String" column="description" not-null="false" length="1024" />
+				
+		<property name="definition" type="java.lang.String" column="definition" />
+		
+		<property name="queryDefinition" type="java.lang.String" column="query_definition" />
+		
+		<property name="querySql" type="java.lang.String" column="query_sql" />
+		
+		<property name="paramValues" type="java.lang.String" column="param_values" />
+		
+		<property name="formDefVersionId" type="java.lang.Integer" column="form_definition_version_id" />
+
+		<many-to-one name="creator" class="User" not-null="true" />
+	
+		<property name="dateCreated" type="java.util.Date" column="date_created" length="19" not-null="true" />
+	
+		<many-to-one name="changedBy" class="User" column="changed_by" />
+	
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+		
+		<many-to-one name="reportGroup" class="ReportGroup" column="report_group_id" />
+		
+	</class>
+	
+</hibernate-mapping>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="libs/spring-beans-2.5.6.jar"/>
+	<classpathentry kind="lib" path="libs/spring-context-2.5.6.jar"/>
+	<classpathentry kind="lib" path="libs/spring-context-support-2.5.6.jar"/>
+	<classpathentry kind="lib" path="libs/spring-core-2.5.6.jar"/>
+	<classpathentry kind="lib" path="libs/spring-oxm-1.5.6.jar"/>
+	<classpathentry kind="lib" path="libs/spring-oxm-tiger-1.5.6.jar"/>
+	<classpathentry kind="lib" path="libs/spring-web.jar"/>
+	<classpathentry kind="lib" path="libs/spring-ws-core-1.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/spring-xml-1.5.7.jar"/>
+	<classpathentry kind="lib" path="libs/wsdl4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/xercesImpl-2.6.2.jar"/>
+	<classpathentry kind="lib" path="resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

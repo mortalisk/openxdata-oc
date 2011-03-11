@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsl:stylesheet version='2.0'
+xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
+xmlns:fn='http://www.w3.org/2005/xpath-functions'
+xmlns:xf='http://www.w3.org/2002/xforms' >
+<xsl:output method='xml' version='1.0' encoding='UTF-8'/>
+<xsl:template match='/'> 
+ <html xmlns='http://www.w3.org/1999/xhtml'
+       xmlns:xf='http://www.w3.org/2002/xforms'
+       xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+       xmlns:xs='http://www.w3.org/2001/XMLSchema'
+       xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+       xmlns:ev='http://www.w3.org/2001/xml-events'
+       xmlns:jr='http://openrosa.org/javarosa'
+ > 
+<head>	
+ 	<title>
+		<xsl:value-of select='/xf:xforms/xf:model/xf:instance/*/@name'/>
+	</title>
+	
+    <xf:model>
+ 		<xsl:copy-of select='/xf:xforms/xf:model/xf:instance' />
+
+		<xsl:for-each select='/xf:xforms/xf:model/xf:bind'>
+		
+	 		<xsl:copy>
+				<xsl:attribute name='id'> 
+		 			<xsl:value-of select='@id' /> 
+		 		</xsl:attribute> 
+		 		
+				<xsl:attribute name='nodeset'> 
+		 			<xsl:value-of select='@nodeset' />
+		 		</xsl:attribute>
+		 		
+		 		<xsl:if test='string-length(normalize-space(@type)) > 0'>
+					<xsl:attribute name='type'> 
+			 			<xsl:value-of select='@type' /> 
+			 		</xsl:attribute>
+		 		</xsl:if>
+		 		
+		 		<xsl:if test='string-length(normalize-space(@visible)) > 0'>
+			 		<xsl:attribute name='visible'> 
+			 			<xsl:value-of select='@visible' /> 
+			 		</xsl:attribute> 
+		 		</xsl:if>
+		 		
+		 		<xsl:if test='string-length(normalize-space(@readonly)) > 0'>
+			 		<xsl:attribute name='readonly'> 
+			 			<xsl:value-of select='@readonly' /> 
+			 		</xsl:attribute>
+		 		</xsl:if>
+		 		
+		 		<xsl:if test='string-length(normalize-space(@required)) > 0'>
+			 		<xsl:attribute name='required'> 
+			 			<xsl:value-of select='@required' /> 
+			 		</xsl:attribute>
+		 		</xsl:if>
+		 		
+		 		<xsl:if test='string-length(normalize-space(@locked)) > 0'>
+			 		<xsl:attribute name='readonly'> 
+			 			<xsl:value-of select='@locked' /> 
+			 		</xsl:attribute>
+		 		</xsl:if>
+		 		
+		 		<xsl:if test='string-length(normalize-space(@calculate)) > 0'>
+			 		<xsl:attribute name='calculate'> 
+			 			<xsl:value-of select='@calculate' /> 
+			 		</xsl:attribute>
+		 		</xsl:if>
+		 		
+		 		<xsl:if test='string-length(normalize-space(@relevant)) > 0'>
+			 		<xsl:attribute name='relevant'> 
+			 			<xsl:value-of select='@relevant' /> 
+			 		</xsl:attribute>
+		 		</xsl:if>
+		
+				<xsl:if test='string-length(normalize-space(@constraint)) > 0'>
+					<xsl:attribute name='constraint'>
+		 				<xsl:value-of select='@constraint' />
+		 			</xsl:attribute>
+				</xsl:if>
+		
+				<xsl:if test='string-length(normalize-space(@message)) > 0'> 
+					<xsl:attribute name='jr:ConstraintMSG'> 
+		 				<xsl:value-of select='@message' /> 
+		 			</xsl:attribute> 
+				</xsl:if>
+	
+	       </xsl:copy>
+	     
+		</xsl:for-each> 
+
+   	</xf:model>
+   	
+ </head> 
+ 
+ <body> 
+ 	<xsl:for-each select='/xf:xforms/*'> 
+   	<xsl:if test='local-name() != "model"'> 
+ 			<xsl:copy-of select='.' /> 
+       </xsl:if> 
+ 	</xsl:for-each> 
+ </body> 
+ </html> 
+ 
+</xsl:template> 
+</xsl:stylesheet>

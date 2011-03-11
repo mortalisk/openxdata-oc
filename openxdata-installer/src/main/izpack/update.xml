@@ -1,0 +1,103 @@
+<!--
+    IzPack Installation Script for openXdata
+    Authour: Ronald.K
+-->
+<installation version="1.0">
+    
+    <!-- The info section -->
+    <info>
+        <appname>openXdata-Update</appname>
+        <appversion>1.0</appversion>
+        <authors>
+            <author email="" name="openXdata Team"/>
+            <author email="" name="University of Makerere (Uganda)"/>
+            <author email="" name="University of Bergen (Norway)"/>
+            <author email="" name="Interactive Research and Development (Pakistan)"/>
+            <author email="" name="Handheld Solutions and Research Labs (India)"/>
+            <author email="" name="Zegeba Technology (Norway)  "/>
+            <author email="" name="University of Southern Maine (USA)  "/>
+            <author email="" name="Cell-Life (South Africa) "/>
+        </authors>
+        <url>http://www.openXdata.org/</url>
+        <javaversion>1.5</javaversion>
+        <requiresjdk>no</requiresjdk>
+        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
+        <summarylogfilepath>$INSTALL_PATH/installinfo/Update-Summary.htm</summarylogfilepath>
+    </info>
+    
+    <variables>
+        <!-- Tomcat directory user selects -->
+        <variable name="installed.dir"                value=""/>
+        <variable name="ShowCreateDirectoryMessage"     value="false"/>
+        <variable name="tomcat" value="ttttttttt"/>
+    </variables>
+
+    <guiprefs height="550" resizable="yes" width="700">
+        <modifier key="layoutAnchor"           value="CENTER"/>
+        <modifier key="showDebugWindow"        value="true"/>
+        <modifier key="headingPanelCounter"    value="progressbar"/>
+        <modifier key="headingPanelCounterPos" value="inNavigationPanel"/>
+        <modifier key="allYGap"                value="4"/>
+        <modifier key="paragraphYGap"          value="10"/>
+        <modifier key="filler1YGap"            value="5"/>
+        <modifier key="filler3XGap"            value="10"/>
+    </guiprefs>
+    
+    <!-- Lunguage Pack -->
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+    
+    <!-- The resources needed by the various panels -->
+    <resources>
+        <res id="HTMLInfoPanel.info"        src="install-readme.html" />
+        <res id="HTMLLicencePanel.licence"  src="license.html" />
+        <res id="userInputSpec.xml"         src="specs/inputSpec.update.xml"  />
+        <res id="ProcessPanel.Spec.xml"     src="specs/processPanelSpec.update.xml"/>
+        <res id="Installer.image"           src="images/openXdata-border.png" />
+    </resources>
+    
+    <panels>
+        <panel classname="CheckedHelloPanel" id="hellopanel"/>
+        <!--        Select the installed path  -->
+        <panel classname="UserInputPanel"    id="Tomcat.panel" >
+            <validator classname="org.openxdata.mak.izpack.validator.VersionValidator" />
+        </panel>
+
+        <!--        Copy the file into the OXD folder -->
+        <panel classname="InstallPanel"      id="installpanel"/>
+        <!--        Start the tomcat service   -->
+        <panel classname="ProcessPanel"      id="tomcat.start"/>
+       
+        <panel classname="FinishPanel"       id="finishpanel"/>
+    </panels>
+    
+    
+    <packs>
+        <!-- The core files pack -->
+        <pack name="openXdata" required="yes" >
+
+            <description>The openXdata core update files.</description>
+
+            <fileset dir="" targetdir="$INSTALL_PATH" >
+                <include name="openXdata/**/*"/>
+                <include name="version"/>
+                <include name="script/update.bat"/>
+                <exclude name="openXdata/OPENXDATA_SETTINGS.properties"/>
+            </fileset>
+
+            <parsable targetfile="$INSTALL_PATH/script/update.bat" type="shell"/>
+
+        </pack>
+    </packs>
+    
+    <jar src="../openXdata-installer.jar" stage="install" />
+
+    <!-- The native libraries to add -->
+    <native type="izpack"   name="ShellLink.dll"/>
+    <native type="izpack"   name="ShellLink_x64.dll"/>
+
+    <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+        <os family="windows"/>
+    </native>
+</installation>

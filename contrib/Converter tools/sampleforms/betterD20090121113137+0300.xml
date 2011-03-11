@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODM FileOID="betterD20090121113137+0300" Description="for testing one subject" CreationDateTime="2009-01-21T11:31:37+03:00" FileType="Snapshot" ODMVersion="1.2" xmlns="http://www.cdisc.org/ns/odm/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.2 ODM1-2-1.xsd" >
+    <Study OID="S_CANCERDE">
+        <GlobalVariables>
+            <StudyName>Demonstration Protocol for Cancer Research</StudyName>
+            <StudyDescription>
+                Case Report Forms are based on the templates available
+from National Cancer 
+            </StudyDescription>
+            <ProtocolName>CancerDemo</ProtocolName>
+        </GlobalVariables>
+        <MetaDataVersion OID="v1.0.0" Name="MetaDataVersion_v1.0.0">
+            <Protocol>
+                <StudyEventRef StudyEventOID="SE_BODYPAIN" OrderNumber="1" Mandatory="Yes"/>
+                <StudyEventRef StudyEventOID="SE_BREATHIN" OrderNumber="2" Mandatory="Yes"/>
+            </Protocol>
+            <StudyEventDef OID="SE_BODYPAIN"  Name="body pain" Repeating="No" Type="Common">
+                <FormRef FormOID="F_REVI_3149_V25" Mandatory="Yes"/>
+                <FormRef FormOID="F_TEST_V25" Mandatory="Yes"/>
+            </StudyEventDef>
+            <StudyEventDef OID="SE_BREATHIN"  Name="breathing rate" Repeating="Yes" Type="Scheduled">
+                <FormRef FormOID="F_TEST_V25" Mandatory="Yes"/>
+            </StudyEventDef>
+            <FormDef OID="F_REVI_3149_V25" Name="review1 - v 2.5" Repeating="No">
+                <ItemGroupRef ItemGroupOID="IG_REVI_UNGROUPED_4791-F_REVI_3149_V25" Mandatory="No"/>
+                <ItemGroupRef ItemGroupOID="IG_REVI_DOSETABLE_1622-F_REVI_3149_V25" Mandatory="No"/>
+            </FormDef>
+            <FormDef OID="F_TEST_V25" Name="testing3 - v 2.5" Repeating="No">
+                <ItemGroupRef ItemGroupOID="IG_TEST_UNGROUPED-F_TEST_V25" Mandatory="No"/>
+            </FormDef>
+            <ItemGroupDef OID="IG_REVI_UNGROUPED_4791-F_REVI_3149_V25" Name="F_REVI_3149_V25-Ungrouped" Repeating="No" SASDatasetName="UNGROUPE">
+                <ItemRef ItemOID="I_REVI_HWEIGHT" OrderNumber="1" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_NAME" OrderNumber="2" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_ADDRESS" OrderNumber="3" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_DOB" OrderNumber="4" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_COUNTRY" OrderNumber="5" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_NEXT_OF_KEEN" OrderNumber="6" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_SEX" OrderNumber="7" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_PRIGNANT" OrderNumber="8" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_MEDICATION" OrderNumber="9" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_IMPROVEMENT" OrderNumber="10" Mandatory="No"/>
+                <ItemRef ItemOID="I_REVI_CONDITION" OrderNumber="11" Mandatory="No"/>
+            </ItemGroupDef>
+            <ItemGroupDef OID="IG_REVI_DOSETABLE_1622-F_REVI_3149_V25" Name="DoseTable" Repeating="Yes" SASDatasetName="DOSETABL" Comment="Medication">
+                <ItemRef ItemOID="I_REVI_DETAILS" OrderNumber="1" Mandatory="No"/>
+            </ItemGroupDef>
+            <ItemGroupDef OID="IG_TEST_UNGROUPED-F_TEST_V25" Name="F_TEST_V25-Ungrouped" Repeating="No" SASDatasetName="UNGRO001">
+                <ItemRef ItemOID="I_TEST_NAME" OrderNumber="1" Mandatory="No"/>
+                <ItemRef ItemOID="I_TEST_AGE" OrderNumber="2" Mandatory="No"/>
+                <ItemRef ItemOID="I_TEST_WEIGHT" OrderNumber="3" Mandatory="No"/>
+                <ItemRef ItemOID="I_TEST_DOB" OrderNumber="4" Mandatory="No"/>
+                <ItemRef ItemOID="I_TEST_EDUCATION" OrderNumber="5" Mandatory="No"/>
+                <ItemRef ItemOID="I_TEST_ARV" OrderNumber="6" Mandatory="No"/>
+                <ItemRef ItemOID="I_TEST_WHOSTAGE" OrderNumber="7" Mandatory="No"/>
+                <ItemRef ItemOID="I_TEST_AREYOUMARRIADE" OrderNumber="8" Mandatory="No"/>
+            </ItemGroupDef>
+            <ItemDef OID="I_REVI_HWEIGHT" Name="Hweight" DataType="integer" Length="10" SASFieldName="Hweight" Comment="weight of the patient for testing">
+                <Question>
+                    <TranslatedText>
+                    weight
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_REVI_NAME" Name="Name" DataType="text" Length="6" SASFieldName="Name" Comment="names of the patient">
+                <Question>
+                    <TranslatedText>
+                    Name
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_REVI_ADDRESS" Name="address" DataType="text" Length="8" SASFieldName="address" Comment="location to get the patient from">
+                <Question>
+                    <TranslatedText>
+                    Address
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_REVI_DOB" Name="DOB" DataType="date" SASFieldName="DOB" Comment="date of bith">
+                <Question>
+                    <TranslatedText>
+                    Date of Birth
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_REVI_COUNTRY" Name="country" DataType="text" Length="6" SASFieldName="country" Comment="country of orign">
+                <Question>
+                    <TranslatedText>
+                    Country
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_REVI_NEXT_OF_KEEN" Name="next_of_keen" DataType="text" Length="7" SASFieldName="next_of_" Comment="most immediate person to contact">
+                <Question>
+                    <TranslatedText>
+                    Next of keen
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_REVI_SEX" Name="sex" DataType="text" Length="1" SASFieldName="sex" Comment="feminine">
+                <Question>
+                    <TranslatedText>
+                    Sex
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_23"/>
+            </ItemDef>
+            <ItemDef OID="I_REVI_PRIGNANT" Name="Prignant" DataType="text" Length="1" SASFieldName="Prignant" Comment="if a patient is prignant">
+                <Question>
+                    <TranslatedText>
+                    Medication  - if_female_Prignant?
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_24"/>
+            </ItemDef>
+            <ItemDef OID="I_REVI_MEDICATION" Name="Medication" DataType="text" Length="1" SASFieldName="Medicati" Comment="if a patient is under any medication">
+                <Question>
+                    <TranslatedText>
+                    taken_Any_Medication?
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_24"/>
+            </ItemDef>
+            <ItemDef OID="I_REVI_IMPROVEMENT" Name="improvement" DataType="text" Length="1" SASFieldName="improvem" Comment="if apatient experienced an improvement from previous medication taken">
+                <Question>
+                    <TranslatedText>
+                    was_there_improvement?
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_24"/>
+            </ItemDef>
+            <ItemDef OID="I_REVI_CONDITION" Name="condition" DataType="text" Length="14" SASFieldName="conditio" Comment="detail of her current condition">
+                <Question>
+                    <TranslatedText>
+                    if_no_details
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_REVI_DETAILS" Name="details" DataType="text" Length="14" SASFieldName="details" Comment="detail of the medication is undertaking">
+                <Question>
+                    <TranslatedText>
+                    if_yes_details
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TEST_NAME" Name="Name" DataType="text" Length="8" SASFieldName="Name002" Comment="names of the patient">
+                <Question>
+                    <TranslatedText>
+                    Name
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TEST_AGE" Name="Age" DataType="integer" Length="10" SASFieldName="Age" Comment="the current age">
+                <Question>
+                    <TranslatedText>
+                    Age
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TEST_WEIGHT" Name="Weight" DataType="float" Length="32" SignificantDigits="6" SASFieldName="Weight" Comment="weight of the patient for testing">
+                <Question>
+                    <TranslatedText>
+                    Weight
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TEST_DOB" Name="DOB" DataType="date" SASFieldName="DOB003" Comment="date of bith">
+                <Question>
+                    <TranslatedText>
+                    Date of Birth
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TEST_EDUCATION" Name="education" DataType="text" Length="1" SASFieldName="educatio" Comment="education level">
+                <Question>
+                    <TranslatedText>
+                    Education
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_26"/>
+            </ItemDef>
+            <ItemDef OID="I_TEST_ARV" Name="ARV" DataType="text" Length="40" SASFieldName="ARV" Comment="the type of the ARVs taken">
+                <Question>
+                    <TranslatedText>
+                    ARVs
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TEST_WHOSTAGE" Name="WHO stage" DataType="text" Length="1" SASFieldName="WHO_stag" Comment="stage of HIV">
+                <Question>
+                    <TranslatedText>
+                    WHO stage
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_28"/>
+            </ItemDef>
+            <ItemDef OID="I_TEST_AREYOUMARRIADE" Name="Are you marriade" DataType="text" Length="1" SASFieldName="Are_you_" Comment="marital status">
+                <Question>
+                    <TranslatedText>
+                    Are you marriade
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_29"/>
+            </ItemDef>
+            <CodeList OID="CL_23" Name="agent12" DataType="text" SASFormatName="$AGENT1X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Male</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Female</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_24" Name="agent123" DataType="text" SASFormatName="$AGEN01X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">no</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">yes</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_26" Name="agent123" DataType="text" SASFormatName="$AGEN02X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Tertiary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Secondary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Primary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_28" Name="agent12" DataType="text" SASFormatName="$AGEN03X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage1</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage2</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage3</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_29" Name="agent0123" DataType="text" SASFormatName="$AGENT0X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">no</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">yes</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+        </MetaDataVersion>
+    </Study>
+    <ClinicalData StudyOID="S_CANCERDE" MetaDataVersionOID="v1.0.0">
+        <SubjectData SubjectKey="SS_P002">
+            <StudyEventData StudyEventOID="SE_BREATHIN" StudyEventRepeatKey="1">
+                <FormData FormOID="F_TEST_V25">
+                    <ItemGroupData ItemGroupOID="IG_TEST_UNGROUPED-F_TEST_V25" TransactionType="Insert">
+                        <ItemData ItemOID="I_TEST_NAME" Value="mwesigwa"/>
+                        <ItemData ItemOID="I_TEST_AGE" Value="34"/>
+                        <ItemData ItemOID="I_TEST_WEIGHT" Value="45"/>
+                        <ItemData ItemOID="I_TEST_DOB" Value="1978-01-20"/>
+                        <ItemData ItemOID="I_TEST_EDUCATION" Value="0"/>
+                        <ItemData ItemOID="I_TEST_ARV" Value="1,2"/>
+                        <ItemData ItemOID="I_TEST_WHOSTAGE" Value="0"/>
+                        <ItemData ItemOID="I_TEST_AREYOUMARRIADE" Value="0"/>
+                    </ItemGroupData>
+                </FormData>
+            </StudyEventData>
+        </SubjectData>
+    </ClinicalData>
+</ODM>

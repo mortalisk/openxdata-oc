@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+IzPack Shortcuts Script for openXdata
+Authour: Ronald.K
+-->
+<shortcuts>
+    <skipIfNotSupported/>
+    <programGroup defaultName="openXdata" location="applications"/>
+
+    <shortcut
+         name = "openXdata"
+         programGroup="yes"
+         desktop="yes"
+         applications="no"
+         startMenu="no"
+         startup="no"
+         target="$INSTALL_PATH\script\elevator.bat"
+         commandLine="&quot;$INSTALL_PATH\script\startup.bat&quot;"
+         iconFile="$INSTALL_PATH\openXdata_Logo.ico"
+         description="Launches openXdata"
+         initialState="noShow" >
+        <createForPack name="openXdata"/>
+    </shortcut>
+
+    <shortcut
+         name = "Restart Services"
+         programGroup="yes"
+         desktop="no"
+         applications="no"
+         startMenu="no"
+         startup="no"
+         target="$INSTALL_PATH\script\elevator.bat"
+         commandLine="&quot;$INSTALL_PATH\script\oxdservice.bat&quot; restart"
+         iconFile="$INSTALL_PATH\openXdata_Logo.ico"
+         description="Restarts OpenXdata Mysql and Tomcat Services"
+         initialState="show" >
+        <createForPack name="openXdata"/>
+    </shortcut>
+
+    <shortcut
+         name = "Start Services"
+         programGroup="yes"
+         desktop="no"
+         applications="no"
+         startMenu="no"
+         startup="no"
+         target="$INSTALL_PATH\script\elevator.bat"
+         commandLine="&quot;$INSTALL_PATH\script\oxdservice.bat&quot; start"
+         iconFile="$INSTALL_PATH\openXdata_Logo.ico"
+         description="Starts OpenXdata Mysql and Tomcat Services"
+         initialState="show" >
+        <createForPack name="openXdata"/>
+    </shortcut>
+
+    <shortcut
+         name = "Stop Services"
+         programGroup="yes"
+         desktop="no"
+         applications="no"
+         startMenu="no"
+         startup="no"
+         target="$INSTALL_PATH\script\elevator.bat"
+         commandLine="&quot;$INSTALL_PATH\script\oxdservice.bat&quot; stop"
+         iconFile="$INSTALL_PATH\openXdata_Logo.ico"
+         description="Stop OpenXdata Mysql and Tomcat Services"
+         initialState="show" >
+        <createForPack name="openXdata"/>
+    </shortcut>
+
+    <shortcut
+            name="Uninstall"
+            programGroup="yes"
+            desktop="no"
+            applications="no"
+            startMenu="no"
+            startup="no"
+            target="$INSTALL_PATH\uninstaller\uninstall.exe"
+            commandLine=""
+            iconFile="%SystemRoot%\system32\SHELL32.dll"
+            iconIndex="31"
+            description="This uninstalls openXdata"
+            initialState="noShow">
+
+        <createForPack name="openXdata"/>
+    </shortcut>
+
+</shortcuts>

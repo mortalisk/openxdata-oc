@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openxdata.server.admin.model">
+
+	<class name="TaskParam" table="task_param" lazy="false">
+	
+		<id name="paramId" type="java.lang.Integer" column="task_param_id"
+				unsaved-value="0">
+			<generator class="native">
+					 <param name="sequence">task_param_task_param_id_seq</param>
+			</generator>
+		</id>
+	
+		<discriminator column="task_param_id" insert="false" />
+		
+		<many-to-one name="taskDef" class="TaskDef" not-null="true">
+			<column name="task_id" />
+		</many-to-one>
+		
+		<property name="name" type="java.lang.String"
+				column="name" not-null="true" length="255" />
+				
+		<property name="value" type="java.lang.String"
+				column="value" not-null="false" length="1024" />
+				
+	</class>
+	
+</hibernate-mapping>

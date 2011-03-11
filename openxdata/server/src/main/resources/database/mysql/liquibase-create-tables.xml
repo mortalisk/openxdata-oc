@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="daniel (generated)" id="1247499877015-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_data"/>
+            </not>
+        </preConditions>
+        <createTable tableName="form_data">
+            <column autoIncrement="true" name="form_data_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="form_definition_version_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="data" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_data_archive"/>
+            </not>
+        </preConditions>
+        <createTable tableName="form_data_archive">
+            <column autoIncrement="true" name="form_data_archive_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="form_definition_version_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="data" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column defaultValueNumeric="0" name="archive_creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="archive_date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_definition"/>
+            </not>
+        </preConditions>
+        <createTable tableName="form_definition">
+            <column autoIncrement="true" name="form_definition_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="study_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column defaultValueBoolean="false" name="retired" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="INT"/>
+            <column name="date_retired" type="DATETIME"/>
+            <column name="retired_reason" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-4">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_definition_text"/>
+            </not>
+        </preConditions>
+        <createTable tableName="form_definition_text">
+            <column autoIncrement="true" name="form_definition_text_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="form_definition_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="locale_key" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_definition_version"/>
+            </not>
+        </preConditions>
+        <createTable tableName="form_definition_version">
+            <column autoIncrement="true" name="form_definition_version_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="form_definition_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="xform" type="text"/>
+            <column name="layout" type="text"/>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column defaultValueBoolean="false" name="retired" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="INT"/>
+            <column name="date_retired" type="DATETIME"/>
+            <column name="retired_reason" type="VARCHAR(255)"/>
+            <column defaultValueBoolean="true" name="is_default" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-6">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_definition_version_text"/>
+            </not>
+        </preConditions>
+        <createTable tableName="form_definition_version_text">
+            <column name="form_definition_version_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="locale_key" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="xform_text" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column name="layout_text" type="longtext"/>
+            <column autoIncrement="true" name="form_definition_version_text_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-7">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_error"/>
+            </not>
+        </preConditions>
+        <createTable tableName="form_error">
+            <column autoIncrement="true" name="form_error_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="form_definition_version_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="error_msg" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-8">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="locale"/>
+            </not>
+        </preConditions>
+        <createTable tableName="locale">
+            <column defaultValue="" name="locale_key" type="VARCHAR(10)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-9">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="mobile_menu"/>
+            </not>
+        </preConditions>
+        <createTable tableName="mobile_menu">
+            <column defaultValueNumeric="0" name="menu_id" type="TINYINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-10">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="mobile_menu_text"/>
+            </not>
+        </preConditions>
+        <createTable tableName="mobile_menu_text">
+            <column autoIncrement="true" name="menu_text_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="locale_key" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="menu_id" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="menu_text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-11">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="permission"/>
+            </not>
+        </preConditions>
+        <createTable tableName="permission">
+            <column autoIncrement="true" name="permission_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="description" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-12">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="report"/>
+            </not>
+        </preConditions>
+        <createTable tableName="report">
+            <column autoIncrement="true" name="report_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="definition" type="text"/>
+            <column name="query_definition" type="text"/>
+            <column name="query_sql" type="text"/>
+            <column name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column name="voided" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="INT"/>
+            <column name="date_voided" type="DATETIME"/>
+            <column name="void_reason" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-13">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="role"/>
+            </not>
+        </preConditions>
+        <createTable tableName="role">
+            <column autoIncrement="true" name="role_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-14">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="role_permission"/>
+            </not>
+        </preConditions>
+        <createTable tableName="role_permission">
+            <column name="role_id" type="INT"/>
+            <column name="permission_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-15">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="setting"/>
+            </not>
+        </preConditions>
+        <createTable tableName="setting">
+            <column autoIncrement="true" name="setting_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="value" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-16">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="study"/>
+            </not>
+        </preConditions>
+        <createTable tableName="study">
+            <column autoIncrement="true" name="study_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column defaultValueBoolean="false" name="retired" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="INT"/>
+            <column name="date_retired" type="DATETIME"/>
+            <column name="retired_reason" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-17">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="study_text"/>
+            </not>
+        </preConditions>
+        <createTable tableName="study_text">
+            <column autoIncrement="true" name="study_text_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="study_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="locale_key" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-18">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="task"/>
+            </not>
+        </preConditions>
+        <createTable tableName="task">
+            <column autoIncrement="true" name="task_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1024)"/>
+            <column name="task_class" type="text"/>
+            <column name="cron_expression" type="VARCHAR(50)"/>
+            <column defaultValueBoolean="false" name="start_on_startup" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="creator" type="INT"/>
+            <column defaultValueDate="2005-01-01T00:00:00.0" name="date_created" type="DATETIME"/>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-19">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="task_param"/>
+            </not>
+        </preConditions>
+        <createTable tableName="task_param">
+            <column autoIncrement="true" name="task_param_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="task_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-20">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_role"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_role">
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-21">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column autoIncrement="true" name="user_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="user_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="middle_name" type="VARCHAR(50)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="password" type="VARCHAR(50)"/>
+            <column name="salt" type="VARCHAR(50)"/>
+            <column name="secret_question" type="VARCHAR(255)"/>
+            <column name="secret_answer" type="VARCHAR(255)"/>
+            <column name="creator" type="INT"/>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column defaultValueBoolean="false" name="voided" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="INT"/>
+            <column name="date_voided" type="DATETIME"/>
+            <column name="void_reason" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="daniel (generated)" id="1247499877015-22">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <primaryKeyExists tableName="user_role"/>
+            </not>
+        </preConditions>
+        <addPrimaryKey columnNames="role_id, user_id" tableName="user_role"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-23">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="name"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="name" tableName="locale" unique="true">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-24">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="name"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="name" tableName="mobile_menu" unique="true">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-25">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="name"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="name" tableName="permission" unique="true">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-26">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="name"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="name" tableName="setting" unique="true">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-27">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="name"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="name" tableName="task" unique="true">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-28">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="name"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="user_name" tableName="users" unique="true">
+            <column name="user_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-29">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_data_user_who_last_changed_data"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="form_data" constraintName="form_data_user_who_last_changed_data" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-30">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_data_user_who_created_data"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="form_data" constraintName="form_data_user_who_created_data" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-31">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_data_form_definition_version_id"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="form_definition_version_id" baseTableName="form_data" constraintName="form_data_form_definition_version_id" deferrable="false" initiallyDeferred="false" referencedColumnNames="form_definition_version_id" referencedTableName="form_definition_version"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-32">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_data_archive_user_who_created_archive"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="archive_creator" baseTableName="form_data_archive" constraintName="form_data_archive_user_who_created_archive" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-33">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_data_archive_user_who_last_changed_data"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="form_data_archive" constraintName="form_data_archive_user_who_last_changed_data" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-34">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_data_archive_user_who_created_data"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="form_data_archive" constraintName="form_data_archive_user_who_created_data" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-35">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_data_archive_form_definition_version_id"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="form_definition_version_id" baseTableName="form_data_archive" constraintName="form_data_archive_form_definition_version_id" deferrable="false" initiallyDeferred="false" referencedColumnNames="form_definition_version_id" referencedTableName="form_definition_version"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-36">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_user_who_last_changed_form"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="form_definition" constraintName="form_definition_user_who_last_changed_form" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-37">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_user_who_created_form"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="form_definition" constraintName="form_definition_user_who_created_form" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-38">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_user_who_retired_form"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="form_definition" constraintName="form_definition_user_who_retired_form" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-39">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_study"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="study_id" baseTableName="form_definition" constraintName="form_definition_study" deferrable="false" initiallyDeferred="false" referencedColumnNames="study_id" referencedTableName="study"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-40">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_text_form_definition"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="form_definition_id" baseTableName="form_definition_text" constraintName="form_definition_text_form_definition" deferrable="false" initiallyDeferred="false" referencedColumnNames="form_definition_id" referencedTableName="form_definition"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-41">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_text_locale"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="locale_key" baseTableName="form_definition_text" constraintName="form_definition_text_locale" deferrable="false" initiallyDeferred="false" referencedColumnNames="locale_key" referencedTableName="locale"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-42">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_version_user_who_last_changed_form"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="form_definition_version" constraintName="form_definition_version_user_who_last_changed_form" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-43">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_version_user_who_created_form"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="form_definition_version" constraintName="form_definition_version_user_who_created_form" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-44">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_version_form_definition"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="form_definition_id" baseTableName="form_definition_version" constraintName="form_definition_version_form_definition" deferrable="false" initiallyDeferred="false" referencedColumnNames="form_definition_id" referencedTableName="form_definition"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-45">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_definition_version_user_who_retired_form"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="form_definition_version" constraintName="form_definition_version_user_who_retired_form" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-46">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_error_user_who_created_data"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="form_error" constraintName="form_error_user_who_created_data" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-47">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="form_error_form_definition_version_id"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="form_definition_version_id" baseTableName="form_error" constraintName="form_error_form_definition_version_id" deferrable="false" initiallyDeferred="false" referencedColumnNames="form_definition_version_id" referencedTableName="form_definition_version"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-48">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="user_who_changed_report"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="report" constraintName="user_who_changed_report" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-49">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="report_creator"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="report" constraintName="report_creator" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-50">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="user_who_voided_report"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="voided_by" baseTableName="report" constraintName="user_who_voided_report" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-51">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="role_permission_permission_id"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="role_permission" constraintName="role_permission_permission_id" deferrable="false" initiallyDeferred="false" referencedColumnNames="permission_id" referencedTableName="permission"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-52">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="role_permission_role_id"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_permission" constraintName="role_permission_role_id" deferrable="false" initiallyDeferred="false" referencedColumnNames="role_id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-53">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="user_who_last_changed_study"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="study" constraintName="user_who_last_changed_study" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-54">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="user_who_created_study"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="study" constraintName="user_who_created_study" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-55">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="user_who_retired_study"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="study" constraintName="user_who_retired_study" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-56">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="study_text_locale"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="locale_key" baseTableName="study_text" constraintName="study_text_locale" deferrable="false" initiallyDeferred="false" referencedColumnNames="locale_key" referencedTableName="locale"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-57">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="study_text_study"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="study_id" baseTableName="study_text" constraintName="study_text_study" deferrable="false" initiallyDeferred="false" referencedColumnNames="study_id" referencedTableName="study"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-58">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="task_changer"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="task" constraintName="task_changer" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-59">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="task_creator"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="task" constraintName="task_creator" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-60">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="referenced_task"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_param" constraintName="referenced_task" deferrable="false" initiallyDeferred="false" referencedColumnNames="task_id" referencedTableName="task"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-61">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="role_definitions"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="role_definitions" deferrable="false" initiallyDeferred="false" referencedColumnNames="role_id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-62">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="user_definitions"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="user_definitions" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-63">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="users_user_who_changed_user"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="users" constraintName="users_user_who_changed_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-64">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="users_user_creator"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="creator" baseTableName="users" constraintName="users_user_creator" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="daniel (generated)" id="1247499877015-65">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="users_user_who_voided_user"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="voided_by" baseTableName="users" constraintName="users_user_who_voided_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="dagmar@cell-life.org.za" id="create_form_data_version table">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="form_data_version"/>
+            </not>
+        </preConditions>
+        <comment>Create a version table for backups of the form_data</comment>
+        <createTable tableName="form_data_version">
+            <column autoIncrement="true" name="form_data_version_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="form_data_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+        </createTable>
+        <addForeignKeyConstraint
+            constraintName="form_data_version_form_data_id"
+            baseColumnNames="form_data_id" baseTableName="form_data_version"
+            referencedColumnNames="form_data_id" referencedTableName="form_data"  
+            deferrable="false" initiallyDeferred="false" />
+    </changeSet>
+</databaseChangeLog>

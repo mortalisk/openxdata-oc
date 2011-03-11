@@ -1,0 +1,27 @@
+.gwt-DialogBox {
+    z-index: 99999;	
+}
+
+.blue-date-picker {
+	background-color: #C3D9FF;
+	color: #112ABB;
+	width: 165px;
+	z-index: 99999;
+}
+
+.disclaimer {
+	color:#AAAAAA;
+	font-weight:normal;
+	font-size:12;
+}
+
+.userBanner {
+	color:#000000;
+	font-weight:normal;
+	font-size:14;
+	font:arial;
+}
+
+.emit-viewport {
+	background-color: #FFFFFF;
+}

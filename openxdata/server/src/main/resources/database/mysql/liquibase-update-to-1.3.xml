@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	<!-- 
+	
+		See http://www.liquibase.org/manual/home#available_database_refactorings 
+		for a list of supported elements and attributes 
+		
+	-->
+	
+    <changeSet author="dagmar@cell-life.org" id="addNewUserEmailSettings">
+    	<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting_group where name='New User Email';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding New User Email settings
+		</comment>
+		<sql> 
+       		insert into setting (name, description, value, setting_group_id) 
+       		values ('enableNewUserEmail', 'Enable the sending of an email to new users when their login is created', 'false', (select setting_group_id from setting_group where name='User Settings'));
+ 	    </sql>
+ 	    <sql> 
+       		insert into setting (name, description, value, setting_group_id) 
+       		values ('serverUrl', 'The OpenXData server URL (used in the New User Email)', 'http://demo.openxdata.org', (select setting_group_id from setting_group where name='General'));
+ 	    </sql>
+    </changeSet>    
+    
+    <changeSet author="Mark" id="changing_administrator_details">
+		<comment>
+			changing the initial details of the default administrator user.
+		</comment>
+        <update tableName="users">
+    		<column name="email" value="contact@openxdata.org"/>
+    		<column name="secret_answer" value="the openxdata consortium"/>
+    		<where>email='cattabanks@gmail.com'</where>
+		</update>
+	</changeSet>
+
+    <changeSet author="Jonny" id="remove_rdbs_exporter_as_a_job">
+        <comment>
+			Remove the rdbs exporter as a job, since it is integrated in server.
+        </comment>
+
+        <delete tableName="task_param">
+            <where>task_id in (select task_id from task where task_class='org.openxdata.server.export.rdbms.task.RdmsDataExportTask')</where>
+        </delete>
+        <delete tableName="task">
+            <where>task_class='org.openxdata.server.export.rdbms.task.RdmsDataExportTask'</where>
+        </delete>
+    </changeSet>
+</databaseChangeLog>

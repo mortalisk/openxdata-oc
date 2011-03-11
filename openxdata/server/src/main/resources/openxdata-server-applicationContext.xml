@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!-- Application context definition for openxdata server business services.-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- ************************** PROPERTY CONFIGURATION ************************* -->
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${hibernate.connection.driver_class}" />
+		<property name="url" value="${hibernate.connection.url}" />
+		<property name="username" value="${hibernate.connection.username}" />
+		<property name="password" value="${hibernate.connection.password}" />
+	</bean>
+
+	<!--  **************************  SESSION MANAGEMENT CONFIGURATION  *************************  -->
+	<bean name="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="openSessionInViewInterceptor"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="liquibase" class="org.openxdata.server.database.SpringLiquibaseUpdater"
+		init-method="init">
+		<property name="dataSource" ref="dataSource" />
+		<property name="changeLog"
+			value="classpath:database/${openxdata.database_type}/liquibase-master.xml" />
+	</bean>
+
+	<bean id="sessionFactory" depends-on="liquibase" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation">
+			<value>
+				classpath:hibernate.cfg.xml
+        </value>
+		</property>
+		<property name="hibernateProperties">
+			<util:property-path path="appSettings.resolvedProps"/>
+		</property>
+	</bean>
+	
+	
+	<!--  **************************  TRANSACTION MANAGER CONFIGURATION  *************************  -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!--  **************************  SCHEDULER CONFIGURATION  *************************  -->	
+	<bean id="schedulerService" class="org.openxdata.server.service.impl.SchedulerServiceImpl" init-method="start" destroy-method="stop">
+		<property name="scheduler" ref="qrtzScheduler"/>
+	</bean>
+	
+	<bean id="qrtzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="false" />
+		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>
+			</props>
+		</property>
+	</bean>
+			
+	<!--  **************************  SMS CONFIGURATION  *************************  -->	
+	<bean id="smsProcessor" class="org.openxdata.server.sms.SmsProcessor" factory-method="getInstance"/>
+
+	<bean id="smsServer" class="org.fcitmuk.communication.sms.SMSServer">
+		<property name="eventListener" ref="formSmsServer" />
+	</bean>
+    
+    <!--  **************************  EMAIL PROPERTIES CONFIGURATION  *************************  -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+       	<property name="username" value="${mailSender.username}"/>
+    	<property name="password" value="${mailSender.password}"/>
+		<property name="host" value="${mailSender.host}"/>
+		<property name="protocol" value="${mailSender.protocol}"/>
+		<property name="port" value="${mailSender.port}"/>
+	</bean>
+
+	<!--  **************************  BEAN DECLARATION SHOULD START HERE  *************************  -->
+	<bean class="org.openxdata.server.Context">
+		<property name="userDetailsService" ref="userDetailsService"/>
+	</bean>
+
+    <bean id="rdmsDataExportTask" class="org.openxdata.server.export.rdbms.task.RdmsDataExportTask" init-method="init">
+        <property name="serverName" value="${exporter.host}"/>
+        <property name="portNumber" value="${exporter.port}"/>
+        <property name="databaseName" value="${exporter.database}"/>
+        <property name="dbUsername" value="${exporter.username}"/>
+        <property name="dbPassword" value="${exporter.password}"/>
+    </bean>
+</beans>

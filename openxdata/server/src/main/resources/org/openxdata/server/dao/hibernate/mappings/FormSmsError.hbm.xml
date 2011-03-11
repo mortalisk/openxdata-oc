@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openxdata.server.admin.model">
+
+	<class name="FormSmsError" table="form_sms_error">
+	
+		<id name="formSmsErrorId" type="int" column="form_sms_error_id" unsaved-value="0">
+				<generator class="native">
+					 <param name="sequence">form_sms_error_form_sms_error_id_seq</param>
+				</generator>
+		</id>
+
+		<property name="sender" type="java.lang.String" column="sender" not-null="true" />
+		
+		<property name="data" type="java.lang.String" column="data" not-null="true" />
+
+		<many-to-one name="creator" class="User" not-null="false" />
+	
+		<property name="dateCreated" type="java.util.Date" column="date_created" length="19" not-null="true" />
+	
+		<property name="errorMsg" type="java.lang.String" column="error_msg" not-null="false" length="1024" />
+	
+	</class>
+	
+</hibernate-mapping>

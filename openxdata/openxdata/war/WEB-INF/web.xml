@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  
+  <display-name>OpenXData @Version@</display-name>
+  
+  <!-- Servlets -->  
+  <servlet>
+    <servlet-name>resetPasswordServlet</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.ResetPasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>resetPasswordServlet</servlet-name>
+    <url-pattern>/resetPassword</url-pattern>
+    <url-pattern>/emit/resetPassword</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>multiproto</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.MultiProtocolSubmissionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>multiproto</servlet-name>
+    <url-pattern>/mpsubmit</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>dataexport</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.DataExportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dataexport</servlet-name>
+    <url-pattern>/emit/dataexport</url-pattern>
+    <url-pattern>/OpenXDataServerAdmin/dataexport</url-pattern>
+    <url-pattern>/dataexport</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>multimediaServlet</servlet-name>
+	<servlet-class>org.openxdata.server.servlet.MultimediaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>multimediaServlet</servlet-name>
+    <url-pattern>/emit/multimedia</url-pattern>
+    <url-pattern>/OpenXDataServerAdmin/multimedia</url-pattern>
+    <url-pattern>/multimedia</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>formdownloadservlet</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.FormDownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>formdownloadservlet</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/formdownloadservlet</url-pattern>
+    <url-pattern>/formdownloadservlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>formsaveservlet</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.FormSaveServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>formsaveservlet</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/formsave</url-pattern>
+    <url-pattern>/formsave</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>formopenservlet</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.FormOpenServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>formopenservlet</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/formopen</url-pattern>
+    <url-pattern>/formopen</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>epihandymobile</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.OTAServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>epihandymobile</servlet-name>
+    <url-pattern>/epihandymobile/*</url-pattern>
+    <url-pattern>/OpenXDataServerAdmin/epihandymobile/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>dataImportServlet</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.DataImportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dataImportServlet</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/dataimport</url-pattern>
+    <url-pattern>/dataimport</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>studyexport</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.StudyExportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>studyexport</servlet-name>
+    <url-pattern>/studyexport</url-pattern>
+    <url-pattern>/OpenXDataServerAdmin/studyexport</url-pattern>
+  </servlet-mapping>
+
+  <!-- RPC services -->
+  <servlet>
+    <servlet-name>studyService</servlet-name>
+    <servlet-class>org.openxdata.server.StudyServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>studyService</servlet-name>
+    <url-pattern>/emit/study</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>FormService</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.FormServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FormService</servlet-name>
+    <url-pattern>/emit/FormService</url-pattern>
+    <url-pattern>/OpenXDataServerAdmin/FormService</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>userService</servlet-name>
+    <servlet-class>org.openxdata.server.UserServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>userService</servlet-name>
+    <url-pattern>/emit/user</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>settingService</servlet-name>
+    <servlet-class>org.openxdata.server.SettingServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>settingService</servlet-name>
+    <url-pattern>/emit/SettingService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>studymanager</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.StudyManagerServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>studymanager</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/StudyManagerService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>smsservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.SmsServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>smsservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/SmsService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>authenticationservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.AuthenticationServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>authenticationservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/AuthenticationService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>roleservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.RoleServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>roleservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/RoleService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>reportservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.ReportServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>reportservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/ReportService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>settingservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.SettingServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>settingservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/SettingService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>taskservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.TaskServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>taskservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/TaskService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>userservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.UserServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>userservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/UserService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>utilityservice</servlet-name>
+    <servlet-class>org.openxdata.server.admin.server.UtilityServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>utilityservice</servlet-name>
+    <url-pattern>/OpenXDataServerAdmin/UtilityService</url-pattern>
+  </servlet-mapping>
+  
+  <!-- hide .jsp from the url (hides the technology from the user) -->
+  <servlet>
+    <servlet-name>login.jsp</servlet-name>
+    <jsp-file>/login.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>login.jsp</servlet-name>
+    <url-pattern>/login.html</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>resetPassword.jsp</servlet-name>
+    <jsp-file>/resetPassword.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>resetPassword.jsp</servlet-name>
+    <url-pattern>/resetPassword.html</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>Emit.jsp</servlet-name>
+    <jsp-file>/Emit.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>Emit.jsp</servlet-name>
+    <url-pattern>/Emit.html</url-pattern>
+  </servlet-mapping>
+  
+  <!-- UTF-8 characterset filtering -->
+  <filter>
+    <filter-name>charsetFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    </filter>
+    <filter-mapping>
+      <filter-name>charsetFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+    /WEB-INF/openxdata-emit-applicationContext-security.xml
+    </param-value>
+  </context-param>
+
+  <!-- Acegi/Spring Security filter (to intercept the requests and perform security checks) s-->  
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>login.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- The length (mins) of a user's session -->
+  <session-config>
+    <session-timeout>30</session-timeout> 
+  </session-config>
+  
+  <!-- secures resources which would be otherwise accessible via a direct link -->
+  <security-constraint>
+  	<web-resource-collection>
+  		<web-resource-name>HTTP-Protected-Resource</web-resource-name>
+  		<description>Access Denied to settings file</description>
+  		<url-pattern>/OPENXDATA_SETTINGS.properties</url-pattern>
+  		<url-pattern>/EMIT_SETTINGS.properties</url-pattern>
+  	</web-resource-collection>
+  	<auth-constraint/>
+  </security-constraint>
+
+</web-app>

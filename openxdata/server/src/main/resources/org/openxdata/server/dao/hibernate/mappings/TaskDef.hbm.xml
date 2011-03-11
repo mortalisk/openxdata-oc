@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openxdata.server.admin.model">
+
+	<class name="TaskDef" table="task" lazy="false">
+
+		<id name="taskId" type="java.lang.Integer" column="task_id" unsaved-value="0">
+			<generator class="native">
+					 <param name="sequence">task_task_id_seq</param>
+			</generator>
+		</id>
+
+		<discriminator column="task_id" insert="false" />
+		
+		<property name="name" type="java.lang.String"
+			column="name" not-null="true" length="255" />
+			
+		<property name="description" type="java.lang.String"
+			column="description" not-null="false" length="255" />
+			
+		<property name="taskClass" 
+				type="java.lang.String" 
+				column="task_class" 
+				length="1024" />	
+
+		<property name="cronExpression" 
+				type="java.lang.String" 
+				column="cron_expression"
+				length="50" />
+		
+		<property name="startOnStartup" 
+				type="java.lang.Boolean" 
+				column="start_on_startup" 
+				length="1"
+				not-null="true"/>		
+	
+		<!-- Metadata -->
+		
+		<many-to-one name="creator" 
+				class="User" 
+				not-null="false">
+			<column name="creator" />
+		</many-to-one>
+
+		<many-to-one name="changedBy" 
+				class="User"
+				not-null="false">
+			<column name="changed_by" />
+		</many-to-one>
+
+		<property name="dateCreated" 
+				type="java.util.Date"
+				column="date_created" 
+				not-null="false" 
+				length="19" 
+				/>
+		
+		<property name="dateChanged" 
+				type="java.util.Date"
+				column="date_changed" 
+				not-null="false"
+				length="19" 
+				/>
+				
+		<bag name="parameters" lazy="false" cascade="all-delete-orphan,evict" inverse="true" order-by="name asc">
+			<key column="task_id" not-null="true" />
+			<one-to-many class="TaskParam" />
+		</bag>
+
+	</class>
+	
+</hibernate-mapping>

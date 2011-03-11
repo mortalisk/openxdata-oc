@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+
+	<bean id="StudySubjEndpoint" class="com.test.StudySubEndpoint">
+        <constructor-arg ref="StudySubjService"/>
+    </bean>
+
+    <bean id="StudySubjService" class="com.test.StudySubService"/>
+    
+	<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootQNameEndpointMapping">
+	    <property name="mappings">
+	        <props>
+	            <prop key="{http://sample.com/tr/schemas}StudyRequest">StudySubjEndpoint</prop>
+	        </props>
+	    </property>
+	    <property name="interceptors">
+	        <bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+	    </property>
+	</bean>
+
+	<bean id="stdService" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">   
+	    <property name="schema" ref="schema"/>                                               
+	    <property name="portTypeName" value="serviceResource"/>                                
+	    <property name="locationUri" value="/StudySubjService/"/>                              
+	    <property name="targetNamespace" value="http://sample.com/tr/definitions"/>       
+	</bean>
+	
+	<bean id="schema" class="org.springframework.xml.xsd.SimpleXsdSchema">                   
+	    <property name="xsd" value="/WEB-INF/StudyRequest.xsd"/>
+	</bean>
+</beans>

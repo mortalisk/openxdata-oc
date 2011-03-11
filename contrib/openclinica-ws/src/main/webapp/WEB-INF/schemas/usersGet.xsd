@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://openclinica.org/ws/usersGet/v1"
+    xmlns:usersGet="http://openclinica.org/ws/usersGet/v1"
+    xmlns:listbeans="http://openclinica.org/ws/listbeans" elementFormDefault="qualified">
+    
+    <import namespace="http://openclinica.org/ws/listbeans" schemaLocation="listbeans.xsd"></import>
+    
+    <element name="getUsersRequest">
+    </element>
+
+    <element name="getUsersResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="string"/>
+                <element name="label" type="string"/>
+                <element name="warning" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                <element name="error" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                <element name="users" type="listbeans:usersType" minOccurs="0"/>
+            </sequence>
+        </complexType>
+    </element>
+
+</schema>

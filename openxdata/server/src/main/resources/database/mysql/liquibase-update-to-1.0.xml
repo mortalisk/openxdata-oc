@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	<!-- 
+	
+		See http://www.liquibase.org/manual/home#available_database_refactorings 
+		for a list of supported elements and attributes 
+		
+	-->
+	
+	<changeSet author="daniel" id="upate-to-latest-disable-foreign-key-checks" runAlways="true" dbms="mysql">
+  		<sql>SET FOREIGN_KEY_CHECKS=0</sql> 
+  	</changeSet>
+  	
+	<changeSet author="daniel" id="1251978671921-19">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="setting_group"/></not>
+		</preConditions>
+		
+		<comment>
+			Add setting_group table
+		</comment>
+		
+        <createTable tableName="setting_group">
+            <column autoIncrement="true" name="setting_group_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="parent_setting_group_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="daniel" id="1251978671921-15">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="report_group"/></not>
+		</preConditions>
+		
+		<comment>
+			Add report_group table
+		</comment>
+		
+        <createTable tableName="report_group">
+            <column autoIncrement="true" name="report_group_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="parent_report_group_id" type="INT"/>
+        </createTable>
+
+    </changeSet>
+    
+    <changeSet author="daniel" id="1251978671921-8">
+    	<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="form_sms_archive"/></not>
+		</preConditions>
+		
+		<comment>
+			Add form_sms_archive table
+		</comment>
+		
+        <createTable tableName="form_sms_archive">
+            <column autoIncrement="true" name="form_sms_archive_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="form_definition_version_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="data" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="sender" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="INT"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column defaultValueNumeric="0" name="archive_creator" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="archive_date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="daniel" id="1251978671921-9">
+    	<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="form_sms_error"/></not>
+		</preConditions>
+		
+		<comment>
+			Add form_sms_error table
+		</comment>
+		
+        <createTable tableName="form_sms_error">
+            <column autoIncrement="true" name="form_sms_error_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="data" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="sender" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="INT"/>
+            <column defaultValueDate="0002-11-30T00:00:00.0" name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="error_msg" type="text"/>
+        </createTable>
+    </changeSet>
+    
+	<changeSet id="1251978671921-26" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="users" columnName="phone_no"/></not>
+		</preConditions>
+		<comment>
+			Add the phone_no column to the users table
+		</comment>
+		<addColumn tableName="users">
+			<column name="phone_no" type="varchar(20)" />
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="1251978671921-18" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="setting" columnName="setting_group_id"/></not>
+		</preConditions>
+		<comment>
+			Add the setting_group_id column to the setting table
+		</comment>
+		<addColumn tableName="setting">
+			<column name="setting_group_id" type="INT" />
+		</addColumn>
+	</changeSet>
+		    
+	<changeSet id="1251978671921-14" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="report" columnName="report_group_id"/></not>
+		</preConditions>
+		<comment>
+			Add the report_group_id column to the report table
+		</comment>
+		<addColumn tableName="report">
+			<column name="report_group_id" type="INT" />
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="2" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><foreignKeyConstraintExists foreignKeyName="report_report_group_id"/></not>
+		</preConditions>
+		<comment>
+			Add the report_group_id foreign key to the report table
+		</comment>
+		<addForeignKeyConstraint constraintName="report_report_group_id"
+			baseTableName="report" baseColumnNames="report_group_id"
+			referencedTableName="report_group" referencedColumnNames="report_group_id"
+		    />
+    </changeSet>
+    
+    <changeSet author="daniel" id="1251978671921-34">
+    	<preConditions onFail="MARK_RAN">
+			<not><foreignKeyConstraintExists foreignKeyName="setting_setting_group_id"/></not>
+		</preConditions>
+		<comment>
+			Add the setting_group_id foreign key to the setting table
+		</comment>
+        <addForeignKeyConstraint baseColumnNames="setting_group_id" baseTableName="setting" constraintName="setting_setting_group_id" deferrable="false" initiallyDeferred="false" referencedColumnNames="setting_group_id" referencedTableName="setting_group"/>
+    </changeSet>
+    
+    <changeSet author="daniel" id="1247499691484-1">
+        <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting_group where name='General';
+				]]>
+			</sqlCheck>
+		</preConditions>
+        <insert tableName="setting_group">
+            <column name="setting_group_id" valueNumeric="1"/>
+            <column name="name" value="General"/>
+            <column name="description" value="General Settings"/>
+            <column name="parent_setting_group_id"/>
+        </insert>
+    </changeSet>
+    <changeSet author="daniel" id="1247499691484-2">
+        <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting_group where name='Date';
+				]]>
+			</sqlCheck>
+		</preConditions>
+        <insert tableName="setting_group">
+            <column name="setting_group_id" valueNumeric="2"/>
+            <column name="name" value="Date"/>
+            <column name="description" value="Date Settings"/>
+            <column name="parent_setting_group_id"/>
+        </insert>
+    </changeSet>
+    <changeSet author="daniel" id="1247499691484-3">
+        <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting_group where name='Serialization';
+				]]>
+			</sqlCheck>
+		</preConditions>
+        <insert tableName="setting_group">
+            <column name="setting_group_id" valueNumeric="3"/>
+            <column name="name" value="Serialization"/>
+            <column name="description" value="Serialization Settings"/>
+            <column name="parent_setting_group_id"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet author="daniel" id="1247499691484-4">
+        <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting_group where name='SMS';
+				]]>
+			</sqlCheck>
+		</preConditions>
+        <insert tableName="setting_group">
+            <column name="setting_group_id" valueNumeric="4"/>
+            <column name="name" value="SMS"/>
+            <column name="description" value="SMS Settings"/>
+            <column name="parent_setting_group_id"/>
+        </insert>
+    </changeSet>    
+    
+    <changeSet author="daniel" id="1247499691484-5">
+    	<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='smsFieldSepChar';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding smsFieldSepChar setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="smsFieldSepChar"/>
+            <column name="description" value="The separator for form fields in an text sms used to submit data"/>
+            <column name="value" value="="/>
+            <column name="setting_group_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+    <changeSet author="daniel" id="1247499691484-6">
+    	<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='smsSendFailureReports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding smsSendFailureReports setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="smsSendFailureReports"/>
+            <column name="description" value="Flag to determine if the sms sender wants failure reports"/>
+            <column name="value" value="true"/>
+            <column name="setting_group_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+    <changeSet author="daniel" id="1247499691484-7">
+    	<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='smsSendSuccessReports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding smsSendSuccessReports setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="smsSendSuccessReports"/>
+            <column name="description" value="Flag to determine if the sms sender wants success reports"/>
+            <column name="value" value="true"/>
+            <column name="setting_group_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+    <changeSet author="daniel" id="1247499691484-8">
+    	<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='smsValidateNamePassword';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding smsValidateNamePassword setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="smsValidateNamePassword"/>
+            <column name="description" value="Determines if each sms is expected to contain a user name and password"/>
+            <column name="value" value="true"/>
+            <column name="setting_group_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+    <changeSet author="daniel" id="1247499691484-9">
+    	<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='smsValidatePhoneNo';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding smsValidatePhoneNo setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="smsValidatePhoneNo"/>
+            <column name="description" value="Determines if we should accept only those phone numbers attached to user accounts"/>
+            <column name="value" value="false"/>
+            <column name="setting_group_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>   
+        
+    <changeSet author="daniel" id="1247499691484-10">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='submitDateFormat';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding submitDateFormat setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="submitDateFormat"/>
+            <column name="description" value="The format of the dates passed in the xml of the xforms model. Please make sure this matches with the date format of your data entry applications, else you will get wrong dates on the server."/>
+            <column name="value" value="yyyy-MM-dd"/>
+            <column name="setting_group_id" valueNumeric="2"/>
+        </insert>
+	</changeSet>
+	
+    <changeSet author="daniel" id="1247499691484-11">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='displayDateFormat';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding displayDateFormat setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="displayDateFormat"/>
+            <column name="description" value="The display date format"/>
+            <column name="value" value="MM/dd/yyyy"/>
+            <column name="setting_group_id" valueNumeric="2"/>
+        </insert>
+	</changeSet>
+	
+	<changeSet author="daniel" id="1247499691484-12">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='submitDateTimeFormat';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding submitDateTimeFormat setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="submitDateTimeFormat"/>
+            <column name="description" value="The submit date time format"/>
+            <column name="value" value="yyyy-MM-dd hh:mm:ss a"/>
+            <column name="setting_group_id" valueNumeric="2"/>
+        </insert>
+	</changeSet>
+	
+	<changeSet author="daniel" id="1247499691484-13">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='displayDateTimeFormat';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding displayDateTimeFormat setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="displayDateTimeFormat"/>
+            <column name="description" value="The display date time format"/>
+            <column name="value" value="dd-MM-yyyy hh:mm:ss a"/>
+            <column name="setting_group_id" valueNumeric="2"/>
+        </insert>
+	</changeSet>
+	
+	<changeSet author="daniel" id="1247499691484-14">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='submitTimeFormat';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding submitTimeFormat setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="submitTimeFormat"/>
+            <column name="description" value="The submit time format"/>
+            <column name="value" value="hh:mm:ss a"/>
+            <column name="setting_group_id" valueNumeric="2"/>
+        </insert>
+	</changeSet>
+	
+	<changeSet author="daniel" id="1247499691484-15">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='displayTimeFormat';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding displayTimeFormat setting
+		</comment>
+        <insert tableName="setting">
+            <column name="name" value="displayTimeFormat"/>
+            <column name="description" value="The display time format"/>
+            <column name="value" value="hh:mm:ss a"/>
+            <column name="setting_group_id" valueNumeric="2"/>
+        </insert>
+	</changeSet>    
+       
+	<changeSet id="1247499691484-16" author="daniel">
+		<comment>
+			Adds grouping to existing settings
+		</comment>
+		
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="2"/>
+			<where>name='submitDateFormat'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="2"/>
+			<where>name='displayDateFormat'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="2"/>
+			<where>name='submitDateTimeFormat'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="2"/>
+			<where>name='displayDateTimeFormat'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="2"/>
+			<where>name='submitTimeFormat'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="2"/>
+			<where>name='displayTimeFormat'</where>
+		</update>
+		
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="3"/>
+			<where>name='formSerializer'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="3"/>
+			<where>name='studySerializer'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="3"/>
+			<where>name='epihandyser'</where>
+		</update>
+		
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="1"/>
+			<where>name='formErrorFolder'</where>
+		</update>
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="1"/>
+			<where>name='formDataFolder'</where>
+		</update>
+		
+		<update tableName="setting">
+			<column name="setting_group_id" valueNumeric="1"/>
+			<where>setting_group_id is null</where>
+		</update>
+		
+	</changeSet>
+
+
+	<changeSet author="daniel" id="1247499691484-17">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM report_group where name='General';
+				]]>
+			</sqlCheck>
+		</preConditions>
+        <insert tableName="report_group">
+            <!--  <column name="report_group_id" valueNumeric="1"/> -->
+            <column name="name" value="General"/>
+            <column name="description" value="General Reports"/>
+            <column name="parent_report_group_id"/>
+        </insert>
+    </changeSet>
+    	
+     <changeSet id="users-add-column-email" author="dagmar@cell-life.org">
+       <preConditions onFail="MARK_RAN">
+           <not><columnExists tableName="users" columnName="email"/></not>
+       </preConditions>
+       <comment>
+           Adding an email field to the users table for the 'forgot my password' functionality
+       </comment>
+       <addColumn tableName="users">
+           <column name="email" type="VARCHAR(60)" defaultValue=""></column>
+       </addColumn> 
+    </changeSet>
+    
+    
+	<changeSet id="1247499691484-18" author="daniel">
+		<comment>
+			Adds grouping to existing reports
+		</comment>
+		
+		<update tableName="report">
+			<column name="report_group_id" valueNumeric="1"/>
+			<where>report_group_id is null</where>
+		</update>
+		
+	</changeSet>
+	
+	<changeSet id="add-locale_id-1251978671921-26" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="locale" columnName="locale_id"/></not>
+		</preConditions>
+		<comment>
+			Add the locale_id column to the locale table
+		</comment>
+		
+		<addColumn tableName="locale">
+			<column name="locale_id" type="INT" >
+				<constraints nullable="false" unique="true"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="report-add-column-param_values" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="report" columnName="param_values"/></not>
+		</preConditions>
+		<comment>
+			Add the param_values column to the report table
+		</comment>
+		
+		<addColumn tableName="report">
+			<column name="param_values" type="longtext" />
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="report-add-column-form_definition_version_id" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="report" columnName="form_definition_version_id"/></not>
+		</preConditions>
+		<comment>
+			Add the form_definition_version_id column to the report table
+		</comment>
+		
+		<addColumn tableName="report">
+			<column name="form_definition_version_id" type="INT" />
+		</addColumn>
+	</changeSet>
+          	
+	<changeSet id="dropping_locale_foreign_key_from_study_text" author="daniel">
+ 		<preConditions onFail="MARK_RAN">
+  			<foreignKeyConstraintExists foreignKeyName="study_text_locale" /> 
+  		</preConditions>
+  		<comment>
+  			Dropping locale_key foreign key from study_text table
+  		</comment> 
+  		<dropForeignKeyConstraint baseTableName="study_text" constraintName="study_text_locale" /> 
+  	</changeSet>
+  	
+  	<changeSet id="dropping_locale_foreign_key_from_form_definition_text" author="daniel">
+ 		<preConditions onFail="MARK_RAN">
+  			<foreignKeyConstraintExists foreignKeyName="form_definition_text_locale" /> 
+  		</preConditions>
+  		<comment>
+  			Dropping locale_key foreign key from form_definition_text table
+  		</comment> 
+  		<dropForeignKeyConstraint baseTableName="form_definition_text" constraintName="form_definition_text_locale" /> 
+  	</changeSet>
+	
+	<changeSet author="daniel" id="locale_drop_autoincrement">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="locale" columnName="locale_id"/>
+		</preConditions>
+		<comment>
+			Dropping auto increment column on the locale table.
+		</comment>
+        <modifyColumn tableName="locale">
+    		<column name="locale_id" type="INT"/>
+		</modifyColumn>
+	</changeSet>
+	
+	<changeSet author="daniel" id="locale_drop_primary_key_locale_id">
+        <preConditions onFail="MARK_RAN">
+			<primaryKeyExists tableName="locale"/>
+		</preConditions>
+		<comment>
+			Dropping locale_key primary key from the locale table.
+		</comment>
+        <dropPrimaryKey tableName="locale"/>
+	</changeSet>
+	
+	<changeSet author="daniel" id="locale_add_primary_key_locale_id">
+        <preConditions onFail="MARK_RAN">
+			<not><primaryKeyExists tableName="locale"/></not>
+		</preConditions>
+		<comment>
+			Adding locale_id primary key to the locale table.
+		</comment>
+        <addPrimaryKey columnNames="locale_id" tableName="locale"/>
+	</changeSet>
+	
+	<changeSet author="daniel" id="locale_auto_increment_locale_id">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="locale" columnName="locale_id"/>
+		</preConditions>
+		<comment>
+			Making the locale_id auto incrementing for the locale table.
+		</comment>
+        <addAutoIncrement tableName="locale" columnName="locale_id" columnDataType="int"/>
+    </changeSet>     
+         
+    <changeSet author="dagmar@cell-life.org.za" id="merging_form_data_and_form_data_archive">
+        <comment>Merging Form_data and Form_data_archive table: 
+            1)create an exported flag 
+            2)copy data from archieved to unexported form_data
+            3)delete form_data_archive 
+            4)delete exported tables 
+            5)re-export form_data
+        </comment>
+        <addColumn tableName="form_data">
+            <column name="exported" type="INT" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <customChange class="org.openxdata.server.database.liquibase.customchanges.ReExportAllFormData"/>
+        <dropTable tableName="form_data_archive"/>
+    </changeSet>
+    
+    <changeSet author="dagmar@cell-life.org.za" id="move_server_task_to_rdbms">
+        <comment>Change the classname of the Server Task</comment>
+        <update tableName="task">
+            <column name="task_class" value="org.openxdata.server.export.rdbms.task.ServerTask"></column>
+            <where>name='Data Export'</where>
+        </update>
+        <delete tableName="task_param">
+            <where>(name='username' or name='password') and task_id = (select task_id from task where name='Data Export')</where>
+        </delete>
+    </changeSet>
+    
+    <changeSet author="dagmar@cell-life.org.za" id="rename_server_task">
+        <comment>Change the classname of the Server Task</comment>
+        <update tableName="task">
+            <column name="task_class" value="org.openxdata.server.export.rdbms.task.RdmsDataExportTask"></column>
+            <where>name='Data Export'</where>
+        </update>
+    </changeSet>
+    
+    <changeSet author="dagmar@cell-life.org.za" id="add_continuous_dataexport_taskparam">
+        <comment>Add 'continuous' task_param to the Data Export Task - used to determine if it runs after every submit</comment>
+        <sql>insert into task_param (task_id, name, value) values ((select task_id from task where name='Data Export'), 'continuous', 'false')</sql>
+    </changeSet>
+    
+    <changeSet author="Mark" id="setting-000">
+        <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting_group where name='User Settings';
+				]]>
+			</sqlCheck>
+		</preConditions>
+        <insert tableName="setting_group">
+            <column name="name" value="User Settings"/>
+            <column name="description" value="User settings like password length"/>
+            <column name="parent_setting_group_id"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet author="Mark" id="setting-001">
+       <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting where name='defaultPasswordLength';
+				]]>
+			</sqlCheck>
+		</preConditions>
+ 		<comment>
+			Adding the defaultPasswordLength setting for the Users to the User Setting group.
+		</comment>
+        <sql> 
+       		insert into setting (name, description, value,setting_group_id)
+ 			value('defaultPasswordLength','Default Password Length for the User','6',
+ 			(select setting_group_id from setting_group where name='User Settings'))
+ 	   </sql>
+	</changeSet>
+	
+	<changeSet id="add-study_key-colum-to-study" author="daniel">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="study" columnName="study_key"/></not>
+		</preConditions>
+		<comment>
+			Add study_key column to study table.
+		</comment>
+		
+		<addColumn tableName="study">
+			<column name="study_key" type="VARCHAR(255)" >
+				<constraints nullable="true" unique="true"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="user-add-status-column" author="Mark">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="users" columnName="status"/></not>
+		</preConditions>
+		<comment>
+			Add the status column to the users table
+		</comment>
+		
+		<addColumn tableName="users">
+			<column name="status" type="INT" defaultValue="0"/>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet author="Steven" id="add-online-column-to-user-table">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="users" columnName="online"/></not>
+		</preConditions>
+		
+        <comment>Add a column to indicate whether a user in logged on to the system</comment>
+        
+       	<addColumn tableName="users">
+			<column name="online" type="INT" defaultValue="0"/>
+		</addColumn>
+    </changeSet>
+    
+    <changeSet id="report-drop-voided-column" author="Daniel">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="report" columnName="voided"/>
+		</preConditions>
+		<comment>
+			Drop voided column from the report table
+		</comment>
+		
+		<dropColumn tableName="report" columnName="voided"/>
+	</changeSet>
+	
+	<changeSet author="Mark" id="disabling-guyzb-user-by-default">
+ 		<comment>
+			Disabling guyzb User by default.
+		</comment>
+        <sql> 
+       		update users set status=1 where user_name='guyzb' and password='245541f203f174ecfc5531bea597985fafabc'
+ 	   </sql>
+	</changeSet>
+	
+	<changeSet author="daniel" id="increase_xform_size_form_definition_version">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="form_definition_version" columnName="xform"/>
+		</preConditions>
+		<comment>
+			Increasing the size of xform xml in the form_definition_version table.
+		</comment>
+        <modifyColumn tableName="form_definition_version">
+    		<column name="xform" type="longtext"/>
+		</modifyColumn>
+	</changeSet>
+	
+	<changeSet author="daniel" id="increase_layout_size_form_definition_version">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="form_definition_version" columnName="layout"/>
+		</preConditions>
+		<comment>
+			Increasing the size of layout xml in the form_definition_version table.
+		</comment>
+        <modifyColumn tableName="form_definition_version">
+    		<column name="layout" type="longtext"/>
+		</modifyColumn>
+	</changeSet>
+
+    <changeSet author="dagmar@cell-life.org.za" id="fixing_exported_binary_form_data">
+        <comment>Fix for the existing exported binary data</comment>
+        <customChange class="org.openxdata.server.database.liquibase.customchanges.FixBinaryColumnsExportedData"/>
+    </changeSet>
+</databaseChangeLog>

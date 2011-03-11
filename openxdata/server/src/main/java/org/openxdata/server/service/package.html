@@ -1,0 +1,50 @@
+<html>
+<body>
+<p>
+The primary OpenXdata API interfaces. These services provide the necessary methods to access and 
+manipulate OpenXdata domain or model objects.
+</p>
+<p>
+Services are obtained statically from the {@link org.openxdata.server.context.Context Context}.
+</p>
+<p>
+These services compose the OpenXdata business layer API. The majority of developer interaction with the
+OpenXdata system should occur through these services.&nbsp; Lower level (database) API methods are 
+reflected within these services so that	business logic hooks may be placed in front of the database 
+layer. Developers should favour calling these services for database access, rather than going directly 
+to the DAO objects in the <code>org.openxdata.server.dao</code> package.
+</p>
+<p>
+For example, using the API alone, a start-to-end application would look like this:
+</p>
+<pre>
+  Context.startup("jdbc:mysql://localhost:3306/openxdata?autoReconnect=true", "test", "test", new Properties());
+  
+  try{
+    	Context.openSession();
+    	Context.authenticate("guyzb", "daniel123");
+    
+    	StudyManagerService studyManagerService = Context.getStudyManagerService();
+
+    	// fetch a list of form definitions.
+    	List<FormDef> formDefs = studyManagerService.getForms();
+  
+    	// set the name of the first form definition.
+    	FormDef formDef = formDefs.get(0);
+  		formDef.setName("Patient Registration Form");
+  		
+    	// save the form definition to the database
+    	studyManagerService.saveForm(formDef);
+    	
+  	finally {
+    	Context.closeSession();
+  }
+  
+</pre>
+<p>
+<b>Note:</b> When using OpenXdata within a managed environment (like our web application war file), the only calls that are 
+needed are to get the StudyManagerService, get the form definitions, set the form definition name, save the form definition with the StudyManagerService.
+<p>  
+
+</body>
+</html>

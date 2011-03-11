@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d [%t] %-5p %c - %m%n" />
+		</layout>
+	</appender>
+    
+    <appender name="LOGFILE" class="org.apache.log4j.RollingFileAppender">
+        <param name="maxFileSize" value="100KB" />
+        <param name="maxBackupIndex" value="5" />
+        <param name="File" value="openxdata.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                value="%d [%t] %-5p %c - %m%n" />
+        </layout>
+    </appender>
+
+    <logger name="org.openxdata" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="LOGFILE" />
+    </logger>
+    
+    <!-- logger for motech (so it can be adjusted separately) -->
+	<logger name="org.motechproject" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="CONSOLE"/>
+	</logger>
+    	
+	<root>
+		<level value="WARN" />
+		<appender-ref ref="CONSOLE" />
+        <appender-ref ref="LOGFILE" />
+	</root>
+
+</log4j:configuration>

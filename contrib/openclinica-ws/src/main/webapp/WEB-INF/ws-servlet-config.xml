@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:util="http://www.springframework.org/schema/util"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+							http://www.springframework.org/schema/util 
+							http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+     
+     <!-- WSDL Definitions -->
+     
+     <bean id="studyListGetWsdl" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+        <property name="schema" ref="studyListGetSchema"/>
+        <property name="portTypeName" value="ws"/>
+        <property name="locationUri" value="http://localhost:8080/OpenClinica-SNAPSHOT/ws/studyListGet/v1"/>
+     </bean>
+     
+     <bean id="eventListGetWsdl" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+        <property name="schema" ref="eventListGetSchema"/>
+        <property name="portTypeName" value="ws"/>
+        <property name="locationUri" value="http://localhost:8080/OpenClinica-SNAPSHOT/ws/eventListGet/v1"/>
+     </bean>
+     
+     <bean id="subjectListGetWsdl" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+        <property name="schema" ref="subjectListGetSchema"/>
+        <property name="portTypeName" value="ws"/>
+        <property name="locationUri" value="http://localhost:8080/OpenClinica-SNAPSHOT/ws/subjectListGet/v1"/>
+     </bean>
+     
+     <bean id="usersGetWsdl" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+        <property name="schema" ref="usersGetSchema"/>
+        <property name="portTypeName" value="ws"/>
+        <property name="locationUri" value="http://localhost:8080/OpenClinica-SNAPSHOT/ws/usersGet/v1"/>
+     </bean>
+     
+     <bean id="dataImportWsdl" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+        <property name="schema" ref="dataImportSchema"/>
+        <property name="portTypeName" value="ws"/>
+        <property name="locationUri" value="http://localhost:8080/OpenClinica-SNAPSHOT/ws/dataImport/v1"/>
+     </bean>
+     
+     <bean id="studyListGetSchema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+         <property name="xsd" value="/WEB-INF/schemas/studyListGet.xsd" />
+     </bean>
+     
+      <bean id="eventListGetSchema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+         <property name="xsd" value="/WEB-INF/schemas/eventListGet.xsd" />
+     </bean>
+     
+     <bean id="subjectListGetSchema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+         <property name="xsd" value="/WEB-INF/schemas/subjectListGet.xsd" />
+     </bean>
+     
+     <bean id="usersGetSchema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+         <property name="xsd" value="/WEB-INF/schemas/usersGet.xsd" />
+     </bean>
+     
+     <bean id="dataImportSchema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+         <property name="xsd" value="/WEB-INF/schemas/dataImport.xsd" />
+     </bean>
+         
+    <!--  Annotation Based MethodEndpoint Adapter -->
+    <bean class="org.springframework.ws.server.endpoint.adapter.XPathParamAnnotationMethodEndpointAdapter">
+        <property name="namespaces">
+            <props>
+                <prop key="studyListGet">http://openclinica.org/ws/studyListGet/v1</prop>
+                <prop key="eventListGet">http://openclinica.org/ws/eventListGet/v1</prop>
+                <prop key="subjectListGet">http://openclinica.org/ws/subjectListGet/v1</prop>
+                <prop key="usersGet">http://openclinica.org/ws/usersGet/v1</prop>
+                <prop key="dataImport">http://openclinica.org/ws/dataImport/v1</prop>
+            </props>
+        </property>
+    </bean>
+    
+        
+    <bean id="studyListGetEndpoint" class="org.akaza.openclinica.ws.StudyListGetEndpoint">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+    
+    <bean id="eventListGetEndpoint" class="org.akaza.openclinica.ws.EventListGetEndpoint">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+    
+    <bean id="subjectListGetEndpoint" class="org.akaza.openclinica.ws.SubjectListGetEndpoint">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+    
+    <bean id="usersGetEndpoint" class="org.akaza.openclinica.ws.UsersGetEndpoint">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="dataImportEndpoint" class="org.akaza.openclinica.ws.DataImportEndpoint">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+    
+</beans>
+    
+    

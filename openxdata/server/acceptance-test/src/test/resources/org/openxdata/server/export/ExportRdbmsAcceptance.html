@@ -1,0 +1,615 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+    <title>MySQL export RDBMS Acceptance test for creating tables</title>
+    <body>
+        <h1>MySQL export RDBMS Acceptance test for creating tables</h1>
+        <h2>
+            The exporter should handle normal xforms with xf: namespace prefixes
+        </h2>
+
+        <div class="example">
+            When the XForm definition is
+            <pre concordion:set="#definition"><![CDATA[
+<xf:xforms xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xf:model>
+    <xf:instance id="test1">
+      <test1 name="test form 1" id="9">
+        <question1/>
+        <question2/>
+      </test1>
+    </xf:instance>
+    <xf:bind id="question1" nodeset="/test1/question1" type="xsd:string"/>
+    <xf:bind id="question2" nodeset="/test1/question2" type="xsd:string"/>
+  </xf:model>
+  <xf:group id="1">
+    <xf:label>Page1</xf:label>
+    <xf:input bind="question1">
+      <xf:label>Question1</xf:label>
+    </xf:input>
+    <xf:select1 bind="question2">
+      <xf:label>Question2</xf:label>
+      <xf:item id="option1">
+        <xf:label>Option1</xf:label>
+        <xf:value>option1</xf:value>
+      </xf:item>
+      <xf:item id="option2">
+        <xf:label>Option2</xf:label>
+        <xf:value>option2</xf:value>
+      </xf:item>
+    </xf:select1>
+  </xf:group>
+</xf:xforms>]]>
+            </pre>
+            then the following create table should be generated
+            <pre concordion:assertEquals="generateTables(#definition)">
+CREATE TABLE `test1`
+(
+	Id VARCHAR(200) PRIMARY KEY
+	,openxdata_form_data_id VARCHAR(50)
+	,openxdata_user_id VARCHAR(50)
+	,openxdata_user_name VARCHAR(50)
+	 ,`question1` VARCHAR(255)
+	 ,`question2` VARCHAR(255)
+)TYPE = INNODB;
+            </pre>
+        </div>
+
+        <h2>
+            The exporter should handle normal xforms with xforms: namespace prefixes
+        </h2>
+
+        <div class="example">
+            When the XForm definition is
+            <pre concordion:set="#definition"><![CDATA[
+<xforms:xforms xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xforms:model>
+    <xforms:instance id="test1">
+      <test1 name="test form 1" id="9">
+        <question1/>
+        <question2/>
+      </test1>
+    </xforms:instance>
+    <xforms:bind id="question1" nodeset="/test1/question1" type="xsd:string"/>
+    <xforms:bind id="question2" nodeset="/test1/question2" type="xsd:string"/>
+  </xforms:model>
+  <xforms:group id="1">
+    <xforms:label>Page1</xforms:label>
+    <xforms:input bind="question1">
+      <xforms:label>Question1</xforms:label>
+    </xforms:input>
+    <xforms:select1 bind="question2">
+      <xforms:label>Question2</xforms:label>
+      <xforms:item id="option1">
+        <xforms:label>Option1</xforms:label>
+        <xforms:value>option1</xforms:value>
+      </xforms:item>
+      <xforms:item id="option2">
+        <xforms:label>Option2</xforms:label>
+        <xforms:value>option2</xforms:value>
+      </xforms:item>
+    </xforms:select1>
+  </xforms:group>
+</xforms:xforms>]]>
+            </pre>
+            then the following create table should be generated
+            <pre concordion:assertEquals="generateTables(#definition)">
+CREATE TABLE `test1`
+(
+	Id VARCHAR(200) PRIMARY KEY
+	,openxdata_form_data_id VARCHAR(50)
+	,openxdata_user_id VARCHAR(50)
+	,openxdata_user_name VARCHAR(50)
+	 ,`question1` VARCHAR(255)
+	 ,`question2` VARCHAR(255)
+)TYPE = INNODB;
+            </pre>
+        </div>
+
+        <h2>
+            The exporter should handle normal xforms without namespace prefixes
+        </h2>
+
+        <div class="example">
+            When the XForm definition is
+            <pre concordion:set="#definition"><![CDATA[
+<xforms xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <model>
+    <instance id="test1">
+      <test1 name="test form 1" id="9">
+        <question1/>
+        <question2/>
+      </test1>
+    </instance>
+    <bind id="question1" nodeset="/test1/question1" type="xsd:string"/>
+    <bind id="question2" nodeset="/test1/question2" type="xsd:string"/>
+  </model>
+  <group id="1">
+    <label>Page1</label>
+    <input bind="question1">
+      <label>Question1</label>
+    </input>
+    <select1 bind="question2">
+      <label>Question2</label>
+      <item id="option1">
+        <label>Option1</label>
+        <value>option1</value>
+      </item>
+      <item id="option2">
+        <label>Option2</label>
+        <value>option2</value>
+      </item>
+    </select1>
+  </group>
+</xforms>]]>
+            </pre>
+            then the following create table should be generated
+            <pre concordion:assertEquals="generateTables(#definition)">
+CREATE TABLE `test1`
+(
+	Id VARCHAR(200) PRIMARY KEY
+	,openxdata_form_data_id VARCHAR(50)
+	,openxdata_user_id VARCHAR(50)
+	,openxdata_user_name VARCHAR(50)
+	 ,`question1` VARCHAR(255)
+	 ,`question2` VARCHAR(255)
+)TYPE = INNODB;
+            </pre>
+        </div>
+
+
+        <h2>
+            What should the exporter do with names that clashes?
+        </h2>
+        <p>
+            Names with "id", "parentid" or "select" etc can cause random bugs.
+        </p>
+        <div class="example">
+            When the XForm definition is
+            <pre concordion:set="#definition"><![CDATA[
+<xf:xforms xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xf:model>
+    <xf:instance id="test1">
+      <select name="form with a reserved SQL word" id="9">
+        <id/>
+        <parentid/>
+      </select>
+    </xf:instance>
+    <xf:bind id="id" nodeset="/select/id" type="xsd:string"/>
+    <xf:bind id="parentid" nodeset="/select/parentid" type="xsd:string"/>
+  </xf:model>
+  <xf:group id="1">
+    <xf:label>Page1</xf:label>
+    <xf:input bind="id">
+      <xf:label>Id</xf:label>
+    </xf:input>
+    <xf:input bind="parentid">
+      <xf:label>Parent Id</xf:label>
+    </xf:input>
+  </xf:group>
+</xf:xforms>]]>
+            </pre>
+            then the following create table should be generated (???)
+            <pre concordion:assertEquals="generateTables(#definition)">
+CREATE TABLE `select`
+(
+	Id VARCHAR(200) PRIMARY KEY
+	,openxdata_form_data_id VARCHAR(50)
+	,openxdata_user_id VARCHAR(50)
+	,openxdata_user_name VARCHAR(50)
+	 ,`id` VARCHAR(255)
+	 ,`parentid` VARCHAR(255)
+)TYPE = INNODB;
+            </pre>
+        </div>
+
+        <h2>
+            A full test with the standard XForms that is included with OpenXdata
+        </h2>
+
+        <div class="example">
+            When the XForm definition is
+            <pre concordion:set="#definition"><![CDATA[
+<xf:xforms xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xf:model>
+    <xf:instance id="patientreg">
+      <patientreg description-template="${/patientreg/lastname}$ in ${/patientreg/continent}$" id="1" name="Patient Registration">
+        <patientid/>
+        <title/>
+        <firstname/>
+        <lastname/>
+        <sex/>
+        <birthdate/>
+        <weight/>
+        <height/>
+        <pregnant/>
+        <arvs/>
+        <picture/>
+        <coughsound/>
+        <recordvideo/>
+        <location/>
+        <continent/>
+        <country/>
+        <district/>
+        <village/>
+        <nokids>0</nokids>
+        <kids>
+          <kid>
+            <kidname/>
+            <kidsex/>
+            <kidage/>
+          </kid>
+        </kids>
+        <starttime>'today()'</starttime>
+        <endtime/>
+      </patientreg>
+    </xf:instance>
+    <xf:instance id="country">
+      <dynamiclist>
+        <item id="uganda" parent="africa">
+          <label>Uganda</label>
+          <value>uganda</value>
+        </item>
+        <item id="kenya" parent="africa">
+          <label>Kenya</label>
+          <value>kenya</value>
+        </item>
+        <item id="tanzania" parent="africa">
+          <label>Tanzania</label>
+          <value>tanzania</value>
+        </item>
+        <item id="rwanda" parent="africa">
+          <label>Rwanda</label>
+          <value>rwanda</value>
+        </item>
+        <item id="malaysia" parent="asia">
+          <label>Malaysia</label>
+          <value>malaysia</value>
+        </item>
+        <item id="india" parent="asia">
+          <label>India</label>
+          <value>india</value>
+        </item>
+        <item id="china" parent="asia">
+          <label>China</label>
+          <value>china</value>
+        </item>
+        <item id="brazil" parent="southamerica">
+          <label>Brazil</label>
+          <value>brazil</value>
+        </item>
+        <item id="argentina" parent="southamerica">
+          <label>Argentina</label>
+          <value>argentina</value>
+        </item>
+        <item id="canada" parent="northamerica">
+          <label>Canada</label>
+          <value>canada</value>
+        </item>
+        <item id="usa" parent="northamerica">
+          <label>USA</label>
+          <value>usa</value>
+        </item>
+        <item id="singapore" parent="asia">
+          <label>Singapore</label>
+          <value>singapore</value>
+        </item>
+        <item id="newzealand" parent="australia">
+          <label>New Zealand</label>
+          <value>newzealand</value>
+        </item>
+        <item id="Italy" parent="europe">
+          <label>Italy</label>
+          <value>Italy</value>
+        </item>
+        <item id="england" parent="europe">
+          <label>England</label>
+          <value>england</value>
+        </item>
+        <item id="netherlands" parent="europe">
+          <label>Netherlands</label>
+          <value>netherlands</value>
+        </item>
+        <item id="sweden" parent="europe">
+          <label>Sweden</label>
+          <value>sweden</value>
+        </item>
+      </dynamiclist>
+    </xf:instance>
+    <xf:instance id="district">
+      <dynamiclist>
+        <item id="kampala" parent="uganda">
+          <label>Kampala</label>
+          <value>kampala</value>
+        </item>
+        <item id="masaka" parent="uganda">
+          <label>Masaka</label>
+          <value>masaka</value>
+        </item>
+        <item id="mbale" parent="uganda">
+          <label>Mbale</label>
+          <value>mbale</value>
+        </item>
+        <item id="mbarara" parent="uganda">
+          <label>Mbarara</label>
+          <value>mbarara</value>
+        </item>
+        <item id="nairobi" parent="kenya">
+          <label>Nairobi</label>
+          <value>nairobi</value>
+        </item>
+        <item id="kisumu" parent="kenya">
+          <label>Kisumu</label>
+          <value>kisumu</value>
+        </item>
+        <item id="eldoret" parent="kenya">
+          <label>Eldoret</label>
+          <value>eldoret</value>
+        </item>
+      </dynamiclist>
+    </xf:instance>
+    <xf:instance id="village">
+      <dynamiclist>
+        <item id="kawempe" parent="kampala">
+          <label>Kawempe</label>
+          <value>kawempe</value>
+        </item>
+        <item id="kuvulu" parent="kampala">
+          <label>Kivulu</label>
+          <value>kuvulu</value>
+        </item>
+        <item id="kisenyi" parent="kampala">
+          <label>Kisenyi</label>
+          <value>kisenyi</value>
+        </item>
+        <item id="najjanankumbi" parent="kampala">
+          <label>Najjanankumbi</label>
+          <value>najjanankumbi</value>
+        </item>
+        <item id="kamugombwa" parent="masaka">
+          <label>Kamugombwa</label>
+          <value>kamugombwa</value>
+        </item>
+        <item id="nabinene" parent="masaka">
+          <label>Nabinene</label>
+          <value>nabinene</value>
+        </item>
+        <item id="nyendo" parent="masaka">
+          <label>Nyendo</label>
+          <value>nyendo</value>
+        </item>
+      </dynamiclist>
+    </xf:instance>
+    <xf:bind id="patientid" nodeset="/patientreg/patientid" type="xsd:string"/>
+    <xf:bind id="title" nodeset="/patientreg/title" type="xsd:string"/>
+    <xf:bind id="firstname" nodeset="/patientreg/firstname" type="xsd:string"/>
+    <xf:bind id="lastname" nodeset="/patientreg/lastname" required="true()" type="xsd:string"/>
+    <xf:bind id="sex" nodeset="/patientreg/sex" type="xsd:string"/>
+    <xf:bind constraint=". &lt;= today()" id="birthdate" message="Cannot be greater than today" nodeset="/patientreg/birthdate" type="xsd:date"/>
+    <xf:bind constraint=". &gt;= 1.1 and . &lt;= 99.9" id="weight" message="Should be between 0 and 200 inclusive" nodeset="/patientreg/weight" type="xsd:decimal"/>
+    <xf:bind constraint=". &gt;= 1 and . &gt;= 20" id="height" message="Should be between 1 and 20 inclusive" nodeset="/patientreg/height" type="xsd:int"/>
+    <xf:bind action="enable" id="pregnant" nodeset="/patientreg/pregnant" readonly="true()" relevant="/patientreg/sex = 'female'" type="xsd:boolean" required="false()"/>
+    <xf:bind id="arvs" nodeset="/patientreg/arvs" type="xsd:string"/>
+    <xf:bind format="image" id="picture" nodeset="/patientreg/picture" type="xsd:base64Binary"/>
+    <xf:bind format="audio" id="coughsound" nodeset="/patientreg/coughsound" type="xsd:base64Binary"/>
+    <xf:bind format="video" id="recordvideo" nodeset="/patientreg/recordvideo" type="xsd:base64Binary"/>
+    <xf:bind format="gps" id="location" nodeset="/patientreg/location" type="xsd:string"/>
+    <xf:bind id="continent" nodeset="/patientreg/continent" type="xsd:string"/>
+    <xf:bind id="country" nodeset="/patientreg/country" type="xsd:string"/>
+    <xf:bind id="district" nodeset="/patientreg/district" type="xsd:string"/>
+    <xf:bind id="village" nodeset="/patientreg/village" type="xsd:string"/>
+    <xf:bind constraint=". &gt;= 0 and . &lt; 100" id="nokids" message="Should be between 0 and 100" nodeset="/patientreg/nokids" type="xsd:int"/>
+    <xf:bind action="enable" constraint="length(.) = patientreg/nokids" id="kid" message="Kid rows should be equal to the number of kids" nodeset="/patientreg/kids/kid" readonly="true()" relevant="/patientreg/nokids &gt; 0" required="false()"/>
+    <xf:bind id="starttime" nodeset="/patientreg/starttime" type="xsd:time"/>
+    <xf:bind id="endtime" nodeset="/patientreg/endtime" type="xsd:time"/>
+  </xf:model>
+  <xf:group id="1">
+    <xf:label>Page1</xf:label>
+    <xf:input bind="patientid">
+      <xf:label>Patient ID</xf:label>
+    </xf:input>
+    <xf:select1 bind="title">
+      <xf:label>Title</xf:label>
+      <xf:item id="mr">
+        <xf:label>Mr</xf:label>
+        <xf:value>mr</xf:value>
+      </xf:item>
+      <xf:item id="mrs">
+        <xf:label>Mrs</xf:label>
+        <xf:value>mrs</xf:value>
+      </xf:item>
+      <xf:item id="miss">
+        <xf:label>Miss</xf:label>
+        <xf:value>miss</xf:value>
+      </xf:item>
+    </xf:select1>
+    <xf:input bind="firstname">
+      <xf:label>First Name</xf:label>
+    </xf:input>
+    <xf:input bind="lastname">
+      <xf:label>Last Name</xf:label>
+    </xf:input>
+    <xf:select1 bind="sex">
+      <xf:label>Sex</xf:label>
+      <xf:item id="male">
+        <xf:label>Male</xf:label>
+        <xf:value>male</xf:value>
+      </xf:item>
+      <xf:item id="female">
+        <xf:label>Female</xf:label>
+        <xf:value>female</xf:value>
+      </xf:item>
+    </xf:select1>
+    <xf:input bind="birthdate">
+      <xf:label>Birth Date</xf:label>
+    </xf:input>
+    <xf:input bind="weight">
+      <xf:label>Weight (Kg)</xf:label>
+    </xf:input>
+    <xf:input bind="height">
+      <xf:label>Height (ft)</xf:label>
+    </xf:input>
+    <xf:input bind="pregnant">
+      <xf:label>Is ${/patientreg/lastname}$ pregnant?</xf:label>
+    </xf:input>
+    <xf:select bind="arvs">
+      <xf:label>ARVS</xf:label>
+      <xf:item id="azt">
+        <xf:label>AZT</xf:label>
+        <xf:value>azt</xf:value>
+      </xf:item>
+      <xf:item id="abicavir">
+        <xf:label>ABICAVIR</xf:label>
+        <xf:value>abicavir</xf:value>
+      </xf:item>
+      <xf:item id="efivarence">
+        <xf:label>EFIVARENCE</xf:label>
+        <xf:value>efivarence</xf:value>
+      </xf:item>
+      <xf:item id="triomune">
+        <xf:label>TRIOMUNE</xf:label>
+        <xf:value>triomune</xf:value>
+      </xf:item>
+      <xf:item id="truvada">
+        <xf:label>TRUVADA</xf:label>
+        <xf:value>truvada</xf:value>
+      </xf:item>
+    </xf:select>
+    <xf:upload bind="picture" mediatype="image/*">
+      <xf:label>Picture</xf:label>
+    </xf:upload>
+    <xf:upload bind="coughsound" mediatype="audio/*">
+      <xf:label>Cough Sound</xf:label>
+    </xf:upload>
+    <xf:upload bind="recordvideo" mediatype="video/*">
+      <xf:label>Record Video</xf:label>
+    </xf:upload>
+    <xf:input bind="location">
+      <xf:label>Location</xf:label>
+    </xf:input>
+    <xf:select1 bind="continent">
+      <xf:label>Continent</xf:label>
+      <xf:item id="africa">
+        <xf:label>Africa</xf:label>
+        <xf:value>africa</xf:value>
+      </xf:item>
+      <xf:item id="asia">
+        <xf:label>Asia</xf:label>
+        <xf:value>asia</xf:value>
+      </xf:item>
+      <xf:item id="europe">
+        <xf:label>Europe</xf:label>
+        <xf:value>europe</xf:value>
+      </xf:item>
+      <xf:item id="southamerica">
+        <xf:label>South America</xf:label>
+        <xf:value>southamerica</xf:value>
+      </xf:item>
+      <xf:item id="northamerica">
+        <xf:label>North America</xf:label>
+        <xf:value>northamerica</xf:value>
+      </xf:item>
+      <xf:item id="australia">
+        <xf:label>Australia</xf:label>
+        <xf:value>australia</xf:value>
+      </xf:item>
+    </xf:select1>
+    <xf:select1 bind="country">
+      <xf:label>Country</xf:label>
+      <xf:itemset nodeset="instance('country')/item[@parent=instance('patientreg')/continent]">
+        <xf:label ref="label"/>
+        <xf:value ref="value"/>
+      </xf:itemset>
+    </xf:select1>
+    <xf:select1 bind="district">
+      <xf:label>District</xf:label>
+      <xf:itemset nodeset="instance('district')/item[@parent=instance('patientreg')/country]">
+        <xf:label ref="label"/>
+        <xf:value ref="value"/>
+      </xf:itemset>
+    </xf:select1>
+    <xf:select1 bind="village">
+      <xf:label>Village</xf:label>
+      <xf:itemset nodeset="instance('village')/item[@parent=instance('patientreg')/district]">
+        <xf:label ref="label"/>
+        <xf:value ref="value"/>
+      </xf:itemset>
+    </xf:select1>
+    <xf:input bind="nokids">
+      <xf:label># of kids</xf:label>
+    </xf:input>
+    <xf:group id="kids/kid">
+      <xf:label>Kids</xf:label>
+      <xf:repeat bind="kid">
+        <xf:input ref="kidname" type="xsd:string">
+          <xf:label>Name</xf:label>
+        </xf:input>
+        <xf:select1 ref="kidsex" type="xsd:string">
+          <xf:label>Sex</xf:label>
+          <xf:item id="male">
+            <xf:label>Male</xf:label>
+            <xf:value>male</xf:value>
+          </xf:item>
+          <xf:item id="female">
+            <xf:label>Female</xf:label>
+            <xf:value>female</xf:value>
+          </xf:item>
+        </xf:select1>
+        <xf:input ref="kidage" type="xsd:int">
+          <xf:label>Age</xf:label>
+        </xf:input>
+      </xf:repeat>
+    </xf:group>
+    <xf:input bind="starttime">
+      <xf:label>Start Time</xf:label>
+    </xf:input>
+    <xf:input bind="endtime">
+      <xf:label>End Time</xf:label>
+    </xf:input>
+  </xf:group>
+</xf:xforms>]]>
+            </pre>
+            then the following create table should be generated
+            <pre concordion:assertEquals="generateTables(#definition)">
+CREATE TABLE `patientreg`
+(
+	Id VARCHAR(200) PRIMARY KEY
+	,openxdata_form_data_id VARCHAR(50)
+	,openxdata_user_id VARCHAR(50)
+	,openxdata_user_name VARCHAR(50)
+	 ,`patientid` VARCHAR(255)
+	 ,`title` VARCHAR(255)
+	 ,`firstname` VARCHAR(255)
+	 ,`lastname` VARCHAR(255)
+	 ,`sex` VARCHAR(255)
+	 ,`birthdate` DATE
+	 ,`weight` DECIMAL(18,8)
+	 ,`height` INTEGER
+	 ,`pregnant` VARCHAR(255)
+	 ,`arvs` VARCHAR(255)
+	 ,`picture` LONGBLOB
+	 ,`coughsound` LONGBLOB
+	 ,`recordvideo` LONGBLOB
+	 ,`location` VARCHAR(255)
+	 ,`continent` VARCHAR(255)
+	 ,`country` VARCHAR(255)
+	 ,`district` VARCHAR(255)
+	 ,`village` VARCHAR(255)
+	 ,`nokids` INTEGER
+	 ,`starttime` TIME
+	 ,`endtime` TIME
+)TYPE = INNODB;
+CREATE TABLE `kid`
+(
+	Id VARCHAR(200) PRIMARY KEY
+	,openxdata_form_data_id VARCHAR(50)
+	,openxdata_user_id VARCHAR(50)
+	,openxdata_user_name VARCHAR(50)
+	 ,`kidname` VARCHAR(255)
+	 ,`kidsex` VARCHAR(255)
+	 ,`kidage` INTEGER
+	,ParentId VARCHAR(200) REFERENCES patientreg(Id)
+)TYPE = INNODB;
+            </pre>
+        </div>
+
+    </body>
+</html>

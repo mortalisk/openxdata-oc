@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://openclinica.org/ws/studyListGet/v1"
+    xmlns:studyListGet="http://openclinica.org/ws/studyListGet/v1"
+    xmlns:listbeans="http://openclinica.org/ws/listbeans" elementFormDefault="qualified">
+    
+    <import namespace="http://openclinica.org/ws/listbeans" schemaLocation="listbeans.xsd"></import>
+    
+    <element name="getStudyListRequest">
+    </element>
+
+    <element name="getStudyListResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="string"/>
+                <element name="label" type="string"/>
+                <element name="warning" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                <element name="error" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                <element name="studyList" type="listbeans:studyListType" minOccurs="0"/>
+            </sequence>
+        </complexType>
+    </element>
+
+</schema>

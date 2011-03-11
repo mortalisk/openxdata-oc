@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openxdata.server.admin.model">
+
+	<class name="FormDef" table="form_definition" lazy="false">
+	
+		<id name="formId" type="java.lang.Integer" column="form_definition_id"
+				unsaved-value="0">
+				<generator class="native">
+					 <param name="sequence">form_definition_form_definition_id_seq</param>
+				</generator>
+		</id>
+	
+		<discriminator column="form_definition_id" insert="false" />
+		
+		<property name="name" type="java.lang.String"
+				column="name" not-null="true" length="255" />
+				
+		<property name="description" type="java.lang.String"
+				column="description" not-null="false" length="1024" />
+				
+		<many-to-one name="study" class="StudyDef" not-null="true">
+			<column name="study_id" />
+		</many-to-one>
+		
+		<many-to-one name="creator" class="User" not-null="true" />
+	
+		<property name="dateCreated" type="java.util.Date"
+			column="date_created"  length="19" />
+	
+		<many-to-one name="changedBy" class="User" column="changed_by" />
+	
+		<property name="dateChanged" type="java.util.Date"
+			column="date_changed" length="19" />
+	
+		<property name="retired" type="boolean" column="retired" not-null="true" />
+	
+		<many-to-one name="retiredBy" class="User" column="retired_by" />
+	
+		<property name="dateRetired" type="java.util.Date"
+			column="date_retired" length="19" />
+	
+		<property name="retiredReason" type="java.lang.String"
+			column="retired_reason" length="255" />
+	
+		<!-- Associations -->
+		
+		<bag name="text" lazy="false" cascade="all,delete-orphan,evict" inverse="true" >
+			<key column="form_definition_id" not-null="true" />
+			<one-to-many class="FormDefText" />
+		</bag>
+		
+		<bag name="versions" lazy="false" cascade="all,delete-orphan,evict" inverse="true" order-by="name asc">
+			<key column="form_definition_id" not-null="true" />
+			<one-to-many class="FormDefVersion" />
+		</bag>
+
+        <bag name="users" table="user_form" lazy="true" cascade="save-update">
+            <key column="form_id" />
+            <many-to-many class="User">
+                <column name="user_id" />
+            </many-to-many>
+        </bag>  
+		
+	</class>
+
+</hibernate-mapping>

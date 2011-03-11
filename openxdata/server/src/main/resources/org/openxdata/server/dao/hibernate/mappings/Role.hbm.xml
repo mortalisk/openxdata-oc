@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openxdata.server.admin.model">
+
+	<class name="Role" table="role" lazy="false">
+
+		<id name="roleId" type="java.lang.Integer" column="role_id"
+			unsaved-value="0">
+			<generator class="native">
+				<param name="sequence">role_role_id_seq</param>
+			</generator>
+		</id>
+
+		<discriminator column="role_id" insert="false" />
+
+		<property name="name" type="java.lang.String" column="name"
+			not-null="true" length="255" />
+
+		<property name="description" type="java.lang.String" column="description"
+			not-null="false" length="255" />
+
+		<!-- Associations -->
+
+		<bag name="permissions" table="role_permission" lazy="false" cascade="none">
+			<key>
+				<column name="role_id" />
+			</key>
+
+			<many-to-many class="Permission">
+				<column name="permission_id" />
+			</many-to-many>
+		</bag>
+
+		<bag name="users" table="user_role" cascade="none" inverse="true">
+			<key>
+				<column name="role_id" />
+			</key>
+			<many-to-many class="User">
+				<column name="user_id" />
+			</many-to-many>
+		</bag>
+
+	</class>
+
+</hibernate-mapping>

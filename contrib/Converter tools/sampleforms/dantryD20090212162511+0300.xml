@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODM FileOID="dantryD20090212162511+0300" Description="dfsdwsfds" CreationDateTime="2009-02-12T16:25:11+03:00" FileType="Snapshot" ODMVersion="1.2" xmlns="http://www.cdisc.org/ns/odm/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.2 ODM1-2-1.xsd" >
+    <Study OID="S_CANCERDE">
+        <GlobalVariables>
+            <StudyName>Demonstration Protocol for Cancer Research</StudyName>
+            <StudyDescription>
+                Case Report Forms are based on the templates available
+from National Cancer 
+            </StudyDescription>
+            <ProtocolName>CancerDemo</ProtocolName>
+        </GlobalVariables>
+        <MetaDataVersion OID="v1.0.0" Name="MetaDataVersion_v1.0.0">
+            <Protocol>
+                <StudyEventRef StudyEventOID="SE_BREATHIN" OrderNumber="2" Mandatory="Yes"/>
+            </Protocol>
+            <StudyEventDef OID="SE_BREATHIN"  Name="breathing rate" Repeating="Yes" Type="Scheduled">
+                <FormRef FormOID="F_TBCF_V25" Mandatory="Yes"/>
+            </StudyEventDef>
+            <FormDef OID="F_TBCF_V25" Name="Tb-cfr - v 2.5" Repeating="No">
+                <ItemGroupRef ItemGroupOID="IG_TBCF_UNGROUPED-F_TBCF_V25" Mandatory="No"/>
+            </FormDef>
+            <ItemGroupDef OID="IG_TBCF_UNGROUPED-F_TBCF_V25" Name="F_TBCF_V25-Ungrouped" Repeating="No" SASDatasetName="UNGROUPE">
+                <ItemRef ItemOID="I_TBCF_NAME" OrderNumber="1" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_AGE" OrderNumber="2" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_WEIGHT" OrderNumber="3" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_DOB" OrderNumber="4" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_EDUCATION" OrderNumber="5" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_DRUG" OrderNumber="6" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_TBSTAGE" OrderNumber="7" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_DOYOUSPIT" OrderNumber="8" Mandatory="No"/>
+                <ItemRef ItemOID="I_TBCF_AREYOUMARRIADE" OrderNumber="9" Mandatory="No"/>
+            </ItemGroupDef>
+            <ItemDef OID="I_TBCF_NAME" Name="Name" DataType="text" Length="12" SASFieldName="Name" Comment="names of the patient">
+                <Question>
+                    <TranslatedText>
+                    Name
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_AGE" Name="Age" DataType="integer" Length="10" SASFieldName="Age" Comment="the current age">
+                <Question>
+                    <TranslatedText>
+                    Age
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_WEIGHT" Name="Weight" DataType="float" Length="32" SignificantDigits="6" SASFieldName="Weight" Comment="weight of the patient for testing">
+                <Question>
+                    <TranslatedText>
+                    Weight
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_DOB" Name="DOB" DataType="date" SASFieldName="DOB" Comment="date of bith">
+                <Question>
+                    <TranslatedText>
+                    Date of Birth
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_EDUCATION" Name="education" DataType="text" Length="1" SASFieldName="educatio" Comment="education level">
+                <Question>
+                    <TranslatedText>
+                    Education
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_31"/>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_DRUG" Name="DRUG" DataType="text" Length="29" SASFieldName="DRUG" Comment="the type of the DRUG taken">
+                <Question>
+                    <TranslatedText>
+                    DRUG
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_TBSTAGE" Name="TB stage" DataType="text" Length="1" SASFieldName="TB_stage" Comment="stage of TB">
+                <Question>
+                    <TranslatedText>
+                    TB stage
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_33"/>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_DOYOUSPIT" Name="Do you SPIT" DataType="text" Length="73" SASFieldName="Do_you_S" Comment="do you spit">
+                <Question>
+                    <TranslatedText>
+                    Do YOU SPIT
+                    </TranslatedText>
+                </Question>
+            </ItemDef>
+            <ItemDef OID="I_TBCF_AREYOUMARRIADE" Name="Are you marriade" DataType="text" Length="1" SASFieldName="Are_you_" Comment="marital status">
+                <Question>
+                    <TranslatedText>
+                    Are you marriade
+                    </TranslatedText>
+                </Question>
+                <CodeListRef CodeListOID="CL_35"/>
+            </ItemDef>
+            <CodeList OID="CL_31" Name="agent123" DataType="text" SASFormatName="$AGENT1X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Tertiary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Secondary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">Primary</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_33" Name="agent12" DataType="text" SASFormatName="$AGEN01X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage1</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage2</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="2">
+                    <Decode>
+                        <TranslatedText xml:lang="en">stage3</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+            <CodeList OID="CL_35" Name="agent0123" DataType="text" SASFormatName="$AGENT0X">
+                <CodeListItem CodedValue="0">
+                    <Decode>
+                        <TranslatedText xml:lang="en">no</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+                <CodeListItem CodedValue="1">
+                    <Decode>
+                        <TranslatedText xml:lang="en">yes</TranslatedText>
+                    </Decode>
+                </CodeListItem>
+            </CodeList>
+        </MetaDataVersion>
+    </Study>
+    <ClinicalData StudyOID="S_CANCERDE" MetaDataVersionOID="v1.0.0">
+        <SubjectData SubjectKey="SS_S005">
+            <StudyEventData StudyEventOID="SE_BREATHIN" StudyEventRepeatKey="1">
+                <FormData FormOID="F_TBCF_V25">
+                    <ItemGroupData ItemGroupOID="IG_TBCF_UNGROUPED-F_TBCF_V25" TransactionType="Insert">
+                        <ItemData ItemOID="I_TBCF_NAME" Value="kayima festo"/>
+                        <ItemData ItemOID="I_TBCF_AGE" Value="28"/>
+                        <ItemData ItemOID="I_TBCF_WEIGHT" Value="83"/>
+                        <ItemData ItemOID="I_TBCF_DOB" Value="2009-02-25"/>
+                        <ItemData ItemOID="I_TBCF_EDUCATION" Value="1"/>
+                        <ItemData ItemOID="I_TBCF_DRUG" Value="0,2"/>
+                        <ItemData ItemOID="I_TBCF_TBSTAGE" Value="1"/>
+                        <ItemData ItemOID="I_TBCF_DOYOUSPIT" Value="0,2,3"/>
+                        <ItemData ItemOID="I_TBCF_AREYOUMARRIADE" Value="1"/>
+                    </ItemGroupData>
+                </FormData>
+            </StudyEventData>
+        </SubjectData>
+    </ClinicalData>
+</ODM>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://openclinica.org/ws/listbeans"
+    xmlns:listbeans="http://openclinica.org/ws/listbeans" elementFormDefault="qualified">
+
+    <complexType name="studyIdType">
+        <sequence>
+            <element name="studyId" type="int" />
+        </sequence>
+    </complexType>
+    
+    <complexType name="studyType">
+        <sequence>
+            <element name="studyId" type="int"/>
+            <element name="oid" type="string"/>
+            <element name="name" type="string"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="crfVersionType">
+        <sequence>
+            <element name="crfId" type="int"/>
+            <element name="oid" type="string"/>
+            <element name="name" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="studyListType">
+        <sequence>
+            <element name="study" type="listbeans:studyType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="crfListType">
+        <sequence>
+            <element name="crf" type="listbeans:crfVersionType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="studyEventType">
+        <sequence>
+            <element name="eventId" type="int"/>
+            <element name="oid" type="string"/>
+            <element name="name" type="string"/>
+            <element name="crfList" type="listbeans:crfListType"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="eventListType">
+        <sequence>
+            <element name="event" type="listbeans:studyEventType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="subjectListGetType">
+        <sequence>
+            <element name="study" type="string" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="subjectGetType">
+        <sequence>
+            <element name="subjectId" type="int"/>
+            <element name="personId" type="string"/>
+            <element name="studySubjectId" type="string"/>
+            <element name="secondaryId" type="string"/>
+            <element name="oid" type="string"/>
+            <element name="gender" type="string"/>
+            <element name="birthDate" type="date"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="subjectEventType">
+        <sequence>
+            <element name="eventId" type="int"/>
+            <element name="location" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="subjectListType">
+        <sequence>
+            <element name="subject" type="listbeans:subjectGetType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="userType">
+        <sequence>
+            <element name="userId" type="int"/>
+            <element name="name" type="string"/>
+            <element name="password" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="usersType">
+        <sequence>
+            <element name="user" type="listbeans:userType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="auditMessagesType">
+        <sequence>
+            <element name="auditMessage" type="string" />
+        </sequence>
+    </complexType>
+
+</schema>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>		
+		<!--  Hibernate Mapping files -->
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/Setting.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/TaskDef.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/StudyDef.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/FormDef.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/FormDefVersion.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/FormData.hbm.xml" />
+        <mapping resource="org/openxdata/server/dao/hibernate/mappings/FormDataVersion.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/TaskParam.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/FormDataHeader.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/Locale.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/FormDefText.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/StudyDefText.hbm.xml" />	
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/User.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/Role.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/Permission.hbm.xml"/>
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/Report.hbm.xml"/>
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/ReportGroup.hbm.xml"/>
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/FormSmsError.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/SettingGroup.hbm.xml"/>
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/FormDefVersionText.hbm.xml" />
+		
+		
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/UserFormMap.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/UserReportMap.hbm.xml"/>
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/UserStudyMap.hbm.xml" />
+		<mapping resource="org/openxdata/server/dao/hibernate/mappings/UserReportGroupMap.hbm.xml"/>
+  </session-factory>
+
+</hibernate-configuration>

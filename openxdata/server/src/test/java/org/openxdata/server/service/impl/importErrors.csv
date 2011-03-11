@@ -1,0 +1,7 @@
+"name","firstName","middleName","lastName","phoneNo","email","clearTextPassword","roles","error messages"
+"","firstName2","middleName2","lastName2","phoneNo2","email2","","Role_Administrator,Role_DataCapturer","(name is empty) (clearTextPassword is empty) "
+"","firstName3","middleName3","lastName3","phoneNo3","email3","clearTextPassword3","Role_DataCapturer","(name is empty) "
+"name4","firstName4","middleName4","lastName4","phoneNo4","email4","","Role_DataCapturer","(clearTextPassword is empty) "
+"name5","firstName5","middleName5","lastName5","phoneNo5","","clearTextPassword5","","(No roles specified) "
+"name6","","middleName6","lastName6","phoneNo6","email6","clearTextPassword6","","(No role matched role name: unknown_role) "
+"admin","firstName9","middleName9","lastName9","","email9","clearTextPassword9","Role_DataCapturer","(User with same username already exists) "

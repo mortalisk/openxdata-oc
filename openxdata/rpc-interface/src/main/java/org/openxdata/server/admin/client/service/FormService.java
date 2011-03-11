@@ -1,0 +1,97 @@
+package org.openxdata.server.admin.client.service;
+
+import java.util.List;
+
+import org.openxdata.server.admin.model.ExportedFormDataList;
+import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import org.openxdata.server.admin.model.Editable;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+
+/**
+ * Defines the client side contract for the User Service.
+ */
+public interface FormService extends RemoteService {
+	
+	/**
+	 * Returns a given Form given the ID.
+	 * 
+	 * @param formId Id of the Form to retrieve.
+	 * @return FormDef
+	 */
+	FormDef getForm(int formId);
+
+    /**
+     * Saves the data captured by the user for a particular form.
+     * 
+     * @param formData FormData
+     * @return FormData that was saved (contains id reference)
+     */
+    FormData saveFormData(FormData formData);
+    
+    /**
+     * Retrieves all the form definitions in the system.
+     * 
+     * @return List of FormDef
+     */
+    List<FormDef> getForms();
+    
+    /**
+     * Retrieves all the form definitions that are available for the currently logged in user.
+     * 
+     * @return List of FormDef
+     */
+    List<FormDef> getFormsForCurrentUser();
+    
+    /**
+     * Calculates the number of responses captured for a specified formDefVersion.
+     * 
+     * @param formId int identifier for a form definition version
+     * @return Integer (positive number, 0 for no responses)
+     */
+    Integer getFormResponseCount(int formDefVersionId);
+    
+    /**
+     * Retrieves all the FormData for a specified formDefVersion.
+     * 
+     * @param formId int identifier of the form definition version
+     * @return List of FormData
+     */
+    List<FormData> getFormData(int formDefVersionId);
+    
+    /**
+     * Retrieves a page of the form data (directly from exported tables) for a specified form definition.
+     * 
+     * @param formBinding String xform binding (table name)
+     * @param formFields String question binding (column names)
+     * @param offset int indicating at which position to start returning FormData objects
+     * @param limit int indicating how many FormData objects to return
+     * @param sortField String containing binding of field to sort
+     * @param ascending boolean true if the sort should be ascending
+     * @return ExportedFormDataList containing ExportedData
+     * @throws ExportedDataNotFoundException when the exported table does not exist
+     */
+    ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws ExportedDataNotFoundException;
+
+    List<UserFormMap> getUserMappedForms();
+      /**
+     * saves a usermapped form
+     * @param map usermappedform
+     */
+    void saveUserMappedForm(UserFormMap map);
+     /**
+     * deletes a usermapped form
+     * @param map usermappedform
+     */
+    void deleteUserMappedForm(UserFormMap map);
+    /**
+     * Checks if a study, form or form version has data collected for it.
+     *
+     * @param item the study, form, or form version.
+     * @return true if it has, else false.
+     */
+    Boolean hasEditableData(Editable item);
+}

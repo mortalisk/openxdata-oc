@@ -1,0 +1,2669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+                  
+    <changeSet author="daniel" id="permission_description_50_to_100_characters">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="permission" columnName="description"/>
+		</preConditions>
+		<comment>
+			Increasing size of description field in permission table from 50 to 200 characters.
+		</comment>
+        <modifyColumn tableName="permission">
+    		<column name="description" type="varchar(200)"/>
+		</modifyColumn>
+	</changeSet>
+    
+	<changeSet author="Mark" id="permissions_change_id_00">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM users where user_name='admin' or user_id= 2;
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding administrator user to the users table
+		</comment>
+        <insert tableName="users">
+          	<column name="user_id" valueNumeric="2"/>
+            <column name="user_name" value="admin"/>
+            <column name="first_name" value="administrator"/>
+            <column name="middle_name" value="administrator"/>
+            <column name="last_name" value="administrator"/>
+            <column name="middle_name" value="administrator"/>
+            <column name="password" value="7357bec928a1af86415f7b8c11245296ec1779d"/>
+            <column name="salt" value="e2597cf74095403889c6b07b46d8af5d94b8e6"/>
+            <column name="secret_question" value="what is the name of the organisation that developed oxd?"/>
+            <column name="secret_answer" value="MUK and Mark"/>
+            <column name="creator" valueNumeric="2"/>
+            <column name="date_created" valueDate="2009-11-13"/>
+            <column name="changed_by"/>
+            <column name="date_changed" valueDate="2009-03-13"/>
+            <column name="email" value="cattabanks@gmail.com"/>
+            <column name="phone_no" value="000-000-0000-01"/>
+        </insert>
+    </changeSet>
+        
+    <changeSet author="Mark" id="permissions_change_id_1">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to adding of studies
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Studies"/>
+				<column name="description" value="Ability to add studies to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_2">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to editing of studies
+		</comment>			
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Studies"/>
+				<column name="description" value="Ability to edit studies to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_3">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to deleting of studies
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Studies"/>
+				<column name="description" value="Ability to delete studies to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_4">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to viewing of studies
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Studies"/>
+				<column name="description" value="Ability to view studies to the system"/>
+			</insert>
+			
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_5">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to adding of users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Users"/>
+				<column name="description" value="Ability to add users in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_6">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to editing of users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Users"/>
+				<column name="description" value="Ability to edit users in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_7">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to viewing of users
+		</comment>
+			<insert tableName="permission">			
+				<column name="name" value="Perm_View_Users"/>
+				<column name="description" value="Ability to view users in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_8">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to deleting of users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Users"/>
+				<column name="description" value="Ability to delete users in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_9">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Roles';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to adding of roles
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Roles"/>
+				<column name="description" value="Ability to add roles in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_10">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Roles';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to editing of roles
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Roles"/>
+				<column name="description" value="Ability to edit roles in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_11">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Roles';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to viewing of roles
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Roles"/>
+				<column name="description" value="Ability to view roles in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_12">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Roles';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to deleting of roles
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Roles"/>
+				<column name="description" value="Ability to delete roles in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_13">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Tasks';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to adding of tasks
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Tasks"/>
+				<column name="description" value="Ability to add tasks in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_14">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Tasks';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to editing of tasks
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Tasks"/>
+				<column name="description" value="Ability to edit tasks in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_15">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Tasks';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to viewing of tasks
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Tasks"/>
+				<column name="description" value="Ability to view tasks in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_16">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Tasks';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to deleting of tasks
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Tasks"/>
+				<column name="description" value="Ability to delete tasks in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_17">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Settings';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to adding of settings
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Settings"/>
+				<column name="description" value="Ability to add settings in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_18">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Settings';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to editing of settings
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Settings"/>
+				<column name="description" value="Ability to edit settings in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_19">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Settings';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to viewing of settings
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Settings"/>
+				<column name="description" value="Ability to view settings in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_20">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Settings';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to deleting of settings
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Settings"/>
+				<column name="description" value="Ability to delete settings in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_21">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to adding of reports
+		</comment>
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Reports"/>
+				<column name="description" value="Ability to add reports in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_22">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to editing of reports
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Reports"/>
+				<column name="description" value="Ability to edit reports in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_23">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to viewing of reports
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Reports"/>
+				<column name="description" value="Ability to view reports in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_24">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable to deleting of reports
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Reports"/>
+				<column name="description" value="Ability to delete reports in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_25">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Data_Entry';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable entering of data
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Data_Entry"/>
+				<column name="description" value="Ability to enter data into the system via editing submitted forms"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_26">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Data_Edit';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing of data
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Data_Edit"/>
+				<column name="description" value="Ability to edit data into the system via editing submitted forms"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_27">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding of forms
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Forms"/>
+				<column name="description" value="Ability to add forms in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_28">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing of forms
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Forms"/>
+				<column name="description" value="Ability to edit forms in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_29">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting of forms
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Forms"/>
+				<column name="description" value="Ability to delete forms from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_30">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing of forms
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Forms"/>
+				<column name="description" value="Ability to view forms in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_31">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Form_Versions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding of form versions
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Form_Versions"/>
+				<column name="description" value="Ability to add form versions to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_32">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Form_Versions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing of form versions
+		</comment>
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Form_Versions"/>
+				<column name="description" value="Ability to edit form versions in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_33">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Form_Versions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting of form versions
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Form_Versions"/>
+				<column name="description" value="Ability to delete form versions from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_34">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Form_Versions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing of form versions
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Form_Versions"/>
+				<column name="description" value="Ability to view form versions in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_35">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Form_Data';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding of form data
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Form_Data"/>
+				<column name="description" value="Ability to add form data to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_36">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Form_Data';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing of form data
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Form_Data"/>
+				<column name="description" value="Ability to edit form data in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_37">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Form_Data';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting of form data
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Form_Data"/>
+				<column name="description" value="Ability to delete form data from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_38">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Form_Data';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing of form data
+		</comment>
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Form_Data"/>
+				<column name="description" value="Ability to view form data in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_39">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Locales';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding locales
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Locales"/>
+				<column name="description" value="Ability to add locales to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_40">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Locales';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing locales
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Locales"/>
+				<column name="description" value="Ability to edit locales in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_41">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Locales';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting locales
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Locales"/>
+				<column name="description" value="Ability to delete locales from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_42">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Locales';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing locales
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Locales"/>
+				<column name="description" value="Ability to view locales in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_43">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Permissions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding permissions
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Permissions"/>
+				<column name="description" value="Ability to add locales to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_44">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Permissions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing permissions
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Permissions"/>
+				<column name="description" value="Ability to edit locales in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_45">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Permissions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting permissions
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Permissions"/>
+				<column name="description" value="Ability to delete locales from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_46">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Permissions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing permissions
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Permissions"/>
+				<column name="description" value="Ability to view locales in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_47">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_ReportGroups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding report groups
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_ReportGroups"/>
+				<column name="description" value="Ability to add report groups to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_48">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_ReportGroups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing report groups
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_ReportGroups"/>
+				<column name="description" value="Ability to edit report groups in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_49">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_ReportGroups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting report groups
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_ReportGroups"/>
+				<column name="description" value="Ability to delete report groups from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_50">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_ReportGroups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing report groups
+		</comment>					
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_ReportGroups"/>
+				<column name="description" value="Ability to view report groups in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_51">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_SettingsGroup';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing setting groups
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_SettingsGroup"/>
+				<column name="description" value="Ability to add setting groups to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_52">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_SettingsGroup';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing setting groups
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_SettingsGroup"/>
+				<column name="description" value="Ability to edit setting groups in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_53">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_SettingsGroup';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting setting groups
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_SettingsGroup"/>
+				<column name="description" value="Ability to delete setting groups from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_54">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_SettingsGroup';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing setting groups
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_SettingsGroup"/>
+				<column name="description" value="Ability to view setting groups in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_55">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_MobileMenuText';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding mobile menu text
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_MobileMenuText"/>
+				<column name="description" value="Ability to add mobile menu text to the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_56">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_MobileMenuText';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable editing mobile menu text
+		</comment>		
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_MobileMenuText"/>
+				<column name="description" value="Ability to edit mobile menu text in the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_57">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_MobileMenuText';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting mobile menu text
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_MobileMenuText"/>
+				<column name="description" value="Ability to delete mobile menu text from the system"/>
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_58">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_MobileMenuText';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing mobile menu text
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_MobileMenuText"/>
+				<column name="description" value="Ability to view mobile menu text in the system"/>	
+			</insert>
+	</changeSet>
+	
+	 <changeSet author="Mark" id="permissions_change_id_011">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM role where name='Role_Administrator'
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding administrator user to the users table
+		</comment>
+       <insert tableName="role">
+        <column name="name" value="Role_Administrator"/>
+        <column name="description" value="Super user of the system"/>
+        </insert>
+     </changeSet>
+     
+   	<changeSet author="Mark" id="permissions_change_id_59">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Task_Scheduling';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable scheduling of tasks
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Task_Scheduling"/>
+				<column name="description" value="Ability to Schedule tasks in the system"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_60">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Task_Adding_Parameter';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable adding parameters to tasks
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Task_Adding_Parameter"/>
+				<column name="description" value="Ability to add parameters to tasks"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_61">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Permissions_to_Roles';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable mapping permissions to roles
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Map_Permissions_to_Roles"/>
+				<column name="description" value="Ability to map permissions to roles"/>	
+			</insert>
+	</changeSet>
+	
+    <changeSet author="Mark" id="permission_change_id_62">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                SELECT count(*) FROM permission where name='Perm_Map_Roles_to_Users';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Adding permission to enable mapping roles to users
+        </comment>  
+            <insert tableName="permission">
+                <column name="name" value="Perm_Map_Roles_to_Users"/>
+                <column name="description" value="Ability to map roles to users"/>  
+            </insert>
+    </changeSet>
+	
+	<changeSet author="daniel" id="giving_admin_role_to_all_users">
+ 		<comment>
+			Adding admin role all users.
+		</comment>
+        <sql> 
+       		insert into user_role  (user_id, role_id)
+ 			select u.user_id, r.role_id from users u, role r
+ 			where r.name='Role_Administrator'
+ 			and not u.user_id
+            in (select user_id from user_role
+            where role_id=(select role_id from role where name='Role_Administrator'))
+ 	   </sql>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_63">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Form_Design';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable designing of forms
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Form_Design"/>
+				<column name="description" value="Ability to design forms"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_64">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Report_Query_Builder';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable building of report queries
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Report_Query_Builder"/>
+				<column name="description" value="Ability to build queries for reports"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_65">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Reports_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable mapping reports to users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Map_Reports_To_Users"/>
+				<column name="description" value="Ability to map reports to users"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_66">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Studies_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable mapping studies to users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Map_Studies_To_Users"/>
+				<column name="description" value="Ability to map studies to users"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="mark_report_user_map_000">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="report_user"/></not>
+		</preConditions>
+		
+		<comment>
+			Adding report_user table for mapping reports to users
+		</comment>
+		 
+       	<createTable tableName="report_user">
+            <column autoIncrement="true" name="report_user_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="report_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="Mark" id="permissions_change_id_67">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing of studies mapped to users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Mapped_Studies"/>
+				<column name="description" value="Ability to view mapped studies"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_68">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting of studies mapped to users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Mapped_Studies"/>
+				<column name="description" value="Ability to delete mapped studies"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_69">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing of reports mapped to users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Mapped_Reports"/>
+				<column name="description" value="Ability to view mapped reports"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_70">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting of reports mapped to users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Mapped_Reports"/>
+				<column name="description" value="Ability to delete mapped reports"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_71">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Export_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable exporting of Studies to file system
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Export_Studies"/>
+				<column name="description" value="Ability to export system Studies to file system"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_72">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Import_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable importing of Studies from file system
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Import_Studies"/>
+				<column name="description" value="Ability to import system Studies from file system"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_73">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Import_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable importing of Reports from file system
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Import_Reports"/>
+				<column name="description" value="Ability to import system Reports from file system"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_74">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Export_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable exporting of Reports to file system
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Export_Reports"/>
+				<column name="description" value="Ability to export system Reports to file system"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_75">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Database_Backup';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable backing up of the database
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Database_Backup"/>
+				<column name="description" value="Ability to perform database back ups"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org.za" id="permissions_change_id_000">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                SELECT count(*) FROM users where user_name='admin';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Adding administrator user to the users table
+        </comment>
+        <insert tableName="users">
+            <column name="user_name" value="admin"/>
+            <column name="first_name" value="administrator"/>
+            <column name="middle_name" value="administrator"/>
+            <column name="last_name" value="administrator"/>
+            <column name="middle_name" value="administrator"/>
+            <column name="password" value="7357bec928a1af86415f7b8c11245296ec1779d"/>
+            <column name="salt" value="e2597cf74095403889c6b07b46d8af5d94b8e6"/>
+            <column name="secret_question" value="what is the name of the organisation that developed oxd?"/>
+            <column name="secret_answer" value="MUK and Mark"/>
+            <column name="creator" valueNumeric="2"/>
+            <column name="date_created" valueDate="2009-11-13"/>
+            <column name="changed_by"/>
+            <column name="date_changed" valueDate="2009-03-13"/>
+            <column name="email" value="cattabanks@gmail.com"/>
+            <column name="phone_no" value="000-000-0000-01"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet author="Mark" id="mark_study_user_map_000">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="study_user"/></not>
+		</preConditions>
+		
+		<comment>
+			Adding study_user table for mapping studies to users
+		</comment>
+		 
+       	<createTable tableName="study_user">
+            <column autoIncrement="true" name="study_user_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="study_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+    
+    <changeSet author="dagmar@cell-life.org.za" id="Perm_Emit_add">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                SELECT count(*) FROM permission where name='Perm_Emit';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Adding permission to log into the Emit application
+        </comment>  
+            <insert tableName="permission">
+                <column name="name" value="Perm_Emit"/>
+                <column name="description" value="Ability to log into the Emit application"/> 
+            </insert>
+    </changeSet>
+    
+   <changeSet author="Mark" id="permissions_change_id_76">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_User_Roles';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable backing up of the database
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_User_Roles"/>
+				<column name="description" value="Ability add and remove roles from users"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_77">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Role_Permissions';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable backing up of the database
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Role_Permissions"/>
+				<column name="description" value="Ability add and remove permissions from roles"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_78">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Translate_Mobile_Menu_Text';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable translating of mobile menu text
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Translate_Mobile_Menu_Text"/>
+				<column name="description" value="Ability to translate mobile menu text"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_79">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Mobile_Installer';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable install mobile applications using the server tools options
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Mobile_Installer"/>
+				<column name="description" value="Ability to install mobile applications using the server tools options"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_80">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Open_Items_Via_File_Menu';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to open items like forms and reports using the file menu.
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Open_Items_Via_File_Menu"/>
+				<column name="description" value="Ability to open items like forms and reports using the file menu"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permission_change_id_62_fixDuplicatePermissionEntry">
+		<preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                <![CDATA[
+                SELECT count(*) FROM permission where name='Perm_Map_Role_to_Users';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Deleting duplicate Perm_Map_Role_to_Users entry instead of Perm_Map_Roles_to_Users on some databases.
+        </comment>  
+		<delete tableName="permission"><where>name='Perm_Map_Role_to_Users'</where></delete>
+
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_81">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Diagnose_System';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable User to Diagnose the system
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Diagnose_System"/>
+				<column name="description" value="Ability to diagnose the system"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark (manually entered)" id="map-001">
+        <preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="user_report"/></not>
+		</preConditions>
+		
+		<comment>
+			Adding user_report table to handle mapping of reports to users.
+		</comment>
+		
+        <createTable tableName="user_report">
+            <column autoIncrement="true" name="user_report_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            
+            <column name="user_id" type="INT">
+            	<constraints nullable ="false"/>
+            </column>
+            
+            <column name="report_id" type="INT">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="Mark (manually entered)" id="map-002">
+        <preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="user_form"/></not>
+		</preConditions>
+		
+		<comment>
+			Adding user_form table to handle mapping of forms to users.
+		</comment>
+		
+        <createTable tableName="user_form">
+            <column autoIncrement="true" name="user_form_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            
+            <column name="user_id" type="INT">
+            	<constraints nullable="false"/>
+            </column>
+            
+            <column name="form_id" type="INT">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+   	<changeSet author="Mark" id="permissions_change_id_82">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Objects_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable firing up of dialog to map objects to Users.
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Map_Objects_To_Users"/>
+				<column name="description" value="Permission to enable firing up of dialog to map objects to Users."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_83">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Forms_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to mapping of Forms to Users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Map_Forms_To_Users"/>
+				<column name="description" value="Permission to mapping of Forms to Users."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_84">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_ReportGroups_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable mapping of Report Groups to Users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Map_ReportGroups_To_Users"/>
+				<column name="description" value="Permission to mapping of Report Groups to Users."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_85">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable Deleting of Report Groups mapped to Users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Mapped_Report_Groups"/>
+				<column name="description" value="Permission to enable Deleting of Report Groups mapped to Users."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_86">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable viewing of Report Groups mapped to Users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Mapped_Report_Groups"/>
+				<column name="description" value="Permission to enable viewing of Report Groups mapped to Users."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_87">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable Adding of Mapped Forms. Works in tandem with Perm_Map_Forms_To_Users
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Mapped_Forms"/>
+				<column name="description" value="Permission to enable Adding of Mapped Forms. Works in tandem with Perm_Map_Forms_To_Users"/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_88">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable Viewing of Mapped Forms.
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Mapped_Forms"/>
+				<column name="description" value="Permission to enable viewing of Mapped Forms."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_89">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable Editing of Mapped Forms.
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Mapped_Forms"/>
+				<column name="description" value="Permission to enable editing of Mapped Forms."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_90">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable deleting of Mapped Forms.
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Delete_Mapped_Forms"/>
+				<column name="description" value="Permission to enable deleting of Mapped Forms."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_91">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable Editing of Mapped Report Groups.
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Edit_Mapped_Report_Groups"/>
+				<column name="description" value="Permission to enable editing of Mapped Report Groups."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="Mark" id="permissions_change_id_92">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to enable Adding Mapped Report Groups.
+		</comment>	
+			<insert tableName="permission">
+				<column name="name" value="Perm_Add_Mapped_Report_Groups"/>
+				<column name="description" value="Permission to enable Adding Mapped Report Groups."/>	
+			</insert>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_65">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Reports_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable mapping reports to users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Map_Reports_To_Users'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_66">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Studies_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable mapping studies to users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Map_Studies_To_Users'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_67">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable viewing of studies mapped to users
+		</comment>	
+		<delete tableName="permission">
+			<where>name = 'Perm_View_Mapped_Studies'</where>
+		</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_68">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Studies';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable deleting of studies mapped to users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Delete_Mapped_Studies'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_69">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable viewing of reports mapped to users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_View_Mapped_Reports'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_70">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable deleting of reports mapped to users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Delete_Mapped_Reports'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_change_id_82">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Objects_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable firing up of dialog to map objects to Users.
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Map_Objects_To_Users'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_83">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_Forms_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to mapping of Forms to Users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Map_Forms_To_Users'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_84">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Map_ReportGroups_To_Users';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable mapping of Report Groups to Users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Map_ReportGroups_To_Users'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_85">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Deleting of Report Groups mapped to Users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Delete_Mapped_Report_Groups'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_86">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable viewing of Report Groups mapped to Users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_View_Mapped_Report_Groups'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_87">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Adding of Mapped Forms. Works in tandem with Perm_Map_Forms_To_Users
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Add_Mapped_Forms'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_88">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Viewing of Mapped Forms.
+		</comment>	
+			<delete tableName="permission">
+				<where>name  = 'Perm_View_Mapped_Forms'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_89">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Editing of Mapped Forms.
+		</comment>	
+			<delete tableName="permission">
+				<where>name  = 'Perm_Edit_Mapped_Forms'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_90">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Delete_Mapped_Forms';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable deleting of Mapped Forms.
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Delete_Mapped_Forms'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_91">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Edit_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Editing of Mapped Report Groups.
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Edit_Mapped_Report_Groups'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_change_id_92">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Mapped_Report_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Adding Mapped Report Groups.
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Add_Mapped_Report_Groups'</where>	
+			</delete>
+	</changeSet>
+
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_add_mapped_reports_groups">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Mapped_Reports_Groups';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Adding of Mapped Report Groups.
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Add_Mapped_Reports_Groups'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_add_mapped_reports">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_Add_Mapped_Reports';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Deleting permission to enable Adding Mapped Reports.
+		</comment>	
+			<delete tableName="permission">
+				<where>name = 'Perm_Add_Mapped_Reports'</where>	
+			</delete>
+	</changeSet>
+	
+	<changeSet author="dagmar@cell-life.org" id="permissions_delete_mapping_role_permission2">
+		<comment>Deleting any non-existent permissions which are mapped to roles</comment>
+		<delete tableName="role_permission">
+			<where>permission_id not in (select permission_id from permission)</where>
+		</delete>
+	</changeSet>	
+
+	<!-- author = Grace -->
+   <changeSet author="Mark" id="permissions_change_id_93">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM role where name='Role_Study_Manager'
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Study manager role to the role table
+		</comment>
+       <insert tableName="role">
+        <column name="name" value="Role_Study_Manager"/>
+        <column name="description" value="Creates studies and designs forms"/>
+        </insert>
+     </changeSet>
+     
+     <!-- author = Grace -->
+     <changeSet author="Mark" id="permissions_change_id_94">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM role where name='Role_Report_Manager'
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Report manager role to the role table
+		</comment>
+       <insert tableName="role">
+        <column name="name" value="Role_Report_Manager"/>
+        <column name="description" value="Designs reports"/>
+        </insert>
+      </changeSet>
+      
+      <!-- author = Grace -->
+      <changeSet author="Mark" id="permissions_change_id_95">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM role where name='Role_Data_Manager'
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Data manager role to the role table
+		</comment>
+       <insert tableName="role">
+        <column name="name" value="Role_Data_Manager"/>
+        <column name="description" value="View and Edit collected data"/>
+        </insert>
+      </changeSet>
+      
+      <!-- author = Grace -->
+      <changeSet author="Mark" id="permissions_change_id_96">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM role where name='Role_Data_Collector'
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Data collector role to the role table
+		</comment>
+       <insert tableName="role">
+        <column name="name" value="Role_Data_Collector"/>
+        <column name="description" value="Collects data online"/>
+        </insert>
+  	</changeSet>
+  	
+  	<!-- author = Grace -->    
+  	<changeSet author="Mark" id="permissions_change_id_97">
+	    <preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM role where name='Role_Mobile_User'
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Mobile user role to the role table
+		</comment>
+       <insert tableName="role">
+        <column name="name" value="Role_Mobile_User"/>
+        <column name="description" value="Collects data via mobile phone"/>
+        </insert>
+  	</changeSet>
+
+    <changeSet author="Grace" id="add_study_manager_role_dagmar">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Study_Manager' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding permissions to role Study Manager in role_permission table
+  	</comment>
+ 	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Edit_Forms'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Delete_Forms'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_View_Forms'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Add_Forms'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Add_Form_Versions'));
+  	</sql> 	
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Edit_Form_Versions'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_View_Form_Versions'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_View_Studies'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Edit_Studies'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Add_Studies'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Delete_Studies'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Import_Studies'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Export_Studies'));
+  	</sql> 	
+  </changeSet>
+   <changeSet author="Grace" id="add_perm_form_design_to_study_manager">
+   <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="13">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Study_Manager' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding form design permission to role Study Manager in role_permission table
+  	</comment>
+  	<sql>
+  		insert into role_permission (role_id, permission_id) 
+        values ((select role_id from role where name='Role_Study_Manager'),
+        (select permission_id from permission where name='Perm_Form_Design'))
+  	</sql>
+   </changeSet>
+	
+  <changeSet author="Grace" id="add_mobile_user_role_dagmar">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Mobile_User' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding permissions to role Mobile user in role_permission table
+  	</comment>
+ 	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_Add_Forms'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_Add_Form_Data'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_add_Form_Versions'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_Data_Edit'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_Data_Entry'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_Form_Design'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_View_Forms'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_View_Form_Data'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_View_Studies'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_View_Form_Versions'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_View_MobileMenuText'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Mobile_User'),
+         (select permission_id from permission where name='Perm_View_Users'));
+  	</sql>	
+  </changeSet>
+  <changeSet author="Grace" id="add_data_manager_Role_dagmar">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Data_Manager' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding permissions to role Data Manager in role_permission table
+  	</comment>
+ 	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_Data_Edit'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_View_Form_Data'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_Edit_Form_Data'));
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="Grace" id="add_report_manager_Role_dagmar">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Report_Manager' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding permissions to role Report Manager in role_permission table
+  	</comment>
+ 	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_Add_Reports'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_View_Reports'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_Edit_Reports'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_Delete_Reports'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_Import_Reports'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_Export_Reports'));
+  	</sql>
+  </changeSet>
+  <changeSet author="Grace" id="add_data_collector_Role_dagmar">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Data_Collector' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding permissions to role Data Collector in role_permission table
+  	</comment>
+ 	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Data_Collector'),
+         (select permission_id from permission where name='Perm_Data_Entry'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Collector'),
+         (select permission_id from permission where name='Perm_Add_Form_Data'));
+  	</sql>
+  </changeSet>
+
+  <changeSet author="dagmar@cell-life.org.za" id="add_role_report_user"> 
+     <preConditions onFail="MARK_RAN"> 
+    	<sqlCheck expectedResult="0"> 
+    	<![CDATA[ 
+		SELECT count(*) FROM role where name='Role_Report_User' 
+    	]]> 
+    	</sqlCheck> 
+     </preConditions> 
+     <comment> 
+   		Adding Report User role to the role table 
+     </comment> 
+     <insert tableName="role"> 
+       <column name="name" value="Role_Report_User"/> 
+       <column name="description" value="Views reports"/> 
+     </insert> 
+  </changeSet>
+
+  <changeSet author="dagmar@cell-life.org" id="add_role_report_user_perms">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Report_User' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding permissions to role Report User in role_permission table
+  	</comment>
+ 	<sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_User'),
+         (select permission_id from permission where name='Perm_View_Reports'));
+  	</sql>
+  	<sql> 
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Report_User'),
+         (select permission_id from permission where name='Perm_View_ReportGroups'));
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="dagmar@cell-life.org.za" id="fix_mobile_user_role_delete_Perm_Add_Forms">
+   <preConditions onFail="MARK_RAN">
+         <sqlCheck expectedResult="1">
+      <![CDATA[
+      SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Mobile_User'
+      and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Add_Forms';
+      ]]>
+         </sqlCheck>
+    </preConditions>
+    <comment>
+         Fixing mobile user Role - deleting Perm_Add_Forms
+    </comment>
+    <delete tableName="role_permission">
+        <where>permission_id = (select permission_id from permission where name='Perm_Add_Forms')
+        and role_id = (select role_id from role where name='Role_Mobile_User')</where>
+    </delete>
+ </changeSet>
+ <changeSet author="dagmar@cell-life.org.za" id="fix_mobile_user_role_delete_Perm_Add_Form_Versions">
+   <preConditions onFail="MARK_RAN">
+         <sqlCheck expectedResult="1">
+      <![CDATA[
+      SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Mobile_User'
+      and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Add_Form_Versions';
+      ]]>
+         </sqlCheck>
+    </preConditions>
+    <comment>
+         Fixing mobile user Role - deleting Perm_Add_Form_Versions
+    </comment>
+    <delete tableName="role_permission">
+        <where>permission_id = (select permission_id from permission where name='Perm_Add_Form_Versions')
+        and role_id = (select role_id from role where name='Role_Mobile_User')</where>
+    </delete>
+ </changeSet>
+ <changeSet author="dagmar@cell-life.org.za" id="fix_mobile_user_role_delete_Perm_Data_Edit">
+   <preConditions onFail="MARK_RAN">
+         <sqlCheck expectedResult="1">
+      <![CDATA[
+      SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Mobile_User'
+      and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Data_Edit';
+      ]]>
+         </sqlCheck>
+    </preConditions>
+    <comment>
+         Fixing mobile user Role - deleting Perm_Data_Edit
+    </comment>
+    <delete tableName="role_permission">
+        <where>permission_id = (select permission_id from permission where name='Perm_Data_Edit')
+        and role_id = (select role_id from role where name='Role_Mobile_User')</where>
+    </delete>
+ </changeSet>
+ <changeSet author="dagmar@cell-life.org.za" id="fix_mobile_user_role_delete_Perm_Data_Entry">
+   <preConditions onFail="MARK_RAN">
+         <sqlCheck expectedResult="1">
+      <![CDATA[
+      SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Mobile_User'
+      and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Data_Entry';
+      ]]>
+         </sqlCheck>
+    </preConditions>
+    <comment>
+         Fixing mobile user Role - deleting Perm_Data_Entry
+    </comment>
+    <delete tableName="role_permission">
+        <where>permission_id = (select permission_id from permission where name='Perm_Data_Entry')
+        and role_id = (select role_id from role where name='Role_Mobile_User')</where>
+    </delete>
+ </changeSet>
+ <changeSet author="dagmar@cell-life.org.za" id="fix_mobile_user_role_delete_Perm_Form_Design">
+   <preConditions onFail="MARK_RAN">
+         <sqlCheck expectedResult="1">
+      <![CDATA[
+      SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Mobile_User'
+      and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Form_Design';
+      ]]>
+         </sqlCheck>
+    </preConditions>
+    <comment>
+         Fixing mobile user Role - deleting Perm_Form_Design
+    </comment>
+    <delete tableName="role_permission">
+        <where>permission_id = (select permission_id from permission where name='Perm_Form_Design')
+        and role_id = (select role_id from role where name='Role_Mobile_User')</where>
+    </delete>
+ </changeSet>
+ <changeSet author="dagmar@cell-life.org.za" id="fix_mobile_user_role_delete_Perm_View_Form_Data">
+   <preConditions onFail="MARK_RAN">
+         <sqlCheck expectedResult="1">
+      <![CDATA[
+      SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Mobile_User'
+      and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_View_Form_Data';
+      ]]>
+         </sqlCheck>
+    </preConditions>
+    <comment>
+         Fixing mobile user Role - deleting Perm_View_Form_Data
+    </comment>
+    <delete tableName="role_permission">
+        <where>permission_id = (select permission_id from permission where name='Perm_View_Form_Data')
+        and role_id = (select role_id from role where name='Role_Mobile_User')</where>
+    </delete>
+ </changeSet>
+  <changeSet author="vkakama@gmail.com" id="add_more_permissions_to_a_data_collector">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="2">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Data_Collector' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding permissions to role Data Collector in role_permission table
+  	</comment>
+ 	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Collector'),
+         (select permission_id from permission where name='Perm_View_Forms'));
+  	</sql>
+  	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Collector'),
+         (select permission_id from permission where name='Perm_View_Studies'));
+  	</sql>
+  	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Collector'),
+         (select permission_id from permission where name='Perm_View_Form_Versions'));
+  	</sql>
+  </changeSet>
+    <changeSet author="vkakama@gmail.com" id="add_more_data_manager_permissions">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="3">
+    	<![CDATA[
+		SELECT count(*) FROM role r, role_permission rp where r.name='Role_Data_Manager' and r.role_id = rp.role_id;
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding more permissions to role Data Manager in role_permission table
+  	</comment>
+ 	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_View_Studies'));
+  	</sql>
+  	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_View_Forms'));
+  	</sql>
+  	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_View_Form_Versions'));
+  	</sql>
+  </changeSet>
+
+    <changeSet id="add-unique-constraint-to-study_user" author="vkakama@gmail.com">
+        <comment>
+			Add unique constraint to mapping tables
+        </comment>
+	<addUniqueConstraint tableName="study_user" columnNames="study_id,user_id" constraintName="un_studyUsermap"/>
+	<addUniqueConstraint tableName="user_form" columnNames="form_id,user_id" constraintName="un_formUsermap"/>
+	<addUniqueConstraint tableName="user_report" columnNames="report_id,user_id" constraintName="un_userReport"/>
+	<addUniqueConstraint tableName="report_user" columnNames="report_id,user_id" constraintName="un_ReportUser"/>
+    </changeSet>
+</databaseChangeLog>

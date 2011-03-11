@@ -1,0 +1,104 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.openxdata</groupId>
+	<artifactId>openxdata-v1.7-proto</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+	<name>OpenXdata Protocols - Version 1.7</name>
+
+	<repositories>
+		<repository>
+			<id>thirdparty</id>
+			<name>thirdparty</name>
+			<url>http://nexus.openxdata.org/content/repositories/thirdparty/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.openxdata</groupId>
+			<artifactId>protocol-api</artifactId>
+			<version>1.2</version>
+			<scope>provided</scope>
+		</dependency>
+        <dependency>
+            <groupId>org.openxdata</groupId>
+            <artifactId>openxdata-mobile-model</artifactId>
+            <version>1.0</version>
+        </dependency>
+	  <dependency>
+		<groupId>org.openxdata</groupId>
+            <artifactId>server</artifactId>
+            <version>1.2</version>
+	  </dependency>
+	  <dependency>
+            <groupId>net.sf.kxml</groupId>
+            <artifactId>kxml2</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.minixpath</groupId>
+            <artifactId>minixpath</artifactId>
+            <version>0.3</version>
+        </dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<excludes>
+									<exclude>org.openxdata:protocol-api</exclude>
+								</excludes>
+								<includes>
+									<include>org.openxdata:openxdata-mobile-model</include>
+									<include>org.openxdata:server</include>
+									<include>net.sf.kxml:kxml2</include>
+									<include>net.sf.minixpath:minixpath</include>
+								</includes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>org.openxdata:server</artifact>
+									<includes>
+										<include>org/openxdata/server/admin/model/exception/*</include>
+										<include>org/fcitmuk/epihandy/EpihandyXformSerializer.class</include>
+									</includes>
+								</filter>
+							</filters>
+							<minimizeJar>true</minimizeJar>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

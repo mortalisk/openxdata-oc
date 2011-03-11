@@ -1,0 +1,386 @@
+package org.openxdata.client;
+
+import java.util.List;
+
+import org.openxdata.client.controllers.DataCaptureController;
+import org.openxdata.client.controllers.DeleteStudyFormController;
+import org.openxdata.client.controllers.EditStudyFormController;
+import org.openxdata.client.controllers.FormListController;
+import org.openxdata.client.controllers.FormPrintController;
+import org.openxdata.client.controllers.FormResponsesController;
+import org.openxdata.client.controllers.LoginController;
+import org.openxdata.client.controllers.NewStudyFormController;
+import org.openxdata.client.controllers.UserProfileController;
+import org.openxdata.client.service.StudyService;
+import org.openxdata.client.service.StudyServiceAsync;
+import org.openxdata.client.service.UserService;
+import org.openxdata.client.service.UserServiceAsync;
+import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.client.service.SettingServiceAsync;
+import org.openxdata.server.admin.model.Setting;
+import org.openxdata.server.admin.model.SettingGroup;
+import org.openxdata.server.admin.model.User;
+
+
+import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.Style.VerticalAlignment;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.util.Padding;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.HorizontalPanel;
+import com.extjs.gxt.ui.client.widget.Html;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.Viewport;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.custom.Portal;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboValue;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.RowLayout;
+import com.extjs.gxt.ui.client.widget.layout.TableData;
+import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
+import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
+import org.openxdata.client.controllers.FormVersionsController;
+import org.openxdata.sharedlib.client.util.FormUtil;
+/**
+ * Entry point classes define <code>onModuleLoad()</code>.
+ */
+public class Emit implements EntryPoint, Refreshable {
+	
+    final AppMessages appMessages = GWT.create(AppMessages.class);	
+    public static final String VIEWPORT = "viewport";
+    public static final String PORTAL = "portal";
+    public static final String LOGGED_IN_USER_NAME = "loggedInUser";
+    
+    // services
+    FormServiceAsync formService;
+    UserServiceAsync userService;
+    SettingServiceAsync settingService;
+    StudyServiceAsync studyService;
+    
+    // top level UI components
+    private Viewport viewport;
+    private Portal portal;
+    
+    // user dependent UI components
+    private Text userBanner;
+    private Button admin;
+    
+    /**
+     * This is the entry point method.
+     */
+    @Override
+    public void onModuleLoad() {
+        /* Install an UncaughtExceptionHandler which will
+         * produce <code>FATAL</code> log messages
+         */
+    	GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+    		@Override
+            public void onUncaughtException(final Throwable tracepoint) {
+            	GWT.log("Uncaught Exception", tracepoint);
+            	MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(tracepoint.getMessage()), null);
+            	ProgressIndicator.hideProgressBar();
+            }
+        });
+
+    	formService = FormServiceAsync.Util.getInstance();
+    	settingService = SettingServiceAsync.Util.getInstance();
+    	userService = (UserServiceAsync) GWT.create(UserService.class);
+        studyService = (StudyServiceAsync)GWT.create(StudyService.class);
+        
+        // determine the logged in user
+        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+        	@Override
+            public void execute() {
+            	userService.getLoggedInUser(new EmitAsyncCallback<User>() {
+            		@Override
+                    public void onSuccess(User usr) {
+            			Registry.register(LOGGED_IN_USER_NAME, usr);
+                    	setUserName(usr);
+                    	toggleAdminButton(usr);
+                    	Dispatcher.get().dispatch(FormListController.FORMLIST);
+                    }
+                });
+            }
+        });
+        
+        // determine the date settings
+        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+            @Override
+			public void execute() {
+            	settingService.getSettingGroup("Date", new EmitAsyncCallback<SettingGroup>() {
+    				@Override
+    				public void onSuccess(SettingGroup result) {
+    			        FormUtil.setDateDisplayFormat(getDateSetting(result, "displayDateFormat", "dd MMM yyyy"));
+    			        FormUtil.setDateSubmitFormat(getDateSetting(result, "submitDateFormat", "yyyy-MM-dd"));
+    			        FormUtil.setDateTimeDisplayFormat(getDateSetting(result, "displayDateTimeFormat", "dd MMM yyyy HH:mm:ss"));
+    			        FormUtil.setDateTimeSubmitFormat(getDateSetting(result, "submitDateTimeFormat", "yyyy-MM-dd HH:mm:ss"));
+    			        FormUtil.setTimeDisplayFormat(getDateSetting(result, "displayTimeFormat", "HH:mm:ss"));
+    			        FormUtil.setTimeSubmitFormat(getDateSetting(result, "submitTimeFormat", "HH:mm:ss"));
+    				}
+    			});
+            }
+    	});
+        
+        initUI();
+        
+        RootPanel.get().setStylePrimaryName("body");
+        
+        Dispatcher dispatcher = Dispatcher.get();
+        
+        dispatcher.addController(new LoginController(userService));
+        dispatcher.addController(new FormListController(formService));
+        dispatcher.addController(new DataCaptureController(userService, formService));
+        dispatcher.addController(new UserProfileController(userService));
+        dispatcher.addController(new FormPrintController());
+        dispatcher.addController(new FormResponsesController(formService, userService));
+        dispatcher.addController(new NewStudyFormController(formService,studyService,userService));
+        dispatcher.addController(new EditStudyFormController(studyService,formService,userService));
+        dispatcher.addController(new DeleteStudyFormController(studyService, formService));
+        dispatcher.addController(new FormVersionsController(studyService));
+        
+        RefreshablePublisher publisher = RefreshablePublisher.get();
+        publisher.subscribe(RefreshableEvent.Type.NAME_CHANGE, this);
+        
+        FormUtil.dlg.hide();
+    }
+    
+    private void initUI() {
+        viewport = new Viewport();
+        viewport.setLayout(new BorderLayout());
+        viewport.addStyleName("emit-viewport");
+
+        createNorth();
+        createPortal();
+        createDisclaimer();
+
+        // registry serves as a global context
+        Registry.register(VIEWPORT, viewport);
+        Registry.register(PORTAL, portal);
+
+        RootPanel.get().add(viewport);
+    }
+
+    private void createNorth() {
+        HorizontalPanel northPanel = new HorizontalPanel();
+        northPanel.setTableWidth("100%");
+        northPanel.setBorders(false);
+        
+        TableData logoTableData = new TableData();
+        logoTableData.setHorizontalAlign(HorizontalAlignment.LEFT);
+        logoTableData.setVerticalAlign(VerticalAlignment.TOP);
+        logoTableData.setWidth("250");
+        Image logo = new Image(appMessages.logo());
+        logo.setTitle(appMessages.title());
+
+        logo.addClickHandler(new ClickHandler() {
+        	@Override
+            public void onClick(ClickEvent event) {
+            	com.google.gwt.user.client.Window.open(appMessages.logoUrl(),"name","features");
+              }
+            });
+        
+        northPanel.add(logo, logoTableData); 
+
+        TableData userBannerTableData = new TableData();
+        userBannerTableData.setHorizontalAlign(HorizontalAlignment.CENTER);
+        userBannerTableData.setVerticalAlign(VerticalAlignment.MIDDLE);
+        userBanner = new Text("");
+        userBanner.setStyleName("userBanner");
+        northPanel.add(userBanner, userBannerTableData);
+        
+        admin = new Button(appMessages.admin());
+        admin.hide();
+        admin.addListener(Events.Select, new Listener<ButtonEvent>() {
+        	@Override
+            public void handleEvent(ButtonEvent be) {
+                forwardToAdmin(); 
+            }
+        });
+
+        Button myDetails = new Button(appMessages.myDetails());
+        myDetails.addListener(Events.Select, new Listener<ButtonEvent>() {
+        	@Override
+            public void handleEvent(ButtonEvent be) {
+                forwardToUserProfile();
+            }
+        }); 
+        
+        Button logout = new Button(appMessages.logout());
+        logout.addListener(Events.Select, new Listener<ButtonEvent>() {
+        	@Override
+            public void handleEvent(ButtonEvent be) {
+                Window.Location.replace(GWT.getHostPageBaseURL()+"j_spring_security_logout"); 
+            }
+        });
+        FlexTable ft = new FlexTable();
+        ft.setBorderWidth(0);
+        ft.setWidget(0, 0, myDetails);
+        ft.setWidget(0, 1, admin);
+        ft.setWidget(0, 2, logout);
+        TableData buttonsTableData = new TableData();
+        buttonsTableData.setHorizontalAlign(HorizontalAlignment.RIGHT);
+        buttonsTableData.setVerticalAlign(VerticalAlignment.MIDDLE);
+        buttonsTableData.setWidth("200");
+        buttonsTableData.setHeight("40");
+        northPanel.add(ft, buttonsTableData);
+        
+        BorderLayoutData data = new BorderLayoutData(LayoutRegion.NORTH, 50);
+        data.setMargins(new Margins(10,40,10,14));
+        viewport.add(northPanel, data);
+    }
+
+    private void createPortal() {
+        LayoutContainer center = new LayoutContainer();
+        center.setLayout(new FitLayout());
+        
+        portal = new Portal(1);
+        portal.setSpacing(10);
+        portal.setColumnWidth(0, .99);
+        center.add(portal);
+
+        BorderLayoutData data = new BorderLayoutData(LayoutRegion.CENTER);
+        data.setMargins(new Margins(5, 5, 5, 5));
+
+        viewport.add(center, data);
+    }
+
+	private void createDisclaimer() {        
+        final LayoutContainer lc = new LayoutContainer();
+        lc.setBorders(false);
+        lc.setBounds(1, 1, 1, 1);
+        
+        VBoxLayout layout = new VBoxLayout();
+        layout.setPadding(new Padding(0));  
+        layout.setVBoxLayoutAlign(VBoxLayoutAlign.CENTER);  
+        lc.setLayout(layout);
+
+        final SimpleComboBox<String> languageSelector = new SimpleComboBox<String>();
+        languageSelector.setEmptyText(appMessages.language());
+        languageSelector.add("English");
+        languageSelector.setData("English", "en");
+        languageSelector.add("Portugu\u00EAs");
+        languageSelector.setData("Portugu\u00EAs", "pt");
+        languageSelector.add("Sesotho");
+        languageSelector.setData("Sesotho", "st");
+        languageSelector.add("Chichewa");
+        languageSelector.setData("Chichewa", "ny");
+        languageSelector.addSelectionChangedListener(new SelectionChangedListener<SimpleComboValue<String>>() {
+        	@Override
+        	public void selectionChanged(SelectionChangedEvent<SimpleComboValue<String>> se) {
+        		String selectedValue = se.getSelectedItem().getValue();
+        		String locale = languageSelector.getData(selectedValue);
+        		if (locale != null && !locale.trim().equals("")) {
+        			UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+            		urlBuilder.setParameter("locale", locale);
+        			Window.Location.replace(urlBuilder.buildString());
+        		}
+        	}
+        });
+        lc.add(languageSelector);
+        
+        lc.add(new Text(""));
+
+        ContentPanel panel = new ContentPanel();  
+ 
+        panel.setLayout(new RowLayout(Orientation.HORIZONTAL));  
+        panel.setSize(380, 50);  
+        panel.setFrame(false);  
+        panel.setCollapsible(false);
+        panel.setHeaderVisible(false);
+        panel.setBorders(false);
+        panel.setBodyBorder(false);
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table border=0 cellspacing=10><tr><td>");
+        sb.append(appMessages.disclaimer());
+        sb.append("</td><td>");
+   		sb.append("<a href=\"#\" onclick=\"window.open('http://www.cell-life.org');\" title=\"Cell-Life : http://www.cell-life.org' style='cursor:hand;\">");
+        sb.append("<img width=\"40\" height=\"34\" src=\"images/emit/cellifeLogoTinyTrans.png\" title=\"Cell-Life\" style=\"cursor:hand;\"/>");
+        sb.append("</a>");
+        sb.append("</td><td>");        
+        sb.append(appMessages.and());
+        sb.append("</td><td valign=middle>");
+        sb.append("<a href=\"#\" onclick=\"window.open('http://www.openxdata.org');\" title=\"OpenXData : http://www.openxdata.org' style='cursor:hand;\">");
+        sb.append("<img width=\"145\" height=\"23\" src=\"images/emit/openxdata-logo-small.png\" valign=middle title=\"OpenXData\" style=\"cursor:hand;\"/>");        
+        sb.append("</a>");
+        sb.append("</td></tr></table>");
+        Html html = new Html(sb.toString());        
+              
+        lc.add(html);        
+        
+        BorderLayoutData data = new BorderLayoutData(LayoutRegion.SOUTH, 100);
+        data.setMargins(new Margins(10,40,10,14));
+        viewport.add(lc, data);
+    }
+    
+    public void forwardToUserProfile(){
+    	Dispatcher dispatcher = Dispatcher.get();
+    	dispatcher.dispatch(UserProfileController.USERPROFILE);
+    }
+    
+    public void forwardToAdmin(){
+    	UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+		Window.open(urlBuilder.buildString().replace("Emit.html", "OpenXDataServerAdmin/OpenXDataServerAdmin.html"), "Admin", null);
+    }
+
+	public void refresh(RefreshableEvent event) {
+		User user = event.getData();
+		Registry.register(LOGGED_IN_USER_NAME, user);
+		GWT.log("Name change event for "+user.getFullName());
+		setUserName(user);
+	}
+	
+	public void setUserName(User user) {
+		String userName = appMessages.user() + " : " + user.getFullName();
+		userBanner.setText(userName);
+	}
+	
+	public void toggleAdminButton(User user) {
+		if (user.hasAdministrativePrivileges()) {
+			admin.show();
+		} else {
+			admin.hide();
+		}
+	}
+
+	public String getDateSetting(SettingGroup dateSettingGroup, String name, String defaultValue) {
+		if (dateSettingGroup != null) {
+			List<Setting> settings = dateSettingGroup.getSettings();
+			for (Setting s : settings) {
+				if (s.getName().equalsIgnoreCase(name)) {
+					GWT.log("Found "+name+" setting="+s.getValue());
+					return s.getValue();
+				}
+			}
+		}
+		GWT.log("Couldn't find any setting with name '"+name+"'. Using default value="+defaultValue);
+		return defaultValue;
+	}
+}

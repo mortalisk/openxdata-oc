@@ -1,0 +1,115 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+    <title>CSV export Acceptance test</title>
+    <body>
+        <h1>CSV export Acceptance test</h1>
+        All tests are captured by <span concordion:execute="setCapturer(#TEXT)">admin</span>
+        on the <span concordion:execute="setDate(#TEXT)">15/09/2010</span>.
+        <h2>
+            The exporter should handle normal xforms with a int and a string as input.
+        </h2>
+        <div class="example">
+            Given a form that has two fields, one field  is called
+            <span concordion:set="#fieldName">firstname</span>
+            and has type <span concordion:set="#fieldType">string</span>.
+            <span concordion:execute="addField(#fieldName, #fieldType)" />
+
+            The other field is called <span concordion:set="#fieldName">age</span>
+            and is a <span concordion:set="#fieldType">integer</span> field.
+            <span concordion:execute="addField(#fieldName, #fieldType)" />
+
+            When we export the data after submitting these data:
+            <table concordion:execute="addSubmission(#data)">
+                <tr>
+                    <th concordion:set="#data">Submission where fields are separated with #</th>
+                </tr>
+                <tr><td>David#8</td></tr>
+                <tr><td>Peter#16</td></tr>
+            </table>
+            Then the CSV exporter should produce this output:
+            <pre concordion:assertEquals="export()">ID,CAPTURER,CREATION DATE,FIRSTNAME,AGE
+1,admin,15/09/2010,David,8
+2,admin,15/09/2010,Peter,16</pre>
+        </div>
+        <h2>
+            The exporter should handle normal a xform with a GPS location as input.
+        </h2>
+        <div class="example">
+            Given this form with a <span concordion:set="#fieldName">name</span>
+            <span concordion:execute="addField(#fieldName)" />
+            and a <span concordion:set="#fieldName">location</span>field.
+            <span concordion:execute="addField(#fieldName)" />
+            <pre concordion:set="#xform"><![CDATA[
+<xforms xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <model>
+    <instance id="test">
+      <gps_study_gps_forms_v1 name="GPS forms_v1" id="1" formKey="gps_study_gps_forms_v1">
+        <name/>
+        <location/>
+      </gps_study_gps_forms_v1>
+    </instance>
+    <bind id="name" nodeset="/test/name" type="xsd:string"/>
+    <bind id="location" nodeset="/test/location" format="gps" type="xsd:string"/>
+  </model>
+</xforms>]]>
+            </pre>
+            When we export the data after submitting these data:
+            <table concordion:execute="addSubmission(#data)">
+                <tr>
+                    <th concordion:set="#data">Submission where fields are separated with #</th>
+                </tr>
+                <tr><td>David#10.1010,12.1212,13.1313</td></tr>
+                <tr><td>Maria#16.161616,17.171717,18.181818</td></tr>
+                <tr><td>Jesus#1.23456789,9.8765432,0.0001</td></tr>
+            </table>
+            <pre concordion:assertEquals="export(#xform)">ID,CAPTURER,CREATION DATE,NAME,LOCATION_LATITUDE,LOCATION_LONGITUDE,LOCATION_ALTITUDE
+1,admin,15/09/2010,David,10.1010,12.1212,13.1313
+2,admin,15/09/2010,Maria,16.161616,17.171717,18.181818
+3,admin,15/09/2010,Jesus,1.23456789,9.8765432,0.0001</pre>
+        </div>
+        
+        <h2>
+            The exporter should handle forms with multimedia (but not export it yet).
+        </h2>
+        <div class="example">
+            Given this form: 
+            <span concordion:set="#fieldName">patientid</span><span concordion:execute="addField(#fieldName)" />
+            <span concordion:set="#fieldName">title</span><span concordion:execute="addField(#fieldName)" />
+            <span concordion:set="#fieldName">firstname</span><span concordion:execute="addField(#fieldName)" />
+            <span concordion:set="#fieldName">lastname</span><span concordion:execute="addField(#fieldName)" />
+            <span concordion:set="#fieldName">picture</span><span concordion:execute="addField(#fieldName)" />
+            <pre concordion:set="#xform"><![CDATA[
+<xf:xforms xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xf:model>
+    <xf:instance id="test">
+      <test name="Patient Registration" id="1">
+        <patientid/>
+        <title/>
+        <firstname/>
+        <lastname/>
+        <picture/>
+     </test>
+    </xf:instance>
+    <xf:bind id="patientid" nodeset="/test/patientid" type="xsd:string"/>
+    <xf:bind id="title" nodeset="/test/title" type="xsd:string"/>
+    <xf:bind id="firstname" nodeset="/test/firstname" type="xsd:string"/>
+    <xf:bind id="lastname" nodeset="/test/lastname" type="xsd:string" required="true()"/>
+    <xf:bind id="picture" nodeset="/test/picture" format="image" type="xsd:base64Binary"/>
+  </xf:model>
+</xf:xforms>
+]]>         </pre>
+            When we export the data after submitting these data:
+            <table concordion:execute="addSubmission(#data)">
+                <tr>
+                    <th concordion:set="#data">Submission where fields are separated with #</th>
+                </tr>
+                <tr><td>123#Mr#David#Smith# </td></tr>
+                <tr><td>124#Ms#Sally#Jones# </td></tr>
+                <tr><td>125#Mr#Joe#Soap#/9j/4AAQSkZJRgABAQEASABIAAD/4SX+RXhpZgAAS....truncated</td></tr>
+            </table>
+            <pre concordion:assertEquals="export(#xform)">ID,CAPTURER,CREATION DATE,PATIENTID,TITLE,FIRSTNAME,LASTNAME
+1,admin,15/09/2010,123,Mr,David,Smith
+2,admin,15/09/2010,124,Ms,Sally,Jones
+3,admin,15/09/2010,125,Mr,Joe,Soap</pre>
+        </div>
+    </body>
+</html>

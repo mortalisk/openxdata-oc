@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Log4J Log Messages</title>
+<style type="text/css">
+<!--
+body, table {font-family: arial,sans-serif; font-size: x-small;}
+th {background: #336699; color: #FFFFFF; text-align: left;}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" topmargin="6" leftmargin="6">
+<hr size="1" noshade>
+Log session start time Thu May 27 16:01:47 EAT 2010<br>
+<br>
+<table cellspacing="0" cellpadding="4" border="1" bordercolor="#224466" width="100%">
+<tr>
+<th>Time</th>
+<th>Thread</th>
+<th>Level</th>
+<th>Category</th>
+<th>Message</th>
+</tr>
+
+<tr>
+<td>0</td>
+<td title="Thread-1 thread">Thread-1</td>
+<td title="Level"><font color="#993300"><strong>WARN</strong></font></td>
+<td title="com.mchange.v2.c3p0.management.ActiveManagementCoordinator category">com.mchange.v2.c3p0.management.ActiveManagementCoordinator</td>
+<td title="Message">A C3P0Registry mbean is already registered. This probably means that an application using c3p0 was undeployed, but not all PooledDataSources were closed prior to undeployment. This may lead to resource leaks over time. Please take care to close all PooledDataSources.</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td title="Thread-1 thread">Thread-1</td>
+<td title="Level"><font color="#993300"><strong>WARN</strong></font></td>
+<td title="com.mchange.v2.c3p0.management.ActiveManagementCoordinator category">com.mchange.v2.c3p0.management.ActiveManagementCoordinator</td>
+<td title="Message">A C3P0Registry mbean is already registered. This probably means that an application using c3p0 was undeployed, but not all PooledDataSources were closed prior to undeployment. This may lead to resource leaks over time. Please take care to close all PooledDataSources.</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td title="main thread">main</td>
+<td title="Level"><font color="#993300"><strong>ERROR</strong></font></td>
+<td title="org.openxdata.server.database.DatabaseManager category">org.openxdata.server.database.DatabaseManager</td>
+<td title="Message">Caught an exception Server connection failure during transaction. Due to underlying exception: 'java.sql.SQLException: Java does not support the MySQL character encoding  encoding 'UTF-8 '.'.
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.sql.SQLException
+MESSAGE: Java does not support the MySQL character encoding  encoding 'UTF-8 '.
+
+STACKTRACE:
+
+java.sql.SQLException: Java does not support the MySQL character encoding  encoding 'UTF-8 '.
+	at com.mysql.jdbc.Connection.configureCharsetProperties(Connection.java:2189)
+	at com.mysql.jdbc.Connection.configureClientCharacterSet(Connection.java:2232)
+	at com.mysql.jdbc.Connection.initializePropsFromServer(Connection.java:3692)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2684)
+	at com.mysql.jdbc.Connection.&lt;init&gt;(Connection.java:1474)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:264)
+	at java.sql.DriverManager.getConnection(DriverManager.java:582)
+	at java.sql.DriverManager.getConnection(DriverManager.java:185)
+	at org.openxdata.server.database.DatabaseManager.getConnection(DatabaseManager.java:178)
+	at org.openxdata.server.database.DatabaseManager.getConnection(DatabaseManager.java:150)
+	at org.openxdata.server.database.DatabaseManager.executeLiquibaseUpdates(DatabaseManager.java:126)
+	at org.openxdata.server.database.DatabaseManager.updateDatabase(DatabaseManager.java:191)
+
+** END NESTED EXCEPTION **
+
+
+Attempted reconnect 3 times. Giving up. - now trying to create the db</td>
+</tr>
+
+<tr>
+<td>3194</td>
+<td title="Thread-17 thread">Thread-17</td>
+<td title="Level"><font color="#993300"><strong>ERROR</strong></font></td>
+<td title="org.openxdata.server.bluetooth.FormsBluetoothServer category">org.openxdata.server.bluetooth.FormsBluetoothServer</td>
+<td title="Message">Can't initialize bluetooth: </td>
+</tr>
+<tr><td bgcolor="#993300" style="color:White; font-size : xx-small;" colspan="6">javax.bluetooth.BluetoothStateException: Change Bluetooth Discovery mode error
+<br>&nbsp;&nbsp;&nbsp;&nbsp;	at com.intel.bluetooth.BluetoothStackMicrosoft.setDiscoverable(Native Method)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;	at com.intel.bluetooth.BluetoothStackMicrosoft.setLocalDeviceDiscoverable(BluetoothStackMicrosoft.java:233)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;	at javax.bluetooth.LocalDevice.setDiscoverable(LocalDevice.java:206)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;	at org.fcitmuk.communication.bluetooth.BluetoothServer.run(BluetoothServer.java:101)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;	at java.lang.Thread.run(Unknown Source)
+</td></tr>
+

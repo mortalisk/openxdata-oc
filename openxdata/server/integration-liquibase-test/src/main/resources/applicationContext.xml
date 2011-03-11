@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${hibernate.connection.driver_class}" />
+        <property name="url" value="${hibernate.connection.url}" />
+        <property name="username" value="${hibernate.connection.username}" />
+        <property name="password" value="${hibernate.connection.password}" />
+    </bean>
+    <bean id="liquibase" class="org.openxdata.server.liquibase.liquibasetest.SpringLiquibaseUpdater">
+        <property name="dataSource" ref="dataSource" />
+        <property name="changeLog" value="" />
+    </bean>
+    <bean id="placeholderConfig"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="false" />
+        <property name="location"
+      value="classpath:MYSQL_SETTINGS.properties" />
+    </bean>
+    <bean id="database" class="org.openxdata.server.liquibase.liquibasetest.Main">
+        <property name="dbName" value="${hibernate.connection.database}" />
+    </bean>
+</beans>

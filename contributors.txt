@@ -1,0 +1,30 @@
+List of all contributors to the OpenXdata Code base
+
+If you add a contributor, specify << Name, email address and current organisation >> (in that order). 
+If the contributor has sinceleft the organisation with which they contributed to the code base, add the last known organisation 
+under which they authored LOC to the code base.
+
+##################################################################################################
+
+1. Dagmar Timler 
+2. Mark Gerard - cattabanks@gmail.com - Center for International Health, UIB, Norway.
+3. Jonny Heggheim
+4. Brent Atkinson
+5. Simon Kelly
+6. Ronald Kayondo
+7. Charles Tumwebaze
+8. Daniel Kayiwa
+9. Maimoona Kausar
+10. Dave Roberge
+11. Victor Kakama
+12. Simon Muwanga
+13. Morten Bendkinson
+14. Steven Nsubuga
+15. Job R. Asiimwe
+16. Laiton Namutebi
+17. Raghu Mittal
+18. Nishant Verma
+19. Ali Liaquat
+20. Benjamin Gruba
+21. Kitaka Brian
+22. Temujin Penlington

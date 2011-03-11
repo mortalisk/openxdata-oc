@@ -1,0 +1,10 @@
+ <env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'>
+    <env:Header/>
+    <env:Body>
+        <ns1:sayHello xmlns:ns1='http://jbpm.org/examples/hello'>
+            <name>Popeye</name>
+        </ns1:sayHello>
+    </env:Body>
+</env:Envelope>
+
+

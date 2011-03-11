@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!-- ********************************************************* -->
+<!-- ** OpenClinica Module                                       ** -->
+<!-- **	                                                    ** -->
+<!-- ** @author Daniel Kayiwa                                   ** -->
+<!-- ** @version 1.0                                        ** -->
+<!-- ********************************************************* -->
+<project name="openclinica module" default="package-jar">
+		
+	<!-- Base definitions (cannot be overwritten by user property file) -->
+	<property file="build.properties" />
+	
+	<!-- *********************************************************** -->
+	<!-- **                     TARGETS                           ** -->
+	<!-- *********************************************************** -->
+	<target name="init" depends="" description="initialization">
+
+		<ant antfile="../openxdata server/build.xml" target="package-jar" inheritall="false"/>
+
+		<path id="classpath">
+			<fileset dir="lib">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="../lib-common">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="../openxdata-model/dist">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="../openxdata server/dist">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="../openxdata server/lib">
+				<include name="**/*.jar"/>
+			</fileset>
+		</path>
+	</target>
+
+	<target name="clean" description="Delete build and dist directories">
+		<delete dir="${dist.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="init,clean" description="Compiles the code">
+		<mkdir dir="${build.dir}" />
+		
+		<!-- Copy other source data to the build folder -->
+		<copy todir="${build.dir}">
+			<fileset dir="src/" excludes="**/*.java" />
+		</copy>
+		
+		<!--  Compile java files -->
+		<javac destdir="${build.dir}" classpathref="classpath" debug="true" debuglevel="lines,vars,source" fork="true">
+			<src path="src/" />
+			<include name="**/*.java" />
+		</javac>
+	</target>
+	
+	<target name="package-init" depends="compile" description="Packages into jar file">
+		<mkdir dir="${dist.dir}" />
+	</target>
+	
+	<target name="package-jar" depends="package-init" description="Packages class files into jar file to be included in other projects">
+		<!-- Create distributable jar file -->
+		<jar destfile="${dist.dir}/${appname}-${version}.jar">
+			<fileset dir="${build.dir}" >
+				<exclude name="src/**/*" />
+				<exclude name="test/**/*" />
+			</fileset>
+		</jar>
+		
+		<copy tofile="H:\openxdata\Server\openxdata server\lib\${appname}-${version}.jar" file="dist\${appname}-${version}.jar"/>
+	
+	</target>
+	
+</project>
+

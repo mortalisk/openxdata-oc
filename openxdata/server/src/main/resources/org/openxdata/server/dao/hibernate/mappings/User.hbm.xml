@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openxdata.server.admin.model">
+
+	<class name="User" table="users" lazy="false">
+	
+		<id name="userId" type="java.lang.Integer" column="user_id"
+				unsaved-value="0">
+			<generator class="native">
+					 <param name="sequence">users_user_id_seq</param>
+			</generator>
+		</id>
+	
+		<discriminator column="user_id" insert="false" />
+	
+		<property name="name" type="java.lang.String" column="user_name" length="50" />
+		
+		<property name="firstName" type="java.lang.String"
+			access="field" column="first_name" length="50" />
+
+		<property name="middleName" type="java.lang.String"
+			access="field" column="middle_name" length="50" />
+
+		<property name="lastName" type="java.lang.String"
+			access="field" column="last_name" length="50" />
+	
+		<many-to-one name="creator" class="User" not-null="true" />
+	
+		<property name="dateCreated" type="java.util.Date"
+			column="date_created"  length="19" />
+	
+		<many-to-one name="changedBy" class="User" column="changed_by" />
+	
+		<property name="dateChanged" type="java.util.Date"
+			column="date_changed" length="19" />
+	
+		<property name="voided" type="boolean" column="voided"
+			length="1" not-null="true" />
+	
+		<many-to-one name="voidedBy" class="User" column="voided_by" />
+	
+		<property name="dateVoided" type="java.util.Date"
+			column="date_voided" length="19" />
+	
+		<property name="voidReason" type="java.lang.String"
+			column="void_reason" length="255" />
+	
+		<property name="secretQuestion" type="java.lang.String"
+			column="secret_question" length="255" />
+			
+		<property name="secretAnswer" type="java.lang.String"
+			column="secret_answer" length="255" />
+			
+		<property name="password" type="java.lang.String"
+			access="field" column="password" length="50" />
+			
+		<property name="salt" type="java.lang.String"
+			access="field" column="salt" length="50" />
+			
+		<property name="phoneNo" type="java.lang.String" column="phone_no" length="20" />
+	
+		<property name="email" type="java.lang.String"
+			column="email" length="60" />	
+			
+		<property name="status" type="java.lang.Integer"
+			column="status" length="11" />
+			
+		<property name="online" type="java.lang.Integer"
+			column="online" length="11" />
+	
+		<!-- Associations -->
+		<set name="roles" table="user_role" lazy="false" cascade="save-update">
+			<key>
+				<column name="user_id" />
+			</key>
+			<many-to-many class="Role">
+				<column name="role_id" />
+			</many-to-many>
+		</set>
+	</class>
+	
+</hibernate-mapping>

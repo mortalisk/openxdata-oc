@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.3//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.0.3/distro-source/core/src/gwt-module.dtd">
+<module rename-to='OpenXDataServerAdmin'>
+
+      <!-- Inherit the core Web Toolkit stuff.                        -->
+      <inherits name='com.google.gwt.user.User'/>
+	  <inherits name="com.google.gwt.i18n.I18N"/>
+	  
+      <!-- Inherit the default GWT style sheet.  You can change       -->
+      <!-- the theme of your GWT application by uncommenting          -->
+      <!-- any one of the following lines.                            -->
+      
+      <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
+      <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> 
+      <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+      
+      <inherits name='org.openxdata.designer.FormDesigner'/>
+      <inherits name='org.openxdata.runner.FormRunner'/>
+      <inherits name='org.openxdata.sharedlib.SharedLib'/>
+      <inherits name='org.openxdata.querybuilder.QueryBuilder'/>
+
+      <inherits name='net.sf.gilead.Gilead4Gwt'/>
+	   
+      <!-- Other module inherits                                      -->
+      <inherits name="com.google.gwt.inject.Inject"/>
+      <inherits name='org.openxdata.server.admin.Model'/>
+      <inherits name='org.openxdata.server.admin.RpcInterface'/>
+
+      <!-- Specify the app entry point class.                         -->
+      <entry-point class='org.openxdata.server.admin.client.OpenXDataServerAdmin'/>
+      
+      <!-- RPC services -->
+      <servlet path='/TaskService' class='org.openxdata.server.admin.server.TaskServiceImpl'/>
+      <servlet path='/UserService' class='org.openxdata.server.admin.server.UserServiceImpl'/>
+      <servlet path='/ReportService' class='org.openxdata.server.admin.server.ReportServiceImpl'/>
+      <servlet path='/UtilityService' class='org.openxdata.server.admin.server.UtilityServiceImpl'/>
+      <servlet path='/SettingService' class='org.openxdata.server.admin.server.SettingServiceImpl'/>
+      <servlet path='/RoleService' class='org.openxdata.server.admin.server.RoleServiceImpl'/>
+      <servlet path='/SmsService' class='org.openxdata.server.admin.server.SmsServiceImpl'/>
+      <servlet path='/FormService' class='org.openxdata.server.admin.server.FormServiceImpl'/>
+      <servlet path='/StudyManagerService' class='org.openxdata.server.admin.server.StudyManagerServiceImpl'/>
+      <servlet path='/AuthenticationService' class='org.openxdata.server.admin.server.AuthenticationServiceImpl'/>
+     
+      <!-- Specify the application specific style sheet.              -->
+      <stylesheet src='OpenXDataServerAdmin.css' />
+      
+      <extend-property name="locale" values="en" />
+      <extend-property name="locale" values="lug_UG" />
+      <set-property name="locale" value="en,lug_UG" />
+	
+</module>

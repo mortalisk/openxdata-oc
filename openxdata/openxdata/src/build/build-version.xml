@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- ********************************************************* -->
+<!-- ** OpenXData Server Admin                                      ** -->
+<!-- **	                                                    ** -->
+<!-- ** @author Daniel Kayiwa                                   ** -->
+<!-- ** @version 1.0                                        ** -->
+<!-- ********************************************************* -->
+<project name="build-version" default="run">
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
+    <!-- property name="version" is set my Maven -->
+    <property name="java.dir" value="${basedir}/src/main/java/" />
+    <property name="resource.dir" value="${basedir}/src/main/resources" />
+    <property name="subversion.entries" value="${basedir}/../.svn/entries" />
+    <property name="version.revision.regexp" value='revision=\"(.*)\"' />
+
+    <target name="run">
+        <loadfile srcfile="${subversion.entries}" property="repositoryFileInput" />
+        <if>
+            <contains string="${repositoryFileInput}" substring="&lt;?xml" casesensitive="false" />
+            <then>
+				<!-- SVN pre-1.4 uses XML format -->
+                <propertyregex property="revision"
+					input="${repositoryFileInput}"
+					regexp="${openxdata.version.revision.regexp}"
+					select="\1"
+					defaultValue="? (error with pre-1.4 revision regexp)" />
+            </then>
+            <else>
+				<!-- SVN 1.4+ does not use XML format, just grab 11th line -->
+                <propertyregex property="revision"
+					input="${repositoryFileInput}"
+					regexp="^(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n"
+					select="\11"
+					defaultValue="? (error in post-1.4 revision regexp)" />				
+            </else>
+        </if>
+
+        <property name="version.long" value="${version} @ r${revision}"/>
+			
+        <copy file="${resource.dir}/VersionInfo.java" toFile="${java.dir}/org/openxdata/server/admin/client/VersionInfo.java" overwrite="true">
+            <filterset>
+                <filter token="Version" value="${version.long}"/>
+            </filterset>
+        </copy>
+
+        <copy file="war/WEB-INF/web.xml" toFile="target/temp/web-tagged.xml" overwrite="true">
+            <filterset>
+                <filter token="Version" value="${version.long}"/>
+            </filterset>
+        </copy>
+
+        <echo message = "Successfully built version information: ${version.long}"/>
+    </target>
+</project>

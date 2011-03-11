@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/lib-common/servlet-api.jar"/>
+	<classpathentry kind="lib" path="/lib-common/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="/lib-common/jzlib-1.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="lib/jaxp-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-rt.jar"/>
+	<classpathentry kind="lib" path="lib/jsr173_api.jar"/>
+	<classpathentry kind="lib" path="lib/jsr181-api.jar"/>
+	<classpathentry kind="lib" path="lib/resolver.jar"/>
+	<classpathentry kind="lib" path="lib/saaj-api.jar"/>
+	<classpathentry kind="lib" path="lib/saaj-impl.jar"/>
+	<classpathentry kind="lib" path="lib/sjsxp.jar"/>
+	<classpathentry kind="lib" path="/lib-common/junit-4.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openxdata-server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openxdata-model"/>
+	<classpathentry kind="lib" path="/openxdata-server/lib/bluetooth-server.jar"/>
+	<classpathentry kind="lib" path="/lib-common/spring.jar"/>
+	<classpathentry kind="lib" path="/lib-common/quartz-1.5.1.jar"/>
+	<classpathentry kind="lib" path="/lib-common/hibernate4gwt-1.1.2.jar"/>
+	<classpathentry kind="lib" path="/lib-common/commons-io-1.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

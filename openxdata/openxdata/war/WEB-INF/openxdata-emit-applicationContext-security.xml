@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+                        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+
+    <beans:import resource="openxdata-emit-applicationContext.xml"/>
+
+    <aop:aspectj-autoproxy />
+    <context:annotation-config />
+    <context:component-scan base-package="org.openxdata.server" />
+    <global-method-security secured-annotations="enabled" jsr250-annotations="disabled" access-decision-manager-ref="EMITaccessDecisionManager"/>
+
+    <http auto-config="true" realm="Emit" access-decision-manager-ref="accessDecisionManager">
+        <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/login.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/Emit.html" access="Perm_Emit" />
+        <form-login login-page="/login.html" authentication-failure-url="/login.html?login_error=1" default-target-url="/Emit.html" />
+        <logout logout-success-url="/login.html"/>
+    </http>
+    
+    <beans:bean id="userDetailsService" class="org.openxdata.server.security.OpenXDataUserDetailsServiceImpl" />
+    <beans:bean id="passwordEncoder" class="org.openxdata.server.security.OpenXDataPasswordEncoder" />
+    
+    <authentication-provider user-service-ref="userDetailsService">
+        <password-encoder ref="passwordEncoder">
+            <salt-source user-property="salt"/>
+        </password-encoder>
+    </authentication-provider>
+    
+    <!--  configuration to specify the prefix required on the access authorities -->
+    <beans:bean id="roleVoter" class="org.springframework.security.vote.RoleVoter">
+    	<beans:property name="rolePrefix" value="Perm_" />
+    </beans:bean>
+
+    <beans:bean id="authenticatedVoter" class="org.springframework.security.vote.AuthenticatedVoter"/>
+
+    <beans:bean id="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
+        <beans:property name="decisionVoters">
+            <beans:list>
+            	<beans:ref local="roleVoter" />
+            	<beans:ref local="authenticatedVoter" />
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+    
+    <beans:bean id="EMITaccessDecisionManager" class="org.openxdata.server.security.OpenXDataAccessDecisionManager">
+        <beans:property name="decisionVoters">
+            <beans:list>
+            	<beans:ref local="roleVoter" />
+            	<beans:ref local="authenticatedVoter" />
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+</beans:beans>

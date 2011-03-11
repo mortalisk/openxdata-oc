@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<hct formKey="hct" id="22" name="HCT Demo" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <starting_date_of_week>2010-09-30</starting_date_of_week>
+        <ending_date_of_week>2010-10-05</ending_date_of_week>
+        <facility_id>83</facility_id>
+        <client_pos_hiv_fem>5</client_pos_hiv_fem>
+        <client_pos_lt_15>6</client_pos_lt_15>
+        <client_screened_for_tb>1</client_screened_for_tb>
+        <client_ref_diag_tb>2</client_ref_diag_tb>
+        <client_test_hiv_fem>3</client_test_hiv_fem>
+        <client_pre_test_couns_hiv>5</client_pre_test_couns_hiv>
+        <client_tested_for_hiv>4</client_tested_for_hiv>
+        <client_test_hiv_male>6</client_test_hiv_male>
+        <client_tested_lt_15>7</client_tested_lt_15>
+        <client_pos_hiv_tot>4</client_pos_hiv_tot>
+        <client_pos_hiv_mal>5</client_pos_hiv_mal>
+</hct>

@@ -1,0 +1,82 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.openxdata</groupId>
+	<artifactId>mforms-proto</artifactId>
+	<version>1.1</version>
+	<packaging>jar</packaging>
+	<name>OpenXdata Protocols - mForms</name>
+	
+	<repositories>
+		<repository>
+			<id>thirdparty</id>
+			<name>thirdparty</name>
+			<url>http://nexus.openxdata.org/content/repositories/thirdparty/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openxdata</groupId>
+			<artifactId>protocol-api</artifactId>
+			<version>1.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openxdata</groupId>
+			<artifactId>epihandy-xforms-server</artifactId>
+			<version>0.7.0-beta-3</version>
+		</dependency>
+            <dependency>
+                  <groupId>log4j</groupId>
+                  <artifactId>log4j</artifactId>
+                  <version>1.2.16</version>
+                  <type>jar</type>
+            </dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>org.openxdata:epihandy-xforms-server</include>
+								</includes>
+								<excludes>
+									<exclude>org.openxdata:protocol-api</exclude>
+								</excludes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

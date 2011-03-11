@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:aop="http://www.springframework.org/schema/aop"	
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"       
+       xmlns:security="http://www.springframework.org/schema/security"      
+       xsi:schemaLocation="    	   
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-2.0.xsd
+           http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/security 
+           http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+    
+    <!--  **************************  SPRING ANNOTATION CONFIGURATION  *************************  -->	
+
+    <aop:aspectj-autoproxy />
+	<context:annotation-config /> 
+	<context:component-scan base-package="org.openxdata.server" /> 
+	<security:global-method-security secured-annotations="enabled" jsr250-annotations="disabled" access-decision-manager-ref="accessDecisionManager"/>   
+	
+	<!--  **************************  SECURITY CONFIGURATION  *************************  -->
+    
+    <bean id="passwordEncoder" class="org.openxdata.server.security.OpenXDataPasswordEncoder" />
+    <bean id="userDetailsService" class="org.openxdata.server.security.OpenXDataUserDetailsServiceImpl"/>
+    
+    <security:http auto-config="true" realm="OpenXdata" access-decision-manager-ref="accessDecisionManager">
+        <security:form-login default-target-url="/OpenXDataServerAdmin.html" />
+    </security:http>
+    
+    <security:authentication-provider user-service-ref="userDetailsService">
+        <security:password-encoder ref="passwordEncoder">
+            <security:salt-source user-property="salt"/>
+        </security:password-encoder>
+    </security:authentication-provider>    
+    
+    <!--  **************************  CONFIGURATION OF PREFIX USED TO ACCESS AUTHIORITIES  *************************  -->
+	<bean id="accessDecisionManager" class="org.openxdata.server.security.OpenXDataAccessDecisionManager">
+       	<property name="decisionVoters">
+            <list>
+              <bean id="roleVoter" class="org.springframework.security.vote.RoleVoter">
+              	<property name="rolePrefix" value="Perm_" />
+              </bean>
+              <bean id="authenticatedVoter" class="org.springframework.security.vote.AuthenticatedVoter"/>
+            </list>
+        </property>
+    </bean>
+</beans>

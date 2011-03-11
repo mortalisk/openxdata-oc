@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping package="org.openxdata.server.admin.model.mapping">
+
+	<class name="UserReportMap" table="user_report" lazy="false">
+	
+		<id name="userReportMapId" type="java.lang.Integer" column="user_report_id" unsaved-value="0">
+			<generator class="native">
+					 <param name="sequence"> user_report_map_id_seq </param>
+			</generator>
+		</id>
+	
+		<discriminator column="user_report_id" insert="false" />
+	
+		<property name="userId" type="java.lang.Integer" column="user_id" length="50" />
+		
+		<property name="reportId" type="java.lang.Integer" column="report_id" length="50" />
+
+	</class>
+	
+</hibernate-mapping>
+
