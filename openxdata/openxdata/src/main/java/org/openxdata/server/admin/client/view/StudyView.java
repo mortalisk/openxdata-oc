@@ -25,7 +25,6 @@ import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallb
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
 import org.openxdata.server.admin.client.controller.observe.StudiesObserver;
-import org.openxdata.server.admin.client.controller.observe.UsersObserver;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.DataCheckUtil;
 import org.openxdata.server.admin.client.util.Utilities;
@@ -81,8 +80,7 @@ import org.openxdata.sharedlib.client.view.FormRunnerView.Images;
 public class StudyView extends OpenXDataBaseView implements
         SelectionHandler<Integer>, SubmitListener, IFormSaveListener,
         ResizeHandler, OnDataCheckListener, FormVersionOpenDialogListener,
-        StudiesObserver, UsersObserver,
-        OpenXDataViewExtendedApplicationEventListener {
+        StudiesObserver, OpenXDataViewExtendedApplicationEventListener {
 	
 	/** The index of the tab for properties */
 	private int tabIndexProperties = 0;
@@ -1052,13 +1050,6 @@ public class StudyView extends OpenXDataBaseView implements
 	}
 	
 	@Override
-	public void updateUsers(OpenXDataObservable observable, List<User> users) {
-		if (dataListView != null) {
-			dataListView.setUsers(users);
-		}
-	}
-	
-	@Override
 	public void exportAsPdf() {
 		// do nothing
 	}
@@ -1206,7 +1197,6 @@ public class StudyView extends OpenXDataBaseView implements
             }
         };
         eventBus.addHandler(FormDataHeaderEvent.TYPE, formDataHandler);
-
     }
 	
 }

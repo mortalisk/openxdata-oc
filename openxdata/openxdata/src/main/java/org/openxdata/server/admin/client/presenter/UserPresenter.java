@@ -229,7 +229,7 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
         String minPasswordLength = Context.getSetting(
                 "defaultPasswordLength", "6");
         int length = Integer.parseInt(minPasswordLength);
-        if (password.equals("")) return true;
+        if (password.isEmpty()) return true;
         if (password.length() >= length)
             return true;
         display.setEnabled(false);

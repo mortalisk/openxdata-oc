@@ -18,7 +18,6 @@
 package org.openxdata.server.admin.client.view.factory;
 
 import com.google.inject.Singleton;
-import org.openxdata.server.admin.client.view.TaskView;
 import org.openxdata.server.admin.client.view.bar.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
 
@@ -43,7 +42,6 @@ import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ParameterDisplay;
-import org.openxdata.server.admin.client.view.ParametersView;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.RoleDisplay;
 import org.openxdata.server.admin.client.view.SettingView;
@@ -95,11 +93,9 @@ public class OpenXdataClientModule extends AbstractGinModule {
 
         // Views
         bind(SettingView.class).in(Singleton.class);
-        bind(TaskView.class).in(Singleton.class);
         bind(ReportView.class).in(Singleton.class);
         bind(StudyView.class).in(Singleton.class);
         bind(OpenXDataNotificationBar.class).in(Singleton.class);
-        bind(ParametersView.class).in(Singleton.class);
 
         // Map views
         bind(MainView.class).in(Singleton.class);
@@ -150,6 +146,5 @@ public class OpenXdataClientModule extends AbstractGinModule {
 
         bind(ParameterPresenter.class).in(Singleton.class);
         bind(ParameterPresenter.Display.class).to(ParameterDisplay.class).in(Singleton.class);
-
     }
 }

@@ -22,7 +22,6 @@ import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.SettingView;
 import org.openxdata.server.admin.client.view.StudyView;
-import org.openxdata.server.admin.client.view.TaskView;
 import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.bar.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.bar.OpenXDataToolBar;
@@ -45,7 +44,6 @@ import com.google.gwt.inject.client.Ginjector;
 @GinModules(OpenXdataClientModule.class)
 public interface OpenXDataWidgetGinInjector extends Ginjector {
 
-    public TaskView getTaskView();
 
     public OpenXDataWidgetFactory widgetFactory();
 

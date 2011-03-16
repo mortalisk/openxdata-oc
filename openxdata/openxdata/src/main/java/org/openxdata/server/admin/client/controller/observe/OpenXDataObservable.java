@@ -166,12 +166,6 @@ public class OpenXDataObservable {
 				updateStudiesObserverObjects(arg, typeClass, xObserver);				
 			}
 			
-			if(xObserver instanceof UsersObserver){
-				if(typeClass.equals(User.class)){
-					((UsersObserver)xObserver).updateUsers(this, (List<User>) arg);
-				}
-			}
-			
 			//Notifying ReportsViewController observers
 			if(xObserver instanceof ReportsObserver){
 				updateReportsObserverObjects(arg, typeClass, xObserver);					
@@ -181,13 +175,6 @@ public class OpenXDataObservable {
 			if(xObserver instanceof SettingsObserver){
 				if(typeClass.equals(SettingGroup.class)){
 					((SettingsObserver)xObserver).updateSettingGroups(this, (List<SettingGroup>) arg);
-				}
-			}
-			
-			//Notifying TasksViewController observers
-			if(xObserver instanceof TasksObserver){
-				if(typeClass.equals(TaskDef.class)){
-					((TasksObserver)xObserver).updateTasks(this, (List<TaskDef>) arg);
 				}
 			}
 			

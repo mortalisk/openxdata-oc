@@ -60,6 +60,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.EventType;
 import org.openxdata.server.admin.client.view.event.FormDataHeaderEvent;
 
@@ -104,6 +105,7 @@ public class StudyDataView extends Composite implements
 	public StudyDataView(EventBus eventBus) {
 		this.eventBus = eventBus;
 		initWidgets();
+                initHandlers();
 	}
 	
 	private void initWidgets() {
@@ -523,9 +525,20 @@ public class StudyDataView extends Composite implements
 		//itemSelectionListener.onItemSelected(this, formDefVersion);
 	}
 	
-	@Override
-	public void onSetFileName(String fileName) {
-		if (fileName != null && fileName.trim().length() > 0)
-			exportCsv(fileName);
-	}
+    @Override
+    public void onSetFileName(String fileName) {
+        if (fileName != null && fileName.trim().length() > 0) {
+            exportCsv(fileName);
+        }
+    }
+
+    private void initHandlers() {
+        EditableEvent.addHandler(eventBus, new EditableEvent.HandlerAdaptor<User>() {
+
+            @Override
+            public void onLoaded(List<User> items) {
+                setUsers(items);
+            }
+        }).forClass(User.class);
+    }
 }
