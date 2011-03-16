@@ -104,7 +104,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
             return;
         }
         if (beforeDeleteItem(item)) return;
-        GWT.log("Base class did not beforeDeleteItem");
+        GWT.log("Base class did not handle beforeDeleteItem");
         if (!item.isNew())
             deletedItems.add(item);
         items.remove(item);
@@ -204,7 +204,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
         };
     }
 
-    private SaveCompleteListener getSaveCompleteListener() {
+    protected  SaveCompleteListener getSaveCompleteListener() {
         return new SaveCompleteListener() {
 
             @Override

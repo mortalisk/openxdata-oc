@@ -34,25 +34,30 @@ public class TaskPresenter implements IPresenter<TaskPresenter.Display> {
         public void setTaskDef(TaskDef taskDef);
     }
     private TaskPresenter thisPresenter = this;
+    private ParameterPresenter paramPresenter;
     private ScheduleView scheduleView;
     private Display display;
     private EventBus eventBus;
     private TaskDef taskDef;
 
     @Inject
-    public TaskPresenter(Display display, EventBus eventBus, ScheduleView scheduleView) {
+    public TaskPresenter(Display display, EventBus eventBus,
+            ScheduleView scheduleView, ParameterPresenter paramPresenter) {
         this.display = display;
         this.eventBus = eventBus;
         this.scheduleView = scheduleView;
+        this.paramPresenter = paramPresenter;
         if (permissionResolver.isViewPermission(Permission.PERM_VIEW_TASKS)) {
-            if (permissionResolver.isEditPermission(Permission.PERM_EDIT_TASKS))
+            if (permissionResolver.isEditPermission(Permission.PERM_EDIT_TASKS)) {
                 bindUI();
-            else
+            } else {
                 display.disableAll();
+            }
         } else {
             display.showNoPermissionView();
         }
         bindHandlers();
+
 
     }
 
@@ -66,8 +71,12 @@ public class TaskPresenter implements IPresenter<TaskPresenter.Display> {
         };
         display.addGeneralChangeHadler(valueChangeHandler);
 
-        if (permissionResolver.isPermission(Permission.PERM_TASK_SCHEDULING))
+        if (permissionResolver.isPermission(Permission.PERM_TASK_SCHEDULING)) {
             display.addTab(scheduleView, CONSTANTS.label_schedule());
+        }
+        if (permissionResolver.isPermission(Permission.PERM_TASK_ADDING_PARAMETER)) {
+            display.addTab(paramPresenter.getDisplay(), CONSTANTS.label_parameters());
+        }
     }
 
     private void bindHandlers() {

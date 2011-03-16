@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import java.util.List;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.controller.callback.SaveAsyncCallback;
+import org.openxdata.server.admin.client.listeners.SaveCompleteListener;
 import org.openxdata.server.admin.client.locale.OpenXdataText;
 import org.openxdata.server.admin.client.locale.TextConstants;
 import org.openxdata.server.admin.client.presenter.WidgetDisplay;
@@ -14,6 +15,7 @@ import org.openxdata.server.admin.client.service.TaskServiceAsync;
 import org.openxdata.server.admin.client.util.MainViewControllerUtil;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
+import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.sharedlib.client.util.FormUtil;
 
@@ -55,15 +57,18 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
     }
 
     private void startTask() {
-        if (!Window.confirm("Cofirm Stop?")) return;
+        if (!Window.confirm("Cofirm Stop?")) {
+            return;
+        }
         final TaskDef selected = display.getSelected();
         Utilities.showProgress("Stopping...");
         taskService.stopTask(selected, new OpenXDataAsyncCallback<Boolean>() {
 
             @Override
             public void onSuccess(Boolean result) {
-                if (!result)
+                if (!result) {
                     Utilities.displayMessage("Failed to Stop Task");
+                }
                 selected.setRunning(result);
                 FormUtil.dlg.hide();
             }
@@ -71,15 +76,18 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
     }
 
     private void stopTask() {
-        if (!Window.confirm("Cofirm Start?")) return;
+        if (!Window.confirm("Cofirm Start?")) {
+            return;
+        }
         final TaskDef selected = display.getSelected();
         Utilities.showProgress("Starting...");
         taskService.startTask(selected, new OpenXDataAsyncCallback<Boolean>() {
 
             @Override
             public void onSuccess(Boolean result) {
-                if (!result)
+                if (!result) {
                     Utilities.displayMessage("Failed To Start Task");
+                }
                 selected.setRunning(result);
                 FormUtil.dlg.hide();
             }
@@ -149,5 +157,34 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
     @Override
     protected String getSuccessMessage() {
         return OpenXdataText.get(TextConstants.TASKS_SAVED_SUCCESSFULLY);
+    }
+
+    @Override
+    protected SaveCompleteListener getSaveCompleteListener() {
+        return new SaveCompleteListener() {
+
+            @Override
+            public void onSaveComplete(List<? extends Editable> modifiedList, List<? extends Editable> deletedList) {
+                FormUtil.dlg.hide();
+                if (hasNewItems((List<TaskDef>) modifiedList)) {
+                    loadItems();
+                } else {
+                    Utilities.displayNotificationMessage(getSuccessMessage());
+                }
+            }
+        };
+    }
+
+    public boolean hasNewItems(List<TaskDef> tasks) {
+        if (Utilities.hasNewItems(tasks)) {
+            return true;
+        }
+
+        for (TaskDef taskDef : tasks) {
+            if (Utilities.hasNewItems(taskDef.getParameters())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

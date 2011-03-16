@@ -28,6 +28,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import org.openxdata.server.admin.client.controller.MainViewController;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.listeners.StackPanelListener;
+import org.openxdata.server.admin.client.presenter.ParameterPresenter;
 import org.openxdata.server.admin.client.presenter.RolePermissionMapPresenter;
 import org.openxdata.server.admin.client.presenter.RolePresenter;
 import org.openxdata.server.admin.client.presenter.TaskPresenter;
@@ -41,6 +42,7 @@ import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.view.MainView;
+import org.openxdata.server.admin.client.view.ParameterDisplay;
 import org.openxdata.server.admin.client.view.ParametersView;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.RoleDisplay;
@@ -145,6 +147,9 @@ public class OpenXdataClientModule extends AbstractGinModule {
 
         bind(TaskPresenter.class).in(Singleton.class);
         bind(TaskPresenter.Display.class).to(TaskDisplay.class).in(Singleton.class);
+
+        bind(ParameterPresenter.class).in(Singleton.class);
+        bind(ParameterPresenter.Display.class).to(ParameterDisplay.class).in(Singleton.class);
 
     }
 }

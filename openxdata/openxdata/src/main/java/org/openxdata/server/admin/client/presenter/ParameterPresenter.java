@@ -8,6 +8,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.EventRegistration;
@@ -23,11 +24,13 @@ public class ParameterPresenter implements IPresenter<ParameterPresenter.Display
 
     public interface Display extends WidgetDisplay {
 
+        public <H extends EventHandler> void addHandler(H handler, Type<H> type);
+
         public void addParameter(TaskParam param);
 
         public HasClickHandlers btnAdd();
 
-        public <H extends EventHandler> void addHandler(H handler, Type<H> type);
+        public void clear();
     }
     private Display display;
     private EventBus eventBus;
@@ -46,7 +49,7 @@ public class ParameterPresenter implements IPresenter<ParameterPresenter.Display
 
             @Override
             public void onSelected(Composite sender, TaskDef item) {
-                setTaskDef(taskDef);
+                setTaskDef(item);
             }
         }).forClass(TaskDef.class);
     }
@@ -74,6 +77,9 @@ public class ParameterPresenter implements IPresenter<ParameterPresenter.Display
     }
 
     private void addParam() {
+        if (taskDef == null) {
+            return;
+        }
         TaskParam param = new TaskParam(taskDef, "", "");
         taskDef.addParam(param);
         display.addParameter(param);
@@ -81,13 +87,17 @@ public class ParameterPresenter implements IPresenter<ParameterPresenter.Display
     }
 
     private void removeParam(TaskParam param) {
-        if (param.getTaskDef() != taskDef) return;
+        if (param.getTaskDef() != taskDef) {
+            return;
+        }
         taskDef.deleteParam(param);
         eventBus.fireEvent(new EditableEvent<TaskDef>(taskDef));
     }
 
     private void fireChange(TaskParam item) {
-        if (item.getTaskDef() != taskDef) return;
+        if (item.getTaskDef() != taskDef) {
+            return;
+        }
         taskDef.setDirty(true);
         eventBus.fireEvent(new EditableEvent<TaskDef>(taskDef));
     }
@@ -98,7 +108,11 @@ public class ParameterPresenter implements IPresenter<ParameterPresenter.Display
     }
 
     public void setTaskDef(TaskDef taskDef) {
+        if (taskDef.getParameters() == null) {
+            taskDef.setParameters(new ArrayList<TaskParam>());
+        }
         List<TaskParam> parameters = taskDef.getParameters();
+        display.clear();
         for (TaskParam taskParam : parameters) {
             display.addParameter(taskParam);
         }

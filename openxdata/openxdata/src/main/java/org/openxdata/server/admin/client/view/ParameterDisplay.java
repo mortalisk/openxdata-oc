@@ -14,6 +14,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.ArrayList;
+import java.util.List;
 import org.openxdata.server.admin.client.presenter.ParameterPresenter;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
@@ -34,6 +36,7 @@ public class ParameterDisplay implements ParameterPresenter.Display {
     private VerticalPanel panel = new VerticalPanel();
     /** Button to add new parameters. */
     private Button addNewParameter;
+    private List<TaskParam> taskParams = new ArrayList<TaskParam>();
 
     public ParameterDisplay() {
         addNewParameter = new OpenXDataButton(constants.label_add_parameter());
@@ -47,60 +50,67 @@ public class ParameterDisplay implements ParameterPresenter.Display {
 
         panel.add(table);
         panel.add(addNewParameter);
-        addNewParameter.setEnabled(false);
-
         Utilities.maximizeWidget(panel);
     }
 
     @Override
     public void addParameter(final TaskParam param) {
-        final int row = table.getRowCount();
+        taskParams.add(param);
+        renderParam(param);
+    }
 
+    private void renderParam(final TaskParam param) {
+        final int row = table.getRowCount();
         final TextBox txtName = new TextBox();
         TextBox txtValue = new TextBox();
-
         txtName.setText(param.getName());
         txtValue.setText(param.getValue());
-
         table.setWidget(row, 0, txtName);
         table.setWidget(row, 1, txtValue);
         Button removeParameter = new OpenXDataButton(constants.label_remove());
-
         table.setWidget(row, 2, removeParameter);
-
         table.getFlexCellFormatter().setWidth(row, 2, "10%");
         table.getWidget(row, 0).setWidth("100%");
         table.getWidget(row, 1).setWidth("100%");
-
         removeParameter.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 panel.fireEvent(new EditableEvent<TaskParam>(param, EventType.DELETED));
                 table.removeRow(row);
+                taskParams.remove(param);
+                rebindParams();
             }
         });
         txtName.addValueChangeHandler(new ValueChangeHandler<String>() {
 
             @Override
             public void onValueChange(ValueChangeEvent<String> event) {
-                if (event.getValue().isEmpty()) return;
+                if (event.getValue().isEmpty()) {
+                    return;
+                }
                 param.setName(event.getValue());
                 panel.fireEvent(new EditableEvent<TaskParam>(param));
             }
         });
-
         txtValue.addValueChangeHandler(new ValueChangeHandler<String>() {
 
             @Override
             public void onValueChange(ValueChangeEvent<String> event) {
-                if (event.getValue().isEmpty()) return;
-
+                if (event.getValue().isEmpty()) {
+                    return;
+                }
                 param.setValue(event.getValue());
                 panel.fireEvent(new EditableEvent<TaskParam>(param));
-
             }
         });
+    }
+
+    private void rebindParams() {
+        table.removeAllRows();
+        for (TaskParam taskParam : taskParams) {
+            renderParam(taskParam);
+        }
     }
 
     @Override
@@ -116,5 +126,11 @@ public class ParameterDisplay implements ParameterPresenter.Display {
     @Override
     public <H extends EventHandler> void addHandler(H handler, Type<H> type) {
         panel.addHandler(handler, type);
+    }
+
+    @Override
+    public void clear() {
+        table.removeAllRows();
+        taskParams.clear();
     }
 }
