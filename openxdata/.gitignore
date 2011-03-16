@@ -1,0 +1,6 @@
+.svn/
+target/
+openxdata/src/main/java/org/openxdata/client/AppMessages*.properties
+openxdata/src/main/java/org/openxdata/client/PurcformsText*.properties
+openxdata/src/main/java/org/openxdata/server/admin/client/VersionInfo.java
+openxdata/war/WEB-INF/classes/
