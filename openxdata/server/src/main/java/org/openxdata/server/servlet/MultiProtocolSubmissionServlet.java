@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -115,12 +116,11 @@ public class MultiProtocolSubmissionServlet extends HttpServlet {
 			}
 
 			log.debug("initializing protocol loader");
-			String protoJarPath = MessageFormat.format(
-					"/WEB-INF/protocol-jars/{0}.jar",
-					new Object[] { serializer });
+			String protoJarPath = resolvePluginName(serializer);
 			URL protoLocation = getServletContext().getResource(protoJarPath);
 			if (protoLocation == null) {
-				throw new ProtocolNotFoundException("Could not load protocol jar '"+protoJarPath+"'");
+				throw new ProtocolNotFoundException(
+						"Could not load protocol jar '" + protoJarPath + "'");
 			}
 			if (log.isDebugEnabled())
 				log.debug("loading protocol plugins from " + protoLocation);
@@ -131,8 +131,8 @@ public class MultiProtocolSubmissionServlet extends HttpServlet {
 
 			log.debug("creating submission context");
 			SubmissionContext submitCtx = new DefaultSubmissionContext(dataIn,
-					dataOut, action == null ? ACTION_NONE : Byte
-							.parseByte(action), locale, userService,
+					dataOut, action == null ? ACTION_NONE
+							: Byte.parseByte(action), locale, userService,
 					formDownloadService, studyManagerService);
 
 			log.debug("handling request");
@@ -143,7 +143,7 @@ public class MultiProtocolSubmissionServlet extends HttpServlet {
 			dataOut.writeByte(RESPONSE_STATUS_ERROR);
 			resp.setStatus(HttpServletResponse.SC_OK);
 		} catch (Exception e) {
-			log.error("error while handing request to protocol provider",e);
+			log.error("error while handing request to protocol provider", e);
 			dataOut.writeByte(RESPONSE_STATUS_ERROR);
 			resp.setStatus(HttpServletResponse.SC_OK);
 		} finally {
@@ -154,5 +154,73 @@ public class MultiProtocolSubmissionServlet extends HttpServlet {
 			resp.flushBuffer();
 			Thread.currentThread().setContextClassLoader(origCl);
 		}
+	}
+
+	/**
+	 * Loads a file that contains mappings from requested protocol versions and
+	 * the actual plugin version to use. This allows an administrator to change
+	 * the version of the protocol used to handle client requests without
+	 * updating the client or renaming the protocol plugins.
+	 * 
+	 * The file contains entries like:
+	 * 
+	 * mforms-1.2=mforms-1.2.1
+	 * 
+	 * Which says that client requests suggesting use of mforms-1.2 should be
+	 * handled using mforms-1.2.1. This particular pattern is likely when making
+	 * a bugfix to a protocol.
+	 * 
+	 * @return a Properties object containing requestedVersion=actualVersion
+	 *         entries.
+	 * @throws IOException
+	 */
+	private Properties getProtoMap() throws IOException {
+
+		log.debug("loading explicit protocol mappings");
+		InputStream protoMapStream = getServletContext().getResourceAsStream(
+				"/WEB-INF/protocol-jars/protomap.properties");
+
+		Properties protoMap = new Properties();
+
+		if (protoMapStream != null) {
+			log.debug("found mappings file, loading");
+			protoMap.load(protoMapStream);
+		} else {
+			log.debug("mappings file not found");
+		}
+
+		return protoMap;
+	}
+
+	/**
+	 * Takes a protocol version name sent from a mobile client and attempts to
+	 * resolve it to a plugin to handle it.
+	 * 
+	 * @param requestedVersion
+	 *            the serializer string sent from mobile client
+	 * @return a suggested path to a protocol plugin
+	 * @throws IOException
+	 */
+	private String resolvePluginName(String requestedVersion)
+			throws IOException {
+
+		log.debug("checking to see if protocol is explicitly defined");
+		Properties protoMap = getProtoMap();
+		if (protoMap.containsKey(requestedVersion)) {
+			String mappedVersion = protoMap.getProperty(requestedVersion);
+			if (log.isDebugEnabled())
+				log.debug("found mapping: " + requestedVersion + " -> "
+						+ mappedVersion);
+			requestedVersion = mappedVersion;
+		}
+
+		String protoJarPath = MessageFormat.format(
+				"/WEB-INF/protocol-jars/{0}.jar",
+				new Object[] { requestedVersion });
+
+		if (log.isDebugEnabled())
+			log.debug("resolved " + requestedVersion + " to " + protoJarPath);
+
+		return protoJarPath;
 	}
 }
