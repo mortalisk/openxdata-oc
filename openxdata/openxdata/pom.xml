@@ -419,7 +419,7 @@
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>mforms-proto</artifactId>
-                                    <version>1.2.1</version>
+                                    <version>1.2.2</version>
                                     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/protocol-jars</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
