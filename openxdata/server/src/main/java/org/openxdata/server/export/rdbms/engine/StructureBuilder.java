@@ -132,7 +132,7 @@ public class StructureBuilder {
         }
 
         sb.append(CLOSING_BRACE);
-        sb.append("TYPE = INNODB;");
+        sb.append("Engine = INNODB;");
 
         tables.add(0, new TableQuery(tableName, sb.toString()));
     }

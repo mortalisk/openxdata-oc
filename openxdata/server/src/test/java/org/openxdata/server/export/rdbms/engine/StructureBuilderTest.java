@@ -72,8 +72,8 @@ public class StructureBuilderTest {
                 secondSql.contains(escapeChar + "kidsex" + escapeChar + " VARCHAR(255)"));
         
         Assert.assertTrue("firstSql ends with INNODB table definition", 
-                firstSql.endsWith("TYPE = INNODB;"));
+                firstSql.endsWith("Engine = INNODB;"));
         Assert.assertTrue("secondSql ends with INNODB table definition", 
-                secondSql.endsWith("TYPE = INNODB;"));
+                secondSql.endsWith("Engine = INNODB;"));
     }
 }
