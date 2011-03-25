@@ -148,7 +148,7 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 	            	// session references
 	            	for (int f = 0; f < sessionReferences[s].length; f++) {
 	            		if (sessionReferences[s][f] != null) {
-	            			out.writeByte((byte) s);
+	            			out.writeShort((short) s);
 	            			out.writeShort((short) f);
 	            			out.writeUTF(sessionReferences[s][f]);
 	            		}
