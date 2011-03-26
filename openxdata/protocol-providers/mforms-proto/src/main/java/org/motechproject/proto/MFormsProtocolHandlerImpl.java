@@ -138,7 +138,7 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 	            	// error uploads
 	            	for (int f = 0; f < errorMessages[s].length; f++) {
 	            		if (errorMessages[s][f] != null) {
-	            			out.writeByte((byte) s);
+	            			out.writeShort((short) s);
 	            			out.writeShort((short) f);
 	            			out.writeUTF(errorMessages[s][f]);
 	            		}
