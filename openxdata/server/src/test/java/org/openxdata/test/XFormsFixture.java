@@ -17,6 +17,20 @@
  */
 package org.openxdata.test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.MessageFormat;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 public class XFormsFixture {
 
     public static String getExampleXform1() {
@@ -510,4 +524,46 @@ public class XFormsFixture {
     public static Object[] getUser(Integer userId, String userName, String password, String salt) {
         return new Object[] {userId, userName, password, salt};
     }
+    
+	/**
+	 * Extracts an xforms definition from a study export.
+	 * 
+	 * @param exportPath
+	 *            the resource path to the study export xml
+	 * @param studyName
+	 *            the name of the study
+	 * @param formName
+	 *            the name of the form
+	 * @param versionName
+	 *            the version name
+	 * @return the xform definition as a string
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws XPathExpressionException
+	 */
+	public static String getFormFromStudyExport(String exportPath,
+			String studyName, String formName, String versionName)
+			throws ParserConfigurationException, SAXException, IOException,
+			XPathExpressionException {
+
+		InputStream studyExport = XFormsFixture.class
+				.getResourceAsStream(exportPath);
+
+		if (studyExport == null)
+			throw new FileNotFoundException("Could not locate " + exportPath);
+
+		InputSource studySource = new InputSource(studyExport);
+
+		// Lookup the xform definition we're looking for
+		XPathFactory xpf = XPathFactory.newInstance();
+		XPath xp = xpf.newXPath();
+		String pathFormat = "/study[@name=''{0}'']/form[@name=''{1}'']/version[@name=''{2}'']/xform/text()";
+		String formPath = MessageFormat.format(pathFormat, studyName, formName,
+				versionName);
+		XPathExpression xpe = xp.compile(formPath);
+		String result = xpe.evaluate(studySource);
+
+		return result;
+	}
 }

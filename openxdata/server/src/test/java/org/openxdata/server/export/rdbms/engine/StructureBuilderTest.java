@@ -21,6 +21,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openxdata.test.XFormsFixture;
 
@@ -76,4 +77,23 @@ public class StructureBuilderTest {
         Assert.assertTrue("secondSql ends with INNODB table definition", 
                 secondSql.endsWith("Engine = INNODB;"));
     }
+    
+	/**
+	 * Tests for an NPE that occurs when type="barcode" is used in a binding.
+	 * For now, it's not clear that it is supported. When it is, this should no
+	 * longer be ignored.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	@Ignore
+	public void testOXD330() throws Exception {
+		String formDefString = XFormsFixture
+				.getFormFromStudyExport(
+						"/org/openxdata/server/export/rdbms/engine/BaselineSurvey-MalariaConsortium.xml",
+						"Baseline Survey", "Household Questionnaire", "v1");
+		List<TableQuery> queryList = RdmsEngine.getStructureSql(formDefString);
+		// Should never get here due to NPE
+		Assert.assertFalse(queryList.isEmpty());
+	}
 }
