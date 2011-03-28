@@ -86,7 +86,6 @@ public class StructureBuilderTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
 	public void testOXD330() throws Exception {
 		String formDefString = XFormsFixture
 				.getFormFromStudyExport(

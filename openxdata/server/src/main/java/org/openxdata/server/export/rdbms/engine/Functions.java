@@ -245,6 +245,7 @@ public class Functions {
 		} else if (xformType.trim().equalsIgnoreCase("xsd:base64Binary")) {
 			return Constants.TYPE_BINARY;
 		}
-		return null;
+		// Should consider just throwing exception...
+		return Constants.TYPE_VARCHAR; // Fall back to VARCHAR
 	}
 }
