@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openxdata</groupId>
 	<artifactId>mforms-proto</artifactId>
-	<version>1.2.3</version>
+	<version>1.3</version>
 	<packaging>jar</packaging>
 	<name>OpenXdata Protocols - mForms</name>
 	
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>org.openxdata</groupId>
 			<artifactId>epihandy-xforms-server</artifactId>
-			<version>0.8.3</version>
+			<version>0.9.0</version>
 		</dependency>
             <dependency>
                   <groupId>log4j</groupId>
