@@ -75,6 +75,7 @@ import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFact
 import org.openxdata.sharedlib.client.controller.OpenFileDialogEventListener;
 import org.openxdata.sharedlib.client.model.OptionDef;
 import org.openxdata.sharedlib.client.model.QuestionDef;
+import org.openxdata.sharedlib.client.model.QuestionType;
 import org.openxdata.sharedlib.client.util.FormUtil;
 import org.openxdata.sharedlib.client.view.OpenFileDialog;
 import org.openxdata.sharedlib.client.xforms.XformBuilder;
@@ -721,7 +722,7 @@ public class ReportView extends OpenXDataBaseView implements
 		QuestionDef qtnDef = new QuestionDef(formDef.getPageAt(0));
 		qtnDef.setId(formDef.getQuestionCount() + 1);
 		qtnDef.setVariableName("openxdata_user_name");
-		qtnDef.setDataType(QuestionDef.QTN_TYPE_LIST_EXCLUSIVE);
+		qtnDef.setDataType(QuestionType.LIST_EXCLUSIVE);
 		qtnDef.setText("User");
 		formDef.addQuestion(qtnDef);
 		

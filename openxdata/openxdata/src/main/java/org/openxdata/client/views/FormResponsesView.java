@@ -65,6 +65,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.openxdata.sharedlib.client.model.QuestionDef;
+import org.openxdata.sharedlib.client.model.QuestionType;
 
 public class FormResponsesView extends View implements Refreshable  {
     final AppMessages appMessages = GWT.create(AppMessages.class);
@@ -306,82 +307,52 @@ public class FormResponsesView extends View implements Refreshable  {
         System.out.println("Answer : " + questionDef.getAnswer());
         System.out.println("bind : " + questionDef.getControlNode().getAttribute("bind"));
         */
-
-        switch(questionDef.getDataType()) {
-            case QuestionDef.QTN_TYPE_TEXT:
-                TextField<String> text = new TextField<String>();
-                colConfig.setEditor(new CellEditor(text));
-                break;
-            case QuestionDef.QTN_TYPE_NUMERIC:
-                NumberField number = new NumberField();
-                number.setPropertyEditorType(Integer.class);
-                colConfig.setEditor(new CellEditor(number));
-                break;
-            case QuestionDef.QTN_TYPE_DECIMAL:
-                NumberField dec = new NumberField();
-                dec.getPropertyEditor().setFormat(NumberFormat.getDecimalFormat());
-                colConfig.setEditor(new CellEditor(dec));
-                colConfig.setNumberFormat(NumberFormat.getDecimalFormat());
-                break;
-            case QuestionDef.QTN_TYPE_DATE:
-                DateField d = new DateField();
-                d.getPropertyEditor().setFormat(DateTimeFormat.getFormat("MM/dd/yyyy"));
-                colConfig.setEditor(new CellEditor(d));
-                colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-                break;
-            case QuestionDef.QTN_TYPE_TIME:
-                TimeField time = new TimeField();
-                time.setEditable(false); // avoids them entering invalid data
-                time.setFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
-                colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
-                colConfig.setEditor(new ListCellEditor(time)); //colConfig.setEditor(new CellEditor(time));s
-                //TextField<String> time = new TextField<String>();
-                //colConfig.setEditor(new CellEditor(time));
-                break;
-                // This is a question with a list of options where not more than one option can be selected at a time.
-            case QuestionDef.QTN_TYPE_LIST_EXCLUSIVE:
-                ListCellEditor editor = new ListCellEditor(new SimpleComboBox<String>());
-                editor.setOptions(questionDef);
-                colConfig.setEditor(editor);
-                break;
-                // This is a question with a list of options where more than one option can be selected at a time.
-            case QuestionDef.QTN_TYPE_LIST_MULTIPLE:
-                //ListCellEditor multiListEditor = new ListCellEditor(new ListField<SimpleListData>());
-            	ListCellEditor multiListEditor = new ListCellEditor(new CheckBoxGroup());
-                multiListEditor.setOptions(questionDef);
-                colConfig.setEditor(multiListEditor);
-                break;
-                // Date and Time question type. This has both the date and time components
-            case QuestionDef.QTN_TYPE_DATE_TIME:
-                DateField d2 = new DateField();
-                d2.getPropertyEditor().setFormat(DateTimeFormat.getFormat("MM/dd/yyyy HH:mm:ss"));
-                colConfig.setEditor(new CellEditor(d2));
-                colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-                break;
-                // Question with true and false answers.
-            case QuestionDef.QTN_TYPE_BOOLEAN:
-                ListCellEditor boolEditor = new ListCellEditor(new SimpleComboBox<String>());
-                boolEditor.setOptions(QuestionDef.TRUE_VALUE,QuestionDef.FALSE_VALUE);
-                colConfig.setEditor(boolEditor);
-                break;
-                // Question with repeat sets of questions.
-            case QuestionDef.QTN_TYPE_REPEAT:
-                break;
-                // Question with image.
-            case QuestionDef.QTN_TYPE_IMAGE:
-                break;
-                // Question with recorded video.
-            case QuestionDef.QTN_TYPE_VIDEO:
-                break;
-                // Question with recoded audio.
-            case QuestionDef.QTN_TYPE_AUDIO:
-                break;
-            case QuestionDef.QTN_TYPE_LIST_EXCLUSIVE_DYNAMIC:
-                // FIXME: don't support this totally yet ...
-                ListCellEditor dynListEditor = new ListCellEditor(new SimpleComboBox<String>());
-                dynListEditor.setDynamicOptions(questionDef);
-                colConfig.setEditor(dynListEditor);
-                break;
+        QuestionType type = questionDef.getDataType();
+        if (type == QuestionType.TEXT) {
+            TextField<String> text = new TextField<String>();
+            colConfig.setEditor(new CellEditor(text));
+        } else if (type == QuestionType.NUMERIC) {
+            NumberField number = new NumberField();
+            number.setPropertyEditorType(Integer.class);
+            colConfig.setEditor(new CellEditor(number));
+        } else if (type == QuestionType.DECIMAL) {
+            NumberField dec = new NumberField();
+            dec.getPropertyEditor().setFormat(NumberFormat.getDecimalFormat());
+            colConfig.setEditor(new CellEditor(dec));
+            colConfig.setNumberFormat(NumberFormat.getDecimalFormat());
+        } else if (type == QuestionType.DATE) {
+            DateField d = new DateField();
+            d.getPropertyEditor().setFormat(DateTimeFormat.getFormat("MM/dd/yyyy"));
+            colConfig.setEditor(new CellEditor(d));
+            colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+        } else if (type == QuestionType.TIME) {
+            TimeField time = new TimeField();
+            time.setEditable(false); // avoids them entering invalid data
+            time.setFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
+            colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
+            colConfig.setEditor(new ListCellEditor(time)); //colConfig.setEditor(new CellEditor(time));s
+        } else if (type == QuestionType.LIST_EXCLUSIVE) {
+            ListCellEditor editor = new ListCellEditor(new SimpleComboBox<String>());
+            editor.setOptions(questionDef);
+            colConfig.setEditor(editor);
+        } else if (type == QuestionType.LIST_MULTIPLE) {
+            ListCellEditor multiListEditor = new ListCellEditor(new CheckBoxGroup());
+            multiListEditor.setOptions(questionDef);
+            colConfig.setEditor(multiListEditor);
+        } else if (type == QuestionType.DATE_TIME) {
+            DateField d2 = new DateField();
+            d2.getPropertyEditor().setFormat(DateTimeFormat.getFormat("MM/dd/yyyy HH:mm:ss"));
+            colConfig.setEditor(new CellEditor(d2));
+            colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+        } else if (type == QuestionType.BOOLEAN) {
+            ListCellEditor boolEditor = new ListCellEditor(new SimpleComboBox<String>());
+            boolEditor.setOptions(QuestionDef.TRUE_VALUE, QuestionDef.FALSE_VALUE);
+            colConfig.setEditor(boolEditor);
+        } else if (type == QuestionType.LIST_EXCLUSIVE_DYNAMIC) {
+            // FIXME: don't support this totally yet ...
+            ListCellEditor dynListEditor = new ListCellEditor(new SimpleComboBox<String>());
+            dynListEditor.setDynamicOptions(questionDef);
+            colConfig.setEditor(dynListEditor);
         }
     }
 

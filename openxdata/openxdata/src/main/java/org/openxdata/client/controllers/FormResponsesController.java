@@ -39,6 +39,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.openxdata.sharedlib.client.model.PageDef;
 import org.openxdata.sharedlib.client.model.QuestionDef;
+import org.openxdata.sharedlib.client.model.QuestionType;
 import org.openxdata.sharedlib.client.xforms.XformParser;
 import org.openxdata.sharedlib.client.xforms.XformUtil;
 
@@ -105,12 +106,12 @@ public class FormResponsesController  extends Controller {
             Iterator<QuestionDef> questionIt = purcPageDef.getQuestions().iterator();
             while (questionIt.hasNext()) {
                 QuestionDef purcQuestionDef = questionIt.next();
-                int dataType = purcQuestionDef.getDataType(); 
-                if (dataType == QuestionDef.QTN_TYPE_REPEAT 
-                		|| dataType == QuestionDef.QTN_TYPE_IMAGE 
-                		|| dataType == QuestionDef.QTN_TYPE_AUDIO 
-                		|| dataType == QuestionDef.QTN_TYPE_VIDEO
-                		|| dataType == QuestionDef.QTN_TYPE_BARCODE) {
+                QuestionType dataType = purcQuestionDef.getDataType();
+                if (dataType == QuestionType.REPEAT
+                		|| dataType == QuestionType.IMAGE
+                		|| dataType == QuestionType.AUDIO
+                		|| dataType == QuestionType.VIDEO
+                		|| dataType == QuestionType.BARCODE) {
                     // ignore this one for now...
                     GWT.log("Ignoring question "+purcQuestionDef.getBinding()+" because it is a repeat question, image, barcode, audio or video");
                 } else {
@@ -179,74 +180,48 @@ public class FormResponsesController  extends Controller {
             while (questionIt.hasNext()) {
                 QuestionDef purcQuestionDef = questionIt.next();
                 String updatedAnswer = null;
-                switch (purcQuestionDef.getDataType()) {
-                    // Retrieve the answer value from the record grid record
-                    case QuestionDef.QTN_TYPE_TEXT:
-                        String answerTxt = (String) record.get(purcQuestionDef.getBinding());
-                        updatedAnswer = (String) answerTxt;
-                        break;
-                    case QuestionDef.QTN_TYPE_NUMERIC:
-                        Integer answerInt = (Integer) record.get(purcQuestionDef.getBinding());
-                        if (answerInt != null) {
-                            updatedAnswer = String.valueOf(answerInt);
-                        }
-                        break;
-                    case QuestionDef.QTN_TYPE_DECIMAL:
-                        Double decimal = (Double) record.get(purcQuestionDef.getBinding());
-                        if (decimal != null) {
-                            updatedAnswer = String.valueOf(decimal);
-                        }
-                        break;
-                    case QuestionDef.QTN_TYPE_DATE:
-                        Date answerDate = (Date)record.get(purcQuestionDef.getBinding());
-                        if (answerDate != null) {
-                            DateTimeFormat dateFmt = DateTimeFormat.getFormat("yyyy-MM-dd");
-                            updatedAnswer = dateFmt.format(answerDate);
-                        }
-                        break;
-                    case QuestionDef.QTN_TYPE_TIME:
-                        java.sql.Time t = (java.sql.Time)record.get(purcQuestionDef.getBinding());
-                        if (t != null) {
-                        	Time timeField = new Time(t);
-                            DateTimeFormat timeFmt = DateTimeFormat.getFormat("hh:mm:ss");
-                            updatedAnswer = timeFmt.format(timeField.getDate());
-                        }
-                        break;
-                        // This is a question with alist of options where not more than one option can be selected at a time. 
-                    case QuestionDef.QTN_TYPE_LIST_EXCLUSIVE:
-                        String answerLstExl = (String) record.get(purcQuestionDef.getBinding());
-                        updatedAnswer = (String) answerLstExl;                                  
-                        break;
-                        // This is a question with alist of options where more than one option can be selected at a time.
-                    case QuestionDef.QTN_TYPE_LIST_MULTIPLE:
-                        String answerLstMul = (String) record.get(purcQuestionDef.getBinding());
-                        updatedAnswer = (String) answerLstMul;                                  
-                        break;
-                        // Date and Time question type. This has both the date and time components
-                    case QuestionDef.QTN_TYPE_DATE_TIME:
-                        break;
-                        // Question with true and false answers. 
-                    case QuestionDef.QTN_TYPE_BOOLEAN:
-                        String answerBool = (String) record.get(purcQuestionDef.getBinding());
-                        updatedAnswer = (String) answerBool;                                        
-                        break;
-                        // Question with repeat sets of questions.
-                    case QuestionDef.QTN_TYPE_REPEAT:
-                        break;
-                        // Question with image. 
-                    case QuestionDef.QTN_TYPE_IMAGE:
-                        break;
-                        // Question with recorded video.
-                    case QuestionDef.QTN_TYPE_VIDEO:
-                        break;
-                        // Question with recoded audio.
-                    case QuestionDef.QTN_TYPE_AUDIO:
-                        break;
-                    case QuestionDef.QTN_TYPE_LIST_EXCLUSIVE_DYNAMIC:
-                        String answerLstDyn = (String) record.get(purcQuestionDef.getBinding());
-                        updatedAnswer = (String) answerLstDyn;   
-                        break;
-                } 
+
+                QuestionType type = purcQuestionDef.getDataType();
+                // Retrieve the answer value from the record grid record
+                if (type == QuestionType.TEXT) {
+                    String answerTxt = (String) record.get(purcQuestionDef.getBinding());
+                    updatedAnswer = (String) answerTxt;
+                } else if (type == QuestionType.NUMERIC) {
+                    Integer answerInt = (Integer) record.get(purcQuestionDef.getBinding());
+                    if (answerInt != null) {
+                        updatedAnswer = String.valueOf(answerInt);
+                    }
+                } else if (type == QuestionType.DECIMAL) {
+                    Double decimal = (Double) record.get(purcQuestionDef.getBinding());
+                    if (decimal != null) {
+                        updatedAnswer = String.valueOf(decimal);
+                    }
+                } else if (type == QuestionType.DATE) {
+                    Date answerDate = (Date) record.get(purcQuestionDef.getBinding());
+                    if (answerDate != null) {
+                        DateTimeFormat dateFmt = DateTimeFormat.getFormat("yyyy-MM-dd");
+                        updatedAnswer = dateFmt.format(answerDate);
+                    }
+                } else if (type == QuestionType.TIME) {
+                    java.sql.Time t = (java.sql.Time) record.get(purcQuestionDef.getBinding());
+                    if (t != null) {
+                        Time timeField = new Time(t);
+                        DateTimeFormat timeFmt = DateTimeFormat.getFormat("hh:mm:ss");
+                        updatedAnswer = timeFmt.format(timeField.getDate());
+                    }
+                } else if (type == QuestionType.LIST_EXCLUSIVE) {
+                    String answerLstExl = (String) record.get(purcQuestionDef.getBinding());
+                    updatedAnswer = (String) answerLstExl;
+                } else if (type == QuestionType.LIST_MULTIPLE) {
+                    String answerLstMul = (String) record.get(purcQuestionDef.getBinding());
+                    updatedAnswer = (String) answerLstMul;
+                } else if (type == QuestionType.BOOLEAN) {
+                    String answerBool = (String) record.get(purcQuestionDef.getBinding());
+                    updatedAnswer = (String) answerBool;
+                } else if (type == QuestionType.LIST_EXCLUSIVE_DYNAMIC) {
+                    String answerLstDyn = (String) record.get(purcQuestionDef.getBinding());
+                    updatedAnswer = (String) answerLstDyn;
+                }
                 
                 GWT.log("Updated answer: "+purcQuestionDef.getBinding()+"="+updatedAnswer);
                 purcQuestionDef.setAnswer(updatedAnswer);
