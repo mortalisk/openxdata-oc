@@ -129,6 +129,12 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
                 syncEmail();
             }
         });
+        display.getUserStatus().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                 syncChange();
+            }
+        });
         addMappingTabs();
 
     }
