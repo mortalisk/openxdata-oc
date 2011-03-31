@@ -130,9 +130,16 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
             }
         });
         display.getUserStatus().addChangeHandler(new ChangeHandler() {
+
             @Override
             public void onChange(ChangeEvent event) {
-                 syncChange();
+                if (!isDisablingDefaultAdmin())
+                    syncChange();
+                else{
+                    Utilities.displayMessage("Cannot Disable Default Administrator");
+                    //Specifically used indices not strings for now.Internationaliztion coz could break this
+                    display.getUserStatus().setSelectedIndex(0);
+                }
             }
         });
         addMappingTabs();
@@ -140,7 +147,8 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
     }
 
     private void addMappingTabs() {
-        if (!permissionResolver.isAddUsers()) return;
+        if (!permissionResolver.isAddUsers())
+            return;
 
         if (permissionResolver.isAddRoles())
             display.addTab(userMapPresenter.getDisplay(), "User Role");
@@ -214,7 +222,8 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
 
     private void syncPassword() {
         String password = display.getPassword().getText();
-        if (!validPassword(password)) return;
+        if (!validPassword(password))
+            return;
 
         String confirmPassword = display.getConfirmPassword().getText();
         if (!password.equals(confirmPassword)) {
@@ -230,12 +239,20 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
         eventBus.fireEvent(new EditableEvent<User>(user));
     }
 
+    private boolean isDisablingDefaultAdmin() {
+        if (!user.isDefaultAdministrator())
+            return false;
+
+        return display.getUserStatus().getSelectedIndex() != 0;
+    }
+
     private boolean validPassword(String password) {
         display.setEnabled(true);
         String minPasswordLength = Context.getSetting(
                 "defaultPasswordLength", "6");
         int length = Integer.parseInt(minPasswordLength);
-        if (password.isEmpty()) return true;
+        if (password.isEmpty())
+            return true;
         if (password.length() >= length)
             return true;
         display.setEnabled(false);

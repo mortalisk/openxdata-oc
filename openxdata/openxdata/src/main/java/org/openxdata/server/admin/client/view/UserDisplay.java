@@ -147,7 +147,7 @@ public class UserDisplay extends BasePropertyDisplay implements UserPresenter.Di
 
     private void bindUserStatusTypes() {
         for (String type : Utilities.getUserStatusTypes()) {
-            cboStatus.addItem(type);
+            cboStatus.addItem(type,type);
         }
     }
 

@@ -171,11 +171,11 @@ public class LoginView extends Composite {
 	 * This method should be called every time the user tries and fails to
 	 * login.
 	 */
-	public void onUnSuccessfulLogin() {
+	public void onUnSuccessfulLogin(String msg) {
 		usernameText.setText("");
 		passwordText.setText("");
 		
-		Label label = new Label("Invalid UserName or Password");
+		Label label = new Label(msg);
 		table.setWidget(6, 1, label);
 		FlexCellFormatter formatter = table.getFlexCellFormatter();
 		

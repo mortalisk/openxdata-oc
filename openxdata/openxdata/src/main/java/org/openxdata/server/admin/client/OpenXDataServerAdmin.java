@@ -153,10 +153,11 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
                                                 if (!user.isDisabled()) {
                                                         onSuccessfulLogin(user);
                                                 } else {
-                                                        Utilities.displayMessage("You account has been disabled. Contact the system administrator.");
+                                                        loginView.onUnSuccessfulLogin("You account has been disabled. Contact the system administrator.");
+                                                        logOut(false);
                                                 }
                                         } else
-                                                loginView.onUnSuccessfulLogin();
+                                                loginView.onUnSuccessfulLogin("Invalid UserName or Password");
                                 }
                         });
         }
@@ -172,8 +173,8 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
             FormUtil.dlg.setText(i18n.loading());
             FormUtil.dlg.center();
             if (user.getRoles().isEmpty()) {
-                Utilities.displayMessage("You have No Permissions! Contact the Administrator");
-                logOut();
+                loginView.onUnSuccessfulLogin("You have No Permissions! Contact the Administrator");
+                logOut(false);
                 return;
             } else
                 initPermissions(user);
@@ -341,12 +342,13 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
         /**
          * Logs out the current logged in <tt>User.</tt>
          */
-        public void logOut() {
+        public void logOut(final boolean reloadPage) {
                 Context.getUserService().logout(new OpenXDataAsyncCallback<Void>() {
 
                         @Override
                         public void onSuccess(Void result) {
-                                onSuccessfullLogout();
+                            if(reloadPage)
+                            onSuccessfullLogout();
                         }
 
                         @Override
@@ -410,7 +412,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 
             @Override
             public void onLogout() {
-               logOut();
+               logOut(true);
             }
         };
         eventBus.addHandler(LogOutEvent.TYPE, logOutHandler);
