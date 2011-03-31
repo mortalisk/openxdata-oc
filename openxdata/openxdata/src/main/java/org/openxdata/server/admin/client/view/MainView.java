@@ -52,7 +52,9 @@ import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.view.event.PresenterChangeEvent;
 import org.openxdata.server.admin.client.view.event.ViewAppListenerChangeEvent;
+import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
+import org.openxdata.server.admin.model.User;
 
 /**
  * Application Main View.
@@ -160,10 +162,10 @@ public class MainView extends Composite implements ResizeHandler {
         // Stack Panel to organize MainView
         openXdataStackPanel = widgetFactory.getOpenXdataStackPanel();
 
-        openXdataStackPanel.add(
-                widgetFactory.getStudiesTreeView(),
-                Utilities.createHeaderHTML(images.studies(),
-                OpenXdataText.get(TextConstants.STUDIES)), true);
+//        openXdataStackPanel.add(
+//                widgetFactory.getStudiesTreeView(),
+//                Utilities.createHeaderHTML(images.studies(),
+//                OpenXdataText.get(TextConstants.STUDIES)), true);
 
         openXdataStackPanel.add(
                 //widgetFactory.getUsersTreeView(),
@@ -206,6 +208,7 @@ public class MainView extends Composite implements ResizeHandler {
 
         Utilities.maximizeWidget(dockPanel);
         initWidget(dockPanel);
+        eventBus.fireEvent(new ViewEvent<User>(User.class));
     }
 
     public void logOut() {

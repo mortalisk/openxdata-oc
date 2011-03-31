@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Composite;
+import java.util.ArrayList;
 import java.util.List;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
@@ -135,6 +136,8 @@ public abstract class BaseMapPresenter<U extends Editable, T extends Editable> i
     }
 
     public List<T> getSystemItems() {
+        if(systemItems == null)
+            return new ArrayList<T>();
         return systemItems;
     }
 

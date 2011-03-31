@@ -155,7 +155,7 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
 			horizontalSplitClient = new HorizontalSplitPanel();
 
 			horizontalSplitClient.setSplitPosition("20%");
-			horizontalSplitClient.setRightWidget(getStudyView());
+//			horizontalSplitClient.setRightWidget(getStudyView());
 		}
 
 		return horizontalSplitClient;
