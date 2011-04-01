@@ -108,4 +108,5 @@ public interface EventDispatcher {
 	 * Notifies registered <tt>Event Listeners</tt> on the <tt>onNewItem Event click.</tt>
 	 */
 	void notifyOnNewItemEventListeners();
+
 }

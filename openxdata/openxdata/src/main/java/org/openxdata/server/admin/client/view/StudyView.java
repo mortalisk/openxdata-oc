@@ -148,42 +148,6 @@ public class StudyView extends OpenXDataBaseView implements
 		table.setStyleName("cw-FlexTable");
 		table.getRowFormatter().removeStyleName(0, "FlexTable-Header");
 		
-		// Check if User has permissions to View Studies.
-		if (RolesListUtil.getPermissionResolver().isPermission("studies")) {
-			tabIndexProperties = 0;
-			tabPositions++;
-			if (propertiesView == null) {
-				propertiesView = new StudyPropertiesView(eventBus);
-			}
-			
-			tabs.add(propertiesView, constants.label_properties());
-			noTab = false;
-		}
-		
-		// Check if User has permissions to design Forms.
-		if (RolesListUtil.getPermissionResolver().isExtraPermission(
-		        "form_design")) {
-			tabIndexFormDesigner = tabPositions;
-			tabPositions++;
-			if (formDesigner == null) {
-				
-				// Need to mind the order of this and formRunner avoid the null
-				// pointer exception at
-				// at
-				// org.purc.purcforms.client.view.FormRunnerView.submitData(FormRunnerView.java:830)
-				// when submitting form data using the data list tab.
-				formDesigner = new FormDesignerWidget(false, false, true);
-			}
-			
-			formDesigner.setWidth("100%");
-			formDesigner.setHeight("100%");
-			formDesigner.removeLanguageTab();
-			formDesigner.setFormSaveListener(this);
-			
-			tabs.add(formDesigner, constants.label_design());
-			noTab = false;
-		}
-		
 		// Check if User has permissions to view form data
 		if (RolesListUtil.getPermissionResolver().isViewPermission(
 		        "Perm_View_Form_Data")
@@ -281,16 +245,6 @@ public class StudyView extends OpenXDataBaseView implements
 				}
 			} else if (item instanceof FormDefVersion) {
 				openNewFormDeffered((FormDefVersion) item);
-			}
-		} else {
-			propertiesView.onItemSelected(sender, item);
-			if (tabs.getTabBar().getSelectedTab() == tabIndexProperties) {
-				propertiesView.setFocus();
-			} else if (tabs.getTabBar().getSelectedTab() == tabIndexFormDesigner
-			        && item instanceof FormDefVersion) {
-				
-				FormDefVersion formDef = (FormDefVersion) item;
-				dataCheck.itemHasFormData(formDef);
 			}
 		}
 	}

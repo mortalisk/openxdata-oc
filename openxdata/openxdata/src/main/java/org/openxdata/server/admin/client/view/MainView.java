@@ -17,6 +17,7 @@
  */
 package org.openxdata.server.admin.client.view;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import org.openxdata.server.admin.client.controller.MainViewController;
 import org.openxdata.server.admin.client.locale.OpenXdataText;
 import org.openxdata.server.admin.client.locale.TextConstants;
@@ -34,15 +35,21 @@ import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFact
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import org.openxdata.server.admin.client.presenter.RolePresenter;
 import org.openxdata.server.admin.client.presenter.TaskPresenter;
@@ -50,10 +57,12 @@ import org.openxdata.server.admin.client.presenter.UserPresenter;
 import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
+import org.openxdata.server.admin.client.view.event.EventRegistration;
 import org.openxdata.server.admin.client.view.event.PresenterChangeEvent;
 import org.openxdata.server.admin.client.view.event.ViewAppListenerChangeEvent;
 import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 
 /**
@@ -125,6 +134,31 @@ public class MainView extends Composite implements ResizeHandler {
             }
         };
         menuBar.addHandler(mobInstallHandler, MobileInstallEvent.TYPE);
+        menuBar.addHandler(new ViewEvent.Handler<FormDefVersion>() {
+
+            @Override
+            public void onView() {
+                final PopupPanel popup = new PopupPanel(false);
+                VerticalPanel vp = new VerticalPanel();
+                vp.add(widgetFactory.getStudyView());
+                VerticalPanel bottomPanel = new VerticalPanel();
+                Button btn = new Button("Close");
+                btn.addClickHandler(new ClickHandler() {
+
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        popup.hide();
+                    }
+                });
+                bottomPanel.setWidth("100%");
+                bottomPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+                bottomPanel.add(new HTML("<br>"));
+                bottomPanel.add(btn);
+                vp.add(bottomPanel);
+                popup.add(vp);
+                popup.show();
+            }
+        }, EventRegistration.getType(ViewEvent.class, FormDefVersion.class));
 
         LogOutEvent.Handler logOutHandler = new LogOutEvent.Handler() {
 

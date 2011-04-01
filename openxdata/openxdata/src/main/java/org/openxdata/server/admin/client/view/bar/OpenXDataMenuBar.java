@@ -33,6 +33,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import org.openxdata.server.admin.client.view.event.LogOutEvent;
 import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
+import org.openxdata.server.admin.client.view.event.ViewEvent;
+import org.openxdata.server.admin.model.FormDefVersion;
 
 /**
  * Encapsulates <code>Menu Bar</code> controls on the view.
@@ -159,7 +161,14 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
                     notifyOnFormatEventListeners();
                 }
             });
+            viewMenu.addSeparator();
+            viewMenu.addItem(constants.label_datalist(),true,new Command() {
 
+                @Override
+                public void execute() {
+                   fireEvent(new ViewEvent<FormDefVersion>(FormDefVersion.class));
+                }
+            });
             viewMenu.addSeparator();
 
             menuBar.addItem(constants.label_view(), viewMenu);
