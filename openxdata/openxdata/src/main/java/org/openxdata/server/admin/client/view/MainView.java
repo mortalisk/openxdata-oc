@@ -156,7 +156,7 @@ public class MainView extends Composite implements ResizeHandler {
                 bottomPanel.add(btn);
                 vp.add(bottomPanel);
                 popup.add(vp);
-                popup.show();
+                popup.center();
             }
         }, EventRegistration.getType(ViewEvent.class, FormDefVersion.class));
 

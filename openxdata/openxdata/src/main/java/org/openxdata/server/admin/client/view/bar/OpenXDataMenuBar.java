@@ -339,8 +339,6 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
         }
     }
 
- 
-
     @Override
     public void registerApplicationEventListener(
             OpenXDataViewApplicationEventListener eventListener) {
