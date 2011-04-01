@@ -29,12 +29,15 @@ import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.DataCheckUtil;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
+import org.openxdata.server.admin.client.view.event.DesignFormEvent;
+import org.openxdata.server.admin.client.view.event.FormDataHeaderEvent;
 import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
 import org.openxdata.server.admin.client.view.helper.StudyViewHelper;
 import org.openxdata.server.admin.client.view.listeners.FormVersionOpenDialogListener;
 import org.openxdata.server.admin.client.view.listeners.OnDataCheckListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
+import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
@@ -44,6 +47,14 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.purc.purcforms.client.FormDesignerWidget;
+import org.purc.purcforms.client.FormRunnerEntryPoint;
+import org.purc.purcforms.client.controller.IFormSaveListener;
+import org.purc.purcforms.client.controller.SubmitListener;
+import org.purc.purcforms.client.util.FormUtil;
+import org.purc.purcforms.client.util.LanguageUtil;
+import org.purc.purcforms.client.view.FormRunnerView.Images;
+import org.purc.purcforms.client.widget.FormRunnerWidget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -56,17 +67,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.inject.Inject;
-import org.openxdata.server.admin.client.view.event.DesignFormEvent;
-import org.openxdata.server.admin.client.view.event.FormDataHeaderEvent;
-import org.purc.purcforms.client.FormDesignerWidget;
-import org.purc.purcforms.client.controller.IFormSaveListener;
-import org.purc.purcforms.client.util.LanguageUtil;
-import org.purc.purcforms.client.FormRunnerEntryPoint;
-import org.purc.purcforms.client.widget.FormRunnerWidget;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
-import org.purc.purcforms.client.controller.SubmitListener;
-import org.purc.purcforms.client.util.FormUtil;
-import org.purc.purcforms.client.view.FormRunnerView.Images;
 
 
 /**
@@ -82,8 +82,6 @@ public class StudyView extends OpenXDataBaseView implements
         ResizeHandler, OnDataCheckListener, FormVersionOpenDialogListener,
         StudiesObserver, OpenXDataViewExtendedApplicationEventListener {
 	
-	/** The index of the tab for properties */
-	private int tabIndexProperties = 0;
 	/** The index of the tab for the form designer. */
 	private int tabIndexFormDesigner = -1;
 	/** The index of the tab for the data list. */
@@ -92,11 +90,6 @@ public class StudyView extends OpenXDataBaseView implements
 	private int tabIndexData = -1;
 	/** Icon images. */
 	private final Images images = GWT.create(Images.class);
-	/**
-	 * The widget for displaying and allow edit of the selected study, form or
-	 * form version.
-	 */
-	private StudyPropertiesView propertiesView;
 	/** The form designer widget. */
 	private FormDesignerWidget formDesigner;
 	/** The form runner widget. */

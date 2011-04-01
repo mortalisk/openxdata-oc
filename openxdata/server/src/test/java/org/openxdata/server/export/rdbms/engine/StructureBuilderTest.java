@@ -21,7 +21,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openxdata.test.XFormsFixture;
 

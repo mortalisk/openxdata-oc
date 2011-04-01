@@ -24,8 +24,6 @@ import org.openxdata.server.admin.model.Locale;
 import org.openxdata.server.admin.model.ReportGroup;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.TaskDef;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserReportGroupMap;
 import org.openxdata.server.admin.model.mapping.UserReportMap;
