@@ -19,7 +19,7 @@ package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.DOM;

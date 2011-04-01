@@ -18,7 +18,7 @@
 package org.openxdata.server.admin.client.util;
 
 import org.openxdata.server.admin.client.view.dialogs.ReLoginDialog;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  * Utilities used by the <code>OpenXDataAsyncCallback</code>.

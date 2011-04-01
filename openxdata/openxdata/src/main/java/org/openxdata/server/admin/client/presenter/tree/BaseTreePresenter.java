@@ -19,7 +19,7 @@ import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  *

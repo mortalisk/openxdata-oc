@@ -40,10 +40,10 @@ import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.Label;
-import org.openxdata.designer.client.FormDesignerWidget;
-import org.openxdata.designer.client.util.FormDesignerUtil;
-import org.openxdata.sharedlib.client.model.Locale;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.FormDesignerWidget;
+import org.purc.purcforms.client.util.FormDesignerUtil;
+import org.purc.purcforms.client.model.Locale;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  * Helper class for the {@link StudyView}.

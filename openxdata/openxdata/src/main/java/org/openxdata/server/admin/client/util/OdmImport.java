@@ -25,7 +25,7 @@ import org.openxdata.server.admin.model.StudyDef;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
-import org.openxdata.sharedlib.client.xforms.XmlUtil;
+import org.purc.purcforms.client.xforms.XmlUtil;
 
 /**
  * Imports studies in ODM format

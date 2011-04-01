@@ -23,9 +23,9 @@ import java.util.List;
 import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.util.ProgressIndicator;
-import org.openxdata.designer.client.FormDesignerWidget;
-import org.openxdata.designer.client.controller.IFormSaveListener;
-import org.openxdata.designer.client.util.LanguageUtil;
+import org.purc.purcforms.client.FormDesignerWidget;
+import org.purc.purcforms.client.controller.IFormSaveListener;
+import org.purc.purcforms.client.util.LanguageUtil;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
@@ -361,7 +361,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 								// context sees a new loaded
 								// form with properties of a previously closed
 								// form.
-								org.openxdata.designer.client.Context
+								org.purc.purcforms.client.Context
 										.setFormDef(null);
 							}
 						}

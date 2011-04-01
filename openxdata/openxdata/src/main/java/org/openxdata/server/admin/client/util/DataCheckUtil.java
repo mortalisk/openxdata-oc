@@ -31,7 +31,7 @@ import org.openxdata.server.admin.model.exception.OpenXDataException;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.Window;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  * Encapsulates the actions required to 

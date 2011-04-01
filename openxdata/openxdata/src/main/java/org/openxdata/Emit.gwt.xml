@@ -19,10 +19,10 @@
 	<!-- <inherits name='com.extjs.gxt.charts.Chart' /> -->
 	<inherits name='net.sf.gilead.Gilead4Gwt' />
 
-    <inherits name='org.openxdata.designer.FormDesigner'/>
-    <inherits name='org.openxdata.runner.FormRunner'/>
-    <inherits name='org.openxdata.sharedlib.SharedLib'/>
-    <inherits name='org.openxdata.querybuilder.QueryBuilder'/>
+	<inherits name='org.purc.purcforms.FormDesigner'/>
+	<inherits name='org.purc.purcforms.FormRunner'/>
+	<inherits name='org.purc.purcforms.SharedLib'/>
+	<inherits name='org.purc.purcforms.QueryBuilder'/>
 
 	<inherits name='org.openxdata.server.admin.Model' />
 	<inherits name='org.openxdata.server.admin.RpcInterface'/>

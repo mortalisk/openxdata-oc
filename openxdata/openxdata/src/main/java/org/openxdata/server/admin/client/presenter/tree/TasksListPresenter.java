@@ -17,7 +17,7 @@ import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.TaskDef;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  *

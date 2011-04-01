@@ -25,7 +25,7 @@ import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallb
 import org.openxdata.server.admin.client.listeners.RoleMappedListener;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 import com.google.gwt.user.client.Window;
 

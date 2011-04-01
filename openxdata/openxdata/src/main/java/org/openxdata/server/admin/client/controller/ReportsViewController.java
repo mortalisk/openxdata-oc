@@ -39,7 +39,7 @@ import org.openxdata.server.admin.model.mapping.UserReportMap;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  * This controller deals with loading and saving of

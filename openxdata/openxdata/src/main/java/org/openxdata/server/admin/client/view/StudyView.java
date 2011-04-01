@@ -58,15 +58,15 @@ import com.google.gwt.xml.client.XMLParser;
 import com.google.inject.Inject;
 import org.openxdata.server.admin.client.view.event.DesignFormEvent;
 import org.openxdata.server.admin.client.view.event.FormDataHeaderEvent;
-import org.openxdata.designer.client.FormDesignerWidget;
-import org.openxdata.designer.client.controller.IFormSaveListener;
-import org.openxdata.designer.client.util.LanguageUtil;
-import org.openxdata.runner.client.FormRunnerEntryPoint;
-import org.openxdata.runner.client.widget.FormRunnerWidget;
+import org.purc.purcforms.client.FormDesignerWidget;
+import org.purc.purcforms.client.controller.IFormSaveListener;
+import org.purc.purcforms.client.util.LanguageUtil;
+import org.purc.purcforms.client.FormRunnerEntryPoint;
+import org.purc.purcforms.client.widget.FormRunnerWidget;
 import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
-import org.openxdata.sharedlib.client.controller.SubmitListener;
-import org.openxdata.sharedlib.client.util.FormUtil;
-import org.openxdata.sharedlib.client.view.FormRunnerView.Images;
+import org.purc.purcforms.client.controller.SubmitListener;
+import org.purc.purcforms.client.util.FormUtil;
+import org.purc.purcforms.client.view.FormRunnerView.Images;
 
 
 /**

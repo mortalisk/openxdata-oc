@@ -25,7 +25,7 @@ import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredExcepti
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.InvocationException;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  * This class wraps the GWT AsyncCallback to provide a specific

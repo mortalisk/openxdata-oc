@@ -177,56 +177,22 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.openxdata.gwt</groupId>
-            <artifactId>openxdata-gwt-formrunner</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.purc</groupId>
+            <artifactId>gwt-purcforms</artifactId>
+            <version>2.0.7</version>
             <type>jar</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.openxdata.gwt</groupId>
-            <artifactId>openxdata-gwt-formdesigner</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.zenika</groupId>
+            <artifactId>gwt-datepicker</artifactId>
+            <version>r30</version>
             <type>jar</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.openxdata.gwt</groupId>
-            <artifactId>openxdata-gwt-formdesigner</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.purc</groupId>
+            <artifactId>gwt-querybuilder</artifactId>
+            <version>2.0.5</version>
             <type>jar</type>
-            <classifier>sources</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openxdata.gwt</groupId>
-            <artifactId>openxdata-gwt-sharedlib</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openxdata.gwt</groupId>
-            <artifactId>openxdata-gwt-sharedlib</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <classifier>sources</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openxdata.gwt</groupId>
-            <artifactId>openxdata-gwt-querybuilder</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openxdata.gwt</groupId>
-            <artifactId>openxdata-gwt-querybuilder</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <classifier>sources</classifier>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gwt-dnd</groupId>

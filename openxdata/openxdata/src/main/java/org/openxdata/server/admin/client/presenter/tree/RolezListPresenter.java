@@ -17,7 +17,7 @@ import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.LoadRequetEvent;
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Role;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  *

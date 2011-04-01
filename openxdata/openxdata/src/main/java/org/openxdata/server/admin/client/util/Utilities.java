@@ -48,10 +48,10 @@ import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.Report;
 import org.openxdata.server.admin.model.ReportGroup;
-import org.openxdata.sharedlib.client.util.FormUtil;
-import org.openxdata.sharedlib.client.xforms.XformUtil;
-import org.openxdata.sharedlib.client.xforms.XmlUtil;
-import org.openxdata.sharedlib.client.xpath.XPathExpression;
+import org.purc.purcforms.client.util.FormUtil;
+import org.purc.purcforms.client.xforms.XformUtil;
+import org.purc.purcforms.client.xforms.XmlUtil;
+import org.purc.purcforms.client.xpath.XPathExpression;
 
 /**
  * Utilities used by the the server admin.

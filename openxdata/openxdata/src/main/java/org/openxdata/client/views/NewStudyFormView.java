@@ -43,15 +43,14 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.openxdata.designer.client.FormDesignerWidget;
-import org.openxdata.designer.client.controller.IFormSaveListener;
+import org.purc.purcforms.client.FormDesignerWidget;
+import org.purc.purcforms.client.controller.IFormSaveListener;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
-import org.openxdata.sharedlib.client.locale.FormsConstants;
+import org.purc.purcforms.client.locale.LocaleText;
 
 public class NewStudyFormView extends WizardView implements IFormSaveListener {
-    final FormsConstants formsConstants = GWT.create(FormsConstants.class);
 	
 	/** The form designer widget. */
 	private FormDesignerWidget formDesigner;
@@ -476,7 +475,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			be.setCancelled(true);
 			be.stopEvent();
 			MessageBox.confirm(appMessages.cancel(),
-			        formsConstants.cancelFormPrompt(),
+			        LocaleText.get("cancelFormPrompt"),
 			        new Listener<MessageBoxEvent>() {
 				        @Override
 				        public void handleEvent(MessageBoxEvent be) {

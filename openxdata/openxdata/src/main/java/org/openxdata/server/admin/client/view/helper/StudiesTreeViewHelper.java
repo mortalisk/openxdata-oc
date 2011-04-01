@@ -42,7 +42,7 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -62,8 +62,8 @@ import com.google.gwt.user.client.ui.TreeItem;
 
 import org.openxdata.server.admin.client.view.event.DesignFormEvent;
 
-import org.openxdata.sharedlib.client.controller.OpenFileDialogEventListener;
-import org.openxdata.sharedlib.client.view.OpenFileDialog;
+import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
+import org.purc.purcforms.client.view.OpenFileDialog;
 
 
 /**

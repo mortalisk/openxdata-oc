@@ -8,10 +8,11 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.runner.client.FormRunnerEntryPoint;
-import org.openxdata.sharedlib.client.controller.SubmitListener;
-import org.openxdata.sharedlib.client.util.FormUtil;
-import org.openxdata.runner.client.widget.FormRunnerWidget;
+import org.purc.purcforms.client.FormRunnerEntryPoint;
+import org.purc.purcforms.client.controller.SubmitListener;
+import org.purc.purcforms.client.util.FormUtil;
+import org.purc.purcforms.client.locale.LocaleText;
+import org.purc.purcforms.client.widget.FormRunnerWidget;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -27,12 +28,10 @@ import com.extjs.gxt.ui.client.widget.Window;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.openxdata.sharedlib.client.locale.FormsConstants;
-import org.openxdata.sharedlib.client.view.FormRunnerView.Images;
+import org.purc.purcforms.client.view.FormRunnerView.Images;
 
 public class DataCaptureView extends View implements SubmitListener {
     final AppMessages appMessages = GWT.create(AppMessages.class);    
-    final FormsConstants formsConstants = GWT.create(FormsConstants.class);
     
     private FormDef formDef;
     private FormData formData;
@@ -75,7 +74,7 @@ public class DataCaptureView extends View implements SubmitListener {
     		if (displayCloseWarning) {
     			be.setCancelled(true);
     			be.stopEvent();
-    			MessageBox.confirm(appMessages.cancel(), formsConstants.cancelFormPrompt(), new Listener<MessageBoxEvent>() {
+    			MessageBox.confirm(appMessages.cancel(), LocaleText.get("cancelFormPrompt"), new Listener<MessageBoxEvent>() {
 	    			@Override
 	    			public void handleEvent(MessageBoxEvent be) {
 	    				if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {

@@ -16,10 +16,10 @@ import com.extjs.gxt.ui.client.widget.form.Time;
 import com.extjs.gxt.ui.client.widget.form.TimeField;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
-import org.openxdata.sharedlib.client.model.DynamicOptionDef;
-import org.openxdata.sharedlib.client.model.FormDef;
-import org.openxdata.sharedlib.client.model.OptionDef;
-import org.openxdata.sharedlib.client.model.QuestionDef;
+import org.purc.purcforms.client.model.DynamicOptionDef;
+import org.purc.purcforms.client.model.FormDef;
+import org.purc.purcforms.client.model.OptionDef;
+import org.purc.purcforms.client.model.QuestionDef;
 
 /**
  * Grid Cell Editor for Combo and List boxes

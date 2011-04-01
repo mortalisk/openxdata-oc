@@ -28,7 +28,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
-import org.openxdata.sharedlib.client.xforms.XmlUtil;
+import org.purc.purcforms.client.xforms.XmlUtil;
 
 
 /**

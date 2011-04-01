@@ -43,7 +43,7 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import org.openxdata.server.admin.client.view.event.DesignFormEvent;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
-import org.openxdata.sharedlib.client.controller.OpenFileDialogEventListener;
+import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
 
 
 /**

@@ -67,7 +67,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.openxdata.client.controllers.FormVersionsController;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */

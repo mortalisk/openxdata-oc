@@ -41,7 +41,7 @@ import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserReportMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
-import org.openxdata.designer.client.util.StyleUtil;
+import org.purc.purcforms.client.util.StyleUtil;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -69,17 +69,16 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
-import org.openxdata.querybuilder.client.QueryBuilderWidget;
+import org.purc.purcforms.client.QueryBuilderWidget;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
-import org.openxdata.sharedlib.client.controller.OpenFileDialogEventListener;
-import org.openxdata.sharedlib.client.model.OptionDef;
-import org.openxdata.sharedlib.client.model.QuestionDef;
-import org.openxdata.sharedlib.client.model.QuestionType;
-import org.openxdata.sharedlib.client.util.FormUtil;
-import org.openxdata.sharedlib.client.view.OpenFileDialog;
-import org.openxdata.sharedlib.client.xforms.XformBuilder;
-import org.openxdata.sharedlib.client.xforms.XformParser;
+import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
+import org.purc.purcforms.client.model.OptionDef;
+import org.purc.purcforms.client.model.QuestionDef;
+import org.purc.purcforms.client.util.FormUtil;
+import org.purc.purcforms.client.view.OpenFileDialog;
+import org.purc.purcforms.client.xforms.XformBuilder;
+import org.purc.purcforms.client.xforms.XformParser;
 
 /**
  * This widget displays properties of the selected report and lets you edit
@@ -716,13 +715,13 @@ public class ReportView extends OpenXDataBaseView implements
 	public String getXform(FormDefVersion formDefVersion) {
 		// TODO This needs to be done more efficiently by not rebuilding the
 		// xform every time we change to a different report.
-		org.openxdata.sharedlib.client.model.FormDef formDef = XformParser
+		org.purc.purcforms.client.model.FormDef formDef = XformParser
 		        .fromXform2FormDef(formDefVersion.getXform());
 		
 		QuestionDef qtnDef = new QuestionDef(formDef.getPageAt(0));
 		qtnDef.setId(formDef.getQuestionCount() + 1);
 		qtnDef.setVariableName("openxdata_user_name");
-		qtnDef.setDataType(QuestionType.LIST_EXCLUSIVE);
+		qtnDef.setDataType(QuestionDef.QTN_TYPE_LIST_EXCLUSIVE);
 		qtnDef.setText("User");
 		formDef.addQuestion(qtnDef);
 		

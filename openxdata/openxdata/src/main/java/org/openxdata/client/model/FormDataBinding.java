@@ -2,8 +2,8 @@ package org.openxdata.client.model;
 
 import java.util.List;
 import java.util.Map;
-import org.openxdata.sharedlib.client.model.FormDef;
-import org.openxdata.sharedlib.client.model.QuestionDef;
+import org.purc.purcforms.client.model.FormDef;
+import org.purc.purcforms.client.model.QuestionDef;
 
 /**
  * Defines the bindings for the xform data

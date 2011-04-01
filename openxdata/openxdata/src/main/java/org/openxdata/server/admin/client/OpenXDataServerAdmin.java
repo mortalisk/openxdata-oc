@@ -20,6 +20,8 @@ package org.openxdata.server.admin.client;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.listeners.LoginListener;
+import org.openxdata.server.admin.client.locale.OpenXdataText;
+import org.openxdata.server.admin.client.locale.TextConstants;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.LoginView;
 import org.openxdata.server.admin.client.view.MainView;
@@ -43,8 +45,7 @@ import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.view.event.LogOutEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetGinInjector;
 import org.openxdata.server.admin.model.Permission;
-import org.openxdata.sharedlib.client.locale.FormsConstants;
-import org.openxdata.sharedlib.client.util.FormUtil;
+import org.purc.purcforms.client.util.FormUtil;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>. This acts as the
@@ -54,8 +55,6 @@ import org.openxdata.sharedlib.client.util.FormUtil;
  */
 public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
         LoginListener {
-
-    final FormsConstants i18n = GWT.create(FormsConstants.class);
 
         // mainView is not instantiated here because the form designer route panel
         // will be referencing
@@ -170,7 +169,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
          */
         private void onSuccessfulLogin(User user) {
 
-            FormUtil.dlg.setText(i18n.loading());
+            FormUtil.dlg.setText(OpenXdataText.get(TextConstants.LOADING));
             FormUtil.dlg.center();
             if (user.getRoles().isEmpty()) {
                 loginView.onUnSuccessfulLogin("You have No Permissions! Contact the Administrator");
