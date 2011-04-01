@@ -17,7 +17,6 @@
       <inherits name='org.purc.purcforms.FormDesigner'/>
       <inherits name='org.purc.purcforms.FormRunner'/>
       <inherits name='org.purc.purcforms.SharedLib'/>
-      <inherits name='org.purc.purcforms.QueryBuilder'/>
 
       <inherits name='net.sf.gilead.Gilead4Gwt'/>
 	   
