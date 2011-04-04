@@ -2,6 +2,7 @@ package org.openxdata.server.admin.client.view.treeview;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.openxdata.server.admin.client.presenter.tree.IBaseTreeDisplay;
+import org.openxdata.server.admin.client.presenter.tree.TreeItemWrapper;
 import org.openxdata.server.admin.model.Editable;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.resources.client.ImageResource;
@@ -31,23 +32,37 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
 
     public BaseTreeDisplay() {
         setUpView();
-
     }
 
     private TreeItem getTreeItemForUser(E item) {
         //First try the selected Item if failed then search
         TreeItem selectedItem = tree.getSelectedItem();
-        if (selectedItem != null && item.equals(selectedItem.getUserObject()))
+        if (selectedItem != null && isEqual(item, selectedItem.getUserObject()))
             return selectedItem;
+
 
         int itemCount = tree.getItemCount();
         for (int i = 0; i < itemCount; i++) {
             TreeItem treeItem = tree.getItem(i);
-            if (item.equals(treeItem.getUserObject()))
+            if (containsItem(item, treeItem))
                 return treeItem;
-
         }
         return null;
+    }
+
+    private boolean containsItem(E item, TreeItem treeItem) {
+        if (isEqual(item, treeItem.getUserObject()))
+            return true;
+        int childCount = treeItem.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TreeItem child = treeItem.getChild(i);
+            return containsItem(item, child);
+        }
+        return false;
+    }
+
+    private boolean isEqual(E item, Object obj) {
+        return item.equals(obj);
     }
 
     private void setUpView() {
@@ -67,6 +82,8 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
         tree.clear();
         for (int i = 0; i < users.size(); i++) {
             E item = users.get(i);
+            if (item instanceof TreeItemWrapper && ((TreeItemWrapper) item).hasParent())
+                continue;
             tree.addItem(wrapInTreeItem(item));
         }
     }
@@ -86,8 +103,10 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
     public void update(E item) {
         TreeItem treeItem = getTreeItemForUser(item);
         if (treeItem == null) return;
-        treeItem.setWidget(wrapInTreeItemWidget(item));
-        treeItem.setTitle(getTooltip(item));
+
+        E itemSlctd = (E) treeItem.getUserObject();
+        treeItem.setWidget(wrapInTreeItemWidget(itemSlctd));
+        treeItem.setTitle(getTooltip(itemSlctd));
     }
 
     @Override
@@ -120,11 +139,29 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
         TreeItem root = new CompositeTreeItem(wrapInTreeItemWidget(item));
         root.setTitle(getTooltip(item));
         root.setUserObject(item);
+        if (item instanceof TreeItemWrapper) {
+            addChildItemsz(root, (TreeItemWrapper) item);
+        }
         return root;
     }
 
+    public void addChildItemsz(TreeItem item, TreeItemWrapper wrapper) {
+        List<TreeItemWrapper> children = wrapper.getChildren();
+        for (TreeItemWrapper treeItemWrapper : children) {
+            TreeItem wrappedItem = wrapInTreeItem((E) treeItemWrapper);
+            item.addItem(wrappedItem);
+        }
+    }
+
     protected TreeItemWidget wrapInTreeItemWidget(E item) {
-        return new TreeItemWidget(images.lookup(), getDisplayLabel(item), contextMenu);
+        return new TreeItemWidget(getImage(item), getDisplayLabel(item), contextMenu);
+    }
+
+    protected ImageResource getImage(E item) {
+        if (item instanceof TreeItemWrapper)
+            return ((TreeItemWrapper) item).getImage();
+        else
+            return images.lookup();
     }
 
     @SuppressWarnings("unchecked")
@@ -146,7 +183,7 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
         Widget widget = contextMenu.getWidget();
         MenuBar menuBar = (MenuBar) widget;
         menuBar.addSeparator();
-        Command wrappedCommand = new Command() {
+        Command cmdWrapper = new Command() {
 
             @Override
             public void execute() {
@@ -154,7 +191,18 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
                 cmd.execute();
             }
         };
-        menuBar.addItem(Utilities.createHeaderHTML(image, tile), true, wrappedCommand);
+        menuBar.addItem(Utilities.createHeaderHTML(image, tile), true, cmdWrapper);
+    }
+
+    @Override
+    public void addChild(E item) {
+        TreeItem selectedItem = tree.getSelectedItem();
+        if (selectedItem == null)
+            return;
+        TreeItem childItem = wrapInTreeItem(item);
+        selectedItem.addItem(childItem);
+        tree.setSelectedItem(childItem);
+        tree.ensureSelectedItemVisible();
     }
 
     protected abstract String getTooltip(E item);

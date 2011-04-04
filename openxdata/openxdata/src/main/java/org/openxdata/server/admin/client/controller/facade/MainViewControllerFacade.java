@@ -33,6 +33,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
+import org.openxdata.server.admin.model.SettingGroup;
 
 /**
  * This class encapsulates direct calls to the specific
@@ -315,9 +316,9 @@ public class MainViewControllerFacade implements StackPanelListener {
 //							loadTasks(true);
 //						break;
 					case OpenXDataStackPanelConstants.INDEX_SETTINGS:
-						if (RolesListUtil.getPermissionResolver()
-						        .isViewPermission("Perm_View_Settings"))
-							loadSettings(true);
+//						if (RolesListUtil.getPermissionResolver()
+//						        .isViewPermission("Perm_View_Settings"))
+//							loadSettings(true);
 						break;
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:
 						if ((widgetFactory.getReportView())
@@ -393,12 +394,13 @@ public class MainViewControllerFacade implements StackPanelListener {
                                                 eventBus.fireEvent(new ViewEvent<TaskDef>(TaskDef.class));
 						break;
 					case OpenXDataStackPanelConstants.INDEX_SETTINGS:
-						if (RolesListUtil.getPermissionResolver()
-						        .isViewPermission("Perm_View_Settings")) {
-							MainViewControllerFacade.loadSettings(false);
-						}
-						widgetFactory.getHorizontalSplitPanel().setRightWidget(
-						        widgetFactory.getSettingView());
+//						if (RolesListUtil.getPermissionResolver()
+//						        .isViewPermission("Perm_View_Settings")) {
+//							MainViewControllerFacade.loadSettings(false);
+//						}
+//						widgetFactory.getHorizontalSplitPanel().setRightWidget(
+//						        widgetFactory.getSettingView());
+                                                 eventBus.fireEvent(new ViewEvent<SettingGroup>(SettingGroup.class));
 						break;
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:
 						if (RolesListUtil.getPermissionResolver()
@@ -409,6 +411,7 @@ public class MainViewControllerFacade implements StackPanelListener {
 						}
 						widgetFactory.getHorizontalSplitPanel().setRightWidget(
 						        widgetFactory.getReportView());
+                                            
 						break;
 				}
 				

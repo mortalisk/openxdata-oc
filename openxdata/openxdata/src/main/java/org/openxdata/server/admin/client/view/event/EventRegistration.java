@@ -23,7 +23,11 @@ public class EventRegistration<T, H extends BaseHandler<T>> {
 
     }
 
-    public void forClass(Class<T> clazz) {
+    public void forClass(Class<? extends T> clazz) {
+        eventBus.addHandler(getType(gwtEvtClazz, clazz), handler);
+    }
+
+    public void forSuperClass(Class<? super  T> clazz) {
         eventBus.addHandler(getType(gwtEvtClazz, clazz), handler);
     }
 
@@ -48,13 +52,21 @@ public class EventRegistration<T, H extends BaseHandler<T>> {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj == null) return false;
-            if (getClass() != obj.getClass()) return false;
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
             final TypeHolder other = (TypeHolder) obj;
             if (this.eventClazz != other.eventClazz && (this.eventClazz == null
-                    || !this.eventClazz.equals(other.eventClazz))) return false;
+                    || !this.eventClazz.equals(other.eventClazz))) {
+                return false;
+            }
             if (this.objectClazz != other.objectClazz && (this.objectClazz == null
-                    || !this.objectClazz.equals(other.objectClazz))) return false;
+                    || !this.objectClazz.equals(other.objectClazz))) {
+                return false;
+            }
             return true;
         }
 

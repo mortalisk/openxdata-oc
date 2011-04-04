@@ -42,9 +42,15 @@ public interface OpenXDataImages extends Resources {
 	ImageResource filtersgroup();
 	
 	ImageResource studies();
-	ImageResource users();
+        @ClientBundle.Source("org/freedesktop/tango/16x16/apps/system-users.png")
+	ImageResource user();
+        ImageResource users();
 	ImageResource roles();
-	ImageResource settings();
+        ImageResource settings();
+        @ClientBundle.Source("org/freedesktop/tango/16x16/categories/preferences-system.png")
+	ImageResource setting();
+        @ClientBundle.Source("org/freedesktop/tango/16x16/places/folder.png")
+        ImageResource folder();
 	ImageResource tasks();
 	ImageResource reports();
 

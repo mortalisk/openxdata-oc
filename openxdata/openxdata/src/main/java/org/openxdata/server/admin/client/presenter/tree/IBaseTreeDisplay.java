@@ -12,7 +12,7 @@ import org.openxdata.server.admin.model.Editable;
  *
  * @author kay
  */
-public interface IBaseTreeDisplay<E extends Editable> extends WidgetDisplay{
+public interface IBaseTreeDisplay<E extends Editable> extends WidgetDisplay {
 
     public HasSelectionHandlers<?> getList();
 
@@ -29,5 +29,6 @@ public interface IBaseTreeDisplay<E extends Editable> extends WidgetDisplay{
     public void delete(E item);
 
     public void addCommand(String tile, Command cmd, ImageResource image);
-    
+
+    public void addChild(E item);
 }

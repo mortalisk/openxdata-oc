@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.openxdata.server.admin.client.presenter.WidgetDisplay;
 import org.openxdata.server.admin.client.util.Utilities;
@@ -98,7 +99,8 @@ public abstract class BasePropertyDisplay implements WidgetDisplay {
 
             @Override
             public void onKeyDown(KeyDownEvent event) {
-                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) setFocusOnNextWidget();
+                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
+                    setFocusOnNextWidget();
             }
         };
 
@@ -164,10 +166,23 @@ public abstract class BasePropertyDisplay implements WidgetDisplay {
 
     public void disableAll() {
         opOnTextBox(new TextBoxOp() {
+
             @Override
             public void operateOn(TextBox textBox) {
                 textBox.setEnabled(false);
             }
         });
+    }
+    private HashMap<String, TextBox> properties = new HashMap<String, TextBox>();
+
+    public TextBox addTextProperty(String name) {
+        int rowCount = table.getRowCount();
+        table.setWidget(rowCount, 0, new Label(name));
+        TextBox textBox = properties.get(name);
+        if (textBox == null)
+            textBox = new TextBox();
+        table.setWidget(rowCount, 1, textBox);
+        textBox.setWidth("100%");
+        return textBox;
     }
 }

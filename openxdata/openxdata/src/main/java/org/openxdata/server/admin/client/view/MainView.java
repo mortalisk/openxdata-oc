@@ -52,9 +52,11 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import org.openxdata.server.admin.client.presenter.RolePresenter;
+import org.openxdata.server.admin.client.presenter.SettingPresenter;
 import org.openxdata.server.admin.client.presenter.TaskPresenter;
 import org.openxdata.server.admin.client.presenter.UserPresenter;
 import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
+import org.openxdata.server.admin.client.presenter.tree.SettingListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.view.event.EventRegistration;
@@ -89,6 +91,7 @@ public class MainView extends Composite implements ResizeHandler {
     private OpenXDataViewApplicationEventListener currentListener;
     private final RolezListPresenter rolezListPresenter;
     private final TasksListPresenter tasksListPresenter;
+    private final SettingListPresenter settingPresenter;
 
     /**
      * Constructs an instance of this class with a <code>Logout Listener</code>
@@ -104,7 +107,9 @@ public class MainView extends Composite implements ResizeHandler {
             RolezListPresenter rolezListPresenter,
             RolePresenter rolePresenter,
             TasksListPresenter tasksListPresenter,
-            TaskPresenter taskPresenter) {
+            TaskPresenter taskPresenter,
+            SettingListPresenter settingListPresenter,
+            SettingPresenter settingPresenter) {
         this.eventBus = eventBus;
         this.widgetFactory = widgetFactory;
         this.toolBar = widgetFactory.getOpenXDataToolBar();
@@ -113,11 +118,9 @@ public class MainView extends Composite implements ResizeHandler {
         this.splitPanel = widgetFactory.getHorizontalSplitPanel();
         this.rolezListPresenter = rolezListPresenter;
         this.tasksListPresenter = tasksListPresenter;
+        this.settingPresenter = settingListPresenter;
         bindHandlers();
         setUp();
-   
-       
-
     }
 
     /**
@@ -220,12 +223,14 @@ public class MainView extends Composite implements ResizeHandler {
                 OpenXdataText.get(TextConstants.TASKS)), true);
 
         openXdataStackPanel.add(
-                widgetFactory.getSettingsTreeView(),
+                //widgetFactory.getSettingsTreeView(),
+                settingPresenter.getDisplay().asWidget(),
                 Utilities.createHeaderHTML(images.settings(),
                 OpenXdataText.get(TextConstants.SETTINGS)), true);
 
         openXdataStackPanel.add(
                 widgetFactory.getReportsTreeView(),
+                
                 Utilities.createHeaderHTML(images.reports(),
                 OpenXdataText.get(TextConstants.REPORTS)), true);
 

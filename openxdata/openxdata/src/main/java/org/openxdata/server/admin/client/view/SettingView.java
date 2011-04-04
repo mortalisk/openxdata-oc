@@ -82,7 +82,7 @@ public class SettingView extends OpenXDataBaseView {
         @Inject
 	public SettingView(OpenXDataWidgetFactory openXDataViewFactory) {
 		super( openXDataViewFactory);
-		bindHandlers();
+	//	bindHandlers();
 		setUp();
 	}
 	

@@ -293,7 +293,7 @@ public class SettingsTreeView extends OpenXDataBaseTreeView implements
 	@Override
 	public void changeEditableProperties(Object item) {
 		TreeItem treeItem = tree.getSelectedItem();
-		if (item == null)
+		if (item == null || treeItem == null)
 			return; // How can this happen?
 			
 		if (item instanceof Setting) {

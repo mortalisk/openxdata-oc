@@ -31,9 +31,9 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
     protected List<E> items;
     protected List<E> deletedItems = new ArrayList<E>();
     protected EventBus eventBus;
-    private final Class<E> clazz;
+    private final Class clazz;
 
-    public BaseTreePresenter(D Display, EventBus bus, Class<E> clazz) {
+    public BaseTreePresenter(D Display, EventBus bus, Class<? super E> clazz) {
         this.display = Display;
         this.eventBus = bus;
         this.clazz = clazz;
@@ -54,8 +54,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
 
             @Override
             public void onChange(E item) {
-                item.setDirty(true);
-                display.update(item);
+                updateItem(item);
             }
         }).forClass(clazz);
 
@@ -75,7 +74,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
 
             @Override
             public void onSelection(SelectionEvent event) {
-                eventBus.fireEvent(new ItemSelectedEvent<E>(display.getSelected()));
+                fireSelectionEvent();
             }
         });
 
@@ -83,7 +82,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
 
             @Override
             public void addNewItem() {
-                addItem();
+                addItem(false);
             }
 
             @Override
@@ -92,6 +91,31 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
             }
         });
 
+    }
+
+    protected void updateItem(E item) {
+        item.setDirty(true);
+        for (Editable editable : items) {
+            if (editable instanceof TreeItemWrapper) {
+                TreeItemWrapper wrapper = (TreeItemWrapper) editable;
+                if (wrapper.getObject().equals(item)) {
+                    display.update((E) wrapper);
+                    return;
+                }
+            } else {
+                break;
+            }
+        }
+        display.update(item);
+    }
+
+    private void fireSelectionEvent() {
+        E selected = display.getSelected();
+        if (selected instanceof TreeItemWrapper) {
+            TreeItemWrapper wrapper = (TreeItemWrapper) display.getSelected();
+            eventBus.fireEvent(new ItemSelectedEvent<Object>(wrapper.getObject()));
+        } else
+            eventBus.fireEvent(new ItemSelectedEvent<E>(display.getSelected()));
     }
 
     protected void deleteItem() {
@@ -111,11 +135,31 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
         display.delete(item);
     }
 
-    protected void addItem() {
-        if (!canAdd()) return;
-        E item = getNewItem();
-        items.add(item);
-        display.add(item);
+    protected void addItem(boolean child) {
+        if (!canAdd())
+            return;
+        E item = null;
+        if (child) {
+            item = getChild();
+        } else {
+            item = getNewItem();
+        }//EDIT
+        addItem(item);
+    }
+
+    protected void addItem(E item) {
+        if (item == null)
+            return;//EDIT
+        if (item instanceof TreeItemWrapper && ((TreeItemWrapper) item).getParent() != null) {
+            display.addChild(item);
+        } else {
+            items.add(item);
+            display.add(item);
+        }
+    }
+
+    protected E getChild() {
+        return getNewItem();
     }
 
     protected void loadItemIfNone() {
@@ -184,7 +228,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
 
             @Override
             public void onNewItem() {
-                addItem();
+                addItem(false);
             }
 
             @Override
@@ -194,7 +238,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
 
             @Override
             public void onNewChildItem() {
-                addItem();
+                addItem(true);
             }
 
             @Override
@@ -204,7 +248,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
         };
     }
 
-    protected  SaveCompleteListener getSaveCompleteListener() {
+    protected SaveCompleteListener getSaveCompleteListener() {
         return new SaveCompleteListener() {
 
             @Override

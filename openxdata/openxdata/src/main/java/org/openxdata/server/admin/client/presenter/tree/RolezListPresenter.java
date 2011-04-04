@@ -75,8 +75,8 @@ public class RolezListPresenter extends BaseTreePresenter<Role, RolezListPresent
 
             @Override
             public void onSuccess(List<Permission> result) {
-                eventBus.fireEvent(new EditableEvent<Permission>(result, Permission.class));
                 FormUtil.dlg.hide();
+                eventBus.fireEvent(new EditableEvent<Permission>(result, Permission.class));
             }
         };
         roleService.getPermissions(callback);
@@ -142,9 +142,10 @@ public class RolezListPresenter extends BaseTreePresenter<Role, RolezListPresent
             return false;
         }
         boolean canDelete = permissionResolver.isDeleteRoles();
-        if (!canDelete)
+        if (!canDelete) {
             Utilities.displayMessage("You do not have sufficient priviledges to "
                     + "delete Roles! Contact your system administrator");
+        }
         return canDelete;
     }
 
@@ -156,8 +157,9 @@ public class RolezListPresenter extends BaseTreePresenter<Role, RolezListPresent
     @Override
     protected boolean canAdd() {
         boolean canAdd = permissionResolver.isAddRoles();
-        if (!canAdd)
+        if (!canAdd) {
             Utilities.displayMessage("You do not have sufficient priviledges Add Roles");
+        }
         return canAdd;
     }
 }

@@ -1,5 +1,6 @@
 package org.openxdata.server.admin.client.view.treeview;
 
+import com.google.gwt.resources.client.ImageResource;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.model.User;
 
@@ -24,5 +25,10 @@ public class UsersTreeDisplay extends BaseTreeDisplay<User> implements UsersList
     protected String getTreeName() {
         return displayName;
 
+    }
+
+    @Override
+    protected ImageResource getImage(User item) {
+        return images.user();
     }
 }

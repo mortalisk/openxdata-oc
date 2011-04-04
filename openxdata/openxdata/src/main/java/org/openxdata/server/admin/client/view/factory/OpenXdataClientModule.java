@@ -30,6 +30,7 @@ import org.openxdata.server.admin.client.listeners.StackPanelListener;
 import org.openxdata.server.admin.client.presenter.ParameterPresenter;
 import org.openxdata.server.admin.client.presenter.RolePermissionMapPresenter;
 import org.openxdata.server.admin.client.presenter.RolePresenter;
+import org.openxdata.server.admin.client.presenter.SettingPresenter;
 import org.openxdata.server.admin.client.presenter.TaskPresenter;
 import org.openxdata.server.admin.client.presenter.UserFormMapPresenter;
 import org.openxdata.server.admin.client.presenter.UserRoleMapPresenter;
@@ -38,12 +39,14 @@ import org.openxdata.server.admin.client.presenter.UserReportGroupMapPresenter;
 import org.openxdata.server.admin.client.presenter.UserReportMapPresenter;
 import org.openxdata.server.admin.client.presenter.UserStudyMapPresenter;
 import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
+import org.openxdata.server.admin.client.presenter.tree.SettingListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ParameterDisplay;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.RoleDisplay;
+import org.openxdata.server.admin.client.view.SettingDisplay;
 import org.openxdata.server.admin.client.view.SettingView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.TaskDisplay;
@@ -59,6 +62,7 @@ import org.openxdata.server.admin.client.view.mapping.UserReportMapDisplay;
 import org.openxdata.server.admin.client.view.mapping.UserStudyMapDisplay;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
 import org.openxdata.server.admin.client.view.treeview.RoleTreeDisplay;
+import org.openxdata.server.admin.client.view.treeview.SettingsTreeDisplay;
 import org.openxdata.server.admin.client.view.treeview.SettingsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.treeview.TasksTreeDisplay;
@@ -146,5 +150,11 @@ public class OpenXdataClientModule extends AbstractGinModule {
 
         bind(ParameterPresenter.class).in(Singleton.class);
         bind(ParameterPresenter.Display.class).to(ParameterDisplay.class).in(Singleton.class);
+
+        bind(SettingListPresenter.class).in(Singleton.class);
+        bind(SettingListPresenter.Display.class).to(SettingsTreeDisplay.class).in(Singleton.class);
+
+        bind(SettingPresenter.class).in(Singleton.class);
+        bind(SettingPresenter.Display.class).to(SettingDisplay.class).in(Singleton.class);
     }
 }
