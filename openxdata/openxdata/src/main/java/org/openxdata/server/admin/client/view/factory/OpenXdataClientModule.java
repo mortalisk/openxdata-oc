@@ -63,7 +63,6 @@ import org.openxdata.server.admin.client.view.mapping.UserStudyMapDisplay;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
 import org.openxdata.server.admin.client.view.treeview.RoleTreeDisplay;
 import org.openxdata.server.admin.client.view.treeview.SettingsTreeDisplay;
-import org.openxdata.server.admin.client.view.treeview.SettingsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.treeview.TasksTreeDisplay;
 import org.openxdata.server.admin.client.view.treeview.UsersTreeDisplay;
@@ -92,7 +91,6 @@ public class OpenXdataClientModule extends AbstractGinModule {
 
         // TreeViews
         bind(StudiesTreeView.class).in(Singleton.class);
-        bind(SettingsTreeView.class).in(Singleton.class);
         bind(ReportsTreeView.class).in(Singleton.class);
 
         // Views

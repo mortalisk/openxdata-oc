@@ -72,18 +72,6 @@ public class MainViewControllerFacade implements StackPanelListener {
 	}
 	
 
-	
-	/**
-	 * Loads <code>Settings</code>.
-	 * 
-	 * @param reload
-	 *            parameter to indicate if <code>database</code> call should be
-	 *            made in subsequent calls of this method.
-	 */
-	public static void loadSettings(boolean reload) {
-		getMVCInstance().getSettingsViewController().loadSettings(reload);
-	}
-	
 	/**
 	 * Loads <code>Reports</code>.
 	 * 
@@ -100,13 +88,6 @@ public class MainViewControllerFacade implements StackPanelListener {
 	 */
 	public static void saveStudies() {
 		getMVCInstance().getStudiesViewController().saveStudies();
-	}
-	
-	/**
-	 * Saves new, modified or dirty <code>Settings</code>.
-	 */
-	public static void saveSettings() {
-		getMVCInstance().getSettingsViewController().saveSettings();
 	}
 	
 	/**
@@ -200,9 +181,9 @@ public class MainViewControllerFacade implements StackPanelListener {
 				        "Perm_View_Studies"))
 					MainViewControllerFacade.loadStudies(false);
 				
-				if (RolesListUtil.getPermissionResolver().isViewPermission(
-				        "Perm_View_Settings"))
-					MainViewControllerFacade.loadSettings(false);
+//				if (RolesListUtil.getPermissionResolver().isViewPermission(
+//				        "Perm_View_Settings"))
+//					MainViewControllerFacade.loadSettings(false);
 				
 				if (RolesListUtil.getPermissionResolver().isViewPermission(
 				        "Perm_View_Reports"))
@@ -259,7 +240,7 @@ public class MainViewControllerFacade implements StackPanelListener {
 						//saveTasks();
 						break;
 					case OpenXDataStackPanelConstants.INDEX_SETTINGS:
-						saveSettings();
+						//saveSettings();
 						break;
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:
 						saveReports();

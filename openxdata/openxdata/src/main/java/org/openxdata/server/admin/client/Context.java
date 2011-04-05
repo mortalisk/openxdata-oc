@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.openxdata.server.admin.client.controller.ReportsViewController;
-import org.openxdata.server.admin.client.controller.SettingsViewController;
 import org.openxdata.server.admin.client.controller.StudiesViewController;
 import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
 import org.openxdata.server.admin.client.controller.observe.OpenXDataObserver;
@@ -359,12 +358,6 @@ public class Context implements OpenXDataObserver {
 			        if(observable.getClass().equals(StudiesViewController.class)){
 					if(modelObjects.get(0) instanceof StudyDef){
 						Context.studies = (List<StudyDef>) modelObjects;
-					}
-				}
-				
-				else if(observable.getClass().equals(SettingsViewController.class)){
-					if(modelObjects.get(0) instanceof SettingGroup){
-						Context.settingGroups = (List<SettingGroup>) modelObjects;
 					}
 				}
 

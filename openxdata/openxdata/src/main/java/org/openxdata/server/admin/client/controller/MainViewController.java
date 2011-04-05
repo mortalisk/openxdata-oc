@@ -24,7 +24,6 @@ import org.openxdata.server.admin.client.controller.observe.OpenXDataObserver;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
-import org.openxdata.server.admin.client.view.treeview.SettingsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 
 /**
@@ -57,15 +56,6 @@ public class MainViewController {
 	private ReportsViewController reportsViewController;
 	
 	/**
-	 * An instance of
-	 * {@link org.openxdata.server.admin.client.controller.SettingsViewController}
-	 * 
-	 * This will handle all data movement for the views in relation to loading,
-	 * saving and movement of Settings related data.
-	 */
-	private SettingsViewController settingsViewController;
-	
-	/**
 	 * Initializes the MainViewController with all the ancillary controllers for
 	 * the views.
 	 * 
@@ -82,37 +72,16 @@ public class MainViewController {
          */
         @Inject
         public MainViewController(StudiesTreeView studiesTreeView,
-                SettingsTreeView settingsTreeView,
                 ReportsTreeView reportsTreeView,
                 StudyView studyView,
                 ReportView reportView) {
-
-                setupSettingsViewController(settingsTreeView);
                 
                 setupReportsViewController(reportsTreeView, reportView);
                 setupStudiesViewController(studiesTreeView, studyView, reportView);
                 MainViewControllerFacade.setMVCInstance(this);
 
         }
-	
-	/**
-	 * Sets up the {@link SettingsViewController}
-	 * 
-	 * @param settingsTreeView
-	 *            instance of {@link SettingsTreeView} that was created by the
-	 *            factory.
-	 */
-        private void setupSettingsViewController(SettingsTreeView settingsTreeView) {
-                settingsViewController = new SettingsViewController(settingsTreeView);
-
-                // Registering Observers
-                settingsViewController.addObserver(Context.getContextInstance());
-                settingsViewController.addObserver(settingsTreeView);
-
-        }
-	
-
-	
+        
 	/**
 	 * Sets up the {@link ReportsViewController}
 	 * 
@@ -187,14 +156,4 @@ public class MainViewController {
 		return reportsViewController;
 	}
 	
-	/**
-	 * Returns an instance of the Settings Controller for the application.
-	 * Should never be set manually but left to the Main View Controller to
-	 * build one in order to have a single one for the whole application
-	 * 
-	 * @return The SettingsViewController
-	 */
-	public SettingsViewController getSettingsViewController() {
-		return settingsViewController;
-	}
 }

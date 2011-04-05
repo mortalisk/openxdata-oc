@@ -27,7 +27,6 @@ import org.openxdata.server.admin.client.view.bar.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.bar.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.contextmenu.OpenXDataContextMenu;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
-import org.openxdata.server.admin.client.view.treeview.SettingsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
@@ -71,11 +70,6 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
 	@Override
 	public StudiesTreeView getStudiesTreeView() {
 		return injector.getStudiesTreeView();
-	}
-
-	@Override
-	public SettingsTreeView getSettingsTreeView() {
-		return injector.getSettingsTreeView();
 	}
 
 	@Override

@@ -26,7 +26,6 @@ import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.bar.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.bar.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
-import org.openxdata.server.admin.client.view.treeview.SettingsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
@@ -52,8 +51,6 @@ public interface OpenXDataWidgetGinInjector extends Ginjector {
     public EventBus getEventBus();
 
     public StudiesTreeView getStudiesTreeView();
-
-    public SettingsTreeView getSettingsTreeView();
 
     public ReportsTreeView getReportsTreeView();
 

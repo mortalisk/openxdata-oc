@@ -29,7 +29,6 @@ import org.openxdata.server.admin.client.view.factory.OpenXDataViewFactory;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetGinInjector;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
-import org.openxdata.server.admin.client.view.treeview.SettingsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
@@ -56,13 +55,6 @@ public interface OpenXDataWidgetFactory {
 	 * @return Instance of {@link StudiesTreeView}
 	 */
 	StudiesTreeView getStudiesTreeView();
-	
-	/**
-	 * Retrieves the <tt>SettingsTreeView</tt>
-	 * 
-	 * @return Instance of {@link SettingsTreeView}
-	 */
-	SettingsTreeView getSettingsTreeView();
 	
 	/**
 	 * Retrieves the <tt>ReportsTreeView</tt>

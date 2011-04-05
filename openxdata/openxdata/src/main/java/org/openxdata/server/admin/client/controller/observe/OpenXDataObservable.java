@@ -168,13 +168,7 @@ public class OpenXDataObservable {
 			if(xObserver instanceof ReportsObserver){
 				updateReportsObserverObjects(arg, typeClass, xObserver);					
 			}
-			
-			//Notifying SettingsViewController observers
-			if(xObserver instanceof SettingsObserver){
-				if(typeClass.equals(SettingGroup.class)){
-					((SettingsObserver)xObserver).updateSettingGroups(this, (List<SettingGroup>) arg);
-				}
-			}
+
 			
 			//Notify observer.
 			else{
