@@ -169,15 +169,15 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
          */
         private void onSuccessfulLogin(User user) {
 
-            FormUtil.dlg.setText(OpenXdataText.get(TextConstants.LOADING));
-            FormUtil.dlg.center();
-            if (user.getRoles().isEmpty()) {
+           if (user.getRoles().isEmpty()) {
                 loginView.onUnSuccessfulLogin("You have No Permissions! Contact the Administrator");
                 logOut(false);
                 return;
-            } else
+            } else{
                 initPermissions(user);
-
+            }
+            FormUtil.dlg.setText(OpenXdataText.get(TextConstants.LOADING));
+            FormUtil.dlg.center();
                 final User loggedInUser = user;
                 Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 

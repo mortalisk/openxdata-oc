@@ -38,6 +38,8 @@ public class SettingListPresenter extends BaseTreePresenter<SettingTreeWrapper, 
     }
 
     private void bindUI() {
+        if(!permissionResolver.isPermission(Permission.PERM_ADD_SETTINGS))
+            return;
         display.addCommand("Add Child Group", new Command() {
 
             @Override
@@ -87,7 +89,7 @@ public class SettingListPresenter extends BaseTreePresenter<SettingTreeWrapper, 
 
     @Override
     protected boolean canView() {
-        return permissionResolver.isViewPermission(Permission.PERM_VIEW_SETTINGSGROUP);
+        return permissionResolver.isViewPermission(Permission.PERM_VIEW_SETTINGS);
     }
 
     @Override

@@ -5,11 +5,13 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.inject.Inject;
+
 import org.openxdata.server.admin.client.view.BasePropertyDisplay;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
 import org.openxdata.server.admin.client.view.event.PresenterChangeEvent;
 import org.openxdata.server.admin.client.view.event.ViewEvent;
+import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Setting;
 import org.openxdata.server.admin.model.SettingGroup;
 
@@ -49,7 +51,15 @@ public class SettingPresenter implements IPresenter<SettingPresenter.Display> {
     public SettingPresenter(EventBus eventBus, Display display) {
         this.eventBus = eventBus;
         this.display = display;
-        bindUI();
+        if (permissionResolver.isViewPermission(Permission.PERM_VIEW_SETTINGS)) {
+            if (permissionResolver.isEditPermission(Permission.PERM_EDIT_SETTINGS)) {
+                bindUI();
+            } else {
+                display.disableAll();
+            }
+        }else{
+            display.showNoPermissionView();
+        }
         bindHandlers();
     }
 

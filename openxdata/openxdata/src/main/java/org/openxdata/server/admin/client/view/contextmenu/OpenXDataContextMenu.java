@@ -38,7 +38,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
  */
 public class OpenXDataContextMenu {
     private static OpenXDataImages images = GWT.create(OpenXDataImages.class);
-	
+	private MenuBar menuBar = new MenuBar(true);
 	/**
 	 * Constructs an instance of this <tt>class.</tt>
 	 */
@@ -81,7 +81,6 @@ public class OpenXDataContextMenu {
 	PopupPanel instanceOfAdminContextMenu(ContextMenuInitListener contextMenuListener, UIViewLabels contextMenuLabels){
 		
         final PopupPanel popup = new PopupPanel(true,true);
-        MenuBar menuBar = new MenuBar(true);
         popup.setWidget(menuBar);
         
         loadAddMenuItems(popup, menuBar, contextMenuListener, contextMenuLabels);
@@ -105,7 +104,7 @@ public class OpenXDataContextMenu {
 		PopupPanel popup = new PopupPanel(true,true);
 		
 		//The menu bar to bind to the pop up
-	    MenuBar menuBar = new MenuBar(true);
+	    
 	    
 	    popup.setWidget(menuBar);
 	    
@@ -181,10 +180,9 @@ public class OpenXDataContextMenu {
 	 * @return Instance of {@link OpenXDataContextMenu }
 	 */
 	PopupPanel instanceOfPermissionLessUser() {
-		
 		PopupPanel popup = new PopupPanel(true,true);
-	    
-	    return popup;
+                popup.setWidget(menuBar);
+                return popup;
 	}
 
 }
