@@ -1,5 +1,6 @@
 package org.openxdata.server.admin.client.view.treeview;
 
+import com.google.gwt.resources.client.ImageResource;
 import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
 import org.openxdata.server.admin.model.Role;
 
@@ -22,5 +23,10 @@ public class RoleTreeDisplay extends BaseTreeDisplay<Role> implements RolezListP
     @Override
     public String getDisplayLabel(Role item) {
         return item.getName();
+    }
+
+    @Override
+    protected ImageResource getImage(Role item) {
+        return images.role();
     }
 }
