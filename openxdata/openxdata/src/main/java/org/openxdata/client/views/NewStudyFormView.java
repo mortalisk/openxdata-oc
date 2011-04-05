@@ -45,6 +45,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import org.purc.purcforms.client.FormDesignerWidget;
 import org.purc.purcforms.client.controller.IFormSaveListener;
+
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
@@ -64,16 +66,16 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	private RadioFieldSet createStudyFS;
 	private Radio newStudy;
         private Radio existingStdyRdio;
-	private UserAccessFieldset userAccessStudyFieldSet;
+        private UserAccessGrids userStudyAccessGrid;
+        private UserAccessGrids userFormAccessGrid;
 	// input fields for new form page
 	private RadioFieldSet createFormFS;
 	private TextField<String> newFormName;
 	private TextField<String> newFormDescription;
 	private ComboBox<FormSummary> existingFormName;
-	private TextField<String> existingFrmDescription;
+	private TextField<String> existingFormDescription;
 	private Radio newForm;
 	private Radio existingForm;
-	private UserAccessFieldset userAccessFrmFieldSet;
 	// input fields for form versions
 	private TextField<String> formVersionNameTfld;
 	private TextField<String> formVersionDescr;
@@ -105,27 +107,34 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
-		currentPage = activePage;
             nextButton.setEnabled(false);
-		if (activePage == 1) {
+            //resize window if the previous window was expanded
+            if (activePage == 0 && currentPage != 0) {
+                resizeWindow(-90, getWizardWidth());
+            }
+            currentPage = activePage;
+            if (activePage == 1) {
 			// check what was selected in the page before
 			if (createStudyFS.getSelectedRadio().equals(
 			        appMessages.addNewStudy())) {
 				// remove select existing page from page 2
 				existingFormName.hide();
-                                existingFrmDescription.hide();
+                                existingFormDescription.hide();
 				newForm.hide();
 				newForm.setValue(true);
 				existingForm.hide();
 			} else if (!newForm.isVisible()) {
 				// make sure all radio buttons are showing
 				existingFormName.show();
-                                existingFrmDescription.show();
+                                existingFormDescription.show();
 				newForm.show();
 				newForm.setValue(false);
 				setStudyForms();
 				existingForm.show();
 			}
+                            userStudyAccessGrid.setExpanded(false);
+                            userFormAccessGrid.setExpanded(false);
+                            resizeWindow(0,getWizardWidth());
 		} else if (activePage == 2&& createFormFS.getSelectedRadio().equals(appMessages.addNewForm())) {
 			formVersionNameTfld.setValue("v1");
 		} else if (activePage == 2) {
@@ -235,27 +244,43 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
                         newStudyDescription.setValue("");
                     }
                 });
-		userAccessStudyFieldSet = new UserAccessFieldset();
-		createStudyFS.add(userAccessStudyFieldSet);
+		userStudyAccessGrid = new UserAccessGrids(appMessages.usersWithAccessToStudy());
+		createStudyFS.add(userStudyAccessGrid);
 		
-		userAccessStudyFieldSet.addListener(Events.Expand,
+		userStudyAccessGrid.addListener(Events.Expand,
 		        new Listener<ComponentEvent>() {
 			        
 			        @Override
 			        public void handleEvent(ComponentEvent be) {
-				        resizeWindow(userAccessStudyFieldSet.getHeight());
+                                        //hide upper controlls so that this controll fills up the whole window
+                                        newStudy.hide();
+                                        newStudyName.hide();
+                                        newStudyDescription.hide();
+                                        existingStdyRdio.hide();
+                                        existingStudyName.hide();
+                                        existingStudyDescription.hide();
+				        resizeWindow(90,userStudyAccessGrid.getWidth()+40);
+                                        //hack just to resolve the icons overlapping issue.
+                                        userStudyAccessGrid.refreshToolbars();
 			        }
 		        });
-		userAccessStudyFieldSet.addListener(Events.BeforeCollapse,
+		userStudyAccessGrid.addListener(Events.BeforeCollapse,
 		        new Listener<ComponentEvent>() {
 			        
 			        @Override
 			        public void handleEvent(ComponentEvent be) {
 				        // be sure to check that it has been expanded
 				        // to avoid resizing the initial window
-				        if (userAccessStudyFieldSet.isExpanded())
-					        resizeWindow(-1
-					                * userAccessStudyFieldSet.getHeight());
+				        if (userStudyAccessGrid.isExpanded()){
+                                            //show upper controlls
+                                            newStudy.show();
+                                            newStudyName.show();
+                                            newStudyDescription.show();
+                                            existingStdyRdio.show();
+                                            existingStudyName.show();
+                                            existingStudyDescription.show();
+					    resizeWindow((-90),getWizardWidth());
+                                        }
 			        }
 		        });
 		return createStudyPanel;
@@ -298,7 +323,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
                         nextButton.setEnabled(false);
                         if(existingFormName.getValue()!= null){
                             existingFormName.clearSelections();
-                            existingFrmDescription.setValue("");
+                            existingFormDescription.setValue("");
                         }
                     }
                 });
@@ -317,17 +342,17 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			        @Override
 			        public void selectionChanged(
 			                SelectionChangedEvent<FormSummary> se) {
-				        existingFrmDescription.setValue(se.getSelectedItem()
+				        existingFormDescription.setValue(se.getSelectedItem()
 				                .getFormDefinition().getDescription());
 				        setUserFormMap(se.getSelectedItem().getFormDefinition(), users);
                                         nextButton.setEnabled(true);
 			        }
 		        });
-		existingFrmDescription = new TextField<String>();
-		existingFrmDescription.setFieldLabel(appMessages.formDescription());
+		existingFormDescription = new TextField<String>();
+		existingFormDescription.setFieldLabel(appMessages.formDescription());
 		existingForm = createFormFS.addRadio("form",
 		        appMessages.existingForm(), existingFormName,
-		        existingFrmDescription);
+		        existingFormDescription);
                 existingForm.addListener(Events.OnClick, new Listener<FieldEvent>() {
 
                     @Override
@@ -337,26 +362,41 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
                         newFormDescription.setValue("");
                     }
                 });
-
-                userAccessFrmFieldSet = new UserAccessFieldset();
-		createFormFS.add(userAccessFrmFieldSet);
-		userAccessFrmFieldSet.addListener(Events.Expand,
+                userFormAccessGrid = new UserAccessGrids(appMessages.usersWithAccessToForm());
+		createFormFS.add(userFormAccessGrid);
+		userFormAccessGrid.addListener(Events.Expand,
 		        new Listener<ComponentEvent>() {
 			        
 			        @Override
 			        public void handleEvent(ComponentEvent be) {
-				        resizeWindow(userAccessFrmFieldSet.getHeight());
+                                        newForm.hide();
+                                        newFormName.hide();
+                                        newFormDescription.hide();
+                                        existingForm.hide();
+                                        existingFormName.hide();
+                                        existingFormDescription.hide();
+				        resizeWindow(90,userFormAccessGrid.getWidth()+40);
+                                        //hack just to resolve the icons overlapping issue.
+                                        userStudyAccessGrid.refreshToolbars();
 			        }
 		        });
-		userAccessFrmFieldSet.addListener(Events.BeforeCollapse,
+		userFormAccessGrid.addListener(Events.BeforeCollapse,
 		        new Listener<ComponentEvent>() {
 			        
 			        @Override
 			        public void handleEvent(ComponentEvent be) {
 				        // be sure to check that it has been expanded
 				        // to avoid resizing the initial window
-				        if (userAccessFrmFieldSet.isExpanded())
-					        resizeWindow(-1 * userAccessFrmFieldSet.getHeight());
+				        if (userFormAccessGrid.isExpanded()){
+                                         //show upper controlls
+                                            newForm.show();
+                                            newFormName.show();
+                                            newFormDescription.show();
+                                            existingForm.show();
+                                            existingFormName.show();
+                                            existingFormDescription.show();
+					    resizeWindow((-90),getWizardWidth());
+                                        }
 			        }
 		        });
 		
@@ -503,10 +543,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	}
 	
 	public void saveUserStudyMap() {
-            if(!userAccessStudyFieldSet.getTempMappedItems().isEmpty()){
-		for (int i = 0; i < userAccessStudyFieldSet.getTempMappedItems().size(); ++i) {
+            if(!userStudyAccessGrid.getTempMappedItems().isEmpty()){
+		for (int i = 0; i < userStudyAccessGrid.getTempMappedItems().size(); ++i) {
 			for (User user : users) {
-				if (user.getName().equals(userAccessStudyFieldSet.getTempMappedItems().get(i).toString())
+				if (user.getName().equals(userStudyAccessGrid.getTempMappedItems().get(i).getName())
 				        && !(user.getName().equals(((User) Registry
 				                .get(Emit.LOGGED_IN_USER_NAME)).getName()))) {
 					// check already mapped users to this study
@@ -521,11 +561,11 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			}
 		}
             }
-            if(!userAccessStudyFieldSet.getTempItemstoUnmap().isEmpty()){
-                for (int i = 0; i < userAccessStudyFieldSet.getTempItemstoUnmap().size(); ++i){
+            if(!userStudyAccessGrid.getTempItemstoUnmap().isEmpty()){
+                for (int i = 0; i < userStudyAccessGrid.getTempItemstoUnmap().size(); ++i){
                     for(UserStudyMap map:mappedStudies){
                         for(User user:users){
-                            if((user.getName().equals(userAccessStudyFieldSet.getTempItemstoUnmap().get(i)))&&
+                            if((user.getName().equals(userStudyAccessGrid.getTempItemstoUnmap().get(i).getName()))&&
                                     (user.getUserId() == map.getUserId())){
                                 ((NewStudyFormController)NewStudyFormView.this.getController()).deleteUserMappedStudy(map);
                                 break;
@@ -537,10 +577,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	}
 	
 	public void saveUserFormMap() {
-            if(!userAccessFrmFieldSet.getTempMappedItems().isEmpty()){
-		for (int i = 0; i < userAccessFrmFieldSet.getTempMappedItems().size(); ++i) {
+            if(!userFormAccessGrid.getTempMappedItems().isEmpty()){
+		for (int i = 0; i < userFormAccessGrid.getTempMappedItems().size(); ++i) {
 			for (User user : users) {
-				if (user.getName().equals(userAccessFrmFieldSet.getTempMappedItems().get(i))
+				if (user.getName().equals(userFormAccessGrid.getTempMappedItems().get(i).getName())
 				        && !(user.getName().equals(((User) Registry
 				                .get(Emit.LOGGED_IN_USER_NAME)).getName()))) {
 					UserFormMap map = new UserFormMap();
@@ -554,11 +594,11 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			}
 		}
             }
-            if(!userAccessFrmFieldSet.getTempItemstoUnmap().isEmpty()){
-                for (int i = 0; i < userAccessFrmFieldSet.getTempItemstoUnmap().size(); ++i){
+            if(!userFormAccessGrid.getTempItemstoUnmap().isEmpty()){
+                for (int i = 0; i < userFormAccessGrid.getTempItemstoUnmap().size(); ++i){
                     for(UserFormMap map:mappedForms){
                         for(User user:users){
-                            if((user.getName().equals(userAccessFrmFieldSet.getTempItemstoUnmap().get(i)))&&
+                            if((user.getName().equals(userFormAccessGrid.getTempItemstoUnmap().get(i).getName()))&&
                                     (user.getUserId() == map.getUserId())){
                                 ((NewStudyFormController)NewStudyFormView.this.getController()).deleteUserMappedForm(map);
                                 break;
@@ -662,7 +702,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			} else {
 				formDef = studyDef.getForm(existingFormName.getValue()
 				        .getFormDefinition().getFormId());
-				formDef.setDescription(existingFrmDescription.getValue());
+				formDef.setDescription(existingFormDescription.getValue());
 			}
 		}
 		// page 3
@@ -705,10 +745,14 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	
 	public void setUsers(List<User> users) {
 		this.users = users;
+                List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
 		for (User user : users) {
-                        userAccessStudyFieldSet.addUnmappedUser(user.getName());
-                        userAccessFrmFieldSet.addUnmappedUser(user.getName());
+                        userStudyAccessGrid.addUnmappedUser(new UserSummary(user));
+                        unMappedUsers.add(new UserSummary(user));
+                        userFormAccessGrid.addUnmappedUser(new UserSummary(user));
 		}
+                userStudyAccessGrid.updateLists(unMappedUsers, new ArrayList<UserSummary>());
+                userFormAccessGrid.updateLists(unMappedUsers, new ArrayList<UserSummary>());
 	}
 	
 	private boolean checkStudyExistance(String name, List<StudyDef> items) {
@@ -737,47 +781,65 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	 * Load study names into left and right listboxes appropriately
 	 */
 	private void setUserStudyMap(StudyDef study, List<User> users) {
-                userAccessStudyFieldSet.getMappedItemListbox().clear();
-                userAccessStudyFieldSet.getUnmappedItemListbox().clear();
-		userAccessStudyFieldSet.getTempMappedItems().clear();
+                //clear the grids
+                userStudyAccessGrid.getUnmappedItemGrid().getStore().removeAll();
+                userStudyAccessGrid.getMappedItemGrid().getStore().removeAll();
+                userStudyAccessGrid.getTempMappedItems().clear();
+                userStudyAccessGrid.getLeftList().clear();
+                userStudyAccessGrid.getRightList().clear();
+
+                List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
+                List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
 		for (User u : users) {
 			// check whether user is mapped to this study
 			boolean found = false;
 			for (UserStudyMap map : mappedStudies) {
 				if ((map.getUserId() == u.getId())
 				        && (map.getStudyId() == study.getStudyId())) {
-                                        userAccessStudyFieldSet.addMappedUser(u.getName());
+                                        userStudyAccessGrid.addMappedUser(new UserSummary(u));
+                                        mappedUsers.add(new UserSummary(u));
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-                                userAccessStudyFieldSet.addUnmappedUser(u.getName());
+                                userStudyAccessGrid.addUnmappedUser(new UserSummary(u));
+                                unMappedUsers.add(new UserSummary(u));
 			}
 		}
+                userStudyAccessGrid.updateLists(unMappedUsers, mappedUsers);
 	}
 	
 	/*
 	 * Load formdefinition names into left and right listboxes appropriately
 	 */
 	private void setUserFormMap(FormDef form, List<User> users) {
-                userAccessFrmFieldSet.getMappedItemListbox().clear();
-                userAccessFrmFieldSet.getUnmappedItemListbox().clear();
-                userAccessFrmFieldSet.getTempMappedItems().clear();
+                //clear the grids
+                userFormAccessGrid.getUnmappedItemGrid().getStore().removeAll();
+                userFormAccessGrid.getMappedItemGrid().getStore().removeAll();
+                userFormAccessGrid.getTempMappedItems().clear();
+                userFormAccessGrid.getLeftList().clear();
+                userFormAccessGrid.getRightList().clear();
+
+                List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
+                List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
 		for (User user : users) {
 			boolean found = false;
 			for (UserFormMap map : mappedForms) {
 				if ((map.getUserId() == user.getId())
 				        && (map.getFormId() == form.getFormId())) {
-					userAccessFrmFieldSet.addMappedUser(user.getName());
+					userFormAccessGrid.addMappedUser(new UserSummary(user));
+                                        mappedUsers.add(new UserSummary(user));
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-                                userAccessFrmFieldSet.addUnmappedUser(user.getName());
+                                userFormAccessGrid.addUnmappedUser(new UserSummary(user));
+                                unMappedUsers.add(new UserSummary(user));
 			}
 		}
+                userFormAccessGrid.updateLists(unMappedUsers, mappedUsers);
 	}
 
 }

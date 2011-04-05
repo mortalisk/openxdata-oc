@@ -38,6 +38,8 @@ public abstract class WizardView extends View {
 	
     private String heading;
     private Window window;
+        public int mainWindowHeight;
+        public int mainWindowWidth;
 	private CardLayout wizardLayout;
 	
 	protected Button nextButton;
@@ -130,6 +132,8 @@ public abstract class WizardView extends View {
 	
     public void showWindow(String heading, int width, int height) {
     	GWT.log("FormResponsesView : createWindow");
+        mainWindowHeight = height;
+        mainWindowWidth = width;
     	this.heading = heading;
         window = new Window();
         window.setModal(true);
@@ -157,8 +161,11 @@ public abstract class WizardView extends View {
         window.addListener(Events.BeforeHide, windowListener);
 	    window.show();
     }
-    public void resizeWindow(int height){
-        window.setHeight(window.getHeight()+height);
+    public void resizeWindow(int height,int width){
+//        window.setHeight(window.getHeight()+height);
+//        int change = width - window.getWidth();
+//        window.setWidth(window.getWidth()+change+40);
+        window.setSize(width,window.getHeight()+height);
     }
     final Listener<ComponentEvent> windowListener = new WindowListener();
     class WindowListener implements Listener<ComponentEvent> {
@@ -245,4 +252,11 @@ public abstract class WizardView extends View {
     protected abstract void finish();
     
     protected abstract void saveAndExit();
+
+    public int getWizardWidth(){
+        return mainWindowWidth;
+    }
+    public int getWizardHeight(){
+        return mainWindowHeight;
+    }
 }
