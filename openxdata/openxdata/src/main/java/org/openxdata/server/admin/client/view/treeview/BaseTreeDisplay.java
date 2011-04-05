@@ -43,22 +43,22 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
 
         int itemCount = tree.getItemCount();
         for (int i = 0; i < itemCount; i++) {
-            TreeItem treeItem = tree.getItem(i);
-            if (containsItem(item, treeItem))
-                return treeItem;
+            TreeItem treeItem = findAssocTreeItem(item, tree.getItem(i));
+            if (treeItem != null) return treeItem;
         }
         return null;
     }
 
-    private boolean containsItem(E item, TreeItem treeItem) {
+    private TreeItem findAssocTreeItem(E item, TreeItem treeItem) {
         if (isEqual(item, treeItem.getUserObject()))
-            return true;
+            return treeItem;
+
         int childCount = treeItem.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            TreeItem child = treeItem.getChild(i);
-            return containsItem(item, child);
+            TreeItem child = findAssocTreeItem(item, treeItem.getChild(i));
+            if (child != null) return child;
         }
-        return false;
+        return null;
     }
 
     private boolean isEqual(E item, Object obj) {

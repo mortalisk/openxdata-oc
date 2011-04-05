@@ -31,4 +31,6 @@ public interface TreeItemWrapper extends Editable {
     public ImageResource getImage();
 
     public boolean hasParent();
+
+    public boolean contains(TreeItemWrapper wrapper);
 }

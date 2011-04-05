@@ -176,11 +176,6 @@ public class OpenXDataObservable {
 				}
 			}
 			
-			//Notifying UtilityViewController observers
-			if(xObserver instanceof UtilityObserver){
-				updateUtilityObserverObjects(arg, typeClass, xObserver);
-			}
-			
 			//Notify observer.
 			else{
 				xObserver.update(this, arg);
@@ -188,19 +183,7 @@ public class OpenXDataObservable {
 		}
     }
 
-	/**
-	 * Updates all Observers listening for notification on the <code>UtilityViewController.</code>
-	 * 
-	 * @param notifiedObjects The model objects that have changed.
-	 * @param typeClass The class of the model object.
-	 * @param xObserver <code>Observer</code> that was registered to listen for notifications.
-	 */
-	@SuppressWarnings("unchecked")
-	private synchronized void updateUtilityObserverObjects(Object notifiedObjects, Class<?> typeClass, OpenXDataObserver xObserver) {
-		if(typeClass.equals(Locale.class)){
-			((UtilityObserver)xObserver).updateLocales(this, (List<Locale>) notifiedObjects);
-		}
-	}
+
 
 	/**
 	 * Updates all Observers listening for notification on the <code>ReportsViewController.</code>

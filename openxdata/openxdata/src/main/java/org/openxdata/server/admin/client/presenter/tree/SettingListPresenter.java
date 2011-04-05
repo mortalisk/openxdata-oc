@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.controller.callback.SaveAsyncCallback;
@@ -38,7 +39,7 @@ public class SettingListPresenter extends BaseTreePresenter<SettingTreeWrapper, 
     }
 
     private void bindUI() {
-        if(!permissionResolver.isPermission(Permission.PERM_ADD_SETTINGS))
+        if (!permissionResolver.isPermission(Permission.PERM_ADD_SETTINGS))
             return;
         display.addCommand("Add Child Group", new Command() {
 
@@ -106,6 +107,16 @@ public class SettingListPresenter extends BaseTreePresenter<SettingTreeWrapper, 
     }
 
     @Override
+    protected TreeItemWrapper getItemInWrapper(Object obj) {
+        if (obj instanceof TreeItemWrapper) return (TreeItemWrapper) obj;
+        if (obj instanceof SettingGroup)
+            return new SettingTreeWrapper((SettingGroup) obj, null);
+        if (obj instanceof Setting)
+            return new SettingTreeWrapper((Setting) obj, null);
+        return null;
+    }
+
+    @Override
     protected void loadItems() {
         Utilities.showProgress("Loading Settings...");
         settingService.getSettings(new OpenXDataAsyncCallback<List<SettingGroup>>() {
@@ -132,6 +143,10 @@ public class SettingListPresenter extends BaseTreePresenter<SettingTreeWrapper, 
     @Override
     protected boolean saveDirtyItems(List<SettingTreeWrapper> dirtyItems, SaveAsyncCallback callback) {
         List<SettingGroup> groups = new ArrayList<SettingGroup>();
+        if (!valid(dirtyItems)) {
+            Utilities.displayMessage("Contains Duplicate Names!!!");
+            return false;
+        }
         for (SettingTreeWrapper settingTreeWrapper : dirtyItems) {
             groups.add((SettingGroup) settingTreeWrapper.getObject());
         }
@@ -141,6 +156,18 @@ public class SettingListPresenter extends BaseTreePresenter<SettingTreeWrapper, 
             settingService.saveSettingGroup(settingGroup, callback);
         }
 
+        return true;
+    }
+
+    private boolean valid(List<SettingTreeWrapper> dirtyItems) {
+        HashSet<String> strings = new HashSet<String>(dirtyItems.size());
+        for (SettingTreeWrapper settingTreeWrapper : dirtyItems) {
+            if (strings.contains(settingTreeWrapper.getName()))
+                return false;
+            strings.add(settingTreeWrapper.getName());
+            if (settingTreeWrapper.containDuplicates())
+                return false;
+        }
         return true;
     }
 

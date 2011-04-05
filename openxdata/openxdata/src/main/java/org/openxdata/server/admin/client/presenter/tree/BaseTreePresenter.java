@@ -97,9 +97,15 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
         item.setDirty(true);
         for (Editable editable : items) {
             if (editable instanceof TreeItemWrapper) {
-                TreeItemWrapper wrapper = (TreeItemWrapper) editable;
-                if (wrapper.getObject().equals(item)) {
-                    display.update((E) wrapper);
+                TreeItemWrapper thisWrapper = (TreeItemWrapper) editable;
+                if (thisWrapper.getObject().equals(item)) {
+                    display.update((E) thisWrapper);
+                    return;
+                }
+                TreeItemWrapper itemWrap = getItemInWrapper(item);
+                if(itemWrap == null) continue;
+                if (thisWrapper.contains(itemWrap)) {
+                    display.update((E) itemWrap);
                     return;
                 }
             } else {
@@ -107,6 +113,10 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
             }
         }
         display.update(item);
+    }
+
+    protected TreeItemWrapper getItemInWrapper(Object obj) {
+        return null;
     }
 
     private void fireSelectionEvent() {

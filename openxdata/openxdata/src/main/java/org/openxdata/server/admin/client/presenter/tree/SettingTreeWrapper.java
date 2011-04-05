@@ -3,6 +3,7 @@ package org.openxdata.server.admin.client.presenter.tree;
 import com.google.gwt.resources.client.ImageResource;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import org.openxdata.server.admin.client.permissions.PermissionResolver;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
@@ -20,7 +21,7 @@ public class SettingTreeWrapper extends SettingGroup implements TreeItemWrapper 
 
     private Setting setting;
     private SettingGroup settingGroup;
-    private List<TreeItemWrapper> wrappers = new ArrayList<TreeItemWrapper>();
+    private List<SettingTreeWrapper> wrappers = new ArrayList<SettingTreeWrapper>();
     private TreeItemWrapper parent;
     private PermissionResolver permissionResolver = RolesListUtil.getPermissionResolver();
 
@@ -52,7 +53,7 @@ public class SettingTreeWrapper extends SettingGroup implements TreeItemWrapper 
             this.settingGroup.addSettingGroup(tWrapper.settingGroup);
             tWrapper.settingGroup.setParentSettingGroup(this.settingGroup);
         }
-        wrappers.add(wrapper);
+        wrappers.add(tWrapper);
         setDirty(true);
     }
 
@@ -71,7 +72,7 @@ public class SettingTreeWrapper extends SettingGroup implements TreeItemWrapper 
             settingGroup.getGroups().remove(tWrapper.settingGroup);
         }
 
-        wrappers.remove(wrapper);
+        wrappers.remove(tWrapper);
         setDirty(true);
 
     }
@@ -261,5 +262,55 @@ public class SettingTreeWrapper extends SettingGroup implements TreeItemWrapper 
         hash = 79 * hash + (this.setting != null ? this.setting.hashCode() : 0);
         hash = 79 * hash + (this.settingGroup != null ? this.settingGroup.hashCode() : 0);
         return hash;
+    }
+
+    public boolean containDuplicates() {
+        HashSet<String> settingNames = new HashSet<String>();
+        HashSet<String> groupNames = new HashSet<String>();
+        for (SettingGroup group : getAllGroups()) {
+            if (groupNames.contains(group.getName()))
+                return true;
+            groupNames.add(group.getName());
+        }
+
+        for (Setting settng : gellAllSettings()) {
+            if (settingNames.contains(settng.getName()))
+                return true;
+            settingNames.add(settng.getName());
+        }
+        return false;
+    }
+
+    public List<Setting> gellAllSettings() {
+        List<Setting> settings = new ArrayList<Setting>();
+        for (SettingTreeWrapper settingTreeWrapper : wrappers) {
+            if (settingTreeWrapper.hasSetting())
+                settings.add(settingTreeWrapper.setting);
+            settings.addAll(settingTreeWrapper.gellAllSettings());
+        }
+        return settings;
+    }
+
+    public List<SettingGroup> getAllGroups() {
+        List<SettingGroup> groups = new ArrayList<SettingGroup>();
+        for (SettingTreeWrapper settingTreeWrapper : wrappers) {
+            if (!settingTreeWrapper.hasSetting())
+                groups.add(settingTreeWrapper.settingGroup);
+            groups.addAll(settingTreeWrapper.getAllGroups());
+        }
+        return groups;
+    }
+
+    @Override
+    public boolean contains(TreeItemWrapper otherWrapper) {
+        if (!isSetting(otherWrapper) || otherWrapper == null) return false;
+
+        for (SettingTreeWrapper thisWrapper : wrappers) {
+            if (otherWrapper.equals(thisWrapper))
+                return true;
+            if (thisWrapper.contains(otherWrapper))
+                return true;
+        }
+        return false;
     }
 }
