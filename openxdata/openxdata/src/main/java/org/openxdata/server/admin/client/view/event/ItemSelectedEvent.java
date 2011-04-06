@@ -20,7 +20,8 @@ public class ItemSelectedEvent<T> extends GwtEvent<ItemSelectedEvent.Handler<T>>
         this.item = item;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Type<Handler<T>> getAssociatedType() {
         return EventRegistration.getType(ItemSelectedEvent.class, item.getClass());
     }

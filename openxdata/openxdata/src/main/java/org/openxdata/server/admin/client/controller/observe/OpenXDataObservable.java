@@ -20,9 +20,7 @@ package org.openxdata.server.admin.client.controller.observe;
 import java.util.List;
 import java.util.Vector;
 
-import org.openxdata.server.admin.model.Locale;
 import org.openxdata.server.admin.model.ReportGroup;
-import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserReportGroupMap;
@@ -135,8 +133,7 @@ public class OpenXDataObservable {
      * @see     java.util.Observable#hasChanged()
      * @see     java.util.Observer#update(java.util.Observable, java.lang.Object)
      */
-    @SuppressWarnings("unchecked")
-	public void notifyObservers(Object arg, Class<?> typeClass) {
+    public void notifyObservers(Object arg, Class<?> typeClass) {
 	    synchronized (this) {
 	    	
 	    /* We don't want the Observer doing callbacks into

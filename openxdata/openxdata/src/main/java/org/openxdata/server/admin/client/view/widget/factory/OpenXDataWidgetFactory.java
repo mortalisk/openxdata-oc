@@ -20,7 +20,6 @@ package org.openxdata.server.admin.client.view.widget.factory;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ReportView;
-import org.openxdata.server.admin.client.view.SettingView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.bar.OpenXDataNotificationBar;
@@ -71,16 +70,9 @@ public interface OpenXDataWidgetFactory {
 	StudyView getStudyView();
 	
 	/**
-	 * Retrieves the <tt>SettingView</tt>
+	 * Retrieves the <tt>ReportView</tt>
 	 * 
-	 * @return Instance of {@link SettingView}
-	 */
-	SettingView getSettingView();
-	
-	/**
-	 * Retrieves the <tt>SettingView</tt>
-	 * 
-	 * @return Instance of {@link SettingView}
+	 * @return Instance of {@link ReportView}
 	 */
 	ReportView getReportView();
 	

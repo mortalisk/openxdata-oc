@@ -31,7 +31,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
     protected List<E> items;
     protected List<E> deletedItems = new ArrayList<E>();
     protected EventBus eventBus;
-    private final Class clazz;
+    private final Class<? super E> clazz;
 
     public BaseTreePresenter(D Display, EventBus bus, Class<? super E> clazz) {
         this.display = Display;
@@ -93,7 +93,8 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
 
     }
 
-    protected void updateItem(E item) {
+    @SuppressWarnings("unchecked")
+	protected void updateItem(E item) {
         item.setDirty(true);
         for (Editable editable : items) {
             if (editable instanceof TreeItemWrapper) {

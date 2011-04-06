@@ -23,7 +23,7 @@ public class EventRegistration<T, H extends BaseHandler<T>> {
 
     }
 
-    public void forClass(Class<? extends T> clazz) {
+    public void forClass(Class<? super T> clazz) {
         eventBus.addHandler(getType(gwtEvtClazz, clazz), handler);
     }
 

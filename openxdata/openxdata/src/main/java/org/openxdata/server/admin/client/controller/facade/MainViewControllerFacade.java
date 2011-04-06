@@ -165,34 +165,13 @@ public class MainViewControllerFacade implements StackPanelListener {
 				// notify observers
 				// so we need some objects at the earliest time possible like
 				// Permissions, Roles and Users.
-//				if (RolesListUtil.getPermissionResolver().isPermission(
-//				        "Perm_View_Permissions"))
-//					MainViewControllerFacade.loadPermissions(false);
-				
-//				if (RolesListUtil.getPermissionResolver().isViewPermission(
-//				        "Perm_View_Roles"))
-//					MainViewControllerFacade.loadRoles(false);
-				
-//				if (RolesListUtil.getPermissionResolver().isViewPermission(
-//				        "Perm_View_Users"))
-//					MainViewControllerFacade.loadUsers(false);
-				
 				if (RolesListUtil.getPermissionResolver().isViewPermission(
 				        "Perm_View_Studies"))
 					MainViewControllerFacade.loadStudies(false);
 				
-//				if (RolesListUtil.getPermissionResolver().isViewPermission(
-//				        "Perm_View_Settings"))
-//					MainViewControllerFacade.loadSettings(false);
-				
 				if (RolesListUtil.getPermissionResolver().isViewPermission(
 				        "Perm_View_Reports"))
 					MainViewControllerFacade.loadReports(false);
-				
-				if (RolesListUtil.getPermissionResolver().isViewPermission(
-				        "Perm_View_Studies"))
-					MainViewControllerFacade.loadAllUserMappedStudies(false);
-				
 				if (RolesListUtil.getPermissionResolver().isViewPermission(
 				        "Perm_View_Forms"))
 					MainViewControllerFacade.loadAllUserMappedForms(false);
@@ -229,19 +208,6 @@ public class MainViewControllerFacade implements StackPanelListener {
 			public void execute() {
 				switch (widgetFactory.getOpenXdataStackPanel()
 				        .getSelectedIndex()) {
-					case OpenXDataStackPanelConstants.INDEX_STUDIES:
-						saveStudies();
-						//saveMappedStudies();
-						break;
-					case OpenXDataStackPanelConstants.INDEX_ROLES:
-						//saveRoles();
-						break;
-					case OpenXDataStackPanelConstants.INDEX_TASKS:
-						//saveTasks();
-						break;
-					case OpenXDataStackPanelConstants.INDEX_SETTINGS:
-						//saveSettings();
-						break;
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:
 						saveReports();
 						saveMappedReports();
@@ -281,26 +247,7 @@ public class MainViewControllerFacade implements StackPanelListener {
 							}
 						}
 						break;
-//					case OpenXDataStackPanelConstants.INDEX_USERS:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Users"))
-//							loadUsers(true);
-//						break;
-//					case OpenXDataStackPanelConstants.INDEX_ROLES:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Roles"))
-//							loadRoles(true);
-//						break;
-//					case OpenXDataStackPanelConstants.INDEX_TASKS:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Tasks"))
-//							loadTasks(true);
-//						break;
-					case OpenXDataStackPanelConstants.INDEX_SETTINGS:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Settings"))
-//							loadSettings(true);
-						break;
+
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:
 						if ((widgetFactory.getReportView())
 						        .isInReportDataMode())
@@ -347,40 +294,15 @@ public class MainViewControllerFacade implements StackPanelListener {
 						        widgetFactory.getStudyView());
 						break;
 					case OpenXDataStackPanelConstants.INDEX_USERS:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Roles"))
-//							MainViewControllerFacade.loadRoles(false);
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Users"))
-//							MainViewControllerFacade.loadUsers(false);
-                                                //TODO Remove this and replace with
-//						widgetFactory.getHorizontalSplitPanel().setRightWidget(
-//						        widgetFactory.getUserView());
                                                 eventBus.fireEvent(new ViewEvent<User>(User.class));
 						break;
 					case OpenXDataStackPanelConstants.INDEX_ROLES:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Roles"))
-//							MainViewControllerFacade.loadRoles(false);
-//						widgetFactory.getHorizontalSplitPanel().setRightWidget(
-//						        widgetFactory.getRoleView());
                                                 eventBus.fireEvent(new ViewEvent<Role>(Role.class));
 						break;
 					case OpenXDataStackPanelConstants.INDEX_TASKS:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Tasks"))
-//							MainViewControllerFacade.loadTasks(false);
-//						widgetFactory.getHorizontalSplitPanel().setRightWidget(
-//						        widgetFactory.getTaskView());
                                                 eventBus.fireEvent(new ViewEvent<TaskDef>(TaskDef.class));
 						break;
 					case OpenXDataStackPanelConstants.INDEX_SETTINGS:
-//						if (RolesListUtil.getPermissionResolver()
-//						        .isViewPermission("Perm_View_Settings")) {
-//							MainViewControllerFacade.loadSettings(false);
-//						}
-//						widgetFactory.getHorizontalSplitPanel().setRightWidget(
-//						        widgetFactory.getSettingView());
                                                  eventBus.fireEvent(new ViewEvent<SettingGroup>(SettingGroup.class));
 						break;
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:

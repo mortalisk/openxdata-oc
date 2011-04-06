@@ -47,7 +47,6 @@ import org.openxdata.server.admin.client.view.ParameterDisplay;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.RoleDisplay;
 import org.openxdata.server.admin.client.view.SettingDisplay;
-import org.openxdata.server.admin.client.view.SettingView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.TaskDisplay;
 import org.openxdata.server.admin.client.view.UserDisplay;
@@ -94,7 +93,6 @@ public class OpenXdataClientModule extends AbstractGinModule {
         bind(ReportsTreeView.class).in(Singleton.class);
 
         // Views
-        bind(SettingView.class).in(Singleton.class);
         bind(ReportView.class).in(Singleton.class);
         bind(StudyView.class).in(Singleton.class);
         bind(OpenXDataNotificationBar.class).in(Singleton.class);

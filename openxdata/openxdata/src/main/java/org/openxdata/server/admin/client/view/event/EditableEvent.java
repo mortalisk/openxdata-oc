@@ -74,7 +74,8 @@ public class EditableEvent<T> extends GwtEvent<EditableEvent.Handler<T>> {
             handler.onCreated(item);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Type<Handler<T>> getAssociatedType() {
         return EventRegistration.getType(EditableEvent.class, clazz);
     }

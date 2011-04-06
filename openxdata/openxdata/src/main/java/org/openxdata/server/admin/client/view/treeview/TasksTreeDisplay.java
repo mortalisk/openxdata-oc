@@ -1,5 +1,6 @@
 package org.openxdata.server.admin.client.view.treeview;
 
+import com.google.gwt.resources.client.ImageResource;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.model.TaskDef;
 
@@ -24,5 +25,10 @@ public class TasksTreeDisplay extends BaseTreeDisplay<TaskDef> implements TasksL
     @Override
     public String getDisplayLabel(TaskDef item) {
         return item.getName();
+    }
+
+    @Override
+    protected ImageResource getImage(TaskDef item) {
+        return images.markRead();
     }
 }

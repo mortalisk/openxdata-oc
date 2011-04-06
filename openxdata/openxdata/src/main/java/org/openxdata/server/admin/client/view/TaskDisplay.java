@@ -28,35 +28,13 @@ public class TaskDisplay extends BasePropertyDisplay implements TaskPresenter.Di
     }
 
     private void init() {
-        table.setWidget(0, 0, new Label(constants.label_name()));
-        table.setWidget(1, 0, new Label(constants.label_description()));
-        table.setWidget(2, 0, new Label(constants.label_class()));
-        table.setWidget(3, 0, new Label(constants.label_started()));
+        txtName = addTextProperty(constants.label_name());
+        txtDescription = addTextProperty(constants.label_description());
+        txtClass = addTextProperty(constants.label_class());
+        table.setWidget(4, 0, new Label(constants.label_started()));
+        table.setWidget(4, 1, lblStarted);
+        super.init(constants.label_definition());
 
-        table.setWidget(0, 1, txtName);
-        table.setWidget(1, 1, txtDescription);
-        table.setWidget(2, 1, txtClass);
-        table.setWidget(3, 1, lblStarted);
-
-        txtName.setWidth("100%");
-        txtDescription.setWidth("100%");
-        txtClass.setWidth("100%");
-
-        FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
-        cellFormatter.setWidth(0, 0, "20%");
-        cellFormatter.setColSpan(0, 1, 2);
-        cellFormatter.setColSpan(1, 1, 2);
-        cellFormatter.setColSpan(2, 1, 2);
-        cellFormatter.setColSpan(3, 1, 2);
-
-        table.getRowFormatter().removeStyleName(0, "FlexTable-Header");
-        Utilities.maximizeWidget(table);
-
-        tabs.add(table, constants.label_definition());
-
-        Utilities.maximizeWidget(tabs);
-        tabs.selectTab(0);
-        super.setUpKeyHandlers();
     }
 
     @Override
@@ -88,6 +66,6 @@ public class TaskDisplay extends BasePropertyDisplay implements TaskPresenter.Di
         txtClass.setText(taskDef.getTaskClass());
         txtName.setText(taskDef.getName());
         txtDescription.setText(taskDef.getDescription());
-        lblStarted.setText(taskDef.isRunning()+"");
+        lblStarted.setText(taskDef.isRunning() + "");
     }
 }

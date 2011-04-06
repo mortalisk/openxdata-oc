@@ -133,7 +133,7 @@ public class SettingTreeWrapper extends SettingGroup implements TreeItemWrapper 
 
     @Override
     public List<TreeItemWrapper> getChildren() {
-        return new ArrayList(wrappers);
+        return new ArrayList<TreeItemWrapper>(wrappers);
     }
 
     @Override

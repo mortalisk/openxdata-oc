@@ -127,7 +127,8 @@ public class MainView extends Composite implements ResizeHandler {
      * Initializes the widgets to be bound to the main view with Permission
      * Resolver Object to handle permissions.
      */
-    private void setUp() {
+    @SuppressWarnings("unchecked")
+	private void setUp() {
 
         MobileInstallEvent.Handler mobInstallHandler = new MobileInstallEvent.Handler() {
 

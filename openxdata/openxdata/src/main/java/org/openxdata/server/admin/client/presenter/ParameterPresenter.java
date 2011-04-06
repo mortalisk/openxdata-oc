@@ -54,7 +54,8 @@ public class ParameterPresenter implements IPresenter<ParameterPresenter.Display
         }).forClass(TaskDef.class);
     }
 
-    private void bindUI() {
+    @SuppressWarnings("unchecked")
+	private void bindUI() {
         display.btnAdd().addClickHandler(new ClickHandler() {
 
             @Override

@@ -47,6 +47,17 @@ public abstract class BasePropertyDisplay implements WidgetDisplay {
     public BasePropertyDisplay() {
     }
 
+    protected void init(String title) {
+        tabs.add(table, title);
+        Utilities.maximizeWidget(table);
+        FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
+        cellFormatter.setWidth(0, 0, "20%");
+        table.getRowFormatter().removeStyleName(0, "FlexTable-Header");
+        Utilities.maximizeWidget(tabs);
+        tabs.selectTab(0);
+        setUpKeyHandlers();
+    }
+
     public void addGeneralChangeHadler(ValueChangeHandler<String> handler) {
         for (Widget widget : table) {
             if (widget instanceof TextBox && !(widget instanceof PasswordTextBox)) {

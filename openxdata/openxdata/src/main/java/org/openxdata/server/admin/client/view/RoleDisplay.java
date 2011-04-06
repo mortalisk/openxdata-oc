@@ -22,29 +22,9 @@ public class RoleDisplay extends BasePropertyDisplay implements RolePresenter.Di
     }
 
     private void init() {
-        txtName = new TextBox();
-        txtDescription = new TextBox();
-
-        table.setWidget(0, 0, new Label(constants.label_name()));
-
-        table.setWidget(1, 0, new Label(constants.label_description()));
-
-        table.setWidget(0, 1, txtName);
-        table.setWidget(1, 1, txtDescription);
-
-        txtName.setWidth("100%");
-        txtDescription.setWidth("100%");
-
-        FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
-        cellFormatter.setWidth(0, 0, "20%");
-
-        table.getRowFormatter().removeStyleName(0, "FlexTable-Header");
-        Utilities.maximizeWidget(table);
-        tabs.add(table, "Role Properties");
-        Utilities.maximizeWidget(tabs);
-
-        tabs.selectTab(0);
-        super.setUpKeyHandlers();
+        txtName = addTextProperty(constants.label_name());
+        txtDescription = addTextProperty(constants.label_description());
+        super.init("Role Properties");
     }
 
     @Override
@@ -62,6 +42,4 @@ public class RoleDisplay extends BasePropertyDisplay implements RolePresenter.Di
         txtName.setText(role.getName());
         txtDescription.setText(role.getDescription());
     }
-
- 
 }

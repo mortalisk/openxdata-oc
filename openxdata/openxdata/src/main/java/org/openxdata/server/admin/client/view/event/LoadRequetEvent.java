@@ -27,6 +27,7 @@ public class LoadRequetEvent<T extends Editable> extends GwtEvent<LoadRequetEven
         public void onLoadRequest();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Type<Handler<T>> getAssociatedType() {
         return EventRegistration.getType(LoadRequetEvent.class, clazz);

@@ -20,7 +20,6 @@ package org.openxdata.server.admin.client.view.factory;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ReportView;
-import org.openxdata.server.admin.client.view.SettingView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.bar.OpenXDataNotificationBar;
@@ -54,129 +53,122 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
 
-	/** Label for showing notifications to the <tt>User.</tt> */
-	private OpenXDataLabel notificationLabel;
-	/** Vertical Panel to align <tt>Widgets.</tt> */
-	private VerticalPanel verticalPanel;
-	/** HorizontalSplitPanel to align main widgets. */
-	private HorizontalSplitPanel horizontalSplitClient;
-	/** Widget for Mapping Permissions to Roles */
-	private static OpenXDataWidgetGinInjector injector;
+    /** Label for showing notifications to the <tt>User.</tt> */
+    private OpenXDataLabel notificationLabel;
+    /** Vertical Panel to align <tt>Widgets.</tt> */
+    private VerticalPanel verticalPanel;
+    /** HorizontalSplitPanel to align main widgets. */
+    private HorizontalSplitPanel horizontalSplitClient;
+    /** Widget for Mapping Permissions to Roles */
+    private static OpenXDataWidgetGinInjector injector;
 
-	/** Constructs an instance of this <tt>class.</tt> */
-	public OpenXDataViewFactory() {
-	}
+    /** Constructs an instance of this <tt>class.</tt> */
+    public OpenXDataViewFactory() {
+    }
 
-	@Override
-	public StudiesTreeView getStudiesTreeView() {
-		return injector.getStudiesTreeView();
-	}
+    @Override
+    public StudiesTreeView getStudiesTreeView() {
+        return injector.getStudiesTreeView();
+    }
 
-	@Override
-	public ReportsTreeView getReportsTreeView() {
-		return injector.getReportsTreeView();
-	}
+    @Override
+    public ReportsTreeView getReportsTreeView() {
+        return injector.getReportsTreeView();
+    }
 
-	@Override
-	public SettingView getSettingView() {
-		return injector.getSettingView();
-	}
+    @Override
+    public ReportView getReportView() {
+        return injector.getReportView();
 
+    }
 
-	@Override
-	public ReportView getReportView() {
-		return injector.getReportView();
+    @Override
+    public StudyView getStudyView() {
+        return injector.getStudyView();
+    }
 
-	}
+    @Override
+    public MainView getMainView() {
+        return injector.getMainView();
+    }
 
-	@Override
-	public StudyView getStudyView() {
-		return injector.getStudyView();
-	}
+    @Override
+    public OpenXDataMenuBar getOpenXDataMenuBar() {
+        return injector.getOpenXDataMenuBar();
+    }
 
-	@Override
-	public MainView getMainView() {
-		return injector.getMainView();
-	}
+    @Override
+    public OpenXDataToolBar getOpenXDataToolBar() {
+        return injector.getOpenXDataToolBar();
+    }
 
-	@Override
-	public OpenXDataMenuBar getOpenXDataMenuBar() {
-		return injector.getOpenXDataMenuBar();
-	}
+    @Override
+    public VerticalPanel getVerticalPanel() {
+        if (verticalPanel == null) {
+            verticalPanel = new VerticalPanel();
 
-	@Override
-	public OpenXDataToolBar getOpenXDataToolBar() {
-		return injector.getOpenXDataToolBar();
-	}
+            verticalPanel.setWidth("100%");
 
-	@Override
-	public VerticalPanel getVerticalPanel() {
-		if (verticalPanel == null) {
-			verticalPanel = new VerticalPanel();
+            // Menu Bar
+            verticalPanel.add(getOpenXDataMenuBar());
 
-			verticalPanel.setWidth("100%");
+            // Notification Bar
+            verticalPanel.add(getNotificationBar());
 
-			// Menu Bar
-			verticalPanel.add(getOpenXDataMenuBar());
+            // Tool Bar
+            verticalPanel.add(getOpenXDataToolBar());
 
-			// Notification Bar
-			verticalPanel.add(getNotificationBar());
+        }
 
-			// Tool Bar
-			verticalPanel.add(getOpenXDataToolBar());
+        return verticalPanel;
+    }
 
-		}
+    @Override
+    public OpenXDataNotificationBar getNotificationBar() {
+        return injector.getNotificationBar();
+    }
 
-		return verticalPanel;
-	}
+    @Override
+    public OpenXDataLabel getNotificationLabel() {
+        if (notificationLabel == null)
+            notificationLabel = new OpenXDataLabel(" ");
 
-	@Override
-	public OpenXDataNotificationBar getNotificationBar() {
-		return injector.getNotificationBar();
-	}
+        return notificationLabel;
+    }
 
-	@Override
-	public OpenXDataLabel getNotificationLabel() {
-		if (notificationLabel == null)
-			notificationLabel = new OpenXDataLabel(" ");
+    @Override
+    public HorizontalSplitPanel getHorizontalSplitPanel() {
+        if (horizontalSplitClient == null) {
+            horizontalSplitClient = new HorizontalSplitPanel();
 
-		return notificationLabel;
-	}
-
-	@Override
-	public HorizontalSplitPanel getHorizontalSplitPanel() {
-		if (horizontalSplitClient == null) {
-			horizontalSplitClient = new HorizontalSplitPanel();
-
-			horizontalSplitClient.setSplitPosition("20%");
+            horizontalSplitClient.setSplitPosition("20%");
 //			horizontalSplitClient.setRightWidget(getStudyView());
-		}
+        }
 
-		return horizontalSplitClient;
-	}
+        return horizontalSplitClient;
+    }
 
+    @Override
+    public OpenXDataStackPanel getOpenXdataStackPanel() {
+        return injector.getOpenXdataStackPanel();
 
-	@Override
-	public OpenXDataStackPanel getOpenXdataStackPanel() {
-		return injector.getOpenXdataStackPanel();
+    }
 
-	}
+    @Override
+    public PopupPanel getContextMenu(
+            ContextMenuInitListener contextMenuListener,
+            UIViewLabels contextMenuLabels, String treeViewName) {
+        return new OpenXDataContextMenu().createContextMenu(
+                contextMenuListener, contextMenuLabels, treeViewName);
+    }
 
-	@Override
-	public PopupPanel getContextMenu(
-			ContextMenuInitListener contextMenuListener,
-			UIViewLabels contextMenuLabels, String treeViewName) {
-		return new OpenXDataContextMenu().createContextMenu(
-				contextMenuListener, contextMenuLabels, treeViewName);
-	}
+    @Override
+    public EventBus getEventBus() {
+        return injector.getEventBus();
+    }
 
-	@Override
-	public EventBus getEventBus() {
-		return injector.getEventBus();
-	}
-
-	@Override
-	public void setInjector(OpenXDataWidgetGinInjector injector) {
-		OpenXDataViewFactory.injector = injector;
-	}
+    @Override
+    public void setInjector(OpenXDataWidgetGinInjector injector) {
+        OpenXDataViewFactory.injector = injector;
+    }
 }

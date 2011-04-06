@@ -99,7 +99,8 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
         tree.setSelectedItem(tree.getItem(0));
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void update(E item) {
         TreeItem treeItem = getTreeItemForUser(item);
         if (treeItem == null) return;
@@ -145,7 +146,8 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
         return root;
     }
 
-    public void addChildItemsz(TreeItem item, TreeItemWrapper wrapper) {
+    @SuppressWarnings("unchecked")
+	public void addChildItemsz(TreeItem item, TreeItemWrapper wrapper) {
         List<TreeItemWrapper> children = wrapper.getChildren();
         for (TreeItemWrapper treeItemWrapper : children) {
             TreeItem wrappedItem = wrapInTreeItem((E) treeItemWrapper);

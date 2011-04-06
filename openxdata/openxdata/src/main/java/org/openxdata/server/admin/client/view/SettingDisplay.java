@@ -24,7 +24,6 @@ public class SettingDisplay extends BasePropertyDisplay implements SettingPresen
     private SettingGroup group;
     private ArrayList<ValueChangeHandler<String>> handlers = new ArrayList<ValueChangeHandler<String>>();
 
-
     public SettingDisplay() {
         init();
     }
@@ -36,16 +35,7 @@ public class SettingDisplay extends BasePropertyDisplay implements SettingPresen
         } else {
             initGroupText();
         }
-        FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
-        cellFormatter.setWidth(0, 0, "20%");
-
-        table.getRowFormatter().removeStyleName(0, "FlexTable-Header");
-        Utilities.maximizeWidget(table);
-        tabs.add(table, "Setting Properties");
-        Utilities.maximizeWidget(tabs);
-
-        tabs.selectTab(0);
-        super.setUpKeyHandlers();
+        super.init("Setting Properties");
     }
 
     private void initSettingText() {

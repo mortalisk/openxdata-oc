@@ -163,10 +163,12 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
     protected SaveCompleteListener getSaveCompleteListener() {
         return new SaveCompleteListener() {
 
-            @Override
+            @SuppressWarnings("unchecked")
+			@Override
             public void onSaveComplete(List<? extends Editable> modifiedList, List<? extends Editable> deletedList) {
                 FormUtil.dlg.hide();
-                if (hasNewItems((List<TaskDef>) modifiedList)) {
+                List<TaskDef> modifiedList2 = (List<TaskDef>) modifiedList;
+				if (hasNewItems(modifiedList2)) {
                     loadItems();
                 } else {
                     Utilities.displayNotificationMessage(getSuccessMessage());
