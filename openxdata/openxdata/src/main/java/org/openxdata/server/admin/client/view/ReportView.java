@@ -67,7 +67,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import org.purc.purcforms.client.QueryBuilderWidget;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
 import org.purc.purcforms.client.model.OptionDef;
 import org.purc.purcforms.client.model.QuestionDef;

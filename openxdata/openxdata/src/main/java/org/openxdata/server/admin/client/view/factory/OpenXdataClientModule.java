@@ -19,7 +19,6 @@ package org.openxdata.server.admin.client.view.factory;
 
 import com.google.inject.Singleton;
 import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;

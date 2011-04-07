@@ -44,7 +44,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.inject.Inject;
 import org.openxdata.server.admin.client.view.event.EventType;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 
 /**
  * This widget displays a list of reports and their groups to the user in a

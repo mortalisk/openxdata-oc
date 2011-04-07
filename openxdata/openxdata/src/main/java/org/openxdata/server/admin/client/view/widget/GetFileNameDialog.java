@@ -18,7 +18,6 @@
 package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.listeners.GetFileNameDialogEventListener;
-import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

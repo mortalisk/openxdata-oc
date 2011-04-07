@@ -23,7 +23,7 @@ import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
 import org.openxdata.server.admin.client.view.event.ViewEvent;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.admin.model.User;

@@ -34,7 +34,7 @@ import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.widget.CompositeTreeItem;
 import org.openxdata.server.admin.client.view.widget.TreeItemWidget;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;

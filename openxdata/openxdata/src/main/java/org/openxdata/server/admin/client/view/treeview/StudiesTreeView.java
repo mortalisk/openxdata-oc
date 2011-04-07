@@ -53,7 +53,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import org.openxdata.server.admin.client.view.event.DesignFormEvent;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
 
 

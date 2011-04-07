@@ -30,7 +30,6 @@ import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;

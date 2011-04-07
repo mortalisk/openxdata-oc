@@ -26,7 +26,7 @@ import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApp
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;

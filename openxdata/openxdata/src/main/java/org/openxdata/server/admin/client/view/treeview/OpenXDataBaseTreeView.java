@@ -29,7 +29,7 @@ import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplication
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.Editable;
 
 import com.google.gwt.core.client.GWT;

@@ -26,7 +26,7 @@ import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.LoginView;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.widget.PasswordChangeDialog;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.User;
 
 import com.google.gwt.core.client.EntryPoint;

@@ -28,7 +28,6 @@ import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;

@@ -15,7 +15,7 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.view.widget.factory;
+package org.openxdata.server.admin.client.view.factory;
 
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.view.MainView;
@@ -24,8 +24,6 @@ import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
-import org.openxdata.server.admin.client.view.factory.OpenXDataViewFactory;
-import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetGinInjector;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;

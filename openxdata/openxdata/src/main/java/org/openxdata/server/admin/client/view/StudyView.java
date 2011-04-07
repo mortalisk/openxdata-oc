@@ -35,7 +35,7 @@ import org.openxdata.server.admin.client.view.listeners.FormVersionOpenDialogLis
 import org.openxdata.server.admin.client.view.listeners.OnDataCheckListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;

@@ -18,7 +18,7 @@
 package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;

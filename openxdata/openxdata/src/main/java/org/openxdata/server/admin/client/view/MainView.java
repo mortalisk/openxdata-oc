@@ -31,7 +31,7 @@ import org.openxdata.server.admin.client.view.event.LogOutEvent;
 import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
