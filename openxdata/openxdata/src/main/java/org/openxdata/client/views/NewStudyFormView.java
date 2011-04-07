@@ -540,6 +540,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		NewStudyFormController controller2 = (NewStudyFormController) NewStudyFormView.this
 		        .getController();
 		controller2.saveStudy(studyDef);
+		// save any mapped study or form
+		saveUserStudyMap();
+		saveUserFormMap();
 	}
 	
 	public void saveUserStudyMap() {
@@ -614,9 +617,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.showProgressBar();
 		getWizardValues();
 		save();
-		// save any mapped study or form
-		saveUserStudyMap();
-		saveUserFormMap();
 	}
 	
 	@Override
