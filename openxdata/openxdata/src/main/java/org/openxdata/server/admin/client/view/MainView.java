@@ -19,8 +19,8 @@ package org.openxdata.server.admin.client.view;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import org.openxdata.server.admin.client.controller.MainViewController;
-import org.openxdata.server.admin.client.locale.OpenXdataText;
-import org.openxdata.server.admin.client.locale.TextConstants;
+import org.openxdata.server.admin.client.internationalization.OpenXdataText;
+import org.openxdata.server.admin.client.listeners.TextConstants;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.presenter.IPresenter;
 import org.openxdata.server.admin.client.tools.MobileInstaller;
