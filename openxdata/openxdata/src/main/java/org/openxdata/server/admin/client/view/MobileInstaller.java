@@ -15,7 +15,7 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.tools;
+package org.openxdata.server.admin.client.view;
 
 import java.util.ArrayList;
 import java.util.List;

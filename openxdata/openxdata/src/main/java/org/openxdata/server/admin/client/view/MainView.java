@@ -23,7 +23,6 @@ import org.openxdata.server.admin.client.internationalization.OpenXdataText;
 import org.openxdata.server.admin.client.listeners.TextConstants;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.presenter.IPresenter;
-import org.openxdata.server.admin.client.tools.MobileInstaller;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
