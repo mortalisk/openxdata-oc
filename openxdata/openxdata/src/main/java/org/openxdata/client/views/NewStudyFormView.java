@@ -456,8 +456,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	
 	@Override
 	protected void finish() {
-		saveAndExit();
-		
+//		saveAndExit();
+		getWizardValues();
 		String formName = formDef.getName();
 		String formVersionName = formDefVersion.getName();
 		Integer formVersionId = 1;
