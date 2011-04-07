@@ -18,9 +18,7 @@
 package org.openxdata.server.admin.client.controller;
 
 import com.google.inject.Inject;
-import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObserver;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
@@ -75,65 +73,13 @@ public class MainViewController {
                 ReportsTreeView reportsTreeView,
                 StudyView studyView,
                 ReportView reportView) {
-                
-                setupReportsViewController(reportsTreeView, reportView);
-                setupStudiesViewController(studiesTreeView, studyView, reportView);
+                studiesViewController = new StudiesViewController(studiesTreeView);
+                reportsViewController = new ReportsViewController(reportsTreeView,
+		        reportView);
                 MainViewControllerFacade.setMVCInstance(this);
 
         }
-        
-	/**
-	 * Sets up the {@link ReportsViewController}
-	 * 
-	 * @param reportsTreeView
-	 *            instance of {@link ReportsTreeView} that was created by the
-	 *            factory.
-	 * @param reportView
-	 *            instance of {@link ReportView} that was created by the
-	 *            factory.
-	 */
-	private void setupReportsViewController(
-	        ReportsTreeView reportsTreeView,
-	        ReportView reportView) {
-		
-		reportsViewController = new ReportsViewController(reportsTreeView,
-		        reportView);
-		
-		// Registering Observers
-		reportsViewController.addObserver(Context.getContextInstance());
-		reportsViewController.addObserver((OpenXDataObserver) reportView);
-		reportsViewController.addObserver(reportsTreeView);
-		
-	}
-	
-	/**
-	 * Sets up the {@link StudiesViewController}
-	 * 
-	 * @param studiesTreeView
-	 *            instance of {@link StudiesTreeView} that was created by the
-	 *            factory.
-	 * @param studyView
-	 *            instance of {@link StudyView} that was created by the factory.
-	 * @param reportView
-	 *            instance of {@link ReportView} that was created by the
-	 *            factory.
-	 */
-	private void setupStudiesViewController(
-	        StudiesTreeView studiesTreeView, StudyView studyView,
-	        ReportView reportView) {
-		
-		studiesViewController = new StudiesViewController(studiesTreeView);
-		
-		// Registering observers
-		studiesViewController.addObserver(Context.getContextInstance());
-		studiesViewController.addObserver((OpenXDataObserver) studyView);
-		studiesViewController.addObserver((OpenXDataObserver) reportView);
-		studiesViewController.addObserver(studiesTreeView);
-		
-	}
-	
-
-	
+        	
 	/**
 	 * Returns an instance of the Studies Controller for the application. Should
 	 * never be set manually but left to the Main View Controller to build one

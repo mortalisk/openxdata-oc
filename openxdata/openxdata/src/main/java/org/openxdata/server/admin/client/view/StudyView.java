@@ -23,8 +23,6 @@ import java.util.List;
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
-import org.openxdata.server.admin.client.controller.observe.StudiesObserver;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.DataCheckUtil;
 import org.openxdata.server.admin.client.util.Utilities;
@@ -44,9 +42,7 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.purc.purcforms.client.FormDesignerWidget;
 import org.purc.purcforms.client.FormRunnerEntryPoint;
 import org.purc.purcforms.client.controller.IFormSaveListener;
@@ -67,6 +63,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.inject.Inject;
+import org.openxdata.server.admin.client.view.event.EditableEvent;
 
 
 /**
@@ -80,7 +77,7 @@ import com.google.inject.Inject;
 public class StudyView extends OpenXDataBaseView implements
         SelectionHandler<Integer>, SubmitListener, IFormSaveListener,
         ResizeHandler, OnDataCheckListener, FormVersionOpenDialogListener,
-        StudiesObserver, OpenXDataViewExtendedApplicationEventListener {
+        OpenXDataViewExtendedApplicationEventListener {
 	
 	/** The index of the tab for the form designer. */
 	private int tabIndexFormDesigner = -1;
@@ -385,16 +382,6 @@ public class StudyView extends OpenXDataBaseView implements
 	}
 	
 	/**
-	 * Sets the list of users.
-	 * 
-	 * @param users
-	 *            the users list.
-	 */
-	public void setUsers(List<User> users) {
-		dataListView.setUsers(users);
-	}
-	
-	/**
 	 * Sets the list of studies.
 	 * 
 	 * @param studies
@@ -405,13 +392,6 @@ public class StudyView extends OpenXDataBaseView implements
 		if (dataListView != null) {
 			dataListView.setStudies(studies);
 		}
-	}
-	
-	public void setMappedForms(List<UserFormMap> userMappedForms) {
-		if (dataListView != null) {
-			dataListView.setUserMappedForms(userMappedForms);
-		}
-		
 	}
 	
 	/**
@@ -973,30 +953,6 @@ public class StudyView extends OpenXDataBaseView implements
 	}
 	
 	@Override
-	public void update(OpenXDataObservable observable,
-	        Object observedModelObjects) {
-		// do nothing
-	}
-	
-	@Override
-	public void updateStudies(OpenXDataObservable observable,
-	        List<StudyDef> studies) {
-		setStudies(studies);
-	}
-	
-	@Override
-	public void updateUserMappedForms(OpenXDataObservable observable,
-	        List<UserFormMap> userMappedForms) {
-		setMappedForms(userMappedForms);
-	}
-	
-	@Override
-	public void updateUserMappedStudies(OpenXDataObservable observable,
-	        List<UserStudyMap> userMappedStudies) {
-		// do nothing
-	}
-	
-	@Override
 	public void exportAsPdf() {
 		// do nothing
 	}
@@ -1144,6 +1100,14 @@ public class StudyView extends OpenXDataBaseView implements
             }
         };
         eventBus.addHandler(FormDataHeaderEvent.TYPE, formDataHandler);
+
+        EditableEvent.addHandler(eventBus, new EditableEvent.HandlerAdaptor<StudyDef>() {
+
+            @Override
+            public void onLoaded(List<StudyDef> items) {
+               setStudies(items);
+            }
+        }).forClass(StudyDef.class);
     }
 	
 }

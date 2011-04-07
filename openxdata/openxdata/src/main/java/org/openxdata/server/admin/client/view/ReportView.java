@@ -22,8 +22,6 @@ import java.util.List;
 
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
-import org.openxdata.server.admin.client.controller.observe.StudiesObserver;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
@@ -38,9 +36,7 @@ import org.openxdata.server.admin.model.Report;
 import org.openxdata.server.admin.model.ReportGroup;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserReportMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.purc.purcforms.client.util.StyleUtil;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -91,7 +87,7 @@ import org.purc.purcforms.client.xforms.XformParser;
 public class ReportView extends OpenXDataBaseView implements
         SelectionHandler<Integer>,
         OpenXDataExportImportApplicationEventListener,
-        OpenFileDialogEventListener, StudiesObserver {
+        OpenFileDialogEventListener {
 	
 	/** The report definition object. */
 	private Report report;
@@ -955,39 +951,13 @@ public class ReportView extends OpenXDataBaseView implements
 		return tabs.getTabBar().getSelectedTab() == TAB_INDEX_DATA;
 	}
 	
-	@Override
-	public void update(OpenXDataObservable observable,
-	        Object observedModelObjects) {
-		// do nothing
-	}
-	
+
 	/**
 	 * @return
 	 */
 	public List<UserReportMap> getDeletedUserMappedReportGroups() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	@Override
-	public void updateStudies(OpenXDataObservable observable,
-	        List<StudyDef> studies) {
-		setStudies(studies);
-		
-	}
-	
-	@Override
-	public void updateUserMappedForms(OpenXDataObservable observable,
-	        List<UserFormMap> userMappedForms) {
-		// do nothing
-		
-	}
-	
-	@Override
-	public void updateUserMappedStudies(OpenXDataObservable observable,
-	        List<UserStudyMap> userMappedStudies) {
-		// d nothing
-		
 	}
 	
 	@Override
@@ -1079,5 +1049,12 @@ public class ReportView extends OpenXDataBaseView implements
                 }
             }
         }).forClass(ReportGroup.class);
+        EditableEvent.addHandler(eventBus, new EditableEvent.HandlerAdaptor<StudyDef>() {
+
+            @Override
+            public void onLoaded(List<StudyDef> items) {
+                setStudies(items);
+            }
+        }).forClass(StudyDef.class);
     }
 }

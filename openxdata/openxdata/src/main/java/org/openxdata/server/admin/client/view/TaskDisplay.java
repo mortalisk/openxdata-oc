@@ -1,11 +1,9 @@
 package org.openxdata.server.admin.client.view;
 
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import org.openxdata.server.admin.client.presenter.TaskPresenter;
-import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.model.TaskDef;
 
 /**

@@ -19,12 +19,7 @@ package org.openxdata.server.admin.client;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
-import org.openxdata.server.admin.client.controller.ReportsViewController;
-import org.openxdata.server.admin.client.controller.StudiesViewController;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObserver;
 import org.openxdata.server.admin.client.service.AuthenticationServiceAsync;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.ReportServiceAsync;
@@ -38,8 +33,6 @@ import org.openxdata.server.admin.client.service.UtilityServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.Locale;
 import org.openxdata.server.admin.model.Permission;
-import org.openxdata.server.admin.model.Report;
-import org.openxdata.server.admin.model.ReportGroup;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.StudyDef;
@@ -55,7 +48,7 @@ import org.openxdata.server.admin.model.User;
  * @author Angel
  *
  */
-public class Context implements OpenXDataObserver {
+public class Context  {
 	
 	/** The default locale key. */
 	private static String defaultLocale = "en";
@@ -102,8 +95,6 @@ public class Context implements OpenXDataObserver {
 	
 	/** The list of locales. */
 	private static List<Locale> locales;
-
-	private static List<ReportGroup> reportGroups;
 
 	private static List<Permission> permissions;
 	
@@ -348,27 +339,6 @@ public class Context implements OpenXDataObserver {
 	public static UtilityServiceAsync getUtilityService() {
 		return utilityServiceAsync;
 	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public void update(OpenXDataObservable observable, Object observedModelObjects) {
-		List<?> modelObjects = (List<?>) observedModelObjects;
-		if(modelObjects != null){
-			if(modelObjects.size() > 0){
-			        if(observable.getClass().equals(StudiesViewController.class)){
-					if(modelObjects.get(0) instanceof StudyDef){
-						Context.studies = (List<StudyDef>) modelObjects;
-					}
-				}
-
-				else if(observable.getClass().equals(ReportsViewController.class)){
-					if(modelObjects.get(0) instanceof ReportGroup){
-						Context.reportGroups = (List<ReportGroup>) modelObjects;
-					}
-				}
-			}
-		}
-	}
 	
 	/**
 	 * Retrieves a list of <code>FormDefs</code>.
@@ -376,7 +346,7 @@ public class Context implements OpenXDataObserver {
 	 * @return <cod>FormDefs</code>.
 	 */
 	public static List<FormDef> getForms(){
-		List<FormDef> forms = new Vector<FormDef>();
+		List<FormDef> forms = new ArrayList<FormDef>();
 		if(Context.getStudies() != null){
 			for(StudyDef def : Context.getStudies()){
 				forms.addAll(def.getForms());
@@ -384,40 +354,6 @@ public class Context implements OpenXDataObserver {
 		}
 		
 		return forms;
-	}
-
-	/**
-	 * Retrieves a list of <code>Reports</code>.
-	 * 
-	 * @return <cod>Reports</code>.
-	 */
-	public static List<Report> getReports() {
-		List<Report> reports = new Vector<Report>();
-		if(Context.getReportGroups() != null){
-			for(ReportGroup xGroup : Context.reportGroups){
-				reports.addAll(xGroup.getReports());
-			}
-		}
-		
-		return reports;
-	}
-
-	/**
-	 * Sets the system <code>Report Groups.</code>
-	 * @param reportGroups List of <code>Report Groups.</code>
-	 */
-	public static void setReportGroups(List<ReportGroup> reportGroups) {
-		Context.reportGroups = reportGroups;
-		
-	}
-	
-	/**
-	 * Returns the list of <code>Report Groups.</code>
-	 * @return <code>List</code> of <code>Report Groups.</code>
-	 */
-	public static List<ReportGroup> getReportGroups(){
-		return reportGroups;
-		
 	}
 	
 	/**

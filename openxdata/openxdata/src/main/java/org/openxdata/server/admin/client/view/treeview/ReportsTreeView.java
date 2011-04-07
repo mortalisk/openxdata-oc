@@ -23,8 +23,6 @@ import java.util.Vector;
 
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
-import org.openxdata.server.admin.client.controller.observe.ReportsObserver;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.Utilities;
@@ -58,8 +56,7 @@ import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFact
  * 
  */
 public class ReportsTreeView extends OpenXDataBaseTreeView implements
-        ExtendedContextInitMenuListener, OpenXDataViewApplicationEventListener,
-        ReportsObserver {
+        ExtendedContextInitMenuListener, OpenXDataViewApplicationEventListener{
 	
 	/** List of deleted reports. */
 	private List<Report> deletedReports;
@@ -433,31 +430,20 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		this.mappedReportGroups = mappedReports;
 		
 	}
+
 	
-	@Override
-	public void update(OpenXDataObservable observable,
-	        Object observedModelObject) {
-		// do nothing
-	}
-	
-	@Override
-	public void updateUserMappedReportGroups(OpenXDataObservable observable,
-	        List<UserReportGroupMap> userMappedReportGroups) {
+	public void updateUserMappedReportGroups(List<UserReportGroupMap> userMappedReportGroups) {
 		setMappedReportGroups(userMappedReportGroups);
                 eventBus.fireEvent(new EditableEvent<UserReportGroupMap>(userMappedReportGroups,UserReportGroupMap.class));
 		
 	}
 	
-	@Override
-	public void updateUserMappedReports(OpenXDataObservable observable,
-	        List<UserReportMap> userMappedReports) {
+	public void updateUserMappedReports(List<UserReportMap> userMappedReports) {
 		eventBus.fireEvent(new EditableEvent<UserReportMap>(userMappedReports,UserReportMap.class));
 		
 	}
 	
-	@Override
-	public void updateReportGroups(OpenXDataObservable observable,
-	        List<ReportGroup> reportGroups) {
+	public void updateReportGroups(List<ReportGroup> reportGroups) {
 		loadReportGroups(reportGroups);
                 eventBus.fireEvent(new EditableEvent<ReportGroup>(reportGroups,ReportGroup.class));
 		

@@ -17,7 +17,6 @@
  */
 package org.openxdata.server.admin.client.view.treeview;
 
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObserver;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
@@ -54,7 +53,7 @@ import com.google.gwt.user.client.ui.TreeItem;
  * @author Angel
  */
 public abstract class OpenXDataBaseTreeView extends Composite implements
-		SelectionHandler<TreeItem>, ContextMenuInitListener, OpenXDataObserver {
+		SelectionHandler<TreeItem>, ContextMenuInitListener {
 
 	protected static OpenXdataConstants constants = GWT
 			.create(OpenXdataConstants.class);

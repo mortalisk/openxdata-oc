@@ -22,7 +22,6 @@ import java.util.List;
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.controller.callback.SaveAsyncCallback;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
 import org.openxdata.server.admin.client.listeners.SaveCompleteListener;
 import org.openxdata.server.admin.client.locale.OpenXdataText;
 import org.openxdata.server.admin.client.locale.TextConstants;
@@ -45,7 +44,7 @@ import org.purc.purcforms.client.util.FormUtil;
  * @author Angel
  *
  */
-public class StudiesViewController extends OpenXDataObservable implements SaveCompleteListener {
+public class StudiesViewController implements SaveCompleteListener {
 	
 	private StudiesTreeView studiesTreeView;	
 
@@ -91,8 +90,8 @@ public class StudiesViewController extends OpenXDataObservable implements SaveCo
 						@Override
 						public void onSuccess(List<StudyDef> result) {
 							studies = result;
-							setChanged();
-						    notifyObservers(studies, StudyDef.class);
+							//setChanged();
+						    studiesTreeView.updateStudies( result);
 						    
 							FormUtil.dlg.hide();
 						}
@@ -135,8 +134,8 @@ public class StudiesViewController extends OpenXDataObservable implements SaveCo
 						@Override
 						public void onSuccess(List<UserStudyMap> result) {
 							userMappedStudies = result;
-							setChanged();
-						    notifyObservers(userMappedStudies, UserStudyMap.class);
+//							setChanged();
+						        studiesTreeView.updateUserMappedStudies(result);
 							
 							FormUtil.dlg.hide();
 						}
@@ -175,8 +174,8 @@ public class StudiesViewController extends OpenXDataObservable implements SaveCo
 						public void onSuccess(List<UserFormMap> mappedForms) {
 							userMappedForms = mappedForms;							
 							
-							setChanged();
-						    notifyObservers(userMappedForms, UserFormMap.class);
+//							setChanged();
+						        studiesTreeView.updateUserMappedForms( mappedForms);
 							
 							FormUtil.dlg.hide();
 						}

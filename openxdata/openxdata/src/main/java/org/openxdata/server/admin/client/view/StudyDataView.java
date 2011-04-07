@@ -540,5 +540,20 @@ public class StudyDataView extends Composite implements
                 setUsers(items);
             }
         }).forClass(User.class);
+
+        EditableEvent.addHandler(eventBus, new EditableEvent.HandlerAdaptor<UserFormMap>() {
+
+            @Override
+            public void onLoaded(List<UserFormMap> items) {
+              setUserMappedForms(items);
+            }
+        }).forClass(UserFormMap.class);
+        EditableEvent.addHandler(eventBus, new EditableEvent.HandlerAdaptor<StudyDef>() {
+
+            @Override
+            public void onLoaded(List<StudyDef> items) {
+                setStudies(items);
+            }
+        }).forClass(StudyDef.class);
     }
 }

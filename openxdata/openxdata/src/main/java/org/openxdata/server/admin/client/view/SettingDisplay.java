@@ -1,11 +1,9 @@
 package org.openxdata.server.admin.client.view;
 
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.TextBox;
 import java.util.ArrayList;
 import org.openxdata.server.admin.client.presenter.SettingPresenter;
-import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.model.Setting;
 import org.openxdata.server.admin.model.SettingGroup;
 

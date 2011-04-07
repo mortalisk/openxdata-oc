@@ -23,7 +23,6 @@ import java.util.List;
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.controller.callback.SaveAsyncCallback;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
 import org.openxdata.server.admin.client.listeners.SaveCompleteListener;
 import org.openxdata.server.admin.client.locale.OpenXdataText;
 import org.openxdata.server.admin.client.locale.TextConstants;
@@ -48,7 +47,7 @@ import org.purc.purcforms.client.util.FormUtil;
  * @author Angel
  *
  */
-public class ReportsViewController extends OpenXDataObservable implements SaveCompleteListener {
+public class ReportsViewController  implements SaveCompleteListener {
 
 	private ReportView reportView;
 	private List<ReportGroup> reportGroups;
@@ -96,10 +95,7 @@ public class ReportsViewController extends OpenXDataObservable implements SaveCo
 						@Override
 						public void onSuccess(List<ReportGroup> result) {
 							reportGroups = result;
-							
-							setChanged();
-						    notifyObservers(reportGroups, ReportGroup.class);
-						    
+						    reportsTreeView.updateReportGroups(result);
 							FormUtil.dlg.hide();
 						}
 					});
@@ -142,9 +138,9 @@ public class ReportsViewController extends OpenXDataObservable implements SaveCo
 						public void onSuccess(List<UserReportMap> mappedReports) {
 							userMappedReports = mappedReports;
 							
-							setChanged();
-						    notifyObservers(userMappedReports, UserReportMap.class);
-							
+							//setChanged();
+                                                        //notifyObservers(userMappedReports, UserReportMap.class);
+							reportsTreeView.updateUserMappedReports(mappedReports);
 							FormUtil.dlg.hide();
 						}
 					});
@@ -298,9 +294,9 @@ public class ReportsViewController extends OpenXDataObservable implements SaveCo
 						public void onSuccess(List<UserReportGroupMap> mappedReportGroups) {
 							userMappedReportGroups = mappedReportGroups;
 							
-							setChanged();
-						    notifyObservers(userMappedReportGroups, UserReportGroupMap.class);
-							
+//							setChanged();
+//						    notifyObservers(userMappedReportGroups, UserReportGroupMap.class);
+							reportsTreeView.updateUserMappedReportGroups(mappedReportGroups);
 							FormUtil.dlg.hide();
 						}
 					});

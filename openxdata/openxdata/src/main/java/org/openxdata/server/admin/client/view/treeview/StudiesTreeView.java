@@ -21,8 +21,6 @@ import java.util.List;
 
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
-import org.openxdata.server.admin.client.controller.observe.OpenXDataObservable;
-import org.openxdata.server.admin.client.controller.observe.StudiesObserver;
 import org.openxdata.server.admin.client.listeners.GetFileNameDialogEventListener;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
@@ -70,8 +68,7 @@ import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
 public class StudiesTreeView extends OpenXDataBaseTreeView implements
         OnDataCheckListener, FormVersionOpenDialogListener,
         GetFileNameDialogEventListener, OpenFileDialogEventListener,
-        ExtendedContextInitMenuListener, StudiesObserver,
-        OpenXDataExportImportApplicationEventListener {
+        ExtendedContextInitMenuListener, OpenXDataExportImportApplicationEventListener {
 	
 	/** The list of studies. */
 	private List<StudyDef> studies;
@@ -472,29 +469,20 @@ public class StudiesTreeView extends OpenXDataBaseTreeView implements
 		return labels;
 	}
 	
-	@Override
-	public void update(OpenXDataObservable observable,
-	        Object observedModelObject) {
-		// do nothing
-	}
-	
-	@Override
-	public void updateStudies(OpenXDataObservable observable,
-	        List<StudyDef> studies) {
+	public void updateStudies(List<StudyDef> studies) {
 		loadStudies(studies);
+                Context.setStudies(studies);
                 eventBus.fireEvent(new EditableEvent<StudyDef>(studies,StudyDef.class));
 	}
 	
-	@Override
-	public void updateUserMappedForms(OpenXDataObservable observable,
-	        List<UserFormMap> userMappedForms) {
+	
+	public void updateUserMappedForms(List<UserFormMap> userMappedForms) {
 		loadMappedForms(userMappedForms);
                 eventBus.fireEvent(new EditableEvent<UserFormMap>(userMappedForms, UserFormMap.class));
 	}
 	
-	@Override
-	public void updateUserMappedStudies(OpenXDataObservable observable,
-	        List<UserStudyMap> userMappedStudies) {
+	
+	public void updateUserMappedStudies(List<UserStudyMap> userMappedStudies) {
 		this.mappedStudies = userMappedStudies;
                 eventBus.fireEvent(new EditableEvent<UserStudyMap>(mappedStudies, UserStudyMap.class));
 	}
