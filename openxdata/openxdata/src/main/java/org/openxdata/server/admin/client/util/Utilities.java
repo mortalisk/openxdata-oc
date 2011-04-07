@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.openxdata.server.admin.client.Context;
-import org.openxdata.server.admin.client.view.dialogs.OpenXDataMessageDialog;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMessageDialog;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
 import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.User;

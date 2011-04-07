@@ -18,7 +18,7 @@
 package org.openxdata.server.admin.client.view.factory;
 
 import com.google.inject.Singleton;
-import org.openxdata.server.admin.client.view.bar.OpenXDataNotificationBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.event.shared.EventBus;
@@ -50,8 +50,8 @@ import org.openxdata.server.admin.client.view.SettingDisplay;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.TaskDisplay;
 import org.openxdata.server.admin.client.view.UserDisplay;
-import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.bar.OpenXDataToolBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.mapping.RolePermissionMapDisplay;
 import org.openxdata.server.admin.client.view.mapping.UserRoleMapDisplay;
 import org.openxdata.server.admin.client.view.mapping.UserFormMapDisplay;

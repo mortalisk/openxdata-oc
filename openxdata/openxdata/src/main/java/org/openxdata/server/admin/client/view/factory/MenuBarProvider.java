@@ -2,7 +2,7 @@ package org.openxdata.server.admin.client.view.factory;
 
 import com.google.inject.Provider;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
-import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 
 /**
  * 

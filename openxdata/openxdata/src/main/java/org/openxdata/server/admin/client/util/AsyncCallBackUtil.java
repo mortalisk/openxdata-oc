@@ -17,7 +17,7 @@
  */
 package org.openxdata.server.admin.client.util;
 
-import org.openxdata.server.admin.client.view.dialogs.ReLoginDialog;
+import org.openxdata.server.admin.client.view.widget.ReLoginDialog;
 import org.purc.purcforms.client.util.FormUtil;
 
 /**

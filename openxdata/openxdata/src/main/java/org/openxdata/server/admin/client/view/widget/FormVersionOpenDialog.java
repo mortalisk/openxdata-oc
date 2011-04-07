@@ -15,11 +15,10 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.view.dialogs;
+package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.view.listeners.FormVersionOpenDialogListener;
-import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

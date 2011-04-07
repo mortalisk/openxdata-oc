@@ -27,10 +27,6 @@ public class EventRegistration<T, H extends BaseHandler<T>> {
         eventBus.addHandler(getType(gwtEvtClazz, clazz), handler);
     }
 
-    public void forSuperClass(Class<? super  T> clazz) {
-        eventBus.addHandler(getType(gwtEvtClazz, clazz), handler);
-    }
-
     public static <H extends EventHandler, E extends GwtEvent<H>> Type<H> getType(Class<E> gwtEvtClazz, Class<?> clazz) {
         TypeHolder holder = new TypeHolder(gwtEvtClazz, clazz);
         if (!TYPES.containsKey(holder)) {

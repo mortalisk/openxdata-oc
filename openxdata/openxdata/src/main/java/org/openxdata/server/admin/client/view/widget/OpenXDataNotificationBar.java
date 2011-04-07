@@ -15,7 +15,7 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.view.bar;
+package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.widget.factory.OpenXDataWidgetFactory;

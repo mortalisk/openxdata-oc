@@ -26,7 +26,7 @@ import org.openxdata.server.admin.client.controller.facade.MainViewControllerFac
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.StudyView;
-import org.openxdata.server.admin.client.view.dialogs.FormVersionOpenDialog;
+import org.openxdata.server.admin.client.view.widget.FormVersionOpenDialog;
 import org.openxdata.server.admin.client.view.listeners.FormVersionOpenDialogListener;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;

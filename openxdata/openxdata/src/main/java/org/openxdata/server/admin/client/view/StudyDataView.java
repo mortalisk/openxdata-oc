@@ -27,7 +27,7 @@ import org.openxdata.server.admin.client.internationalization.OpenXdataConstants
 import org.openxdata.server.admin.client.listeners.GetFileNameDialogEventListener;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.service.StudyManagerServiceAsync;
-import org.openxdata.server.admin.client.view.dialogs.GetFileNameDialog;
+import org.openxdata.server.admin.client.view.widget.GetFileNameDialog;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
 import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;

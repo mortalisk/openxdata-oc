@@ -18,8 +18,8 @@
 package org.openxdata.server.admin.client.view;
 
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
-import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.bar.OpenXDataToolBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;

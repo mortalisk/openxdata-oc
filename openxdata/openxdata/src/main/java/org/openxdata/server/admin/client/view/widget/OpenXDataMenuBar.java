@@ -15,8 +15,9 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.view.bar;
+package org.openxdata.server.admin.client.view.widget;
 
+import org.openxdata.server.admin.client.view.widget.OpenXDataBaseMenuBar;
 import java.util.List;
 import java.util.ArrayList;
 

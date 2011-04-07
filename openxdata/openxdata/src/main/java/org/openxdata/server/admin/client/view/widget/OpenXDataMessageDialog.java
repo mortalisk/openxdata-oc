@@ -15,10 +15,8 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.view.dialogs;
+package org.openxdata.server.admin.client.view.widget;
 
-import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
-import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

@@ -29,7 +29,7 @@ import org.openxdata.server.admin.client.listeners.GetFileNameDialogEventListene
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.StudyImport;
 import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.server.admin.client.view.dialogs.GetFileNameDialog;
+import org.openxdata.server.admin.client.view.widget.GetFileNameDialog;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.widget.CompositeTreeItem;

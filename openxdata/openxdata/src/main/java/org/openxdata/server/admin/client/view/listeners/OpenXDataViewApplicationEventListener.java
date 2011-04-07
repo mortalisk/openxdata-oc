@@ -18,8 +18,8 @@
 package org.openxdata.server.admin.client.view.listeners;
 
 import org.openxdata.server.admin.client.view.OpenXDataBaseView;
-import org.openxdata.server.admin.client.view.bar.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.bar.OpenXDataToolBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 
 /**
  * Defines a contract for the {@linkplain OpenXDataBaseView}  

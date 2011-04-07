@@ -15,13 +15,11 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.view.dialogs;
+package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
-import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataException;
 

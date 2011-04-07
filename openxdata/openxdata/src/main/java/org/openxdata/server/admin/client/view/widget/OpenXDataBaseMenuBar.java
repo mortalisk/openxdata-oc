@@ -15,7 +15,7 @@
  *
  *  Copyright 2010 http://www.openxdata.org.
  */
-package org.openxdata.server.admin.client.view.bar;
+package org.openxdata.server.admin.client.view.widget;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.MenuBar;
