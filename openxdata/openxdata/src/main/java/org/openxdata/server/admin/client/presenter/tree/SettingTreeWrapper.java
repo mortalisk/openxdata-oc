@@ -19,7 +19,9 @@ import org.openxdata.server.admin.model.User;
  */
 public class SettingTreeWrapper extends SettingGroup implements TreeItemWrapper {
 
-    private Setting setting;
+	private static final long serialVersionUID = -8561718654291710763L;
+	
+	private Setting setting;
     private SettingGroup settingGroup;
     private List<SettingTreeWrapper> wrappers = new ArrayList<SettingTreeWrapper>();
     private TreeItemWrapper parent;

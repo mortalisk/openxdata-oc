@@ -9,7 +9,9 @@ import org.openxdata.server.admin.model.User;
  */
 public class UserSummary extends BaseModel {
 
-    private User user;
+	private static final long serialVersionUID = -483245623678099579L;
+	
+	private User user;
 
     public UserSummary() {
     }
