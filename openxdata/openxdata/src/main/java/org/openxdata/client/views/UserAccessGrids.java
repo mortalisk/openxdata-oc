@@ -270,11 +270,11 @@ public class UserAccessGrids extends FieldSet {
         }
     }
 
-    public Grid getUnmappedItemGrid() {
+    public Grid<UserSummary> getUnmappedItemGrid() {
         return leftPanelGrid;
     }
 
-    public Grid getMappedItemGrid() {
+    public Grid<UserSummary> getMappedItemGrid() {
         return rightPanelGrid;
     }
 
