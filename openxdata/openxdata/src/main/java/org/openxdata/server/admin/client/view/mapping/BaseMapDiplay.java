@@ -1,13 +1,16 @@
 package org.openxdata.server.admin.client.view.mapping;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import java.util.List;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.presenter.BaseMapPresenter;
 import org.openxdata.server.admin.client.util.Utilities;
+import org.openxdata.server.admin.client.view.widget.SimpleFilterListBox;
 import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
 import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
 
@@ -27,10 +31,10 @@ public abstract class BaseMapDiplay<T> implements BaseMapPresenter.BaseDisplay<T
     protected Button btnAdd;
     protected Button btnRemove;
     protected Button btnSave;
-    protected ListBox mappedObjectsListBox = new ListBox(true);
+    protected SimpleFilterListBox mappedObjectsListBox = new SimpleFilterListBox();
     protected List<T> systemItems = new ArrayList<T>();
     protected FlexTable table = new OpenXDataFlexTable();
-    protected ListBox unMappedObjectsListBox = new ListBox(true);
+    protected SimpleFilterListBox unMappedObjectsListBox = new SimpleFilterListBox();
     protected List<T> userItems = new ArrayList<T>();
     protected VerticalPanel vPanel = new VerticalPanel();
 
@@ -100,6 +104,8 @@ public abstract class BaseMapDiplay<T> implements BaseMapPresenter.BaseDisplay<T
         //Maximize the mapping boxes.
         mappedObjectsListBox.setWidth("100%");
         unMappedObjectsListBox.setWidth("100%");
+        mappedObjectsListBox.setVisibleItemCount(15);
+        unMappedObjectsListBox.setVisibleItemCount(15);
         //Setting the properties of the Save Button.
         btnSave = new OpenXDataButton("Save");
         btnSave.setWidth("160px");
@@ -124,14 +130,20 @@ public abstract class BaseMapDiplay<T> implements BaseMapPresenter.BaseDisplay<T
     public void refresh() {
         mappedObjectsListBox.clear();
         unMappedObjectsListBox.clear();
-        List<String> renderRoles = new ArrayList<String>();
+        List<String> userItemStrings = renderUserMappedObjects();
+        for (T role : systemItems) {
+            if (!userItemStrings.contains(getName(role)))
+                unMappedObjectsListBox.addItem(getName(role));
+        }
+    }
+
+    private List<String> renderUserMappedObjects() {
+        List<String> userItemStrings = new ArrayList<String>();
         for (T role : userItems) {
             mappedObjectsListBox.addItem(getName(role));
-            renderRoles.add(getName(role));
+            userItemStrings.add(getName(role));
         }
-        for (T role : systemItems) {
-            if (!renderRoles.contains(getName(role))) unMappedObjectsListBox.addItem(getName(role));
-        }
+        return userItemStrings;
     }
 
     @Override
