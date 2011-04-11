@@ -111,6 +111,7 @@ public class SimpleFilterListBox extends Composite {
 
     public void clear() {
         items.clear();
+        txtBox.setText("");
         listBox.clear();
     }
 

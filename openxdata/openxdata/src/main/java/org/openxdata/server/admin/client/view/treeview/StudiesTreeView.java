@@ -53,6 +53,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import org.openxdata.server.admin.client.view.event.DesignFormEvent;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
+import org.openxdata.server.admin.client.view.event.LoadRequetEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
 
@@ -605,5 +606,21 @@ public class StudiesTreeView extends OpenXDataBaseTreeView implements
             }
         };
         EditableEvent.addHandler(eventBus, forVerHandler).forClass(FormDefVersion.class);
+
+        LoadRequetEvent.addHandler(eventBus, new LoadRequetEvent.Handler<UserStudyMap>() {
+
+            @Override
+            public void onLoadRequest() {
+                MainViewControllerFacade.loadAllUserMappedStudies(true);
+            }
+        }).forClass(UserStudyMap.class);
+
+        LoadRequetEvent.addHandler(eventBus, new LoadRequetEvent.Handler<UserFormMap>() {
+
+            @Override
+            public void onLoadRequest() {
+                MainViewControllerFacade.loadAllUserMappedForms(true);
+            }
+        }).forClass(UserFormMap.class);
     }
 }

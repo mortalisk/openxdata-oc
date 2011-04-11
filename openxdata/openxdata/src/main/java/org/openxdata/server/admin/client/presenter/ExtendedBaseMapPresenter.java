@@ -11,6 +11,7 @@ import org.openxdata.server.admin.model.Editable;
 import org.purc.purcforms.client.util.FormUtil;
 
 import com.google.gwt.event.shared.EventBus;
+import org.openxdata.server.admin.client.view.event.LoadRequetEvent;
 
 /**
  *
@@ -101,6 +102,14 @@ public abstract class ExtendedBaseMapPresenter<M extends Editable, U extends Edi
         }
         return false;
     }
+
+    @Override
+    protected void loadOtherItems() {
+        super.loadOtherItems();
+        eventBus.fireEvent(new LoadRequetEvent<M>(mapClazz));
+    }
+
+
 
     abstract protected boolean isMappedToItem(U user, T itemToMap);
 
