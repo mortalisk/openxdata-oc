@@ -10,6 +10,7 @@ import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -20,11 +21,15 @@ import org.openxdata.server.admin.model.User;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.Label;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
+import com.extjs.gxt.ui.client.widget.form.StoreFilterField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -185,18 +190,34 @@ public class UserAccessGrids extends FieldSet {
         loader = new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
         loader.setRemoteSort(true);
         store = new ListStore<UserSummary>(loader);
+//filter list
+        StoreFilterField<UserSummary> filter = new StoreFilterField<UserSummary>() {
 
+            @Override
+            protected boolean doSelect(Store<UserSummary> store, UserSummary parent,
+                    UserSummary record, String property, String filter) {
+                String userName = record.getName();
+                if(userName.startsWith(filter.toLowerCase())){
+                    return true;
+                }
+                return false;
+            }
+        };
+        filter.bind(store);
+
+        //toolbar on top of the grid to hold the filter
+        ToolBar toolBar = new ToolBar();
+        toolBar.add(new LabelToolItem("Search for a User: "));
+        toolBar.add(filter);
         leftGridToolBar = new PagingToolBar(pageSize);
         leftGridToolBar.bind(loader);
         loader.load(0, pageSize);
         cp.setBottomComponent(leftGridToolBar);
-
+        cp.setTopComponent(toolBar);
         leftPanelGrid = new Grid<UserSummary>(store, cm);
         leftPanelGrid.setAutoExpandColumn("name");
         leftPanelGrid.setHeight(gridHeight);
         leftPanelGrid.setBorders(true);
-//      grid.getAriaSupport().setDescribedBy(toolBar.getId() + "-display");
-
         cp.add(leftPanelGrid);
 
         return cp;
@@ -225,16 +246,35 @@ public class UserAccessGrids extends FieldSet {
         loader.setRemoteSort(true);
         store = new ListStore<UserSummary>(loader);
 
+//filter list
+        StoreFilterField<UserSummary> filter = new StoreFilterField<UserSummary>() {
+
+            @Override
+            protected boolean doSelect(Store<UserSummary> store, UserSummary parent,
+                    UserSummary record, String property, String filter) {
+                String userName = record.getName();
+                if(userName.startsWith(filter.toLowerCase())){
+                    return true;
+                }
+                return false;
+            }
+        };
+        filter.bind(store);
+
+        //toolbar on top of the grid to hold the filter
+        ToolBar toolBar = new ToolBar();
+        toolBar.add(new LabelToolItem("Search for a User: "));
+        toolBar.add(filter);
         rightGridToolbar = new PagingToolBar(pageSize);
         rightGridToolbar.bind(loader);
         loader.load(0, pageSize);
         cp.setBottomComponent(rightGridToolbar);
+        cp.setTopComponent(toolBar);
 
         rightPanelGrid = new Grid<UserSummary>(store, cm);
         rightPanelGrid.setAutoExpandColumn("name");
         rightPanelGrid.setHeight(gridHeight);
         rightPanelGrid.setBorders(true);
-
         cp.add(rightPanelGrid);
 
         return cp;
