@@ -20,7 +20,7 @@ public class SimpleFilterListBox extends Composite {
 
     private ListBox listBox = new ListBox();
     private VerticalPanel verticalPanel = new VerticalPanel();
-    private Label filter = new Label("Filter");
+    private Label filter = new Label("Search");
     private TextBox txtBox = new TextBox();
     List<ValueText> items = new ArrayList<ValueText>();
 
