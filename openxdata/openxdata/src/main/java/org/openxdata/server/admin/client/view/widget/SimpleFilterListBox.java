@@ -52,17 +52,17 @@ public class SimpleFilterListBox extends Composite {
             for (ValueText valueTxt : items) {
                 listBox.addItem(valueTxt.text, valueTxt.value);
             }
-        }
-
-        for (ValueText valuTxt : items) {
-            String lowCaseStr = valuTxt.text.toLowerCase();
-            if (matches(lowCaseStr, text))
-                listBox.addItem(valuTxt.text, valuTxt.value);
+        } else {
+            for (ValueText valuTxt : items) {
+                String lowCaseStr = valuTxt.text.toLowerCase();
+                if (matches(lowCaseStr, text))
+                    listBox.addItem(valuTxt.text, valuTxt.value);
+            }
         }
     }
 
     private boolean matches(String lowCaseStr, String text) {
-         return lowCaseStr.contains(text);
+        return lowCaseStr.contains(text);
     }
 
     public void setVisibleItemCount(int visibleItems) {
