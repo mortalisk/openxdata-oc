@@ -1,5 +1,6 @@
 package org.openxdata.server.admin.client.view.event;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Composite;
@@ -31,6 +32,9 @@ public class ItemSelectedEvent<T> extends GwtEvent<ItemSelectedEvent.Handler<T>>
         Object sender = getSource();
         Composite composite = (sender != null) && (sender instanceof Composite)
                 ? (Composite) sender : null;
+        //String simpleName = (sender != null)
+        //      ? sender.getClass()+"" : "UnKnownSource";
+       // GWT.log("Handling ItemSelectedEvent: "+ simpleName + " : "+item.getClass());
         handler.onSelected(composite, item);
     }
 

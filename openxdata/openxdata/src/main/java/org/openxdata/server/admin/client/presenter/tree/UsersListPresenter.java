@@ -90,6 +90,7 @@ public class UsersListPresenter extends BaseTreePresenter<User, IBaseTreeDisplay
                 result.set(i, user);
             }
         }
+        Context.setUsers(result);
         eventBus.fireEvent(new EditableEvent<User>(result, User.class));
         setItems(result);
     }

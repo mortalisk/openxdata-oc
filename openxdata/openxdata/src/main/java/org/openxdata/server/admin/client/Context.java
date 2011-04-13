@@ -97,6 +97,10 @@ public class Context  {
 	private static List<Locale> locales;
 
 	private static List<Permission> permissions;
+
+    public static void setUsers(List<User> result) {
+        users = result;
+    }
 	
 	//Private Constructor
 	private Context(){}
