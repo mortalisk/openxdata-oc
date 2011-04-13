@@ -45,9 +45,12 @@ public class OpenXDataStackPanel extends DecoratedStackPanel {
 	 * @param stackPanelListener
 	 *            listener to stack panel selection events.
 	 */
-        @Inject
+        //@Inject
 	public OpenXDataStackPanel(StackPanelListener stackPanelListener) {
 		this.stackPanelListener = stackPanelListener;
+	}
+
+        public OpenXDataStackPanel() {
 	}
 	
 	@Override
@@ -65,4 +68,10 @@ public class OpenXDataStackPanel extends DecoratedStackPanel {
 		if (prevIndex != getSelectedIndex())
 			stackPanelListener.onSelectedIndexChanged(getSelectedIndex());
 	}
+
+    public void setStackPanelListener(StackPanelListener stackPanelListener) {
+        this.stackPanelListener = stackPanelListener;
+    }
+
+        
 }

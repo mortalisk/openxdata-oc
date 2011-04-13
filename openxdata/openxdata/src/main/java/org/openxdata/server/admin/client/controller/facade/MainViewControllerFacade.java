@@ -43,7 +43,7 @@ import org.openxdata.server.admin.model.SettingGroup;
  * @author Angel on Dec 17, 2009
  * 
  */
-public class MainViewControllerFacade implements StackPanelListener {
+public class MainViewControllerFacade  {
 	
 	/** Handle to <tt>Widget Factory.</tt> */
 	protected static OpenXDataWidgetFactory widgetFactory;
@@ -275,7 +275,7 @@ public class MainViewControllerFacade implements StackPanelListener {
     private final EventBus eventBus;
     
 	
-	@Override
+
 	public void onSelectedIndexChanged(final int newIndex) {
 		
 		Utilities.displayNotificationMessage("Loading Data... ");

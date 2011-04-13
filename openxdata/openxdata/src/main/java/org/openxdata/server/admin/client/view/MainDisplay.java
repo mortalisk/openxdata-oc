@@ -41,16 +41,17 @@ public class MainDisplay implements MainPresenter.Display, StackPanelListener, R
     private DockLayoutPanel dockPanel = new DockLayoutPanel(Unit.EM);
 
     @Inject
-    public MainDisplay(OpenXDataMenuBar menuBar, OpenXDataToolBar toolBar, OpenXDataNotificationBar notificationBar) {
+    public MainDisplay(OpenXDataMenuBar menuBar, OpenXDataToolBar toolBar, OpenXDataNotificationBar notificationBar, OpenXDataStackPanel stackPanel) {
         this.menuBar = menuBar;
         this.toolBar = toolBar;
-        this.notificationBar = notificationBar;
+        this.notificationBar = notificationBar;//TODO StackPanelWidget Should not be injected
+        this.stackPanel = stackPanel;
         init();
     }
 
     private void init() {
 
-        stackPanel = new OpenXDataStackPanel(this);
+        stackPanel.setStackPanelListener(this);
         stackPanel.setWidth("100%");
 
         splitPanel.setSplitPosition("20%");

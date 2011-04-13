@@ -103,7 +103,6 @@ public class OpenXdataClientModule extends AbstractGinModule {
 
         // Other ImportanWidgets
         bind(OpenXDataStackPanel.class).in(Singleton.class);
-        bind(StackPanelListener.class).to(MainViewControllerFacade.class).in(Singleton.class);
         bind(OpenXDataMenuBar.class).toProvider(MenuBarProvider.class).in(Singleton.class);
         bind(OpenXDataToolBar.class).toProvider(ToolBarProvider.class).in(Singleton.class);
 
