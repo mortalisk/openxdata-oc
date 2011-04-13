@@ -18,12 +18,10 @@
 package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.inject.Inject;
 
 /**
  * Bound to the <tt>MainView</tt> to display notifications to the <tt>User.</tt>
@@ -33,61 +31,66 @@ import com.google.inject.Inject;
  */
 public class OpenXDataNotificationBar extends Composite {
 
-        /** Horizontal Panel for organizing widgets.*/
-        private HorizontalPanel panel;
-        /** Handle to <tt>Widget Factory.</tt>*/
-       
-        private OpenXDataWidgetFactory widgetFactory;
+    /** Horizontal Panel for organizing widgets.*/
+    private HorizontalPanel panel;
+    OpenXDataLabel notificationLabel = new OpenXDataLabel(" ");
 
-        /**
-         * Constructs an instance of this <tt>class.</tt>
-         */
-        @Inject
-        public OpenXDataNotificationBar( OpenXDataWidgetFactory widgetFactory) {
-                this.widgetFactory =widgetFactory;
-                setUp();
-        }
+    /**
+     * Constructs an instance of this <tt>class.</tt>
+     */
+    public OpenXDataNotificationBar() {
+        setUp();
+    }
 
-        /**
-         * Initializes this <tt>Widget.</tt>
-         */
-        private void setUp() {
+    /**
+     * Initializes this <tt>Widget.</tt>
+     */
+    private void setUp() {
 
-                // Panel to hold notification Label
-                panel = new HorizontalPanel();
+        // Panel to hold notification Label
+        panel = new HorizontalPanel();
 
-                // Initialize widget.
-                initWidget(getPanel());
-        }
+        // Initialize widget.
+        initWidget(getPanel());
+    }
 
-        /**
-         * Returns the Panel for holding notification messages.
-         *
-         * @return the panel
-         */
-        public HorizontalPanel getPanel() {
-                return constructPanel();
-        }
+    /**
+     * Returns the Panel for holding notification messages.
+     *
+     * @return the panel
+     */
+    public HorizontalPanel getPanel() {
+        return constructPanel();
+    }
 
-        /**
-         * Constructs the <tt>Panel</tt>
-         *
-         * @return instance of {@link HorizontalPanel} with <tt>Label.</tt>
-         */
-        HorizontalPanel constructPanel() {
-                if (panel == null)
-                        panel = new HorizontalPanel();
+    /**
+     * Constructs the <tt>Panel</tt>
+     *
+     * @return instance of {@link HorizontalPanel} with <tt>Label.</tt>
+     */
+    HorizontalPanel constructPanel() {
+        if (panel == null)
+            panel = new HorizontalPanel();
 
-                //Setting this text makes the notification bar to be displayed without text.
-                Utilities.displayNotificationMessage(" ");
+        //Align the text to center
+        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        panel.setCellHorizontalAlignment(panel, HasHorizontalAlignment.ALIGN_CENTER);
 
-                //Align the text to center
-                panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-                panel.setCellHorizontalAlignment(panel, HasHorizontalAlignment.ALIGN_CENTER);
+        panel.setWidth("100%");
+        panel.add(notificationLabel);
 
-                panel.setWidth("100%");
-                panel.add(widgetFactory.getNotificationLabel());
+        return panel;
+    }
 
-                return panel;
-        }
+    public void setText(String text) {
+        notificationLabel.setText(text);
+    }
+
+    public void setFailureText(String errorMessage) {
+        notificationLabel.setFailureText(errorMessage);
+    }
+
+    public void setDefaultText() {
+        notificationLabel.setDefaultText();
+    }
 }

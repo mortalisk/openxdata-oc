@@ -423,7 +423,7 @@ public class Utilities {
 		
 		// Stops the timer
 		timer.cancel();
-		((OpenXDataLabel) widgetFactory.getNotificationLabel())
+		(widgetFactory.getNotificationLabel())
 		        .setDefaultText();
 		// Display the second Message
 	}
@@ -437,7 +437,7 @@ public class Utilities {
 	 */
 	public static void displayFailureNotificationMessage(String failureMessage) {
 		// Display the failure Message
-		((OpenXDataLabel) widgetFactory.getNotificationLabel())
+		(widgetFactory.getNotificationLabel())
 		        .setFailureText(failureMessage);
 		
 	}

@@ -31,6 +31,7 @@ import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import org.openxdata.server.admin.client.presenter.MainPresenter;
 
 /**
  * Declares Methods that will return the required types to the client.
@@ -67,4 +68,6 @@ public interface OpenXDataWidgetGinInjector extends Ginjector {
     public OpenXDataToolBar getOpenXDataToolBar();
 
     public MainView getMainView();
+
+    public MainPresenter getMainPresenter();
 }

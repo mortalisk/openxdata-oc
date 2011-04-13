@@ -42,6 +42,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import java.util.HashSet;
 import org.openxdata.server.admin.client.permissions.PermissionResolver;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
+import org.openxdata.server.admin.client.presenter.MainPresenter;
 import org.openxdata.server.admin.client.view.event.LogOutEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetGinInjector;
 import org.openxdata.server.admin.model.Permission;
@@ -66,6 +67,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
         private final OpenXDataWidgetFactory widgetFactory;
         private static OpenXDataWidgetGinInjector injector = GWT.create(OpenXDataWidgetGinInjector.class);
         private EventBus eventBus;
+        private MainPresenter mainPresenter;
         public OpenXDataServerAdmin() {
                 widgetFactory = injector.getWidgetFactory();
                 widgetFactory.setInjector(injector);
@@ -193,7 +195,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
                                                 RootPanel.get().remove(0);
                                         }
 
-                                        if (mainView == null) {
+                                        if (mainPresenter == null) {
 
 
                                                 // Inject Widget Factory into other classes.
@@ -201,11 +203,13 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 
                                                 // Construct the MainView.
 
-                                                mainView = widgetFactory.getMainView();
+                                                //mainView = widgetFactory.getMainView();
+                                                mainPresenter = injector.getMainPresenter();
                                                 // Load Preliminary data.
                                                 MainViewControllerFacade.loadPreliminaryViewData();
 
-                                                RootPanel.get().add(mainView);
+                                                //RootPanel.get().add(mainView);
+                                                RootPanel.get().add(mainPresenter.getDisplay().asWidget());
 
                                                 FormUtil.dlg.hide();
 
@@ -388,6 +392,9 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
         private void resizeMainView(int width, int height) {
                 if (mainView != null) {
                         mainView.resize(width, height);
+                }
+                if(mainPresenter != null){
+                   mainPresenter.getDisplay().resize(width, height);
                 }
         }
 

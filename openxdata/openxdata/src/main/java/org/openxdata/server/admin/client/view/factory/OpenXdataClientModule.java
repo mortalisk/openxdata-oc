@@ -26,6 +26,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import org.openxdata.server.admin.client.controller.MainViewController;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.listeners.StackPanelListener;
+import org.openxdata.server.admin.client.presenter.MainPresenter;
 import org.openxdata.server.admin.client.presenter.ParameterPresenter;
 import org.openxdata.server.admin.client.presenter.RolePermissionMapPresenter;
 import org.openxdata.server.admin.client.presenter.RolePresenter;
@@ -41,6 +42,7 @@ import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.SettingListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
+import org.openxdata.server.admin.client.view.MainDisplay;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ParameterDisplay;
 import org.openxdata.server.admin.client.view.ReportView;
@@ -106,6 +108,9 @@ public class OpenXdataClientModule extends AbstractGinModule {
         bind(OpenXDataToolBar.class).toProvider(ToolBarProvider.class).in(Singleton.class);
 
         bind(MainViewController.class).in(Singleton.class);
+
+        bind(MainPresenter.class).in(Singleton.class);
+        bind(MainPresenter.Display.class).to(MainDisplay.class).in(Singleton.class);
 
         bind(UsersListPresenter.class).in(Singleton.class);
         bind(UsersListPresenter.Display.class).to(UsersTreeDisplay.class).in(Singleton.class);

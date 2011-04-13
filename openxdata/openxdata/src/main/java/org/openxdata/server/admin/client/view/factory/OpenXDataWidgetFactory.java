@@ -122,14 +122,8 @@ public interface OpenXDataWidgetFactory {
 	 * 
 	 * @return Instance of {@link Label}
 	 */
-	OpenXDataLabel getNotificationLabel();
+	OpenXDataNotificationBar getNotificationLabel();
 	
-	
-	/**
-	 * Retrieves the <tt>Notification Bar</tt> configured for this session.
-	 * @return instance of {@link OpenXDataNotificationBar}
-	 */
-	OpenXDataNotificationBar getNotificationBar();
 	
 	/**
 	 * Retrieves the <tt>Context Menu</tt> configured for a particular {@link OpenXDataBaseTreeView}.

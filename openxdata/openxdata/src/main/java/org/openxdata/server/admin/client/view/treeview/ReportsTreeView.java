@@ -17,6 +17,7 @@
  */
 package org.openxdata.server.admin.client.view.treeview;
 
+import com.google.gwt.user.client.ui.Widget;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -25,6 +26,7 @@ import org.openxdata.server.admin.client.Context;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
+import org.openxdata.server.admin.client.presenter.WidgetDisplay;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
@@ -56,7 +58,7 @@ import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
  * 
  */
 public class ReportsTreeView extends OpenXDataBaseTreeView implements
-        ExtendedContextInitMenuListener, OpenXDataViewApplicationEventListener{
+        ExtendedContextInitMenuListener, OpenXDataViewApplicationEventListener, WidgetDisplay{
 	
 	/** List of deleted reports. */
 	private List<Report> deletedReports;
@@ -89,7 +91,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		openxdataStackPanel = widgetFactory.getOpenXdataStackPanel();
 		
 		// Initialize the Tree View
-		tree = new Tree(images);
+		tree = new Tree(WidgetDisplay.images);
 		tree.ensureSelectedItemVisible();
 		
 		// Setting Scroll Panel properties.
@@ -199,7 +201,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			reportGroup = reportGroups.get(i);
 			if (reportGroup.getParentReportGroup() == null) {
 				root = new CompositeTreeItem(new TreeItemWidget(
-				        images.lookup(), reportGroup.getName(), popup));
+				        WidgetDisplay.images.lookup(), reportGroup.getName(), popup));
 				root.setTitle(reportGroup.getDescription());
 				root.setUserObject(reportGroup);
 				tree.addItem(root);
@@ -222,7 +224,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		if (reportGroup.getReports() != null) {
 			for (Report report : reportGroup.getReports()) {
 				TreeItem item = new CompositeTreeItem(new TreeItemWidget(
-				        images.filtersgroup(), report.getName(), popup));
+				         WidgetDisplay.images.filtersgroup(), report.getName(), popup));
 				
 				item.setTitle(reportGroup.getDescription());
 				item.setUserObject(report);
@@ -233,7 +235,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		if (reportGroup.getGroups() != null) {
 			for (ReportGroup rptGroup : reportGroup.getGroups()) {
 				TreeItem item = new CompositeTreeItem(new TreeItemWidget(
-				        images.lookup(), rptGroup.getName(), popup));
+				         WidgetDisplay.images.lookup(), rptGroup.getName(), popup));
 				
 				item.setTitle(rptGroup.getDescription());
 				item.setUserObject(rptGroup);
@@ -259,7 +261,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		
 		ReportGroup reportGroup = new ReportGroup("New Report Group");
 		TreeItem root = new CompositeTreeItem(new TreeItemWidget(
-		        images.lookup(), reportGroup.getName(), popup));
+		         WidgetDisplay.images.lookup(), reportGroup.getName(), popup));
 		root.setUserObject(reportGroup);
 		reportGroup.setDirty(true);
 		
@@ -289,7 +291,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	public void addNewReportGroup() {
 		ReportGroup reportGroup = new ReportGroup("New Report Group");
 		TreeItem root = new CompositeTreeItem(new TreeItemWidget(
-		        images.lookup(), reportGroup.getName(), popup));
+		        WidgetDisplay.images.lookup(), reportGroup.getName(), popup));
 		root.setUserObject(reportGroup);
 		reportGroup.setDirty(true);
 		
@@ -314,7 +316,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		
 		Report report = new Report("New Report");
 		TreeItem root = new CompositeTreeItem(new TreeItemWidget(
-		        images.filtersgroup(), report.getName(), popup));
+		        WidgetDisplay.images.filtersgroup(), report.getName(), popup));
 		root.setUserObject(report);
 		report.setDirty(true);
 		report.setDateCreated(new Date());
@@ -338,13 +340,13 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			
 		if (item instanceof Report) {
 			Report report = (Report) item;
-			treeItem.setWidget(new TreeItemWidget(images.filtersgroup(), report
+			treeItem.setWidget(new TreeItemWidget(WidgetDisplay.images.filtersgroup(), report
 			        .getName(), popup));
 			treeItem.setTitle(report.getDescription());
 			report.setDirty(true);
 		} else {
 			ReportGroup reportGroup = (ReportGroup) item;
-			treeItem.setWidget(new TreeItemWidget(images.lookup(), reportGroup
+			treeItem.setWidget(new TreeItemWidget(WidgetDisplay.images.lookup(), reportGroup
 			        .getName(), popup));
 			treeItem.setTitle(reportGroup.getDescription());
 			reportGroup.setDirty(true);
@@ -407,9 +409,9 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	UIViewLabels getContextMenuLabels() {
 		UIViewLabels labels = new UIViewLabels();
 		
-		labels.setAddLabel(constants.label_addreportgroup());
-		labels.setDeleteLabel(constants.label_deletereport());
-		labels.setAddChildItemLabel(constants.label_addnewreport());
+		labels.setAddLabel(WidgetDisplay.constants.label_addreportgroup());
+		labels.setDeleteLabel(WidgetDisplay.constants.label_deletereport());
+		labels.setAddChildItemLabel(WidgetDisplay.constants.label_addnewreport());
 		labels.setDeleteChildItemLabel("Delete Report");
 		return labels;
 	}
@@ -513,5 +515,16 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
             }
         };
         EditableEvent.addHandler(eventBus, repoerHandler).forClass(ReportGroup.class);
+    }
+
+    public WidgetDisplay getDisplay() {
+        final ReportsTreeView tHis = this;
+        return new WidgetDisplay() {
+
+            @Override
+            public Widget asWidget() {
+                return tHis;
+            }
+        };
     }
 }

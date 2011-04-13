@@ -112,7 +112,7 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
             verticalPanel.add(getOpenXDataMenuBar());
 
             // Notification Bar
-            verticalPanel.add(getNotificationBar());
+            verticalPanel.add(getNotificationLabel());
 
             // Tool Bar
             verticalPanel.add(getOpenXDataToolBar());
@@ -123,16 +123,8 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
     }
 
     @Override
-    public OpenXDataNotificationBar getNotificationBar() {
+    public OpenXDataNotificationBar getNotificationLabel() {
         return injector.getNotificationBar();
-    }
-
-    @Override
-    public OpenXDataLabel getNotificationLabel() {
-        if (notificationLabel == null)
-            notificationLabel = new OpenXDataLabel(" ");
-
-        return notificationLabel;
     }
 
     @Override
