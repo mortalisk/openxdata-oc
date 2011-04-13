@@ -49,7 +49,7 @@ CREATE TABLE `test1`
 	,openxdata_user_name VARCHAR(50)
 	 ,`question1` VARCHAR(255)
 	 ,`question2` VARCHAR(255)
-)TYPE = INNODB;
+)Engine = INNODB;
             </pre>
         </div>
 
@@ -100,7 +100,7 @@ CREATE TABLE `test1`
 	,openxdata_user_name VARCHAR(50)
 	 ,`question1` VARCHAR(255)
 	 ,`question2` VARCHAR(255)
-)TYPE = INNODB;
+)Engine = INNODB;
             </pre>
         </div>
 
@@ -151,7 +151,7 @@ CREATE TABLE `test1`
 	,openxdata_user_name VARCHAR(50)
 	 ,`question1` VARCHAR(255)
 	 ,`question2` VARCHAR(255)
-)TYPE = INNODB;
+)Engine = INNODB;
             </pre>
         </div>
 
@@ -197,7 +197,7 @@ CREATE TABLE `select`
 	,openxdata_user_name VARCHAR(50)
 	 ,`id` VARCHAR(255)
 	 ,`parentid` VARCHAR(255)
-)TYPE = INNODB;
+)Engine = INNODB;
             </pre>
         </div>
 
@@ -596,7 +596,7 @@ CREATE TABLE `patientreg`
 	 ,`nokids` INTEGER
 	 ,`starttime` TIME
 	 ,`endtime` TIME
-)TYPE = INNODB;
+)Engine = INNODB;
 CREATE TABLE `kid`
 (
 	Id VARCHAR(200) PRIMARY KEY
@@ -607,7 +607,7 @@ CREATE TABLE `kid`
 	 ,`kidsex` VARCHAR(255)
 	 ,`kidage` INTEGER
 	,ParentId VARCHAR(200) REFERENCES patientreg(Id)
-)TYPE = INNODB;
+)Engine = INNODB;
             </pre>
         </div>
 
