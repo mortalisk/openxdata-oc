@@ -781,12 +781,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	 * Load study names into left and right listboxes appropriately
 	 */
 	private void setUserStudyMap(StudyDef study, List<User> users) {
-                //clear the grids
-                userStudyAccessGrid.getUnmappedItemGrid().getStore().removeAll();
-                userStudyAccessGrid.getMappedItemGrid().getStore().removeAll();
-                userStudyAccessGrid.getTempMappedItems().clear();
-                userStudyAccessGrid.getLeftList().clear();
-                userStudyAccessGrid.getRightList().clear();
+                userStudyAccessGrid.clear();
 
                 List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
                 List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
@@ -814,12 +809,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	 * Load formdefinition names into left and right listboxes appropriately
 	 */
 	private void setUserFormMap(FormDef form, List<User> users) {
-                //clear the grids
-                userFormAccessGrid.getUnmappedItemGrid().getStore().removeAll();
-                userFormAccessGrid.getMappedItemGrid().getStore().removeAll();
-                userFormAccessGrid.getTempMappedItems().clear();
-                userFormAccessGrid.getLeftList().clear();
-                userFormAccessGrid.getRightList().clear();
+                userFormAccessGrid.clear();
 
                 List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
                 List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();

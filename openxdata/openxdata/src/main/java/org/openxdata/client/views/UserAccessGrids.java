@@ -338,4 +338,12 @@ public class UserAccessGrids extends FieldSet {
         }
         return index;
     }
+
+    public void clear() {
+        getUnmappedItemGrid().getStore().removeAll();
+        getMappedItemGrid().getStore().removeAll();
+        getTempMappedItems().clear();
+        getLeftList().clear();
+        getRightList().clear();
+    }
 }
