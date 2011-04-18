@@ -17,6 +17,7 @@
  */
 package org.openxdata.server.service.impl;
 
+import org.apache.log4j.Logger;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -45,6 +46,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Autowired
 	private OpenXdataUserDetailsService userDetailsService;
+
+      private Logger log = Logger.getLogger(this.getClass());
 	
 	@Override
 	// no security - used for login
@@ -58,7 +61,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 					user = userDetails.getOXDUser();
 					
 					if (isValidUserPassword(username, password)) {
-						OpenXDataSecurityUtil.setSecurityContext(userDetails);
+                                            if(user.isDisabled()) {
+                                                log.debug("AccessDenied: User: "+username+" is disbled");
+                                                return null;}
+                                            OpenXDataSecurityUtil.setSecurityContext(userDetails);
 					} else {
 						// password was invalid
 						user = null;

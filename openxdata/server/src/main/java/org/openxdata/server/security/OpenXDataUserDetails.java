@@ -51,6 +51,13 @@ public class OpenXDataUserDetails extends User {
     public org.openxdata.server.admin.model.User getOXDUser() {
         return oxdUser;
     }
+
+    @Override
+    public boolean isEnabled() {
+      return !oxdUser.isDisabled();
+    }
+
+
     
     /**
      * <tt>Overrides super.equals.</tt>
