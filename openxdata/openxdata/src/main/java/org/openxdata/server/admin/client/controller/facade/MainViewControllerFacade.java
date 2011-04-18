@@ -18,7 +18,6 @@
 package org.openxdata.server.admin.client.controller.facade;
 
 import org.openxdata.server.admin.client.controller.MainViewController;
-import org.openxdata.server.admin.client.listeners.StackPanelListener;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;

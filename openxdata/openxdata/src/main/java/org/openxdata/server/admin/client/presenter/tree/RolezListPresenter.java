@@ -3,6 +3,7 @@ package org.openxdata.server.admin.client.presenter.tree;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
+import java.util.HashSet;
 import java.util.List;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.controller.callback.SaveAsyncCallback;
@@ -84,10 +85,31 @@ public class RolezListPresenter extends BaseTreePresenter<Role, RolezListPresent
 
     @Override
     protected boolean saveDirtyItems(List<Role> dirtyItems, SaveAsyncCallback callback) {
+       if(!valid(dirtyItems)) return false;
         for (Role role : dirtyItems) {
             callback.setCurrentItem(role);
             MainViewControllerUtil.setEditableProperties(role);
             roleService.saveRole(role, callback);
+        }
+        return true;
+    }
+
+    private boolean valid(List<Role> roles) {
+        HashSet<String> names = new HashSet<String>();
+        for (Role role : super.items) {
+            final String name = role.getName();
+            if (name == null) {
+                return false;
+            }
+            if (name.isEmpty()) {
+                  Utilities.displayMessage("An Empty Role Name Not Allowed");
+                return false;
+            }
+            if (names.contains(name)) {
+                Utilities.displayMessage("Duplicate Role Names");
+                return false;
+            }
+            names.add(name);
         }
         return true;
     }
