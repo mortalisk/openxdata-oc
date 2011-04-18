@@ -49,7 +49,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		List<User> users = userService.getUsers();
 
 		Assert.assertNotNull(users);
-		Assert.assertEquals("There are 5 users", 5, users.size());
+		Assert.assertEquals("There are 6 users", 6, users.size());
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		final String userName = "User Name";
 
 		List<User> users = userService.getUsers();
-		Assert.assertEquals("There are 5 users", 5, users.size());
+		Assert.assertEquals("There are 6 users", 6, users.size());
 		Assert.assertNull(getUser(userName, users));
 
 		User user = new User(userName);
@@ -67,7 +67,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		userService.saveUser(user);
 
 		users = userService.getUsers();
-		Assert.assertEquals("Added 1 user so now there are 6", 6, userService.getUsers().size());
+		Assert.assertEquals("Added 1 user so now there are 7", 7, userService.getUsers().size());
 		Assert.assertNotNull(getUser(userName, users));
 	}
 
@@ -77,7 +77,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		final String userName = "User Name";
 
 		List<User> users = userService.getUsers();
-		Assert.assertEquals("There are 5 users", 5, users.size());
+		Assert.assertEquals("There are 6 users", 6, users.size());
 		Assert.assertNull(getUser(userName, users));
 
 		User user = new User(userName);
@@ -86,7 +86,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 
 		userService.saveUser(user);
 		users = userService.getUsers();
-		Assert.assertEquals("Added 1 user so now there are 6", 6, users.size());
+		Assert.assertEquals("Added 1 user so now there are 7", 7, users.size());
 
 		user = getUser(userName, users);
 		Assert.assertNotNull(user);
@@ -94,7 +94,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		userService.deleteUser(user);
 
 		users = userService.getUsers();
-		Assert.assertEquals("Deleted the user so now there are 5", 5, users.size());
+		Assert.assertEquals("Deleted the user so now there are 6", 6, users.size());
 		Assert.assertNull(getUser(userName, users));
 	}
 
