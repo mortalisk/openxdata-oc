@@ -169,7 +169,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 					}
 				});
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
-		formPanel.add(getDesignFormButton(appMessages.designForm()));
 		editStudyPanel.add(formPanel);
 
 		return editStudyPanel;

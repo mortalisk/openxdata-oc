@@ -460,7 +460,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		getWizardValues();
 		String formName = formDef.getName();
 		String formVersionName = formDefVersion.getName();
-		Integer formVersionId = 1;
+		Integer formVersionId = formDef.getDefaultVersion().getFormDefVersionId();
 		String formBinding = "binding";
 		
 		// launch purcforms designer
@@ -670,6 +670,13 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			}
 			formDefVersion.setDirty(true);
 			save();
+                        //if this a new form,then save and close
+                        if(formId == 0){
+                            formDesignerWindow.removeListener(Events.BeforeHide,newStudyFrmWindowListener);
+                            formDesignerWindow.hide();
+                            ProgressIndicator.hideProgressBar();
+                            closeWindow();
+                        }
 		} catch (Exception ex) {
 			//
 		}

@@ -153,7 +153,7 @@ public abstract class WizardView extends View {
         window.add(cp);
         window.addButton(backButton);
         window.addButton(nextButton);
-//        window.addButton(finishButton);
+        window.addButton(finishButton);
         window.addButton(saveAndExitButton);
         window.addButton(cancelButton);
         toggleButtons();
@@ -192,10 +192,10 @@ public abstract class WizardView extends View {
         }
         if (activePage == pages.size()-1) {
         	nextButton.hide();
-//        	finishButton.show();
+        	finishButton.show();
         } else {
         	nextButton.show();
-//        	finishButton.hide();
+        	finishButton.hide();
         }
     }
     
