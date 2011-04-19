@@ -476,8 +476,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
-//		setUserStudyMap(form.getStudy(), users);
-//		setUserFormMap(form, users); 
                 List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
 		for (User user : users) {
                         userAccessToStudy.addUnmappedUser(new UserSummary(user));

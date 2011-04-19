@@ -162,9 +162,6 @@ public abstract class WizardView extends View {
 	    window.show();
     }
     public void resizeWindow(int height,int width){
-//        window.setHeight(window.getHeight()+height);
-//        int change = width - window.getWidth();
-//        window.setWidth(window.getWidth()+change+40);
         window.setSize(width,window.getHeight()+height);
     }
     final Listener<ComponentEvent> windowListener = new WindowListener();
