@@ -236,6 +236,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		published.setLabelSeparator("");
 		published.setFieldLabel(appMessages.formVersionDefault());
 		formPanel.add(published);
+                formPanel.add(getDesignFormButton(appMessages.designForm()));
 		editVersionPage.add(formPanel);
 
 		return editVersionPage;
