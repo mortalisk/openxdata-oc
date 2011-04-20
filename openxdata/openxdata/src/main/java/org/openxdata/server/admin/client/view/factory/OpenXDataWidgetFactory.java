@@ -21,15 +21,14 @@ import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.StudyView;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
-import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
-import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;

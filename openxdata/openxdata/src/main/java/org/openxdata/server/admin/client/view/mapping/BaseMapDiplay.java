@@ -1,26 +1,24 @@
 package org.openxdata.server.admin.client.view.mapping;
 
-import com.google.gwt.core.client.GWT;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openxdata.server.admin.client.permissions.UIViewLabels;
+import org.openxdata.server.admin.client.presenter.BaseMapPresenter;
+import org.openxdata.server.admin.client.util.Utilities;
+import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
+import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
+import org.openxdata.server.admin.client.view.widget.SimpleFilterListBox;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.ArrayList;
-import java.util.List;
-import org.openxdata.server.admin.client.permissions.UIViewLabels;
-import org.openxdata.server.admin.client.presenter.BaseMapPresenter;
-import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.server.admin.client.view.widget.SimpleFilterListBox;
-import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
-import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
 
 /**
  *

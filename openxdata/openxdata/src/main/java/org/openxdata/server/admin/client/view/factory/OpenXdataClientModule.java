@@ -17,15 +17,7 @@
  */
 package org.openxdata.server.admin.client.view.factory;
 
-import com.google.inject.Singleton;
-import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
-
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.inject.client.AbstractGinModule;
 import org.openxdata.server.admin.client.controller.MainViewController;
-import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
-import org.openxdata.server.admin.client.listeners.StackPanelListener;
 import org.openxdata.server.admin.client.presenter.MainPresenter;
 import org.openxdata.server.admin.client.presenter.ParameterPresenter;
 import org.openxdata.server.admin.client.presenter.RolePermissionMapPresenter;
@@ -33,10 +25,10 @@ import org.openxdata.server.admin.client.presenter.RolePresenter;
 import org.openxdata.server.admin.client.presenter.SettingPresenter;
 import org.openxdata.server.admin.client.presenter.TaskPresenter;
 import org.openxdata.server.admin.client.presenter.UserFormMapPresenter;
-import org.openxdata.server.admin.client.presenter.UserRoleMapPresenter;
 import org.openxdata.server.admin.client.presenter.UserPresenter;
 import org.openxdata.server.admin.client.presenter.UserReportGroupMapPresenter;
 import org.openxdata.server.admin.client.presenter.UserReportMapPresenter;
+import org.openxdata.server.admin.client.presenter.UserRoleMapPresenter;
 import org.openxdata.server.admin.client.presenter.UserStudyMapPresenter;
 import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.SettingListPresenter;
@@ -51,14 +43,11 @@ import org.openxdata.server.admin.client.view.SettingDisplay;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.TaskDisplay;
 import org.openxdata.server.admin.client.view.UserDisplay;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.mapping.RolePermissionMapDisplay;
-import org.openxdata.server.admin.client.view.mapping.UserRoleMapDisplay;
 import org.openxdata.server.admin.client.view.mapping.UserFormMapDisplay;
 import org.openxdata.server.admin.client.view.mapping.UserReportGroupMapDisplay;
 import org.openxdata.server.admin.client.view.mapping.UserReportMapDisplay;
-
+import org.openxdata.server.admin.client.view.mapping.UserRoleMapDisplay;
 import org.openxdata.server.admin.client.view.mapping.UserStudyMapDisplay;
 import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
 import org.openxdata.server.admin.client.view.treeview.RoleTreeDisplay;
@@ -66,7 +55,15 @@ import org.openxdata.server.admin.client.view.treeview.SettingsTreeDisplay;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 import org.openxdata.server.admin.client.view.treeview.TasksTreeDisplay;
 import org.openxdata.server.admin.client.view.treeview.UsersTreeDisplay;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
+
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.inject.Singleton;
 
 /**
  * Binds the classes and providers using a Guice module.

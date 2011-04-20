@@ -24,7 +24,6 @@ import org.openxdata.server.admin.client.util.Utilities;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.DecoratedStackPanel;
-import com.google.inject.Inject;
 
 /**
  * This is a custom extension of the standard GWT DecoratedStackPanel. The only
