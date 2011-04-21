@@ -116,4 +116,5 @@ public interface AppMessages extends Messages {
         String setUserAccessToForm();
         String usersWithAccessToForm();
         String unableToDeleteFormWithData();
+        String areYouSureDelete();
 }

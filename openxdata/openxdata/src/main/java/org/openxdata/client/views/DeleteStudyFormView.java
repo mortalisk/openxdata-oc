@@ -147,17 +147,26 @@ public class DeleteStudyFormView extends View {
 	}
 	
 	private void delete() {
-		ProgressIndicator.showProgressBar();
-		DeleteStudyFormController controller1 = (DeleteStudyFormController) this
-		        .getController();
-		if (deleteStudy.getValue()) {
-			controller1.delete(form.getStudy());
-		} else if (deleteForm.getValue()) {
-			controller1.delete(form);
-		} else if (deleteFormVersion.getValue()) {
-			// FIXME: might not be default version!!!
-			controller1.delete(form.getDefaultVersion());
-		}
+            final DeleteStudyFormController controller1 = (DeleteStudyFormController) this.getController();
+            
+            MessageBox.confirm(appMessages.delete(), appMessages.areYouSureDelete(), new Listener<MessageBoxEvent>() {
+
+                @Override
+                public void handleEvent(MessageBoxEvent be) {
+                    if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
+                        ProgressIndicator.showProgressBar();
+                        if (deleteStudy.getValue()) {
+                            controller1.delete(form.getStudy());
+                        } else if (deleteForm.getValue()) {
+                            controller1.delete(form);
+                        } else if (deleteFormVersion.getValue()) {
+                            // FIXME: might not be default version!!!
+                            controller1.delete(form.getDefaultVersion());
+                        }
+                    }
+                }
+            });
+
 	}
 	
 	final Listener<ComponentEvent> windowListener = new WindowListener();
@@ -198,7 +207,7 @@ public class DeleteStudyFormView extends View {
 	/**
 	 * Closes the Window and conceals it from the User.
 	 */
-	protected void closeWindow() {
+	public void closeWindow() {
 		window.removeListener(Events.BeforeHide, windowListener);
 		window.hide();
 		ProgressIndicator.hideProgressBar();

@@ -75,7 +75,7 @@ public class DeleteStudyFormController extends Controller {
                 @Override
                 public void onSuccess(Void result) {
                     RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
-                    deleteStudyFormView.cancel();
+                    deleteStudyFormView.closeWindow();
                 }
             });
 	}
@@ -92,7 +92,7 @@ public class DeleteStudyFormController extends Controller {
                 @Override
                 public void onSuccess(Void result) {
                     RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, form));
-                    deleteStudyFormView.cancel();
+                    deleteStudyFormView.closeWindow();
                 }
             });
 	}
@@ -108,7 +108,7 @@ public class DeleteStudyFormController extends Controller {
 
                 @Override
                 public void onSuccess(Void result) {
-                    deleteStudyFormView.cancel();
+                    deleteStudyFormView.closeWindow();
                     RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, formVersion));
                 }
             });
