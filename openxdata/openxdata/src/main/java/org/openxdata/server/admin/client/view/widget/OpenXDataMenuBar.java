@@ -31,10 +31,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
+import org.openxdata.server.admin.client.permissions.PermissionResolver;
 import org.openxdata.server.admin.client.view.event.LogOutEvent;
 import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
 import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.Permission;
 
 /**
  * Encapsulates <code>Menu Bar</code> controls on the view.
@@ -171,6 +173,16 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
             });
             viewMenu.addSeparator();
 
+            menuBar.addItem(constants.label_view(), viewMenu);
+        }else if(RolesListUtil.getPermissionResolver().isViewPermission(Permission.PERM_VIEW_FORMS)){
+
+            viewMenu.addItem(constants.label_datalist(),true,new Command() {
+
+                @Override
+                public void execute() {
+                   fireEvent(new ViewEvent<FormDefVersion>(FormDefVersion.class));
+                }
+            });
             menuBar.addItem(constants.label_view(), viewMenu);
         }
     }
