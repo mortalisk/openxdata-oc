@@ -96,6 +96,7 @@ public abstract class WizardView extends View {
         finishButton.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
 			public void handleEvent(ButtonEvent be) {
+                        ProgressIndicator.showProgressBar();
                 Scheduler.get().scheduleDeferred(new ScheduledCommand() {
                     @Override
 					public void execute() {

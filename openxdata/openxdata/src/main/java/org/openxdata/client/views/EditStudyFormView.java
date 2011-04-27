@@ -284,7 +284,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	private void launchDesigner(boolean readOnly) {
-		ProgressIndicator.showProgressBar();
 
 		String formName = form.getName();
 		String formVersionName = form.getDefaultVersion().getName();
@@ -639,6 +638,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 					@Override
 					public void handleEvent(ButtonEvent be) {
 						// launchDesigner();
+                                            ProgressIndicator.showProgressBar();
 						((EditStudyFormController) controller)
 								.formHasData(form);
 					}
