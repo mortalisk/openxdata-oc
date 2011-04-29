@@ -112,8 +112,8 @@
         <junit.version>4.4</junit.version>
         <spring.version>2.5.2</spring.version>
         <birt.version>2.5.0</birt.version>
-        <gwt.version>2.1.0</gwt.version>
-        <gwt-maven.version>2.1.0-1</gwt-maven.version>
+        <gwt.version>2.2.0</gwt.version>
+        <gwt-maven.version>2.2.0</gwt-maven.version>
         <log4j.version>1.2.16</log4j.version>
     </properties>
 
