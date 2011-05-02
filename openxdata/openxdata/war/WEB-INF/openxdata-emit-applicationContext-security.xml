@@ -35,6 +35,7 @@
             <salt-source user-property="salt"/>
         </password-encoder>
     </authentication-provider>
+    <authentication-manager alias="authenticationManager" session-controller-ref="concurrentSessionController"/>
     
     <!--  configuration to specify the prefix required on the access authorities -->
     <beans:bean id="roleVoter" class="org.springframework.security.vote.RoleVoter">
@@ -61,4 +62,10 @@
         </beans:property>
     </beans:bean>
 
+    <beans:bean id="concurrentSessionController" class="org.springframework.security.concurrent.ConcurrentSessionControllerImpl">
+        <beans:property name="maximumSessions" value="1"/>
+        <beans:property name="sessionRegistry" ref="sessionRegistry"/>
+    </beans:bean>
+
+    <beans:bean  id="sessionRegistry" class="org.openxdata.server.security.OpenXDataSessionRegistryImpl"/>
 </beans:beans>

@@ -27,6 +27,7 @@ import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredExcepti
 import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.security.OpenXDataUserDetails;
 import org.springframework.security.Authentication;
+import org.springframework.security.concurrent.SessionRegistryUtils;
 import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.context.SecurityContextImpl;
@@ -130,17 +131,20 @@ public class OpenXDataSecurityUtil {
 	 * @param user - User to place in security context.
 	 */
 	public static void setSecurityContext(OpenXDataUserDetails userDetails) {
-		User user = userDetails.getOXDUser();
-		
-		// Proceed to put the User in the spring security Context.
+		setSecurityContext(userDetails, null);
+	}
+
+        public static void setSecurityContext(OpenXDataUserDetails userDetails, String sessionId) {
+            User user = userDetails.getOXDUser();
+                // Proceed to put the User in the spring security Context.
 		SecurityContext sc = new SecurityContextImpl();
-		Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), userDetails.getAuthorities());
+		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), userDetails.getAuthorities());
+                auth.setDetails(sessionId);
 		sc.setAuthentication(auth);
 		SecurityContextHolder.setContext(sc);
-	 
-		log.info("Successfully logged in User: << " + user.getName() + " >> ");
+                log.info("Successfully logged in User: << " + user.getName() + " >> ");
 		log.info("<< " + "Setting User:" + user.getName() + " in Context" + ">> ");
-	}
+        }
 	
     public static User getLoggedInUser() {
         SecurityContext context = SecurityContextHolder.getContext();
@@ -167,4 +171,32 @@ public class OpenXDataSecurityUtil {
 		return encodeString(Long.toString(System.currentTimeMillis()) 
 				+ Long.toString(rng.nextLong()));
 	}
+
+    public static String getCurrentSession() {
+        SecurityContext context = SecurityContextHolder.getContext();
+
+        if (context == null) {
+            return null;
+        }
+        Authentication authentication = context.getAuthentication();
+
+        try {
+            return SessionRegistryUtils.obtainSessionIdFromAuthentication(authentication);
+        } catch (IllegalArgumentException ex) {//Do nothing
+            Object session = getCurrentDetails();
+            if(session instanceof String) return session.toString();
+        }
+        return null;
+    }
+
+    public static Object getCurrentDetails(){
+        SecurityContext context = SecurityContextHolder.getContext();
+
+        if(context == null) return null;
+        Authentication authentication = context.getAuthentication();
+
+        if(authentication == null) return null;
+
+        return authentication.getDetails();
+    }
 }

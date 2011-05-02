@@ -51,4 +51,6 @@
             </list>
         </property>
     </bean>
+    
+    <bean id="sessionRegistry" class="org.openxdata.server.security.OpenXDataSessionRegistryImpl"/>
 </beans>

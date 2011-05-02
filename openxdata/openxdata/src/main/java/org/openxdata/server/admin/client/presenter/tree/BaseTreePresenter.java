@@ -266,10 +266,11 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
             public void onSaveComplete(List<? extends Editable> modifiedList,
                     List<? extends Editable> deletedList) {
                 FormUtil.dlg.hide();
-                if (Utilities.hasNewItems(modifiedList))
+                if (Utilities.hasNewItems(modifiedList)) {
                     loadItems();
-                else
+                } else {
                     Utilities.displayNotificationMessage(getSuccessMessage());
+                }
             }
         };
     }

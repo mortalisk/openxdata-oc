@@ -19,8 +19,10 @@ package org.openxdata.server.security;
 
 import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataDisabledUserException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
+import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
@@ -38,6 +40,8 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	
 	@Autowired
 	private UserService userService;
+        @Autowired
+        private OpenXDataSessionRegistry sessionRegistry;
 	
     /** The logger. */
     private Logger log = Logger.getLogger(this.getClass());
@@ -46,6 +50,7 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	public void decide(Authentication auth, Object obj,
 			ConfigAttributeDefinition config) throws AccessDeniedException {
 		try {
+                        mayBeFireUserDisabledException();
 			super.decide(auth, obj, config);
 		} catch (AccessDeniedException exception) {
 		        if (isUserLoggedIn()) {
@@ -136,4 +141,12 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
         // Return false if Security Context has been invalidated.
         return false;
 	}
+
+    private void mayBeFireUserDisabledException() {
+        User user = OpenXDataSecurityUtil.getLoggedInUser();
+
+        if(sessionRegistry.containsDisabledUser(user))
+            throw new OpenXDataDisabledUserException("User : "+user.getName()+ " is Disabled");
+    }
+
 }

@@ -23,6 +23,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.dao.UserDAO;
+import org.openxdata.server.security.OpenXDataSessionRegistryImpl;
 import org.openxdata.server.security.OpenXDataUserDetails;
 import org.openxdata.server.security.OpenXdataUserDetailsService;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
@@ -47,6 +48,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Autowired
 	private OpenXdataUserDetailsService userDetailsService;
 
+        @Autowired OpenXDataSessionRegistryImpl sessionRegistry;
+
       private Logger log = Logger.getLogger(this.getClass());
 	
 	@Override
@@ -64,7 +67,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                             if(user.isDisabled()) {
                                                 log.debug("AccessDenied: User: "+username+" is disbled");
                                                 return null;}
-                                            OpenXDataSecurityUtil.setSecurityContext(userDetails);
+                                            String sessionIdBefeoreNewContext = OpenXDataSecurityUtil.getCurrentSession();
+                                            OpenXDataSecurityUtil.setSecurityContext(userDetails, sessionIdBefeoreNewContext);
+                                            if (sessionIdBefeoreNewContext != null) {
+                                                sessionRegistry.registerNewSession(sessionIdBefeoreNewContext, user.getName());
+                                            }
 					} else {
 						// password was invalid
 						user = null;

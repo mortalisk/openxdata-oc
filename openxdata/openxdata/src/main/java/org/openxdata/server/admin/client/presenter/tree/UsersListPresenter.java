@@ -86,8 +86,10 @@ public class UsersListPresenter extends BaseTreePresenter<User, IBaseTreeDisplay
         for (int i = 0; i < result.size(); i++) {
             User user = result.get(i);
             if (user.getUserId() == Context.getAuthenticatedUser().getUserId()) {
-                user = Context.getAuthenticatedUser();
-                result.set(i, user);
+                Context.setAuthenticatedUser(user);
+                GWT.log("Replacig admin user");
+//                user = Context.getAuthenticatedUser();
+//                result.set(i, user);
             }
         }
         Context.setUsers(result);

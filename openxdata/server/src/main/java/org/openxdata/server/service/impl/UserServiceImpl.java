@@ -51,6 +51,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import au.com.bytecode.opencsv.bean.HeaderColumnNameMappingStrategy;
+import org.openxdata.server.security.OpenXDataSessionRegistry;
 
 /**
  * Default implementation for <code>UserService interface</code>.
@@ -77,6 +78,9 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private OpenXDataSessionRegistry sessionRegistry;
 
     private Logger log = Logger.getLogger(this.getClass());
 
@@ -143,6 +147,8 @@ public class UserServiceImpl implements UserService {
         boolean newUser = user.getId() == 0 ? true : false;
 
         userDAO.saveUser(user);
+
+         sessionRegistry.updateUserEntries(user);
         
         if (newUser && StringUtils.isNotEmpty(user.getEmail())) {
         	String enable = settingDAO.getSetting("enableNewUserEmail");
@@ -265,6 +271,8 @@ public class UserServiceImpl implements UserService {
 	public void logout() {
         //Clear the Security Context
         if (SecurityContextHolder.getContext() != null) {
+            String currentSession = OpenXDataSecurityUtil.getCurrentSession();
+            sessionRegistry.removeSessionInformation(currentSession+"");
             SecurityContextHolder.clearContext();
         }
     }
