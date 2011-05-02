@@ -133,10 +133,9 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
 
             @Override
             public void onChange(ChangeEvent event) {
-                if (!isDisablingDefaultAdmin())
+                if (isStatusChangeAllowed())
                     syncChange();
-                else{
-                    Utilities.displayMessage("Cannot Disable Default Administrator");
+                else {
                     //Specifically used indices not strings for now.Internationaliztion coz could break this
                     display.getUserStatus().setSelectedIndex(0);
                 }
@@ -239,11 +238,18 @@ public class UserPresenter implements IPresenter<UserPresenter.Display> {
         eventBus.fireEvent(new EditableEvent<User>(user));
     }
 
-    private boolean isDisablingDefaultAdmin() {
-        if (!user.isDefaultAdministrator())
+    private boolean isStatusChangeAllowed() {
+        if (Context.getAuthenticatedUser().getId() == user.getId()) {
+            Utilities.displayMessage("You Cannot Change Your Own Status");
             return false;
+        }
 
-        return display.getUserStatus().getSelectedIndex() != 0;
+        if (user.isDefaultAdministrator() && display.getUserStatus().getSelectedIndex() != 0) {
+            Utilities.displayMessage("You Cannot Disable The Default Administrator");
+            return false;
+        }
+
+        return true;
     }
 
     private boolean validPassword(String password) {
