@@ -1,5 +1,0 @@
-call "%{INSTALL_PATH}\script\uninstall-mysql-service.bat"
-call "%{INSTALL_PATH}\script\install-mysql-service.bat"
-call "%{INSTALL_PATH}\script\uninstall-tomcat-service.bat"
-call "%{INSTALL_PATH}\script\install-tomcat-service.bat"
-call "%{INSTALL_PATH}\script\import-db.bat"
