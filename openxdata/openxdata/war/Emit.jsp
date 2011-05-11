@@ -342,7 +342,14 @@
           function initialize(){
 
           }
-         
+
+          function getQuestionBinding(id, pos){
+              return null;
+          }
+
+          function getOptionBinding(id, pos){
+              return null;
+          }
     </script>
 
 </head>
@@ -351,6 +358,8 @@
 <!-- weird purcforms variables (no other way to set them, sigh) -->
 <div id="defaultFontSize" style="visibility:hidden;">12</div>
 <div id="defaultFontFamily" style="visibility:hidden;">Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif</div>
+<div id="localeKey" style="visibility:hidden;">en</div>
+<div id="localeList" style="visibility:hidden;">en:English</div>
 
 <!-- history support -->
 <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'

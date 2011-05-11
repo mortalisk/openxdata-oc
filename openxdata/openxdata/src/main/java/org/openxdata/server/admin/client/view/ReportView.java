@@ -65,7 +65,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
-import org.purc.purcforms.client.QueryBuilderWidget;
+import org.purc.purcforms.client.querybuilder.QueryBuilderWidget;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
@@ -716,7 +716,7 @@ public class ReportView extends OpenXDataBaseView implements
 		
 		QuestionDef qtnDef = new QuestionDef(formDef.getPageAt(0));
 		qtnDef.setId(formDef.getQuestionCount() + 1);
-		qtnDef.setVariableName("openxdata_user_name");
+		qtnDef.setBinding("openxdata_user_name");
 		qtnDef.setDataType(QuestionDef.QTN_TYPE_LIST_EXCLUSIVE);
 		qtnDef.setText("User");
 		formDef.addQuestion(qtnDef);

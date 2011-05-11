@@ -54,6 +54,23 @@
     </profiles>
 
     <dependencies>
+        <!-- purcforms needs to be first because it includes
+        some modified GWT classes, sigh -->
+        <dependency>
+            <groupId>org.purc</groupId>
+            <artifactId>gwt-purcforms</artifactId>
+            <version>1.0.2</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.purc</groupId>
+            <artifactId>gwt-querybuilder</artifactId>
+            <version>1.0.1</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.openxdata</groupId>
             <artifactId>model</artifactId>
@@ -175,18 +192,6 @@
             <version>r30</version>
             <type>jar</type>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.purc</groupId>
-            <artifactId>gwt-purcforms</artifactId>
-            <version>2.0.7</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.purc</groupId>
-            <artifactId>gwt-querybuilder</artifactId>
-            <version>2.0.5</version>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.google.code.gwt-dnd</groupId>

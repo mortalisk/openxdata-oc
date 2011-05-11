@@ -84,9 +84,9 @@ public class ListCellEditor extends CellEditor {
             for (OptionDef optionDef : options) {
                 //System.out.println("Option : " + optionDef.getVariableName() + " - " + optionDef.getText());
                 if (combo != null) {
-                    combo.add(optionDef.getVariableName());
+                    combo.add(optionDef.getBinding());
                 } else if (list != null) {
-                    list.getStore().add(new SimpleListData(optionDef.getVariableName(), optionDef.getText()));
+                    list.getStore().add(new SimpleListData(optionDef.getBinding(), optionDef.getText()));
                 } else if (checkGroup != null) {
                 	// hack!!! see: http://dev.cell-life.org/jira/browse/EMITSERVER-9
                     CheckBox check = new CheckBox() {
@@ -97,7 +97,7 @@ public class ListCellEditor extends CellEditor {
 	                    }
                     };
                     check.setBoxLabel(optionDef.getText());
-                    check.setId(optionDef.getVariableName());
+                    check.setId(optionDef.getBinding());
                     checkGroup.add(check);
                 }
             }
