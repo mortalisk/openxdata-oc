@@ -548,43 +548,37 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
                 userAccessToForm.updateLists(unMappedUsers, mappedUsers);
 	}
 
-	public void saveUserStudyMap() {
-		if (!userAccessToStudy.getTempMappedItems().isEmpty()) {
-			for (int i = 0; i < userAccessToStudy.getTempMappedItems().size(); ++i) {
-				for (User user : users) {
-					if (user.getName().equals(
-							userAccessToStudy.getTempMappedItems().get(i).getName())
-							&& !(user.getName().equals(((User) Registry
-									.get(Emit.LOGGED_IN_USER_NAME)).getName()))) {
-						// check already mapped users to this study
-						UserStudyMap map = new UserStudyMap();
-						map.addStudy(form.getStudy());
-						map.addUser(user);
-						map.setDirty(true);
-						((EditStudyFormController) EditStudyFormView.this
-								.getController()).saveUserMappedStudy(map);
-						break;
-					}
-				}
-			}
-		}
-		if (!userAccessToStudy.getTempItemstoUnmap().isEmpty()) {
-			for (int i = 0; i < userAccessToStudy.getTempItemstoUnmap().size(); ++i) {
-				for (UserStudyMap map : mappedStudies) {
-					for (User user : users) {
-						if ((user.getName().equals(userAccessToStudy
-								.getTempItemstoUnmap().get(i).getName()))
-								&& (user.getUserId() == map.getUserId())) {
-							((EditStudyFormController) EditStudyFormView.this
-									.getController())
-									.deleteUserMappedStudy(map);
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
+    public void saveUserStudyMap() {
+        String loggedInUsername = ((User) Registry.get(Emit.LOGGED_IN_USER_NAME)).getName();
+        EditStudyFormController controller = (EditStudyFormController) getController();
+                
+        for (User mappedUser : userAccessToStudy.getTempMappedItems()) {
+            for (User user : users) {
+                if (user.getName().equals(mappedUser.getName())
+                        && !user.getName().equals(loggedInUsername)) {
+                    // check already mapped users to this study
+                    UserStudyMap map = new UserStudyMap();
+                    map.addStudy(form.getStudy());
+                    map.addUser(user);
+                    map.setDirty(true);
+                    controller.saveUserMappedStudy(map);
+                    break;
+                }
+            }
+        }
+
+        for (User unmappedUser : userAccessToStudy.getTempItemstoUnmap()) {
+            for (UserStudyMap map : mappedStudies) {
+                for (User user : users) {
+                    if (user.getName().equals(unmappedUser.getName())
+                            && (user.getUserId() == map.getUserId())) {
+                        controller.deleteUserMappedStudy(map);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 	public void saveUserFormMap() {
 		if (!userAccessToForm.getTempMappedItems().isEmpty()) {
