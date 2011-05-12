@@ -1,5 +1,6 @@
 package org.openxdata.client.views;
 
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.google.gwt.core.client.GWT;
 import org.openxdata.client.AppMessages;
@@ -49,41 +50,14 @@ public class FormDesignerView {
 
         formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, formBinding,
                 formVersionId);
-
-        formDesignerWindow = new Window();
-        formDesignerWindow.setPlain(true);
-        formDesignerWindow.setHeading(appMessages.designForm() + " : "
-                + formName);
-        formDesignerWindow.setMaximizable(true);
-        formDesignerWindow.setMinimizable(false);
-        formDesignerWindow.setDraggable(false);
-        formDesignerWindow.setResizable(false);
-        formDesignerWindow.setModal(true);
-        formDesignerWindow.setSize(
-                com.google.gwt.user.client.Window.getClientWidth(),
-                com.google.gwt.user.client.Window.getClientHeight());
-        formDesignerWindow.add(formDesigner);
-        // FIXME: note there are some issues with the purcform widget if you
-        // allow the formDesignerWindow to be resized (i.e. more than one open
-        // at a time)
-        formDesignerWindow.setScrollMode(Scroll.AUTO);
-        formDesignerWindow.addListener(Events.BeforeHide,
-                newStudyFrmWindowListener);
-        formDesignerWindow.setModal(true);
-
-        formDesigner.onWindowResized(
-                com.google.gwt.user.client.Window.getClientWidth() - 100,
-                com.google.gwt.user.client.Window.getClientHeight() - 75);
-
-        formDesignerWindow.show();
-        formDesignerWindow.maximize();
+        createFormDesignerWindow(formName, newStudyFrmWindowListener);
     }
 
     public void openFormForEditing(FormDef form, Boolean readOnly) {
         formDesigner = new FormDesignerWidget(false, true, true);
         formDesigner.setSplitPos("20%");
         formDesigner.setFormSaveListener(saveListener);
-        
+
         String formName = form.getName();
         String formVersionName = form.getDefaultVersion().getName();
         String formBinding = "binding";
@@ -111,6 +85,17 @@ public class FormDesignerView {
             formDesigner.addNewForm(formName + "_" + formVersionName, formBinding,
                     form.getDefaultVersion().getFormDefVersionId());
         }
+
+        createFormDesignerWindow(formName, editStudyFormWindowListener);
+    }
+
+    public void hide() {
+        formDesignerWindow.removeListener(Events.BeforeHide,
+                newStudyFrmWindowListener);
+        formDesignerWindow.hide();
+    }
+
+    private void createFormDesignerWindow(String formName, Listener<? extends BaseEvent> beforeHide) {
         formDesignerWindow = new Window();
         formDesignerWindow.setPlain(true);
         formDesignerWindow.setHeading(appMessages.designForm() + " : "
@@ -128,8 +113,7 @@ public class FormDesignerView {
         // allow the formDesignerWindow to be resized (i.e. more than one open
         // at a time)
         formDesignerWindow.setScrollMode(Scroll.AUTO);
-        formDesignerWindow.addListener(Events.BeforeHide,
-                editStudyFormWindowListener);
+        formDesignerWindow.addListener(Events.BeforeHide, beforeHide);
         formDesignerWindow.setModal(true);
 
         formDesigner.onWindowResized(
@@ -138,12 +122,6 @@ public class FormDesignerView {
 
         formDesignerWindow.show();
         formDesignerWindow.maximize();
-    }
-
-    public void hide() {
-        formDesignerWindow.removeListener(Events.BeforeHide,
-                newStudyFrmWindowListener);
-        formDesignerWindow.hide();
     }
     final Listener<ComponentEvent> editStudyFormWindowListener = new EditWindowListener();
 
