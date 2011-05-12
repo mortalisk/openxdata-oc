@@ -50,9 +50,8 @@ public class FormDesignerView {
         String formName = formDef.getName();
         String formVersionName = formDefVersion.getName();
         Integer formVersionId = formDef.getDefaultVersion().getFormDefVersionId();
-        String formBinding = "binding";
 
-        formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, formBinding,
+        formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, "binding",
                 formVersionId);
         createFormDesignerWindow(formName, newStudyFrmWindowListener);
     }
@@ -62,7 +61,6 @@ public class FormDesignerView {
 
         String formName = form.getName();
         String formVersionName = form.getDefaultVersion().getName();
-        String formBinding = "binding";
 
         // get the xforms and layout xml
         String xform = form.getDefaultVersion().getXform();
@@ -84,7 +82,7 @@ public class FormDesignerView {
             }
             formDesigner.loadForm(form.getDefaultVersion().getFormDefVersionId(), xform, layout, "", readOnly);
         } else {
-            formDesigner.addNewForm(formName + "_" + formVersionName, formBinding,
+            formDesigner.addNewForm(formName + "_" + formVersionName, "binding",
                     form.getDefaultVersion().getFormDefVersionId());
         }
 
