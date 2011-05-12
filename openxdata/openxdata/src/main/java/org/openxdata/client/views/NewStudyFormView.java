@@ -15,21 +15,17 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 
 import com.extjs.gxt.ui.client.Registry;
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
@@ -43,21 +39,15 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.purc.purcforms.client.FormDesignerWidget;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import org.openxdata.client.model.UserSummary;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
-import org.purc.purcforms.client.locale.LocaleText;
 
 public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
-	/** The form designer widget. */
-	private FormDesignerWidget formDesigner;
-	/** The formDesignerWindow for the form designer */
-	Window formDesignerWindow;
 	// input field for new study page
 	private TextField<String> newStudyName;
 	private TextField<String> newStudyDescription;
@@ -94,6 +84,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	ListStore<FormSummary> formStore;
 
 	private int currentPage = 0;
+    private FormDesignerView formDesignerView;
 
 	public NewStudyFormView(Controller controller) {
 		super(controller);
@@ -460,79 +451,14 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	@Override
 	protected void finish() {
 		getWizardValues();
-		String formName = formDef.getName();
-		String formVersionName = formDefVersion.getName();
-		Integer formVersionId = formDef.getDefaultVersion()
-				.getFormDefVersionId();
-		String formBinding = "binding";
 
-		// launch purcforms designer
-		if (formDesigner == null) {
-			formDesigner = new FormDesignerWidget(false, true, true);
-			formDesigner.setSplitPos("20%");
-			formDesigner.setFormSaveListener(this);
-		}
-
-		formDesigner.addNewForm(formName + "_" + formVersionName, formBinding,
-				formVersionId);
-
-		formDesignerWindow = new Window();
-		formDesignerWindow.setPlain(true);
-		formDesignerWindow.setHeading(appMessages.designForm() + " : "
-				+ formName);
-		formDesignerWindow.setMaximizable(true);
-		formDesignerWindow.setMinimizable(false);
-		formDesignerWindow.setDraggable(false);
-		formDesignerWindow.setResizable(false);
-		formDesignerWindow.setModal(true);
-		formDesignerWindow.setSize(
-				com.google.gwt.user.client.Window.getClientWidth(),
-				com.google.gwt.user.client.Window.getClientHeight());
-		formDesignerWindow.add(formDesigner);
-		// FIXME: note there are some issues with the purcform widget if you
-		// allow the formDesignerWindow to be resized (i.e. more than one open
-		// at a time)
-		formDesignerWindow.setScrollMode(Scroll.AUTO);
-		formDesignerWindow.addListener(Events.BeforeHide,
-				newStudyFrmWindowListener);
-		formDesignerWindow.setModal(true);
-
-		formDesigner.onWindowResized(
-				com.google.gwt.user.client.Window.getClientWidth() - 100,
-				com.google.gwt.user.client.Window.getClientHeight() - 75);
-
-		formDesignerWindow.show();
-		formDesignerWindow.maximize();
+        formDesignerView = new FormDesignerView(this);
+        formDesignerView.init(formDef, formDefVersion);
 
 		ProgressIndicator.hideProgressBar();
 	}
 
-	final Listener<ComponentEvent> newStudyFrmWindowListener = new WindowListener();
 
-	class WindowListener implements Listener<ComponentEvent> {
-		@Override
-		public void handleEvent(ComponentEvent be) {
-			be.setCancelled(true);
-			be.stopEvent();
-			MessageBox.confirm(appMessages.cancel(),
-					LocaleText.get("cancelFormPrompt"),
-					new Listener<MessageBoxEvent>() {
-						@Override
-						public void handleEvent(MessageBoxEvent be) {
-							if (be.getButtonClicked().getItemId()
-									.equals(Dialog.YES)) {
-								formDesignerWindow.removeListener(
-										Events.BeforeHide,
-										newStudyFrmWindowListener);
-								formDesignerWindow.hide();
-								formDesignerWindow.addListener(
-										Events.BeforeHide,
-										newStudyFrmWindowListener);
-							}
-						}
-					});
-		}
-	};
 
 	private void save() {
 		if (studyDef == null) {
@@ -683,9 +609,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			save();
 			// if this a new form,then save and close
 			if (formId == 0) {
-				formDesignerWindow.removeListener(Events.BeforeHide,
-						newStudyFrmWindowListener);
-				formDesignerWindow.hide();
+                formDesignerView.hide();
 				ProgressIndicator.hideProgressBar();
 				closeWindow();
 			}
