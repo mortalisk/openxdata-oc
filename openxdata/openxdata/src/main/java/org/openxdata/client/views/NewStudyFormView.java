@@ -453,7 +453,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		getWizardValues();
 
         formDesignerView = new FormDesignerView(this);
-        formDesignerView.init(formDef, formDefVersion);
+        formDesignerView.openForNewForm(formDef, formDefVersion);
 
 		ProgressIndicator.hideProgressBar();
 	}

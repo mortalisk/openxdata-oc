@@ -33,7 +33,7 @@ public class FormDesignerView {
         this.saveListener = saveListener;
     }
 
-    public void init(FormDef formDef, FormDefVersion formDefVersion) {
+    public void openForNewForm(FormDef formDef, FormDefVersion formDefVersion) {
         formDesigner = new FormDesignerWidget(false, true, true);
         formDesigner.setSplitPos("20%");
         formDesigner.setFormSaveListener(saveListener);
