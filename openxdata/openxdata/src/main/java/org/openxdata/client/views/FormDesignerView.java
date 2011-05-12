@@ -111,9 +111,6 @@ public class FormDesignerView {
                 com.google.gwt.user.client.Window.getClientWidth(),
                 com.google.gwt.user.client.Window.getClientHeight());
         formDesignerWindow.add(formDesigner);
-        // FIXME: note there are some issues with the purcform widget if you
-        // allow the formDesignerWindow to be resized (i.e. more than one open
-        // at a time)
         formDesignerWindow.setScrollMode(Scroll.AUTO);
         formDesignerWindow.addListener(Events.BeforeHide, beforeHide);
         formDesignerWindow.setModal(true);
