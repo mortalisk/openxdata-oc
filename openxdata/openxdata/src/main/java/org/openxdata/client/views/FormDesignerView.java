@@ -80,16 +80,13 @@ public class FormDesignerView {
     }
 
     public void openFormForEditing(FormDef form, Boolean readOnly) {
+        formDesigner = new FormDesignerWidget(false, true, true);
+        formDesigner.setSplitPos("20%");
+        formDesigner.setFormSaveListener(saveListener);
+        
         String formName = form.getName();
         String formVersionName = form.getDefaultVersion().getName();
         String formBinding = "binding";
-
-        // launch purcforms designer
-        if (formDesigner == null) {
-            formDesigner = new FormDesignerWidget(false, true, true);
-            formDesigner.setSplitPos("20%");
-            formDesigner.setFormSaveListener(saveListener);
-        }
 
         // get the xforms and layout xml
         String xform = form.getDefaultVersion().getXform();
