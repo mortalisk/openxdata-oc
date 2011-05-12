@@ -42,7 +42,6 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
-import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
@@ -86,12 +85,14 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private List<UserStudyMap> mappedStudies;
 	private List<UserFormMap> mappedForms;
         private int currentPage = 0;
+    private final EditStudyFormController studyFormController;
 
 	/**
 	 * @param controller
 	 */
-	public EditStudyFormView(Controller controller) {
+	public EditStudyFormView(EditStudyFormController controller) {
 		super(controller);
+        this.studyFormController = controller;
 	}
 
 	@Override
@@ -261,11 +262,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			form = event.getData("formDef");
 			GWT.log("EditStudyFormView : EditStudyFormController.EDITSTUDYFORM : Edit");
 
-			EditStudyFormController controll = (EditStudyFormController) EditStudyFormView.this
-					.getController();
-			controll.getUsers();
-			controll.getUserMappedStudies();
-			controll.getUserMappedForms();
+			studyFormController.getUsers();
+			studyFormController.getUserMappedStudies();
+			studyFormController.getUserMappedForms();
 			ProgressIndicator.hideProgressBar();
 			// Set the values of the form to that of the selected Form
 			studyName.setValue(form.getStudy().getName());
@@ -403,9 +402,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		form.setDescription(formDescription.getValue());      
 		form.getDefaultVersion().setName(formVersion.getValue());
 		form.getDefaultVersion().setDescription(formVersionDescription.getValue());
-		EditStudyFormController controller2 = (EditStudyFormController) EditStudyFormView.this
-				.getController();
-		controller2.saveForm(form);
+		studyFormController.saveForm(form);
 	}
 
 	@Override
@@ -550,8 +547,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
     public void saveUserStudyMap() {
         String loggedInUsername = ((User) Registry.get(Emit.LOGGED_IN_USER_NAME)).getName();
-        EditStudyFormController controller = (EditStudyFormController) getController();
-                
+
         for (User mappedUser : userAccessToStudy.getTempMappedItems()) {
             for (User user : users) {
                 if (user.getName().equals(mappedUser.getName())
@@ -561,25 +557,28 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
                     map.addStudy(form.getStudy());
                     map.addUser(user);
                     map.setDirty(true);
-                    controller.saveUserMappedStudy(map);
+                    studyFormController.saveUserMappedStudy(map);
                     break;
                 }
             }
         }
+        deleteUserMappedStudy();
+    }
 
+    private void deleteUserMappedStudy() {
         for (User unmappedUser : userAccessToStudy.getTempItemstoUnmap()) {
             for (UserStudyMap map : mappedStudies) {
                 for (User user : users) {
                     if (user.getName().equals(unmappedUser.getName())
                             && (user.getUserId() == map.getUserId())) {
-                        controller.deleteUserMappedStudy(map);
+                        studyFormController.deleteUserMappedStudy(map);
                         break;
                     }
                 }
             }
         }
     }
-
+    
 	public void saveUserFormMap() {
 		if (!userAccessToForm.getTempMappedItems().isEmpty()) {
 			for (int i = 0; i < userAccessToForm.getTempMappedItems().size(); ++i) {
@@ -592,8 +591,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 						map.addForm(form);
 						map.addUser(user);
 						map.setDirty(true);
-						((EditStudyFormController) EditStudyFormView.this
-								.getController()).saveUserMappedForm(map);
+						studyFormController.saveUserMappedForm(map);
 						break;
 					}
 				}
@@ -606,8 +604,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 						if ((user.getName().equals(userAccessToForm
 								.getTempItemstoUnmap().get(i).getName()))
 								&& (user.getUserId() == map.getUserId())) {
-							((EditStudyFormController) EditStudyFormView.this
-									.getController()).deleteUserMappedForm(map);
+							studyFormController.deleteUserMappedForm(map);
 							break;
 						}
 					}
@@ -625,8 +622,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 					public void handleEvent(ButtonEvent be) {
 						// launchDesigner();
                                             ProgressIndicator.showProgressBar();
-						((EditStudyFormController) controller)
-								.formHasData(form);
+						studyFormController.formHasData(form);
 					}
 				});
 		return designFormButton;
