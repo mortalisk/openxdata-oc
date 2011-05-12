@@ -459,7 +459,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void finish() {
-		// saveAndExit();
 		getWizardValues();
 		String formName = formDef.getName();
 		String formVersionName = formDefVersion.getName();
@@ -470,10 +469,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		// launch purcforms designer
 		if (formDesigner == null) {
 			formDesigner = new FormDesignerWidget(false, true, true);
-			// formDesigner.setWidth("100%");
-			// formDesigner.setHeight("100%");
 			formDesigner.setSplitPos("20%");
-			// formDesigner.removeLanguageTab();
 			formDesigner.setFormSaveListener(this);
 		}
 
