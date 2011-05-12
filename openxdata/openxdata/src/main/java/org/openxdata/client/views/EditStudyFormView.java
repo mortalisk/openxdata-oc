@@ -23,9 +23,7 @@ import java.util.List;
 import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.util.ProgressIndicator;
-import org.purc.purcforms.client.FormDesignerWidget;
 import org.purc.purcforms.client.controller.IFormSaveListener;
-import org.purc.purcforms.client.util.LanguageUtil;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
@@ -35,17 +33,13 @@ import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
-import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -53,7 +47,6 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.xml.client.XMLParser;
 import org.openxdata.client.model.UserSummary;
 
 /**
@@ -65,10 +58,6 @@ import org.openxdata.client.model.UserSummary;
 public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	private FormDef form;
-	/** The form designer widget. */
-	private FormDesignerWidget formDesigner;
-
-	Window formDesignerWindow = new Window();
 
 	private CheckBox published;
 	private final TextField<String> studyName = new TextField<String>();
@@ -286,111 +275,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	private void launchDesigner(boolean readOnly) {
 
-		String formName = form.getName();
-		String formVersionName = form.getDefaultVersion().getName();
-		String formBinding = "binding";
-
-		// launch purcforms designer
-		if (formDesigner == null) {
-			formDesigner = new FormDesignerWidget(false, true, true);
-			formDesigner.setSplitPos("20%");
-			formDesigner.setFormSaveListener(this);
-		}
-
-		// get the xforms and layout xml
-		String xform = form.getDefaultVersion().getXform();
-		String layout = form.getDefaultVersion().getLayout();
-		// if not empty load it in the formdesigner for editing
-		if (xform != null && xform.trim().length() > 0) {
-			// If the form was localised for the current locale, then translate
-			// it to the locale.
-			FormDefVersionText text = form.getDefaultVersion()
-					.getFormDefVersionText("en");
-			if (text != null) {
-
-				xform = LanguageUtil.translate(XMLParser.parse(xform),
-						XMLParser.parse(text.getXformText())
-								.getDocumentElement());
-
-				if (layout != null && layout.trim().length() > 0) {
-					layout = LanguageUtil.translate(XMLParser.parse(layout),
-							XMLParser.parse(text.getLayoutText())
-									.getDocumentElement());
-				}
-			}
-			formDesigner.loadForm(form.getDefaultVersion()
-					.getFormDefVersionId(), xform, layout, "", readOnly);
-		} else {
-			formDesigner
-					.addNewForm(formName + "_" + formVersionName, formBinding,
-							form.getDefaultVersion().getFormDefVersionId());
-		}
-		formDesignerWindow = new Window();
-		formDesignerWindow.setPlain(true);
-		formDesignerWindow.setHeading(appMessages.designForm() + " : "
-				+ formName);
-		formDesignerWindow.setMaximizable(true);
-		formDesignerWindow.setMinimizable(false);
-		formDesignerWindow.setDraggable(false);
-		formDesignerWindow.setResizable(false);
-		formDesignerWindow.setModal(true);
-		formDesignerWindow.setSize(
-				com.google.gwt.user.client.Window.getClientWidth(),
-				com.google.gwt.user.client.Window.getClientHeight());
-		formDesignerWindow.add(formDesigner);
-		// FIXME: note there are some issues with the purcform widget if you
-		// allow the formDesignerWindow to be resized (i.e. more than one open
-		// at a time)
-		formDesignerWindow.setScrollMode(Scroll.AUTO);
-		formDesignerWindow.addListener(Events.BeforeHide,
-				editStudyFormWindowListener);
-		formDesignerWindow.setModal(true);
-
-		formDesigner.onWindowResized(
-				com.google.gwt.user.client.Window.getClientWidth() - 100,
-				com.google.gwt.user.client.Window.getClientHeight() - 75);
-
-		formDesignerWindow.show();
-		formDesignerWindow.maximize();
+		FormDesignerView editFormFormDesignerView = new FormDesignerView(this);
+		editFormFormDesignerView.openFormForEditing(form, readOnly);
 	}
-
-	final Listener<ComponentEvent> editStudyFormWindowListener = new WindowListener();
-
-	class WindowListener implements Listener<ComponentEvent> {
-		@Override
-		public void handleEvent(ComponentEvent be) {
-			be.setCancelled(true);
-			be.stopEvent();
-			MessageBox.confirm(appMessages.cancel(), appMessages.areYouSure(),
-					new Listener<MessageBoxEvent>() {
-						@Override
-						public void handleEvent(MessageBoxEvent be) {
-							if (be.getButtonClicked().getItemId()
-									.equals(Dialog.YES)) {
-								// remove the form in the designer
-								formDesignerWindow.removeListener(
-										Events.BeforeHide,
-										editStudyFormWindowListener);
-								formDesignerWindow.hide();
-								ProgressIndicator.hideProgressBar();
-								formDesignerWindow.addListener(
-										Events.BeforeHide,
-										editStudyFormWindowListener);
-								// clear the formdesigner from any pending
-								// previous form
-								// this is a hack to prevent the context from
-								// referencing a form
-								// even after closing the window,results are
-								// context sees a new loaded
-								// form with properties of a previously closed
-								// form.
-								org.purc.purcforms.client.Context
-										.setFormDef(null);
-							}
-						}
-					});
-		}
-	};
 
 	private void save() {
 
