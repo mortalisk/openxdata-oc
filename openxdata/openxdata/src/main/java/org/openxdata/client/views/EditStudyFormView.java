@@ -620,7 +620,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ButtonEvent be) {
-						// launchDesigner();
                                             ProgressIndicator.showProgressBar();
 						studyFormController.formHasData(form);
 					}
