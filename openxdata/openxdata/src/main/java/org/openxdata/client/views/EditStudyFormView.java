@@ -442,34 +442,28 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		return false;
 	}
 
-	@Override
-	public void onSaveLocaleText(int formId, String xformsLocaleText,
-			String layoutLocaleText) {
-		try {
-			if (form.getDefaultVersion() == null) {
-				// TODO add message for internationalization purposes
-				MessageBox.alert("Error",
-						"Please select the form version first", null);
-				return;
-			}
+    @Override
+    public void onSaveLocaleText(int formId, String xformsLocaleText,
+            String layoutLocaleText) {
+        if (form.getDefaultVersion() == null) {
+            // TODO add message for internationalization purposes
+            MessageBox.alert("Error",
+                    "Please select the form version first", null);
+            return;
+        }
 
-			FormDefVersionText formDefVersionText = form.getDefaultVersion()
-					.getFormDefVersionText("en");
-			if (formDefVersionText == null) {
-				formDefVersionText = new FormDefVersionText("en", form
-						.getDefaultVersion().getFormDefVersionId(),
-						xformsLocaleText, layoutLocaleText);
-				form.getDefaultVersion().addVersionText(formDefVersionText);
-			} else {
-				formDefVersionText.setXformText(xformsLocaleText);
-				formDefVersionText.setLayoutText(layoutLocaleText);
-			}
-			form.getDefaultVersion().setDirty(true);
-			save();
-		} catch (Exception ex) {
-			//
-		}
-	}
+        FormDefVersionText formDefVersionText = form.getDefaultVersion().getFormDefVersionText("en");
+        if (formDefVersionText == null) {
+            formDefVersionText = new FormDefVersionText("en", form.getDefaultVersion().getFormDefVersionId(),
+                    xformsLocaleText, layoutLocaleText);
+            form.getDefaultVersion().addVersionText(formDefVersionText);
+        } else {
+            formDefVersionText.setXformText(xformsLocaleText);
+            formDefVersionText.setLayoutText(layoutLocaleText);
+        }
+        form.getDefaultVersion().setDirty(true);
+        save();
+    }
 
 	public void setUsers(List<User> users) {
 		this.users = users;
