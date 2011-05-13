@@ -102,7 +102,7 @@
         <module>model</module>
         <module>server</module>
         <module>rpc-interface</module>
-        <module>openxdata</module>
+        <module>webapp</module>
     </modules>
 
     <properties>
