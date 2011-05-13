@@ -8,9 +8,9 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>openxdata</artifactId>
+    <artifactId>webapp</artifactId>
     <packaging>war</packaging>
-    <name>OpenXdata</name>
+    <name>OpenXdata Webapp</name>
     <url>http://openxdata.org</url>
 
     <properties>
@@ -234,6 +234,7 @@
     </dependencies>
 
     <build>
+        <finalName>openxdata-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/java</directory>
