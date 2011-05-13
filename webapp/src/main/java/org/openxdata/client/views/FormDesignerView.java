@@ -42,6 +42,9 @@ public class FormDesignerView {
         formDesigner = new FormDesignerWidget(false, true, true);
         formDesigner.setSplitPos("20%");
         formDesigner.setFormSaveListener(saveListener);
+        formDesigner.onWindowResized(
+                com.google.gwt.user.client.Window.getClientWidth() - 100,
+                com.google.gwt.user.client.Window.getClientHeight() - 75);
     }
 
     public void openForNewForm(FormDef formDef, FormDefVersion formDefVersion) {
@@ -112,10 +115,6 @@ public class FormDesignerView {
         formDesignerWindow.setScrollMode(Scroll.AUTO);
         formDesignerWindow.addListener(Events.BeforeHide, beforeHide);
         formDesignerWindow.setModal(true);
-
-        formDesigner.onWindowResized(
-                com.google.gwt.user.client.Window.getClientWidth() - 100,
-                com.google.gwt.user.client.Window.getClientHeight() - 75);
 
         formDesignerWindow.show();
         formDesignerWindow.maximize();
