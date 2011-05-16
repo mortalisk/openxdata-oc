@@ -19,7 +19,7 @@ import org.springframework.security.concurrent.SessionRegistryImpl;
 public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements OpenXDataSessionRegistry {
 
     //Should this be a fully synchronized hashmap or a faster Concurrent hashmap
-    private Map<String, User> disabledUsers = new ConcurrentHashMap<String, User>();
+    private final Map<String, User> disabledUsers = new ConcurrentHashMap<String, User>();
     private static Logger log = Logger.getLogger(OpenXDataSessionRegistryImpl.class);
 
     @Override
@@ -28,7 +28,9 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
             return;
         }
         log.debug("Adding Disabled User: " + user.getName());
-        disabledUsers.put(user.getName(), user);
+        synchronized (disabledUsers) {
+            disabledUsers.put(user.getName(), user);
+        }
     }
 
     @Override
@@ -56,8 +58,8 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
     }
 
     @Override
-    public synchronized void registerNewSession(String sessionId, Object principal) {
-        log.debug("Registering Session: "+sessionId + " Principle: "+principal);
+    public void registerNewSession(String sessionId, Object principal) {
+        log.debug("Registering Session: " + sessionId + " Principle: " + principal);
         super.registerNewSession(sessionId, principal);
         if (containsDisabledUserName(principal + "")) {
             removeDisabledUser(principal + "");
@@ -75,6 +77,9 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
 
         Object principal = sessionInformation.getPrincipal();
 
+        //Check if session was a attached to a disable user/principal
+        //and remove the user from the disabled list in case 
+        //all his session have expired
         if (!containsDisabledUserName(principal.toString())) {
             return;
         }
@@ -82,6 +87,7 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
 
         SessionInformation[] allSessions = getAllSessions(principal, true);
         if (allSessions == null || allSessions.length == 0) {
+            //All sessions have expired. Remove the user from the disabled list
             removeDisabledUser(principal.toString());
         }
     }
@@ -90,7 +96,12 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
         log.debug("Removing from SessionRegistry Disbaled User: " + userName);
         disabledUsers.remove(userName);
     }
-
+    /**
+     * If user is disabled, it adds the user to the disabled list given the user
+     * already has active sessions.
+     * Otherwise it removes the user from the disabled list 
+     * @param user 
+     */
     @Override
     public void updateUserEntries(User user) {
         if (!user.isDisabled()) {
