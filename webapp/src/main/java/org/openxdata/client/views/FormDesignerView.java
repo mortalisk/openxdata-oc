@@ -65,8 +65,11 @@ public class FormDesignerView {
         String formName = formDef.getName();
         String formVersionName = formDefVersion.getName();
         Integer formVersionId = formDef.getDefaultVersion().getFormDefVersionId();
+        String studyName = formDef.getStudy().getName();
+        String binding = studyName+"_"+formName+"_"+formVersionName;
+        binding = binding.replaceAll(" ", "_");
 
-        formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, "binding",
+        formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, binding,
                 formVersionId);
         createFormDesignerWindow(formName, newStudyFrmWindowListener);
     }
