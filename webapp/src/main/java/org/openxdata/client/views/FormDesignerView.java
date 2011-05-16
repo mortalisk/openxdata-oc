@@ -28,16 +28,22 @@ import org.purc.purcforms.client.util.LanguageUtil;
 public class FormDesignerView {
 
     final AppMessages appMessages = GWT.create(AppMessages.class);
+    
     /** The form designer widget. */
     private FormDesignerWidget formDesigner;
+    
     /** The formDesignerWindow for the form designer */
     Window formDesignerWindow;
+    
     private final IFormSaveListener saveListener;
 
     public FormDesignerView(IFormSaveListener saveListener) {
         this.saveListener = saveListener;
     }
 
+    /**
+     * Creates the purcforms FormDesigner Widget.
+     */
     private void createFormDesignerWidget() {
         formDesigner = new FormDesignerWidget(false, true, true);
         formDesigner.setSplitPos("20%");
@@ -47,6 +53,12 @@ public class FormDesignerView {
                 com.google.gwt.user.client.Window.getClientHeight() - 75);
     }
 
+    /**
+     * Launches the designer with intent to create a new Form.
+     * 
+     * @param formDef - Form Definition to create.
+     * @param formDefVersion - Form Definition Version to create.
+     */
     public void openForNewForm(FormDef formDef, FormDefVersion formDefVersion) {
         createFormDesignerWidget();
         
@@ -59,6 +71,12 @@ public class FormDesignerView {
         createFormDesignerWindow(formName, newStudyFrmWindowListener);
     }
 
+    /**
+     * Opens the designer with a given Form for editing.
+     * 
+     * @param form Form Definition for editing.
+     * @param readOnly If it should be opened in readOnly mode.
+     */
     public void openFormForEditing(FormDef form, Boolean readOnly) {
         createFormDesignerWidget();
 
@@ -92,12 +110,21 @@ public class FormDesignerView {
         createFormDesignerWindow(formName, editStudyFormWindowListener);
     }
 
+    /**
+     * Conceals the FormDesigner window from the User.
+     */
     public void hide() {
         formDesignerWindow.removeListener(Events.BeforeHide,
                 newStudyFrmWindowListener);
         formDesignerWindow.hide();
     }
 
+    /**
+     * Creates the gxt specific modal window in which to embed the Purcforms FormDesigner.
+     * 
+     * @param formName Name of Form Definition being manipulated.
+     * @param beforeHide Event that is handled by this modal window when window is closing.
+     */
     private void createFormDesignerWindow(String formName, Listener<? extends BaseEvent> beforeHide) {
         formDesignerWindow = new Window();
         formDesignerWindow.setPlain(true);
@@ -119,6 +146,7 @@ public class FormDesignerView {
         formDesignerWindow.show();
         formDesignerWindow.maximize();
     }
+    
     final Listener<ComponentEvent> editStudyFormWindowListener = new EditWindowListener();
 
     class EditWindowListener implements Listener<ComponentEvent> {
