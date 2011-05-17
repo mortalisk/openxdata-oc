@@ -658,11 +658,20 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		}
 		// page 3
 		if (currentPage > 1) {
-			formDefVersion = new FormDefVersion(0,
-					formVersionNameTfld.getValue(), formDef);
+			if(formVersionEditMode){
+				formDefVersion = new FormDefVersion(0,"v"+(formDef.getVersions().size()+1),formDef);
+				formDefVersion.setXform(formDef.getDefaultVersion().getXform());
+			}
+			else{
+				formDefVersion = new FormDefVersion(0,
+						formVersionNameTfld.getValue(), formDef);
+			}
+			
 			formDefVersion.setDescription(formVersionDescr.getValue());
 			formDefVersion.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 			formDefVersion.setDateCreated(new Date());
+			
+			
 			if (formVersionDefault.getValue()) {
 				formDefVersion.getFormDef().turnOffOtherDefaults(formDefVersion);
 			}
