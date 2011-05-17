@@ -266,7 +266,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 						// be sure to check that it has been expanded
 						// to avoid resizing the initial window
 						if (userStudyAccessGrid.isExpanded()) {
-							// show upper controlls
+							// show upper controls
 							newStudy.show();
 							newStudyName.show();
 							newStudyDescription.show();
@@ -381,7 +381,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 						// be sure to check that it has been expanded
 						// to avoid resizing the initial window
 						if (userFormAccessGrid.isExpanded()) {
-							// show upper controlls
+							// show upper controls
 							newForm.show();
 							newFormName.show();
 							newFormDescription.show();
@@ -725,7 +725,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	/*
-	 * Load study names into left and right listboxes appropriately
+	 * Load study names into left and right List Boxes appropriately
 	 */
 	private void setUserStudyMap(StudyDef study, List<User> users) {
 		userStudyAccessGrid.clear();
@@ -753,7 +753,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	/*
-	 * Load formdefinition names into left and right listboxes appropriately
+	 * Load Form Definition names into left and right List Boxes appropriately
 	 */
 	private void setUserFormMap(FormDef form, List<User> users) {
 		userFormAccessGrid.clear();
