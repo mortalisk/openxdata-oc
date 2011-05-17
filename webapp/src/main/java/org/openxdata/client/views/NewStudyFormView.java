@@ -85,6 +85,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	private int currentPage = 0;
     private FormDesignerView formDesignerView;
+	private boolean formVersionEditMode;
 
 	public NewStudyFormView(Controller controller) {
 		super(controller);
@@ -98,6 +99,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
+		formVersionEditMode = false;
 		nextButton.setEnabled(false);
 		// resize window if the previous window was expanded
 		if (activePage == 0 && currentPage != 0) {
@@ -138,6 +140,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				int versions = existingFormName.getValue().getFormDefinition()
 						.getVersions().size();
 				formVersionNameTfld.setValue("v" + (versions + 1));
+				formVersionEditMode = true;
 			}
 		}
 	}
@@ -453,7 +456,12 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		getWizardValues();
 
         formDesignerView = new FormDesignerView(this);
-        formDesignerView.openForNewForm(formDef, formDefVersion);
+        if(formVersionEditMode){
+        	formDesignerView.openFormForEditing(formDef, false);
+        }
+        else{
+        	formDesignerView.openForNewForm(formDef, formDefVersion);        	
+        }
 
 		ProgressIndicator.hideProgressBar();
 	}
