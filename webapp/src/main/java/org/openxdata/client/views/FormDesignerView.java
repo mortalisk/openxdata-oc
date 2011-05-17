@@ -61,11 +61,11 @@ public class FormDesignerView {
      * @param formDef - Form Definition to create.
      * @param formDefVersion - Form Definition Version to create.
      */
-    public void openForNewForm(FormDef formDef, FormDefVersion formDefVersion) {
+    public void openForNewForm(FormDefVersion formDefVersion) {
         createFormDesignerWidget();
         
-        designForm(formDef.getDefaultVersion(), false);
-        createFormDesignerWindow(formDef.getName(), newStudyFrmWindowListener);
+        designForm(formDefVersion, false);
+        createFormDesignerWindow(formDefVersion.getFormDef().getName(), newStudyFrmWindowListener);
     }
 
     /**

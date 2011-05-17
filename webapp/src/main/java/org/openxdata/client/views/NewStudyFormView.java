@@ -460,7 +460,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
         	formDesignerView.openFormForEditing(formDef, false);
         }
         else{
-        	formDesignerView.openForNewForm(formDef, formDefVersion);        	
+        	formDesignerView.openForNewForm(formDefVersion);        	
         }
 
 		ProgressIndicator.hideProgressBar();
@@ -793,5 +793,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		}
 		userFormAccessGrid.updateLists(unMappedUsers, mappedUsers);
 	}
+	
+	
 
 }
