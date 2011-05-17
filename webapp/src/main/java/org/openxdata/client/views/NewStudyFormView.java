@@ -466,8 +466,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.hideProgressBar();
 	}
 
-
-
 	private void save() {
 		if (studyDef == null) {
 			return;
