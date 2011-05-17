@@ -245,7 +245,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ComponentEvent be) {
-						// hide upper controlls so that this controll fills up
+						// hide upper controls so that this control fills up
 						// the whole window
 						newStudy.hide();
 						newStudyName.hide();
