@@ -561,7 +561,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	@Override
 	public boolean onSaveForm(int formId, String xformsXml, String layoutXml,
 			String javaScriptSrc) {
-		// TODO Auto-generated method stub
 		try {
 			if (formDefVersion == null) {
 				MessageBox.alert("Error",
@@ -587,7 +586,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	@Override
 	public void onSaveLocaleText(int formId, String xformsLocaleText,
 			String layoutLocaleText) {
-		// TODO Auto-generated method stub
 		try {
 			if (formDefVersion == null) {
 				// TODO add message for internationalization purposes
