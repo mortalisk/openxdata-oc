@@ -64,13 +64,8 @@ public class FormDesignerView {
     public void openForNewForm(FormDef formDef, FormDefVersion formDefVersion) {
         createFormDesignerWidget();
         
-        String formName = formDef.getName();
-        String formVersionName = formDefVersion.getName();
-        Integer formVersionId = formDef.getDefaultVersion().getFormDefVersionId();
-
-        formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, 
-        		DesignerUtilities.getDefaultFormBinding(formDefVersion), formVersionId);
-        createFormDesignerWindow(formName, newStudyFrmWindowListener);
+        designForm(formDef.getDefaultVersion(), false);
+        createFormDesignerWindow(formDef.getName(), newStudyFrmWindowListener);
     }
 
     /**
@@ -82,9 +77,20 @@ public class FormDesignerView {
     public void openFormForEditing(FormDef form, Boolean readOnly) {
         createFormDesignerWidget();
 
-        String formName = form.getName();
-        String formVersionName = form.getDefaultVersion().getName();
-        FormDefVersion formDefVersion = form.getDefaultVersion();
+        designForm(form.getDefaultVersion(), readOnly);
+        
+        createFormDesignerWindow(form.getName(), editStudyFormWindowListener);
+    }
+
+    /**
+     * Loads the given FormDef in the PurcForms designer.
+     * 
+     * @param formDefVersion Form to load
+     * @param readOnly If it is to be opened in readOnly mode -- cannot edit in this mode!
+     */
+	private void designForm(FormDefVersion formDefVersion, Boolean readOnly) {
+		String formName = formDefVersion.getFormDef().getName();
+        String formVersionName = formDefVersion.getFormDef().getDefaultVersion().getName();
 
         // get the xforms and layout xml
         String xform = formDefVersion.getXform();
@@ -109,9 +115,7 @@ public class FormDesignerView {
             formDesigner.addNewForm(formName + "_" + formVersionName, 
             		DesignerUtilities.getDefaultFormBinding(formDefVersion), formDefVersion.getFormDefVersionId());
         }
-
-        createFormDesignerWindow(formName, editStudyFormWindowListener);
-    }
+	}
 
     /**
      * Conceals the FormDesigner window from the User.
