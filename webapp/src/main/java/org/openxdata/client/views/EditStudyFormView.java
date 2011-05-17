@@ -274,7 +274,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private void launchDesigner(boolean readOnly) {
 
 		FormDesignerView editFormFormDesignerView = new FormDesignerView(this);
-		editFormFormDesignerView.openFormForEditing(form, readOnly);
+		editFormFormDesignerView.openFormForEditing(form.getDefaultVersion(), readOnly);
 	}
 
 	private void save() {

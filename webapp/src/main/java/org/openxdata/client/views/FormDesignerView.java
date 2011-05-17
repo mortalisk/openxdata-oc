@@ -1,27 +1,26 @@
 package org.openxdata.client.views;
 
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.widget.Window;
-import com.google.gwt.core.client.GWT;
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.util.DesignerUtilities;
+import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.FormDefVersionText;
 import org.purc.purcforms.client.FormDesignerWidget;
 import org.purc.purcforms.client.controller.IFormSaveListener;
+import org.purc.purcforms.client.locale.LocaleText;
+import org.purc.purcforms.client.util.LanguageUtil;
+
 import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.extjs.gxt.ui.client.widget.Window;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.XMLParser;
-
-import org.openxdata.client.util.DesignerUtilities;
-import org.openxdata.client.util.ProgressIndicator;
-import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.server.admin.model.FormDefVersionText;
-import org.purc.purcforms.client.locale.LocaleText;
-import org.purc.purcforms.client.util.LanguageUtil;
 
 /**
  * 
@@ -71,15 +70,15 @@ public class FormDesignerView {
     /**
      * Opens the designer with a given Form for editing.
      * 
-     * @param form Form Definition for editing.
+     * @param formDefVersion Form Definition to editing.
      * @param readOnly If it should be opened in readOnly mode.
      */
-    public void openFormForEditing(FormDef form, Boolean readOnly) {
+    public void openFormForEditing(FormDefVersion formDefVersion, Boolean readOnly) {
         createFormDesignerWidget();
 
-        designForm(form.getDefaultVersion(), readOnly);
+        designForm(formDefVersion, readOnly);
         
-        createFormDesignerWindow(form.getName(), editStudyFormWindowListener);
+        createFormDesignerWindow(formDefVersion.getName(), editStudyFormWindowListener);
     }
 
     /**
