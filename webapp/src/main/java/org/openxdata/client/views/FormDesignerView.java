@@ -176,14 +176,8 @@ public class FormDesignerView {
                                 formDesignerWindow.addListener(
                                         Events.BeforeHide,
                                         editStudyFormWindowListener);
-                                // clear the formdesigner from any pending
-                                // previous form
-                                // this is a hack to prevent the context from
-                                // referencing a form
-                                // even after closing the window,results are
-                                // context sees a new loaded
-                                // form with properties of a previously closed
-                                // form.
+                                
+                                // Set the form to null to remove previous references.
                                 org.purc.purcforms.client.Context.setFormDef(null);
                             }
                         }
