@@ -187,6 +187,7 @@ public class FormDesignerView {
                     });
         }
     };
+    
     final Listener<ComponentEvent> newStudyFrmWindowListener = new WindowListener();
 
     class WindowListener implements Listener<ComponentEvent> {
