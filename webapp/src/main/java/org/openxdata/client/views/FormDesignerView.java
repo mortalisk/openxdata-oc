@@ -78,7 +78,7 @@ public class FormDesignerView {
 
         designForm(formDefVersion, readOnly);
         
-        createFormDesignerWindow(formDefVersion.getName(), editStudyFormWindowListener);
+        createFormDesignerWindow(formDefVersion.getFormDef().getName(), editStudyFormWindowListener);
     }
 
     /**
