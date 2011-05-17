@@ -14,6 +14,8 @@ import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.xml.client.XMLParser;
+
+import org.openxdata.client.util.DesignerUtilities;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -65,12 +67,9 @@ public class FormDesignerView {
         String formName = formDef.getName();
         String formVersionName = formDefVersion.getName();
         Integer formVersionId = formDef.getDefaultVersion().getFormDefVersionId();
-        String studyName = formDef.getStudy().getName();
-        String binding = studyName+"_"+formName+"_"+formVersionName;
-        binding = binding.replaceAll(" ", "_");
 
-        formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, binding,
-                formVersionId);
+        formDesigner.addNewForm(formDef.getName() + "_" + formVersionName, 
+        		DesignerUtilities.getDefaultFormBinding(formDefVersion), formVersionId);
         createFormDesignerWindow(formName, newStudyFrmWindowListener);
     }
 
@@ -85,15 +84,16 @@ public class FormDesignerView {
 
         String formName = form.getName();
         String formVersionName = form.getDefaultVersion().getName();
+        FormDefVersion formDefVersion = form.getDefaultVersion();
 
         // get the xforms and layout xml
-        String xform = form.getDefaultVersion().getXform();
-        String layout = form.getDefaultVersion().getLayout();
+        String xform = formDefVersion.getXform();
+        String layout = formDefVersion.getLayout();
         // if not empty load it in the formdesigner for editing
         if (xform != null && xform.trim().length() > 0) {
             // If the form was localised for the current locale, then translate
             // it to the locale.
-            FormDefVersionText text = form.getDefaultVersion().getFormDefVersionText("en");
+            FormDefVersionText text = formDefVersion.getFormDefVersionText("en");
             if (text != null) {
 
                 xform = LanguageUtil.translate(XMLParser.parse(xform),
@@ -104,10 +104,10 @@ public class FormDesignerView {
                             XMLParser.parse(text.getLayoutText()).getDocumentElement());
                 }
             }
-            formDesigner.loadForm(form.getDefaultVersion().getFormDefVersionId(), xform, layout, "", readOnly);
+            formDesigner.loadForm(formDefVersion.getFormDefVersionId(), xform, layout, "", readOnly);
         } else {
-            formDesigner.addNewForm(formName + "_" + formVersionName, "binding",
-                    form.getDefaultVersion().getFormDefVersionId());
+            formDesigner.addNewForm(formName + "_" + formVersionName, 
+            		DesignerUtilities.getDefaultFormBinding(formDefVersion), formDefVersion.getFormDefVersionId());
         }
 
         createFormDesignerWindow(formName, editStudyFormWindowListener);
