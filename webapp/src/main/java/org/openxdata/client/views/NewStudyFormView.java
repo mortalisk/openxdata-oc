@@ -653,12 +653,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			formDefVersion = new FormDefVersion(0,
 					formVersionNameTfld.getValue(), formDef);
 			formDefVersion.setDescription(formVersionDescr.getValue());
-			formDefVersion.setCreator((User) Registry
-					.get(Emit.LOGGED_IN_USER_NAME));
+			formDefVersion.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 			formDefVersion.setDateCreated(new Date());
 			if (formVersionDefault.getValue()) {
-				formDefVersion.getFormDef()
-						.turnOffOtherDefaults(formDefVersion);
+				formDefVersion.getFormDef().turnOffOtherDefaults(formDefVersion);
 			}
 			formDefVersion.setDirty(true);
 			formDef.addVersion(formDefVersion);
