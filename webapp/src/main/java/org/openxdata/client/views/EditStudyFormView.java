@@ -52,8 +52,6 @@ import org.openxdata.client.model.UserSummary;
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version..
  * 
- * @author Angel
- * 
  */
 public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
