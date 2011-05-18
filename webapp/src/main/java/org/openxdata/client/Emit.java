@@ -8,6 +8,7 @@ import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.controllers.FormListController;
 import org.openxdata.client.controllers.FormPrintController;
 import org.openxdata.client.controllers.FormResponsesController;
+import org.openxdata.client.controllers.FormVersionsController;
 import org.openxdata.client.controllers.LoginController;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.controllers.UserProfileController;
@@ -21,7 +22,7 @@ import org.openxdata.server.admin.client.service.SettingServiceAsync;
 import org.openxdata.server.admin.model.Setting;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.User;
-
+import org.purc.purcforms.client.util.FormUtil;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -57,17 +58,15 @@ import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.openxdata.client.controllers.FormVersionsController;
-import org.purc.purcforms.client.util.FormUtil;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
