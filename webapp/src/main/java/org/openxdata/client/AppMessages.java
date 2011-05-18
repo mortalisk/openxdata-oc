@@ -130,4 +130,12 @@ public interface AppMessages extends Messages {
 	String selectFormVersion();
 	
 	String active();
+	
+	String exportAs();
+	
+	String export();
+	
+	String exportError();
+	
+	String exportA();
 }
