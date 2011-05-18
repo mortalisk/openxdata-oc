@@ -587,9 +587,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			String layoutLocaleText) {
 		try {
 			if (formDefVersion == null) {
-				// TODO add message for internationalization purposes
-				MessageBox.alert("Error",
-						"Please select the form version first", null);
+				MessageBox.alert(appMessages.error(), appMessages.selectFormVersion(), null);
 				return;
 			}
 
