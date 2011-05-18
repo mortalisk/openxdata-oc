@@ -105,16 +105,27 @@ public interface AppMessages extends Messages {
 	String formVersionDefault();
 	String designForm();
 
-        String setUserAccessToStudy();
-        String allUsers();
-        String usersWithAccessToStudy();
-        String addAllUsers();
-        String addUser();
-        String removeAllUsers();
-        String removeUser();
+	String setUserAccessToStudy();
 
-        String setUserAccessToForm();
-        String usersWithAccessToForm();
-        String unableToDeleteFormWithData();
-        String areYouSureDelete();
+	String allUsers();
+
+	String usersWithAccessToStudy();
+
+	String addAllUsers();
+
+	String addUser();
+
+	String removeAllUsers();
+
+	String removeUser();
+
+	String setUserAccessToForm();
+
+	String usersWithAccessToForm();
+
+	String unableToDeleteFormWithData();
+
+	String areYouSureDelete();
+	
+	String selectFormVersion();
 }
