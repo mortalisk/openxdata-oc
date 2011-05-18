@@ -128,4 +128,6 @@ public interface AppMessages extends Messages {
 	String areYouSureDelete();
 	
 	String selectFormVersion();
+	
+	String active();
 }

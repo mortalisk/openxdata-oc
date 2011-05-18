@@ -382,11 +382,10 @@ public class FormListView extends View implements Refreshable {
 	public void setFormStatus(FormDef formDef, Boolean active) {
 		FormSummary formSummary = getFormSummary(formDef.getFormId());
 		if (formSummary != null) {
-			// TODO: fix localisation
 			if (active) {
-				formSummary.setStatus("active");
+				formSummary.setStatus(appMessages.active());
 			} else {
-				formSummary.setStatus("design");
+				formSummary.setStatus(appMessages.design());
 			}
 		}
 		grid.getView().refresh(false);
