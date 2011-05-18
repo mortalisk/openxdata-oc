@@ -37,7 +37,7 @@ import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 /**
- * @author Angel
+ * Event dispatcher for the EditStudyFormView.
  * 
  */
 public class EditStudyFormController extends Controller {
