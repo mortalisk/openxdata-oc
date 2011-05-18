@@ -91,7 +91,7 @@ public class FormListView extends View implements Refreshable {
 		view.setShowGroupedColumn(false);
 
 		GroupingStore<FormSummary> store = new GroupingStore<FormSummary>();
-		store.groupBy("organisation",true);
+		store.groupBy("organisation", true);
 		grid = new Grid<FormSummary>(store, cm);
 		grid.setAutoExpandColumn("form");
 		grid.setAutoExpandMax(10000);
@@ -298,7 +298,9 @@ public class FormListView extends View implements Refreshable {
 					// FormDef formDef =
 					// grid.getSelectionModel().getSelectedItem().getFormDefinition();
 					FormListController controller = (FormListController) getController();
-					controller.forwardToDeleteStudyFormController(grid.getSelectionModel().getSelectedItem().getFormDefinition());
+					controller.forwardToDeleteStudyFormController(grid
+							.getSelectionModel().getSelectedItem()
+							.getFormDefinition());
 				}
 			});
 		} else {
@@ -308,23 +310,23 @@ public class FormListView extends View implements Refreshable {
 	}
 
 	private void toggleAllFormVersions() {
-            if (grid.getSelectionModel().getSelectedItem() != null){
-		ProgressIndicator.showProgressBar();
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				// FormListController controller = (FormListController)
-				// getController();
+		if (grid.getSelectionModel().getSelectedItem() != null) {
+			ProgressIndicator.showProgressBar();
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+				@Override
+				public void execute() {
+					// FormListController controller = (FormListController)
+					// getController();
 					FormDef formDef = grid.getSelectionModel()
 							.getSelectedItem().getFormDefinition();
-				if (showAllFormVersions) {
-                                        FormListController controller = (FormListController) getController();
-                                        controller.forwardToFormVersionController(formDef);
+					if (showAllFormVersions) {
+						FormListController controller = (FormListController) getController();
+						controller.forwardToFormVersionController(formDef);
+					}
 				}
-			}
-		});
-		ProgressIndicator.hideProgressBar();
-            } else {
+			});
+			ProgressIndicator.hideProgressBar();
+		} else {
 			MessageBox.alert(appMessages.showAllVersions(),
 					appMessages.formMustBeSelected(), null);
 		}
@@ -428,9 +430,9 @@ public class FormListView extends View implements Refreshable {
 					Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 						@Override
 						public void execute() {
-							((FormListController) FormListView.this.getController())
-									.hasFormData(summary.getFormDefinition()
-											.getDefaultVersion());
+							((FormListController) FormListView.this
+									.getController()).hasFormData(summary
+									.getFormDefinition().getDefaultVersion());
 						}
 					});
 					break;
@@ -445,10 +447,11 @@ public class FormListView extends View implements Refreshable {
 					summary.updateFormDefinition(form);
 					store.update(summary);
 				} else {
-					GWT.log("Could not find match for updated form "+form.getName()+" using ID="+form.getId());
+					GWT.log("Could not find match for updated form "
+							+ form.getName() + " using ID=" + form.getId());
 				}
 			}
-			
+
 		} else if (event.getEventType() == RefreshableEvent.Type.CREATE_STUDY) {
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 				@Override
@@ -458,7 +461,8 @@ public class FormListView extends View implements Refreshable {
 							.getForms();
 				}
 			});
-			// Note: because the Study in the event has not been updated, the ids of new persistent objects are 0, therefore cannot be matched
+			// Note: because the Study in the event has not been updated, the
+			// ids of new persistent objects are 0, therefore cannot be matched
 
 		} else if (event.getEventType() == RefreshableEvent.Type.DELETE) {
 			ListStore<FormSummary> store = grid.getStore();
@@ -468,11 +472,13 @@ public class FormListView extends View implements Refreshable {
 						store.remove(summary);
 					}
 				} else if (event.getData() instanceof StudyDef) {
-					if (summary.getFormDefinition().getStudy() == event.getData()) {
+					if (summary.getFormDefinition().getStudy() == event
+							.getData()) {
 						store.remove(summary);
 					}
 				} else if (event.getData() instanceof FormDefVersion) {
-					if (summary.getFormDefinition().getDefaultVersion() == event.getData()) {
+					if (summary.getFormDefinition().getDefaultVersion() == event
+							.getData()) {
 						store.remove(summary);
 						break; // no chance to have more than one
 					}
@@ -495,29 +501,30 @@ public class FormListView extends View implements Refreshable {
 
 						}));
 	}
-        public TreeGrid<FormSummary> formTreeGrid(){
-            TreeStore<FormSummary> store = new TreeStore<FormSummary>();
-            
-            List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-            configs.add(new ColumnConfig("id", appMessages.id(), 20));
-            configs.add(new ColumnConfig("organisation", appMessages.study(), 290));
-            configs.add(new ColumnConfig("form", appMessages.form(), 580));
-            ColumnConfig ver = new ColumnConfig("version", appMessages.version(),
-                    50);
-            ver.setAlignment(HorizontalAlignment.CENTER);
-            configs.add(ver);
-            ColumnConfig responsesColConfig = new ColumnConfig("responses",
-                    appMessages.responses(), 70);
-            responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
-            configs.add(responsesColConfig);
-            
-            ColumnModel cm = new ColumnModel(configs);
-            cm.setHidden(0, true);
-            
-            TreeGrid<FormSummary> tree = new TreeGrid<FormSummary>(store, cm);
-            tree.setBorders(true);
-            tree.setAutoExpandColumn("form");
-            
-            return tree;
-        }
+
+	public TreeGrid<FormSummary> formTreeGrid() {
+		TreeStore<FormSummary> store = new TreeStore<FormSummary>();
+
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+		configs.add(new ColumnConfig("id", appMessages.id(), 20));
+		configs.add(new ColumnConfig("organisation", appMessages.study(), 290));
+		configs.add(new ColumnConfig("form", appMessages.form(), 580));
+		ColumnConfig ver = new ColumnConfig("version", appMessages.version(),
+				50);
+		ver.setAlignment(HorizontalAlignment.CENTER);
+		configs.add(ver);
+		ColumnConfig responsesColConfig = new ColumnConfig("responses",
+				appMessages.responses(), 70);
+		responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
+		configs.add(responsesColConfig);
+
+		ColumnModel cm = new ColumnModel(configs);
+		cm.setHidden(0, true);
+
+		TreeGrid<FormSummary> tree = new TreeGrid<FormSummary>(store, cm);
+		tree.setBorders(true);
+		tree.setAutoExpandColumn("form");
+
+		return tree;
+	}
 }
