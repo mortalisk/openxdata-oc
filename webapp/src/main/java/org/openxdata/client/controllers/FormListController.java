@@ -9,9 +9,9 @@ import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.views.FormListView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
-
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
@@ -129,4 +129,10 @@ public class FormListController extends Controller {
             }
         });
     }
+
+	public void forwardToItemExportController(Editable editable) {
+		ItemExportController controller = new ItemExportController();
+		controller.loadExportDialog(editable);
+		
+	}
 }
