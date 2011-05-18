@@ -61,6 +61,7 @@ public class FormListView extends View implements Refreshable {
 
 	private boolean showAllFormVersions = true;
 	private Button allVersions;
+	private Button export;
 
 	public FormListView(Controller controller) {
 		super(controller);
@@ -159,6 +160,17 @@ public class FormListView extends View implements Refreshable {
 		});
 		allVersions.hide();
 
+		export = new Button(appMessages.exportA());
+		export.addListener(Events.Select, new Listener<ButtonEvent>() {
+
+			@Override
+			public void handleEvent(ButtonEvent be) {
+				export();
+			}
+
+		});
+		export.hide();
+		
 		Button capture = new Button(appMessages.captureData());
 		capture.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
@@ -184,18 +196,21 @@ public class FormListView extends View implements Refreshable {
 					Permission.PERM_ADD_FORM_VERSIONS)) {
 				newButton.show();
 				allVersions.show();
+				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_EDIT_STUDIES,
 					Permission.PERM_EDIT_FORMS,
 					Permission.PERM_EDIT_FORM_VERSIONS)) {
 				edit.show();
 				allVersions.show();
+				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_DELETE_STUDIES,
 					Permission.PERM_DELETE_FORMS,
 					Permission.PERM_DELETE_FORM_VERSIONS)) {
 				delete.show();
 				allVersions.show();
+				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_ADD_FORM_DATA)) {
 				capture.show();
@@ -213,6 +228,7 @@ public class FormListView extends View implements Refreshable {
 		buttonBar.add(edit, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(delete, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(allVersions, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
+		buttonBar.add(export, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		HBoxLayoutData flex = new HBoxLayoutData(new Margins(5, 5, 0, 0));
 		flex.setFlex(1);
 		buttonBar.add(new Text(), flex);
