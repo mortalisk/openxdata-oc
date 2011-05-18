@@ -37,9 +37,9 @@ public abstract class WizardView extends View {
     protected final AppMessages appMessages = GWT.create(AppMessages.class);
 	
     private String heading;
-    private Window window;
-        public int mainWindowHeight;
-        public int mainWindowWidth;
+	private Window window;
+	public int mainWindowHeight;
+	public int mainWindowWidth;
 	private CardLayout wizardLayout;
 	
 	protected Button nextButton;
