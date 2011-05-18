@@ -94,7 +94,7 @@ public class FormDesignerView {
         // get the xforms and layout xml
         String xform = formDefVersion.getXform();
         String layout = formDefVersion.getLayout();
-        // if not empty load it in the formdesigner for editing
+        // if not empty load it in the form designer for editing
         if (xform != null && xform.trim().length() > 0) {
             // If the form was localised for the current locale, then translate
             // it to the locale.
