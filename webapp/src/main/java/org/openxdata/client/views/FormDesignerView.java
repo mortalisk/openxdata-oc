@@ -146,7 +146,6 @@ public class FormDesignerView {
                 com.google.gwt.user.client.Window.getClientHeight());
         formDesignerWindow.add(formDesigner);
         formDesignerWindow.setScrollMode(Scroll.AUTO);
-        formDesignerWindow.addListener(Events.BeforeHide, beforeHide);
         formDesignerWindow.setModal(true);
 
         formDesignerWindow.show();
@@ -159,29 +158,10 @@ public class FormDesignerView {
 
         @Override
         public void handleEvent(ComponentEvent be) {
+        	hide();
             be.setCancelled(true);
             be.stopEvent();
-            MessageBox.confirm(appMessages.cancel(), appMessages.areYouSure(),
-                    new Listener<MessageBoxEvent>() {
-
-                        @Override
-                        public void handleEvent(MessageBoxEvent be) {
-                            if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-                                // remove the form in the designer
-                                formDesignerWindow.removeListener(
-                                        Events.BeforeHide,
-                                        editStudyFormWindowListener);
-                                formDesignerWindow.hide();
-                                ProgressIndicator.hideProgressBar();
-                                formDesignerWindow.addListener(
-                                        Events.BeforeHide,
-                                        editStudyFormWindowListener);
-                                
-                                // Set the form to null to remove previous references.
-                                org.purc.purcforms.client.Context.setFormDef(null);
-                            }
-                        }
-                    });
+            org.purc.purcforms.client.Context.setFormDef(null);
         }
     };
     

@@ -300,6 +300,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		// save any mapped study or form
 		saveUserStudyMap();
 		saveUserFormMap();
+		ProgressIndicator.hideProgressBar();
 	}
 
 	@Override
@@ -514,7 +515,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ButtonEvent be) {
-						ProgressIndicator.showProgressBar();
 						studyFormController.formHasData(form);
 					}
 				});
