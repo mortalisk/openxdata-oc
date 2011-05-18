@@ -104,7 +104,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <servlet-mapping>
     <servlet-name>studyexport</servlet-name>
     <url-pattern>/studyexport</url-pattern>
-    <url-pattern>/OpenXDataServerAdmin/studyexport</url-pattern>
+    <url-pattern>/emit/studyexport</url-pattern>
   </servlet-mapping>
 
   <!-- RPC services -->
