@@ -249,6 +249,25 @@ public class FormListView extends View implements Refreshable {
 		configPanel(portlet);
 	}
 
+	protected void export() {
+		if (grid.getSelectionModel().getSelectedItem() != null) {
+			ProgressIndicator.showProgressBar();
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+				@Override
+				public void execute() {
+					StudyDef study = grid.getSelectionModel()
+							.getSelectedItem().getFormDefinition().getStudy();
+					FormListController controller = (FormListController) getController();
+					
+					controller.forwardToItemExportController(study);
+				}
+			});
+		} else {
+			MessageBox.alert(appMessages.viewResponses(),
+					appMessages.formMustBeSelected(), null);
+		}
+	}
+
 	public void setFormData(List<FormDef> formDefs) {
 		GWT.log("FormListView : setFormData");
 		ProgressIndicator.showProgressBar();
