@@ -89,7 +89,7 @@ public class FormDesignerView {
      */
 	private void designForm(FormDefVersion formDefVersion, Boolean readOnly) {
 		String formName = formDefVersion.getFormDef().getName();
-        String formVersionName = formDefVersion.getFormDef().getDefaultVersion().getName();
+        String formVersionName = formDefVersion.getName();
 
         // get the xforms and layout xml
         String xform = formDefVersion.getXform();
