@@ -113,15 +113,6 @@ public class FormDesignerView {
 	}
 
     /**
-     * Conceals the FormDesigner window from the User.
-     */
-    public void hide() {
-        formDesignerWindow.removeListener(Events.BeforeHide,
-                newStudyFrmWindowListener);
-        formDesignerWindow.hide();
-    }
-
-    /**
      * Creates the gxt specific modal window in which to embed the Purcforms FormDesigner.
      * 
      * @param formName Name of Form Definition being manipulated.
@@ -167,25 +158,17 @@ public class FormDesignerView {
 
         @Override
         public void handleEvent(ComponentEvent be) {
+        	hide();
             be.setCancelled(true);
             be.stopEvent();
-            MessageBox.confirm(appMessages.cancel(),
-                    LocaleText.get("cancelFormPrompt"),
-                    new Listener<MessageBoxEvent>() {
-
-                        @Override
-                        public void handleEvent(MessageBoxEvent be) {
-                            if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-                                formDesignerWindow.removeListener(
-                                        Events.BeforeHide,
-                                        newStudyFrmWindowListener);
-                                formDesignerWindow.hide();
-                                formDesignerWindow.addListener(
-                                        Events.BeforeHide,
-                                        newStudyFrmWindowListener);
-                            }
-                        }
-                    });
         }
     };
+    
+    /**
+     * Conceals the Form Designer window from the User.
+     */
+    public void hide() {
+        formDesignerWindow.hide();
+        ProgressIndicator.hideProgressBar();
+    }
 }
