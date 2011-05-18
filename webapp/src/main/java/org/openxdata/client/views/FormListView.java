@@ -313,8 +313,6 @@ public class FormListView extends View implements Refreshable {
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 				@Override
 				public void execute() {
-					// FormListController controller = (FormListController)
-					// getController();
 					FormDef formDef = grid.getSelectionModel()
 							.getSelectedItem().getFormDefinition();
 					if (showAllFormVersions) {
