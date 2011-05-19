@@ -78,7 +78,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	 */
         @Inject
 	public ReportsTreeView(OpenXDataWidgetFactory openXDataViewFactory) {
-		super("Reports", openXDataViewFactory);
+		super("Datasets", openXDataViewFactory);
                 initHandlers();
 	}
 	
@@ -255,11 +255,11 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		TreeItem parent = tree.getSelectedItem();
 		
 		if (parent != null && parent.getUserObject() instanceof Report) {
-			Window.alert("Please add a group to another group instead of report.");
+			Window.alert("Please add a group to another group instead of a Dataset.");
 			return;
 		}
 		
-		ReportGroup reportGroup = new ReportGroup("New Report Group");
+		ReportGroup reportGroup = new ReportGroup("New Dataset Group");
 		TreeItem root = new CompositeTreeItem(new TreeItemWidget(
 		         WidgetDisplay.images.lookup(), reportGroup.getName(), popup));
 		root.setUserObject(reportGroup);
@@ -288,7 +288,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	 * Adds a new report group.
 	 */
 	public void addNewReportGroup() {
-		ReportGroup reportGroup = new ReportGroup("New Report Group");
+		ReportGroup reportGroup = new ReportGroup("New Dataset Group");
 		TreeItem root = new CompositeTreeItem(new TreeItemWidget(
 		        WidgetDisplay.images.lookup(), reportGroup.getName(), popup));
 		root.setUserObject(reportGroup);
@@ -309,11 +309,11 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			return;
 		
 		if (!(item.getUserObject() instanceof ReportGroup)) {
-			Window.alert("Please add the report to a group.");
+			Window.alert("Please add the report to a Dataset Group.");
 			return;
 		}
 		
-		Report report = new Report("New Report");
+		Report report = new Report("New Dataset");
 		TreeItem root = new CompositeTreeItem(new TreeItemWidget(
 		        WidgetDisplay.images.filtersgroup(), report.getName(), popup));
 		root.setUserObject(report);
@@ -410,7 +410,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		labels.setAddLabel(WidgetDisplay.constants.label_addreportgroup());
 		labels.setDeleteLabel(WidgetDisplay.constants.label_deletereport());
 		labels.setAddChildItemLabel(WidgetDisplay.constants.label_addnewreport());
-		labels.setDeleteChildItemLabel("Delete Report");
+		labels.setDeleteChildItemLabel("Delete Dataset");
 		return labels;
 	}
 	
@@ -455,7 +455,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			if (RolesListUtil.getPermissionResolver().isDeleteReportGroups()) {
 				deleteSelectedItem();
 			} else {
-				Window.alert("You do not have sufficient priviledges to delete Report Groups and Reports! Contact your system administrator");
+				Window.alert("You do not have sufficient priviledges to delete Datasets! Contact your system administrator");
 			}
 		}
 	}
@@ -466,7 +466,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			if (RolesListUtil.getPermissionResolver().isAddReportGroups()) {
 				addNewChildItem();
 			} else {
-				Window.alert("You do not have sufficient priviledges to add Report Groups and Reports! Contact your system administrator");
+				Window.alert("You do not have sufficient priviledges to add Datasets! Contact your system administrator");
 			}
 		}
 	}
@@ -477,7 +477,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			if (RolesListUtil.getPermissionResolver().isAddReportGroups()) {
 				addNewItem();
 			} else {
-				Window.alert("You do not have sufficient priviledges to add Report Groups and Reports! Contact your system administrator");
+				Window.alert("You do not have sufficient priviledges to add Datasets! Contact your system administrator");
 			}
 		}
 	}

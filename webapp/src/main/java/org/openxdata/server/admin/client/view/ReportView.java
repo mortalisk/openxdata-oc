@@ -155,7 +155,7 @@ public class ReportView extends OpenXDataBaseView implements
 	
 	private void loadPermissionLessView() {
 		table.setWidget(0, 0,
-		        new Label(constants.ascertain_permissionLessView() + "Reports"));
+		        new Label(constants.ascertain_permissionLessView() + "Datasets"));
 		FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 		cellFormatter.setWidth(0, 0, "20%");
 		table.setStyleName("cw-FlexTable");
@@ -203,7 +203,7 @@ public class ReportView extends OpenXDataBaseView implements
 		
 		if (RolesListUtil.getPermissionResolver().isExtraPermission(
 		        Permission.PERM_REPORT_QUERY_BUILDER)) {
-			tabs.add(queryBuilder, "Fields");
+			tabs.add(queryBuilder, "Dataset Fields");
 		}
 		
 		Utilities.maximizeWidget(tabs);
