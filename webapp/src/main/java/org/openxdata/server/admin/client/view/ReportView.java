@@ -94,13 +94,7 @@ public class ReportView extends OpenXDataBaseView implements
 	 * List of form versions from which to select the one to use for the report.
 	 */
 	private ListBox lbForms;
-	
-	/**
-	 * Widget for displaying status of whether the report has a report
-	 * definition file or not.
-	 */
-	private TextBox txtDefinition;
-	
+		
 	/**
 	 * Widget for displaying status and selection of the report definition file.
 	 */
@@ -194,9 +188,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lblOddColor = new OpenXDataLabel("Odd Row Color");
 		
 		lblEvenColor = new OpenXDataLabel("Even Row Color");
-		
-		txtDefinition = new TextBox();
-		
+				
 		panelDef = new HorizontalPanel();
 		
 		lbType = new ListBox(false);
@@ -282,10 +274,8 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(1, 1, txtDescription);
 		table.setWidget(2, 1, lbForms);
 		
-		panelDef.add(txtDefinition);
 		panelDef.add(btnRptDef);
 		panelDef.setCellWidth(btnRptDef, "20%");
-		FormUtil.maximizeWidget(txtDefinition);
 		table.setWidget(3, 1, panelDef);
 		
 		table.setWidget(4, 1, lbType);
@@ -298,7 +288,6 @@ public class ReportView extends OpenXDataBaseView implements
 		txtName.setWidth("100%");
 		txtDescription.setWidth("100%");
 		lbForms.setWidth("100%");
-		txtDefinition.setWidth("100%");
 		panelDef.setWidth("100%");
 		lbType.setWidth("100%");
 		txtTitle.setWidth("100%");
@@ -444,18 +433,6 @@ public class ReportView extends OpenXDataBaseView implements
 			}
 		});
 		
-		txtDefinition.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				if (report != null) {
-					if (txtDefinition.getText().trim().length() == 0)
-						report.setDefinition(null);
-					
-					eventBus.fireEvent(new EditableEvent<Report>(report));
-				}
-			}
-		});
-		
 		sgstOddColor.addSelectionHandler(new SelectionHandler<Suggestion>() {
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> arg0) {
@@ -566,7 +543,6 @@ public class ReportView extends OpenXDataBaseView implements
 			String def = report.getDefinition();
 			if (def != null && def.trim().length() == 0)
 				def = null;
-			txtDefinition.setText(def == null ? null : "CLEAR");
 			lbForms.setSelectedIndex(getFormIndex(report.getFormDefVersionId()));
 			
 			FormDefVersion formDefVersion = getFormDefVersion(report
@@ -799,7 +775,6 @@ public class ReportView extends OpenXDataBaseView implements
 					String contents = response.getText();
 					if (contents != null && contents.trim().length() > 0) {
 						report.setDefinition(contents);
-						txtDefinition.setText("CLEAR");
 						 eventBus.fireEvent(new EditableEvent<Report>(report));
 					}
 				}
@@ -994,7 +969,6 @@ public class ReportView extends OpenXDataBaseView implements
 
         private void clearPropeties(){
                 txtName.setText(null);
-                txtDefinition.setText(null);
         }
 
         private void enableProperties(boolean enabled){
