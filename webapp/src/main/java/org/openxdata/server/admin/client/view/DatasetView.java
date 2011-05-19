@@ -43,8 +43,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 
 /**
- * This widget displays properties of the selected report and lets you edit
- * them.
+ * This widget displays properties of the selected Dataset.
  * 
  * @author daniel
  * 
@@ -53,33 +52,33 @@ public class DatasetView extends OpenXDataBaseView implements
         SelectionHandler<Integer>,
         OpenXDataExportImportApplicationEventListener {
 	
-	/** The report definition object. */
-	private Report report;
+	/** The dataset definition object. */
+	private Report dataset;
 	
-	/** The report group object. */
-	private ReportGroup reportGroup;
+	/** The dataset group object. */
+	private ReportGroup datasetGroup;
 	
-	/** Widget for entering the name of the report or group. */
+	/** Widget for entering the name of the dataset or group. */
 	private TextBox txtName;
 	
-	/** Widget for entering the description of the report or group. */
+	/** Widget for entering the description of the dataset or group. */
 	private TextBox txtDescription;
 	
 	/**
-	 * List of form versions from which to select the one to use for the report.
+	 * List of form versions from which to select the one to use for the dataset.
 	 */
 	private ListBox lbForms;
 				
 	/** List of forms versions. */
 	private List<FormDefVersion> forms;
 	
-	/** The index of the report design tab. */
+	/** The index of the dataset design tab. */
 	private final int TAB_INDEX_DESIGN = 1;
 	
-	/** The index of report data display tab. */
+	/** The index of dataset data display tab. */
 	private final int TAB_INDEX_DATA = 2;
 	
-	private boolean reportDefChanged = false;
+	private boolean datasetDefChanged = false;
 	
 	private Label lblFormSource;
 	
@@ -87,10 +86,10 @@ public class DatasetView extends OpenXDataBaseView implements
 	private QueryBuilderWidget queryBuilder;
 		
 	/**
-	 * Creates a new instance of the report view.
+	 * Creates a new instance of the Dataset view.
 	 * 
 	 * @param itemChangeListener
-	 *            listener to <tt>Report</tt> property changes.
+	 *            listener to <tt>Dataset</tt> property changes.
 	 * @param openXDataViewFactory
 	 */
         @Inject
@@ -242,16 +241,16 @@ public class DatasetView extends OpenXDataBaseView implements
 	}
 	
 	/**
-	 * Sets the Report Form.
+	 * Sets the Dataset Form.
 	 */
 	private void setReportForm() {
-		if (report != null) {
+		if (dataset != null) {
 			
 			FormDefVersion formDefVersion = forms.get(lbForms
 			        .getSelectedIndex() - 1);
 			if (formDefVersion.getXform() != null) {
-				report.setFormDefVersionId(formDefVersion.getFormDefVersionId());
-				report.setDirty(true);
+				dataset.setFormDefVersionId(formDefVersion.getFormDefVersionId());
+				dataset.setDirty(true);
 				queryBuilder.setXform(getXform(formDefVersion));
 			} else {
 				Utilities
@@ -269,12 +268,12 @@ public class DatasetView extends OpenXDataBaseView implements
 	 *            the widget having the new name.
 	 */
 	private void updateName() {
-		if (report != null) {
-			report.setName(txtName.getText());
-                        eventBus.fireEvent(new EditableEvent<Report>(report));
+		if (dataset != null) {
+			dataset.setName(txtName.getText());
+                        eventBus.fireEvent(new EditableEvent<Report>(dataset));
 		} else {
-			reportGroup.setName(txtName.getText());
-                        eventBus.fireEvent(new EditableEvent<ReportGroup>(reportGroup));
+			datasetGroup.setName(txtName.getText());
+                        eventBus.fireEvent(new EditableEvent<ReportGroup>(datasetGroup));
 		}
 	}
 	
@@ -285,44 +284,44 @@ public class DatasetView extends OpenXDataBaseView implements
 	 *            the widget having the new description.
 	 */
 	private void updateDescription() {
-		if (report != null) {
-			report.setDescription(txtDescription.getText());
-			 eventBus.fireEvent(new EditableEvent<Report>(report));
+		if (dataset != null) {
+			dataset.setDescription(txtDescription.getText());
+			 eventBus.fireEvent(new EditableEvent<Report>(dataset));
 		} else {
-			reportGroup.setDescription(txtDescription.getText());
-			 eventBus.fireEvent(new EditableEvent<ReportGroup>(reportGroup));
+			datasetGroup.setDescription(txtDescription.getText());
+			 eventBus.fireEvent(new EditableEvent<ReportGroup>(datasetGroup));
 		}
 	}
 	
 	public void onItemSelected(Composite sender, Object item) {
-		report = null;
-		reportGroup = null;
+		dataset = null;
+		datasetGroup = null;
 		enableProperties(true);
 		if (item instanceof Report) {
-			report = (Report) item;
-			txtName.setText(report.getName());
-			txtDescription.setText(report.getDescription());
-			String def = report.getDefinition();
+			dataset = (Report) item;
+			txtName.setText(dataset.getName());
+			txtDescription.setText(dataset.getDescription());
+			String def = dataset.getDefinition();
 			if (def != null && def.trim().length() == 0)
 				def = null;
-			lbForms.setSelectedIndex(getFormIndex(report.getFormDefVersionId()));
+			lbForms.setSelectedIndex(getFormIndex(dataset.getFormDefVersionId()));
 			
-			FormDefVersion formDefVersion = getFormDefVersion(report
+			FormDefVersion formDefVersion = getFormDefVersion(dataset
 			        .getFormDefVersionId());
 			if (formDefVersion != null)
 				queryBuilder.setXform(getXform(formDefVersion));
 			
-			queryBuilder.setQueryDef(report.getQueryDefinition());
-			queryBuilder.setSql(report.getQuerySql());
+			queryBuilder.setQueryDef(dataset.getQueryDefinition());
+			queryBuilder.setSql(dataset.getQuerySql());
 
 			enableReportProperties(true);
 
 			getTypeAndTitle();
 
 		} else {
-			reportGroup = (ReportGroup) item;
-			txtName.setText(reportGroup.getName());
-			txtDescription.setText(reportGroup.getDescription());
+			datasetGroup = (ReportGroup) item;
+			txtName.setText(datasetGroup.getName());
+			txtDescription.setText(datasetGroup.getDescription());
 
 			queryBuilder.setXform(null);
 			queryBuilder.setQueryDef(null);
@@ -459,8 +458,8 @@ public class DatasetView extends OpenXDataBaseView implements
 	 */
 	public String getSql() {
 		if (tabs.getTabBar().getSelectedTab() != TAB_INDEX_DESIGN
-		        && report != null)
-			return report.getQuerySql();
+		        && dataset != null)
+			return dataset.getQuerySql();
 		return queryBuilder.getSql();
 	}
 	
@@ -471,10 +470,10 @@ public class DatasetView extends OpenXDataBaseView implements
 		// If we have the design tab selected, we are assuming user has made
 		// changes to the report
 		if (!optimize || tabs.getTabBar().getSelectedTab() == TAB_INDEX_DESIGN) {
-			if (report != null) {
-				report.setQueryDefinition(queryBuilder.getQueryDef());
-				report.setQuerySql(queryBuilder.getSql());
-				report.setDirty(true);
+			if (dataset != null) {
+				dataset.setQueryDefinition(queryBuilder.getQueryDef());
+				dataset.setQuerySql(queryBuilder.getSql());
+				dataset.setDirty(true);
 			}
 		}
 	}
@@ -485,11 +484,11 @@ public class DatasetView extends OpenXDataBaseView implements
 		if (selectedIndex == TAB_INDEX_DESIGN)
 			queryBuilder.load();
 		else if (selectedIndex == TAB_INDEX_DATA) {
-			if (reportDefChanged)
+			if (datasetDefChanged)
 				commitChanges(false);
 		}
 		
-		reportDefChanged = (selectedIndex == TAB_INDEX_DESIGN);
+		datasetDefChanged = (selectedIndex == TAB_INDEX_DESIGN);
 	}
 	
 	/**
@@ -498,7 +497,7 @@ public class DatasetView extends OpenXDataBaseView implements
 	private void getTypeAndTitle() {
 		try {
 			
-			String values = report.getParamValues();
+			String values = dataset.getParamValues();
 			if (values == null || values.trim().length() == 0)
 				return;
 			int pos1 = values.indexOf('|');
@@ -634,8 +633,8 @@ public class DatasetView extends OpenXDataBaseView implements
 
             @Override
             public void onDeleted(ReportGroup item) {
-                if (item.equals(reportGroup)) {
-                    reportGroup = null;
+                if (item.equals(datasetGroup)) {
+                    datasetGroup = null;
                     clearPropeties();
                     enableProperties(false);
                     enableReportProperties(false);
