@@ -18,8 +18,8 @@
 package org.openxdata.server.admin.client.internationalization;
 
 /**
- * Interface to represent the constants contained in resource bundle:
- * 	'D:/ROOT_KODE/External Projects/Omevac/oxd-dev-main/Manager/OpenXDataServerAdmin/bin/org/openxdata/server/admin/client/internationalization/openXdataConstants.properties'.
+ * Holds internalization string constants.
+ *
  */
 public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants {
   
