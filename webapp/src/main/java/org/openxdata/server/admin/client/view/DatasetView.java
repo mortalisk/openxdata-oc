@@ -227,17 +227,6 @@ public class DatasetView extends OpenXDataBaseView implements
 			}
 		});
 		
-		final OpenFileDialogEventListener eventListener = this;
-		btnRptDef.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				OpenFileDialog dlg = new OpenFileDialog(eventListener,
-				        "formopen");
-				dlg.center();
-			}
-		});
-		
 	}
 	
 	/**
