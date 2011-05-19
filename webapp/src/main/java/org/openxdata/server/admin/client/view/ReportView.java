@@ -110,9 +110,7 @@ public class ReportView extends OpenXDataBaseView implements
 	private boolean reportDefChanged = false;
 	
 	private Label lblFormSource;
-	
-	private Label lblEvenColor;
-	
+		
 	/** Button for clicking to select the report definiton file. */
 	private Button btnRptDef;
 	
@@ -153,9 +151,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lbForms = new ListBox(false);
 		
 		lblFormSource = new OpenXDataLabel("Form Source");
-				
-		lblEvenColor = new OpenXDataLabel("Even Row Color");
-				
+								
 		panelDef = new HorizontalPanel();
 										
 		txtOddColor = new TextBox();
@@ -215,9 +211,7 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(1, 0, new Label(constants.label_description()));
 		table.setWidget(2, 0, lblFormSource);
 		table.setWidget(3, 0, lblReportFile);
-		
-		table.setWidget(9, 0, lblEvenColor);
-		
+				
 		table.setWidget(0, 1, txtName);
 		table.setWidget(1, 1, txtDescription);
 		table.setWidget(2, 1, lbForms);
@@ -438,7 +432,6 @@ public class ReportView extends OpenXDataBaseView implements
 		lblFormSource.setVisible(enabled);
 		lblReportFile.setVisible(enabled);
 		panelDef.setVisible(enabled);
-		lblEvenColor.setVisible(enabled);
 		txtOddColor.setVisible(enabled);
 		txtEvenColor.setVisible(enabled);
 	}
