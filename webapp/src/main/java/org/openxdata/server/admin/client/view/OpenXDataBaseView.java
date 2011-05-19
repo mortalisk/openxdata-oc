@@ -17,24 +17,25 @@
  */
 package org.openxdata.server.admin.client.view;
 
-import com.google.gwt.user.client.ui.Widget;
+import org.openxdata.client.AppMessages;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
+import org.openxdata.server.admin.client.presenter.WidgetDisplay;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import org.openxdata.server.admin.client.presenter.WidgetDisplay;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * <tt>Base class</tt> for all Views that are <tt>Composites</tt> and want to be
@@ -47,6 +48,8 @@ public abstract class OpenXDataBaseView extends Composite {
 
 	protected static OpenXdataConstants constants = GWT
 			.create(OpenXdataConstants.class);
+	
+	protected AppMessages appMessages = GWT.create(AppMessages.class);
 
 	/** Widget for organizing display in tabular format. */
 	protected FlexTable table;
