@@ -267,7 +267,6 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		
 		if (parent != null) {
 			parent.addItem(root);
-			// ((ReportGroup)parent.getUserObject()).addReportGroup(reportGroup);
 			reportGroup.setParentReportGroup((ReportGroup) parent
 			        .getUserObject());
 			
