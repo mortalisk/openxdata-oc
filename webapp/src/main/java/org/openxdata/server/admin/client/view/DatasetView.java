@@ -107,7 +107,7 @@ public class DatasetView extends OpenXDataBaseView implements
 		
 		lbForms = new ListBox(false);
 		
-		lblFormSource = new OpenXDataLabel("Form Source");
+		lblFormSource = new OpenXDataLabel(appMessages.formSource());
 																		
 		queryBuilder = new QueryBuilderWidget();
 						
@@ -128,7 +128,7 @@ public class DatasetView extends OpenXDataBaseView implements
 	
 	private void loadPermissionLessView() {
 		table.setWidget(0, 0,
-		        new Label(constants.ascertain_permissionLessView() + "Datasets"));
+		        new Label(constants.ascertain_permissionLessView() + appMessages.datasets()));
 		FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 		cellFormatter.setWidth(0, 0, "20%");
 		table.setStyleName("cw-FlexTable");
@@ -172,7 +172,7 @@ public class DatasetView extends OpenXDataBaseView implements
 		
 		if (RolesListUtil.getPermissionResolver().isExtraPermission(
 		        Permission.PERM_REPORT_QUERY_BUILDER)) {
-			tabs.add(queryBuilder, "Dataset Fields");
+			tabs.add(queryBuilder, appMessages.datasetFields());
 		}
 		
 		Utilities.maximizeWidget(tabs);
@@ -243,7 +243,7 @@ public class DatasetView extends OpenXDataBaseView implements
 				queryBuilder.setXform(getXform(formDefVersion));
 			} else {
 				Utilities
-				        .displayMessage("The Form you selected doesnot have questions in it. Please Add questions by going to Studies > Design for the selected Form.");
+				        .displayMessage(appMessages.formHasNoQuestions());
 				lbForms.setSelectedIndex(-1);
 				return;
 			}
