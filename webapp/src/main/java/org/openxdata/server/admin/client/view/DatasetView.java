@@ -83,11 +83,6 @@ public class DatasetView extends OpenXDataBaseView implements
 	 * List of form versions from which to select the one to use for the report.
 	 */
 	private ListBox lbForms;
-		
-	/**
-	 * Widget for displaying status and selection of the report definition file.
-	 */
-	private HorizontalPanel panelDef;
 				
 	/** List of forms versions. */
 	private List<FormDefVersion> forms;
@@ -101,9 +96,6 @@ public class DatasetView extends OpenXDataBaseView implements
 	private boolean reportDefChanged = false;
 	
 	private Label lblFormSource;
-		
-	/** Button for clicking to select the report definiton file. */
-	private Button btnRptDef;
 	
 	/** The query builder widget. */
 	private QueryBuilderWidget queryBuilder;
@@ -131,11 +123,7 @@ public class DatasetView extends OpenXDataBaseView implements
 		lbForms = new ListBox(false);
 		
 		lblFormSource = new OpenXDataLabel("Form Source");
-								
-		panelDef = new HorizontalPanel();
-														
-		btnRptDef = new OpenXDataButton("Select");
-										
+																		
 		queryBuilder = new QueryBuilderWidget();
 						
 		openxdataStackPanel = widgetFactory.getOpenXdataStackPanel();
@@ -182,14 +170,10 @@ public class DatasetView extends OpenXDataBaseView implements
 		table.setWidget(1, 1, txtDescription);
 		table.setWidget(2, 1, lbForms);
 		
-		panelDef.add(btnRptDef);
-		panelDef.setCellWidth(btnRptDef, "20%");
-		table.setWidget(3, 1, panelDef);
 				
 		txtName.setWidth("100%");
 		txtDescription.setWidth("100%");
 		lbForms.setWidth("100%");
-		panelDef.setWidth("100%");
 		
 		FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 		cellFormatter.setWidth(0, 0, "20%");
@@ -375,7 +359,6 @@ public class DatasetView extends OpenXDataBaseView implements
 	private void enableReportProperties(boolean enabled) {
 		lbForms.setVisible(enabled);
 		lblFormSource.setVisible(enabled);
-		panelDef.setVisible(enabled);
 	}
 	
 	/**
