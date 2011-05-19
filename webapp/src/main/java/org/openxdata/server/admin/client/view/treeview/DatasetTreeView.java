@@ -32,7 +32,7 @@ import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 
 /**
- * This widget displays a list of reports and their groups to the user in a
+ * This widget displays a list of Datasets and their groups to the user in a
  * hierarchical view.
  * 
  * @author daniel
