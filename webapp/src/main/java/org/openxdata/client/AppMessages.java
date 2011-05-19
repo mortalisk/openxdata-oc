@@ -164,4 +164,10 @@ public interface AppMessages extends Messages {
 	String deleteDatasetGroup();
 	
 	String addDataset();
+	
+	String formSource();
+	
+	String datasetFields();
+	
+	String formHasNoQuestions();
 }
