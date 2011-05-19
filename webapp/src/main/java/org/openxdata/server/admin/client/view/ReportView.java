@@ -106,9 +106,6 @@ public class ReportView extends OpenXDataBaseView implements
 	/** Button for clicking to select the report definiton file. */
 	private Button btnRptDef;
 	
-	/** Widget for displaying report data in html format. */
-	private ReportDataView reportDataView;
-	
 	/** Label for the report definition file. */
 	private Label lblReportFile;
 	
@@ -142,9 +139,7 @@ public class ReportView extends OpenXDataBaseView implements
 		panelDef = new HorizontalPanel();
 														
 		btnRptDef = new OpenXDataButton("Select");
-				
-		reportDataView = new ReportDataView(this);
-		
+						
 		lblReportFile = new OpenXDataLabel("Report definition file");
 				
 		queryBuilder = new QueryBuilderWidget();
@@ -218,11 +213,6 @@ public class ReportView extends OpenXDataBaseView implements
 			tabs.add(queryBuilder, "Fields");
 		}
 		
-		if (RolesListUtil.getPermissionResolver().isPermission("Reports")) {
-			tabs.add(reportDataView, "Output");
-		}
-		
-		Utilities.maximizeWidget(reportDataView);
 		Utilities.maximizeWidget(tabs);
 		
 		initWidget(tabs);
@@ -344,7 +334,6 @@ public class ReportView extends OpenXDataBaseView implements
 	public void onItemSelected(Composite sender, Object item) {
 		report = null;
 		reportGroup = null;
-		reportDataView.loadReport(null);
 		enableProperties(true);
 		if (item instanceof Report) {
 			report = (Report) item;
@@ -362,28 +351,24 @@ public class ReportView extends OpenXDataBaseView implements
 			
 			queryBuilder.setQueryDef(report.getQueryDefinition());
 			queryBuilder.setSql(report.getQuerySql());
-			
+
 			enableReportProperties(true);
-			
-			reportDataView.setReport(report);
+
 			getTypeAndTitle();
-			
-			if (tabs.getTabBar().getSelectedTab() == TAB_INDEX_DATA)
-				reportDataView.refresh();
+
 		} else {
 			reportGroup = (ReportGroup) item;
 			txtName.setText(reportGroup.getName());
 			txtDescription.setText(reportGroup.getDescription());
-			
+
 			queryBuilder.setXform(null);
 			queryBuilder.setQueryDef(null);
 			queryBuilder.setSql(null);
-			
+
 			enableReportProperties(false);
-			
-			reportDataView.setReport(null);
+
 		}
-		
+
 		if (tabs.getTabBar().getSelectedTab() == TAB_INDEX_DESIGN)
 			queryBuilder.load();
 	}
@@ -507,16 +492,6 @@ public class ReportView extends OpenXDataBaseView implements
 	}
 	
 	/**
-	 * Displays a report with given html.
-	 * 
-	 * @param html
-	 *            the report html
-	 */
-	public void loadReport(String html) {
-		reportDataView.loadReport(html);
-	}
-	
-	/**
 	 * Gets the sql statement for the report.
 	 * 
 	 * @return the report sql statement.
@@ -551,7 +526,6 @@ public class ReportView extends OpenXDataBaseView implements
 		else if (selectedIndex == TAB_INDEX_DATA) {
 			if (reportDefChanged)
 				commitChanges(false);
-			reportDataView.refresh();
 		}
 		
 		reportDefChanged = (selectedIndex == TAB_INDEX_DESIGN);
@@ -640,28 +614,10 @@ public class ReportView extends OpenXDataBaseView implements
 		}
 	}
 	
-	/**
-	 * Reloads report data.
-	 */
-	public void refresh() {
-		reportDataView.refresh();
-	}
-	
 	@Override
 	public void exportAsPdf() {
-		reportDataView.exportAsPdf();
 	}
 	
-	/**
-	 * Checks if we are displaying report data.
-	 * 
-	 * @return true if diplaying report data, else false.
-	 */
-	public boolean isInReportDataMode() {
-		return tabs.getTabBar().getSelectedTab() == TAB_INDEX_DATA;
-	}
-	
-
 	/**
 	 * @return
 	 */
