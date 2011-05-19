@@ -111,9 +111,6 @@ public class ReportView extends OpenXDataBaseView implements
 	
 	private Label lblFormSource;
 	
-	/** Widget for organizing report properties into categories using tabs. */
-	private Label lblOddColor;
-	
 	private Label lblEvenColor;
 	
 	/** Button for clicking to select the report definiton file. */
@@ -156,9 +153,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lbForms = new ListBox(false);
 		
 		lblFormSource = new OpenXDataLabel("Form Source");
-		
-		lblOddColor = new OpenXDataLabel("Odd Row Color");
-		
+				
 		lblEvenColor = new OpenXDataLabel("Even Row Color");
 				
 		panelDef = new HorizontalPanel();
@@ -221,7 +216,6 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(2, 0, lblFormSource);
 		table.setWidget(3, 0, lblReportFile);
 		
-		table.setWidget(8, 0, lblOddColor);
 		table.setWidget(9, 0, lblEvenColor);
 		
 		table.setWidget(0, 1, txtName);
@@ -444,7 +438,6 @@ public class ReportView extends OpenXDataBaseView implements
 		lblFormSource.setVisible(enabled);
 		lblReportFile.setVisible(enabled);
 		panelDef.setVisible(enabled);
-		lblOddColor.setVisible(enabled);
 		lblEvenColor.setVisible(enabled);
 		txtOddColor.setVisible(enabled);
 		txtEvenColor.setVisible(enabled);
