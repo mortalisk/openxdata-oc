@@ -377,13 +377,11 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	public void deleteSelectedItem() {
 		TreeItem item = tree.getSelectedItem();
 		if (item == null) {
-			// TODO add message for internationalization purposes
-			Window.alert("Please first select the item to delete");
+			Window.alert(appMessages.selectItemDelete());
 			return;
 		}
 		
-		// TODO add message for internationalization purposes
-		if (!Window.confirm("Do you really want to delete the selected item?"))
+		if (!Window.confirm(appMessages.deleteConfirmation()))
 			return;
 		
 		if (item.getUserObject() instanceof Report) {
