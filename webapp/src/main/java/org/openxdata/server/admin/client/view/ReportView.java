@@ -78,9 +78,6 @@ public class ReportView extends OpenXDataBaseView implements
 	/** The report group object. */
 	private ReportGroup reportGroup;
 	
-	/** Label for the report type. */
-	private Label lblType;
-	
 	/** Label for the report title. */
 	private Label lblTitle;
 	
@@ -99,9 +96,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 * Widget for displaying status and selection of the report definition file.
 	 */
 	private HorizontalPanel panelDef;
-	
-	/** Widget for entering the report type. */
-	private ListBox lbType;
 	
 	/** Widget for entering the report title. */
 	private TextBox txtTitle;
@@ -173,7 +167,6 @@ public class ReportView extends OpenXDataBaseView implements
 	
 	private void setUp() {
 		
-		lblType = new OpenXDataLabel("Type");
 		
 		lblTitle = new OpenXDataLabel("Title");
 		
@@ -190,9 +183,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lblEvenColor = new OpenXDataLabel("Even Row Color");
 				
 		panelDef = new HorizontalPanel();
-		
-		lbType = new ListBox(false);
-		
+				
 		txtTitle = new TextBox();
 		
 		txtTitle = new TextBox();
@@ -263,7 +254,6 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(2, 0, lblFormSource);
 		table.setWidget(3, 0, lblReportFile);
 		
-		table.setWidget(4, 0, lblType);
 		table.setWidget(5, 0, lblTitle);
 		table.setWidget(6, 0, lblXAxisTitle);
 		table.setWidget(7, 0, lblYAxisTitle);
@@ -278,7 +268,6 @@ public class ReportView extends OpenXDataBaseView implements
 		panelDef.setCellWidth(btnRptDef, "20%");
 		table.setWidget(3, 1, panelDef);
 		
-		table.setWidget(4, 1, lbType);
 		table.setWidget(5, 1, txtTitle);
 		table.setWidget(6, 1, txtXAxisTitle);
 		table.setWidget(7, 1, txtYAxisTitle);
@@ -289,7 +278,6 @@ public class ReportView extends OpenXDataBaseView implements
 		txtDescription.setWidth("100%");
 		lbForms.setWidth("100%");
 		panelDef.setWidth("100%");
-		lbType.setWidth("100%");
 		txtTitle.setWidth("100%");
 		txtXAxisTitle.setWidth("100%");
 		txtYAxisTitle.setWidth("100%");
@@ -325,11 +313,6 @@ public class ReportView extends OpenXDataBaseView implements
 		tabs.selectTab(0);
 		tabs.addSelectionHandler(this);
 		
-		lbType.addItem("Report Listing");
-		lbType.addItem("Bar Chart");
-		lbType.addItem("Line Chart");
-		lbType.addItem("Pie Chart");
-
 		StyleUtil.loadColorNames((MultiWordSuggestOracle) sgstOddColor
 		        .getSuggestOracle());
 		StyleUtil.loadColorNames((MultiWordSuggestOracle) sgstEvenColor
@@ -370,51 +353,7 @@ public class ReportView extends OpenXDataBaseView implements
 				updateDescription();
 			}
 		});
-		
-		txtTitle.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		txtTitle.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		txtXAxisTitle.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		txtXAxisTitle.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		txtYAxisTitle.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		txtYAxisTitle.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		
-		lbType.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		
+				
 		lbForms.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -430,34 +369,6 @@ public class ReportView extends OpenXDataBaseView implements
 				OpenFileDialog dlg = new OpenFileDialog(eventListener,
 				        "formopen");
 				dlg.center();
-			}
-		});
-		
-		sgstOddColor.addSelectionHandler(new SelectionHandler<Suggestion>() {
-			@Override
-			public void onSelection(SelectionEvent<Suggestion> arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		
-		sgstEvenColor.addSelectionHandler(new SelectionHandler<Suggestion>() {
-			@Override
-			public void onSelection(SelectionEvent<Suggestion> arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		
-		txtOddColor.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				updateTypeAndTitle();
-			}
-		});
-		
-		txtEvenColor.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				updateTypeAndTitle();
 			}
 		});
 		
@@ -517,20 +428,6 @@ public class ReportView extends OpenXDataBaseView implements
 		}
 	}
 	
-	/**
-	 * Updates a report with the new type or title as typed by the user.
-	 */
-	private void updateTypeAndTitle() {
-		if (report != null) {
-			report.setParamValues(lbType.getItemText(lbType.getSelectedIndex())
-			        + "|" + txtTitle.getText() + "|" + txtXAxisTitle.getText()
-			        + "|" + txtYAxisTitle.getText() + "|"
-			        + txtOddColor.getText() + "|" + txtEvenColor.getText());
-			 eventBus.fireEvent(new EditableEvent<Report>(report));
-		}
-	}
-	
-	
 	public void onItemSelected(Composite sender, Object item) {
 		report = null;
 		reportGroup = null;
@@ -588,10 +485,8 @@ public class ReportView extends OpenXDataBaseView implements
 		lbForms.setVisible(enabled);
 		lblFormSource.setVisible(enabled);
 		lblReportFile.setVisible(enabled);
-		lblType.setVisible(enabled);
 		lblTitle.setVisible(enabled);
 		panelDef.setVisible(enabled);
-		lbType.setVisible(enabled);
 		txtTitle.setVisible(enabled);
 		lblXAxisTitle.setVisible(enabled);
 		lblYAxisTitle.setVisible(enabled);
@@ -796,7 +691,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 */
 	private void getTypeAndTitle() {
 		try {
-			lbType.setSelectedIndex(0);
 			txtTitle.setText(null);
 			txtXAxisTitle.setText(null);
 			txtYAxisTitle.setText(null);
@@ -807,7 +701,6 @@ public class ReportView extends OpenXDataBaseView implements
 			if (values == null || values.trim().length() == 0)
 				return;
 			int pos1 = values.indexOf('|');
-			lbType.setSelectedIndex(getChartTypeIndex(values.substring(0, pos1)));
 			
 			pos1++;
 			int pos2 = values.indexOf('|', pos1);
