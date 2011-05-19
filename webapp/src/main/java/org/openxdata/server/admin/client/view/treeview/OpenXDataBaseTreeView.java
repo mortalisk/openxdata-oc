@@ -17,6 +17,7 @@
  */
 package org.openxdata.server.admin.client.view.treeview;
 
+import org.openxdata.client.AppMessages;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
@@ -58,6 +59,8 @@ public abstract class OpenXDataBaseTreeView extends Composite implements
 	protected static OpenXdataConstants constants = GWT
 			.create(OpenXdataConstants.class);
 	protected static OpenXDataImages images = GWT.create(OpenXDataImages.class);
+	
+	protected final static AppMessages appMessages = GWT.create(AppMessages.class);
 
 	/** The tree widget to holding the items. */
 	protected Tree tree;
