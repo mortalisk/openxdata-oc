@@ -138,36 +138,4 @@ public interface AppMessages extends Messages {
 	String exportError();
 	
 	String exportA();
-	
-	String datasets();
-	
-	String addAnotherDatasetGroup();
-	
-	String newDatasetGroup();
-	
-	String pleaseAddDatasetGroup();
-	
-	String newDataset();
-	
-	String selectItemDelete();
-	
-	String deleteConfirmation();
-	
-	String deleteDataset();
-	
-	String noPrivilegesDeleteDatasets();
-
-	String noPrivilegesAddDatasets();
-	
-	String addDatasetGroup();
-	
-	String deleteDatasetGroup();
-	
-	String addDataset();
-	
-	String formSource();
-	
-	String datasetFields();
-	
-	String formHasNoQuestions();
 }
