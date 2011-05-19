@@ -29,7 +29,7 @@ import org.openxdata.server.admin.client.listeners.TextConstants;
 import org.openxdata.server.admin.client.util.AsyncCallBackUtil;
 import org.openxdata.server.admin.client.util.MainViewControllerUtil;
 import org.openxdata.server.admin.client.view.ReportView;
-import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
+import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.Report;
 import org.openxdata.server.admin.model.ReportGroup;
@@ -51,7 +51,7 @@ public class ReportsViewController  implements SaveCompleteListener {
 
 	private ReportView reportView;
 	private List<ReportGroup> reportGroups;
-	private ReportsTreeView reportsTreeView;
+	private DatasetTreeView reportsTreeView;
 	
 	private List<UserReportMap> userMappedReports;
 	private List<UserReportGroupMap> userMappedReportGroups;
@@ -63,7 +63,7 @@ public class ReportsViewController  implements SaveCompleteListener {
 	 * @param reportView <tt>ReportView</tt> to receive updates from this <tt>class.</tt>
 	 * @param userView <tt>UserView</tt> listening for updates from this <tt>class.</tt>
 	 */
-	public ReportsViewController(ReportsTreeView reportsTreeView, ReportView reportView) {
+	public ReportsViewController(DatasetTreeView reportsTreeView, ReportView reportView) {
 		this.reportView = reportView;
 		this.reportsTreeView = reportsTreeView;
 	}

@@ -21,7 +21,7 @@ import com.google.inject.Inject;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.view.ReportView;
 import org.openxdata.server.admin.client.view.StudyView;
-import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
+import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
 
 /**
@@ -70,7 +70,7 @@ public class MainViewController {
          */
         @Inject
         public MainViewController(StudiesTreeView studiesTreeView,
-                ReportsTreeView reportsTreeView,
+                DatasetTreeView reportsTreeView,
                 StudyView studyView,
                 ReportView reportView) {
                 studiesViewController = new StudiesViewController(studiesTreeView);

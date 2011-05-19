@@ -32,7 +32,7 @@ import org.openxdata.server.admin.client.view.event.ViewAppListenerChangeEvent;
 import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
-import org.openxdata.server.admin.client.view.treeview.ReportsTreeView;
+import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.SettingGroup;
@@ -69,7 +69,7 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
     private RolezListPresenter rolezPresenter;
     private TasksListPresenter tasksListPresenter;
     private SettingListPresenter settingListPresenter;
-    private ReportsTreeView reportTreeView;
+    private DatasetTreeView reportTreeView;
     private final ReportView reportView;
     private final StudyView studyView;
     private EventBus eventBus;
@@ -85,7 +85,7 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
             TaskPresenter taskPresenter,
             SettingListPresenter settingListPresenter,
             SettingPresenter settingPresenter,
-            ReportsTreeView reportTreeView,
+            DatasetTreeView reportTreeView,
             MainViewController controller,
             ReportView reportView,
             StudyView studyView) {
