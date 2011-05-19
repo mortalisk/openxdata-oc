@@ -43,18 +43,18 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
         ExtendedContextInitMenuListener, OpenXDataViewApplicationEventListener, WidgetDisplay{
 	
 	/** List of deleted reports. */
-	private List<Report> deletedReports;
+	private List<Report> deletedDatasets;
 	
 	/** List of report groups. */
-	private List<ReportGroup> reportGroups;
+	private List<ReportGroup> datasetGroups;
 	
 	/** List of deleted report groups. */
-	private List<ReportGroup> deletedReportGroups;
+	private List<ReportGroup> deletedDatasetGroups;
 	
-	private List<UserReportGroupMap> mappedReportGroups;
+	private List<UserReportGroupMap> mappedDatasetGroups;
 	
 	/**
-	 * Creates a new instance of the reports tree view.
+	 * Creates a new instance of the Dataset tree view.
 	 * 
 	 * @param openXDataViewFactory
 	 */
@@ -96,33 +96,32 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	}
 	
 	/**
-	 * Loads a list of report groups and their contained child reports and
+	 * Loads a list of Dataset Groups and their contained child datasets and
 	 * groups.
 	 * 
-	 * @param reportGroups
-	 *            the report group list.
+	 * @param datasetGroups the dataset group list.
 	 */
-	public void loadReportGroups(List<ReportGroup> reportGroups) {
-		this.reportGroups = reportGroups;
-		deletedReports = new Vector<Report>();
-		deletedReportGroups = new Vector<ReportGroup>();
+	public void loadReportGroups(List<ReportGroup> datasetGroups) {
+		this.datasetGroups = datasetGroups;
+		deletedDatasets = new Vector<Report>();
+		deletedDatasetGroups = new Vector<ReportGroup>();
 		User user = Context.getAuthenticatedUser();
 		if (isLoadData()) {
 			tree.clear();
-			if (reportGroups == null) {
-				reportGroups = new Vector<ReportGroup>();
+			if (datasetGroups == null) {
+				datasetGroups = new Vector<ReportGroup>();
 				return;
 			}
 			
 			if (RolesListUtil.getPermissionResolver().isPermission(
 			        Permission.PERM_VIEW_REPORTGROUPS)) {
-				loadReports(reportGroups);
+				loadReports(datasetGroups);
 			} else if (!Context.getAuthenticatedUser()
 			        .hasAdministrativePrivileges()) {
-				if (mappedReportGroups != null) {
+				if (mappedDatasetGroups != null) {
 					List<UserReportGroupMap> userMappedReports = getUserMappedReportGroups(user);
 					
-					for (byte i = 0; i < reportGroups.size(); i++) {
+					for (byte i = 0; i < datasetGroups.size(); i++) {
 						if (userMappedReports != null) {
 							for (UserReportGroupMap map : userMappedReports) {
 								List<ReportGroup> mapGroup = new Vector<ReportGroup>();
@@ -140,12 +139,12 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	 * Retrieves a given <tt>User's mapped Datasets.</tt>
 	 * 
 	 * @param user
-	 *            <tt>User</tt> to retrieve <tt>Report Groups</tt> for.
-	 * @return <tt>List</tt> of <tt>UserReportGroupMaps.</tt>
+	 *            <tt>User</tt> to retrieve <tt>Dataset Groups</tt> for.
+	 * @return <tt>List</tt> of <tt>UserDatasetGroupMaps.</tt>
 	 */
 	private List<UserReportGroupMap> getUserMappedReportGroups(User user) {
 		List<UserReportGroupMap> xUserMappedReportGroups = new Vector<UserReportGroupMap>();
-		for (UserReportGroupMap map : mappedReportGroups) {
+		for (UserReportGroupMap map : mappedDatasetGroups) {
 			if (map.getUserId() == user.getUserId()) {
 				xUserMappedReportGroups.add(map);
 			}
@@ -156,7 +155,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	
 	private ReportGroup getReportGroup(UserReportGroupMap map) {
 		ReportGroup reportGroup = null;
-		for (ReportGroup grp : reportGroups) {
+		for (ReportGroup grp : datasetGroups) {
 			if (isGroupParentReportGroup(map, grp)) {
 				reportGroup = grp;
 				break;
@@ -195,7 +194,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	}
 	
 	/**
-	 * Loads a report group as a child of a given parent tree item.
+	 * Loads a Dataset Group as a child of a given parent tree item.
 	 * 
 	 * @param reportGroup
 	 *            the report group to load.
@@ -229,8 +228,8 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	}
 	
 	/**
-	 * Adds a new report group as a child of the selected tree item which should
-	 * be another report group.
+	 * Adds a Dataset Group as a child of the selected tree item which should
+	 * be another Dataset Group.
 	 */
 	@Override
 	public void addNewItem() {
@@ -253,21 +252,21 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			        .getUserObject());
 			
 			if (!reportGroup.getParentReportGroup().isNew())
-				reportGroups.add(reportGroup);
+				datasetGroups.add(reportGroup);
 			else
 				reportGroup.getParentReportGroup().addReportGroup(reportGroup);
 			
 			parent.setState(true);
 		} else {
 			tree.addItem(root);
-			reportGroups.add(reportGroup);
+			datasetGroups.add(reportGroup);
 		}
 		
 		tree.setSelectedItem(root);
 	}
 	
 	/**
-	 * Adds a new report group.
+	 * Adds a Dataset Group.
 	 */
 	public void addNewReportGroup() {
 		ReportGroup reportGroup = new ReportGroup(appMessages.newDatasetGroup());
@@ -277,13 +276,13 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		reportGroup.setDirty(true);
 		
 		tree.addItem(root);
-		reportGroups.add(reportGroup);
+		datasetGroups.add(reportGroup);
 		tree.setSelectedItem(root);
 	}
 	
 	/**
-	 * Adds a new report as a child of the selected tree item which must be a
-	 * report group.
+	 * Adds a Dataset as a child of the selected tree item which must be a
+	 * Dataset Group.
 	 */
 	public void addNewReport() {
 		TreeItem item = tree.getSelectedItem();
@@ -335,25 +334,25 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	}
 	
 	/**
-	 * Gets the list of deleted reports.
+	 * Gets the list of deleted Datasets.
 	 * 
-	 * @return the report list.
+	 * @return the dataset list.
 	 */
 	public List<Report> getDeletedReports() {
-		return deletedReports;
+		return deletedDatasets;
 	}
 	
 	/**
-	 * Gets the list of deleted report groups.
+	 * Gets the list of deleted Dataset Groups.
 	 * 
 	 * @return the report group list.
 	 */
 	public List<ReportGroup> getDeletedReportGroups() {
-		return deletedReportGroups;
+		return deletedDatasetGroups;
 	}
 	
 	/**
-	 * Deletes the selected report or group.
+	 * Deletes the selected Dataset or Dataset Group.
 	 */
 	@Override
 	public void deleteSelectedItem() {
@@ -368,11 +367,11 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 		
 		if (item.getUserObject() instanceof Report) {
 			Report report = (Report) item.getUserObject();
-			deletedReports.add(report);
+			deletedDatasets.add(report);
 			report.getReportGroup().removeReport(report);
 		} else {
-			deletedReportGroups.add((ReportGroup) item.getUserObject());
-			reportGroups.remove(item.getUserObject());
+			deletedDatasetGroups.add((ReportGroup) item.getUserObject());
+			datasetGroups.remove(item.getUserObject());
 		}
 		
 		if (item.getParentItem() == null){
@@ -401,13 +400,13 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	}
 	
 	/**
-	 * Sets all the system <tt>UserReportMaps.</tt>
+	 * Sets all the system <tt>UserDatasetMaps.</tt>
 	 * 
 	 * @param mappedReports
 	 *            <tt>UserReportMaps</tt> to set.
 	 */
 	public void setMappedReportGroups(List<UserReportGroupMap> mappedReports) {
-		this.mappedReportGroups = mappedReports;
+		this.mappedDatasetGroups = mappedReports;
 		
 	}
 
