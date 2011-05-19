@@ -155,7 +155,7 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 	}
 	
 	/**
-	 * Retrieves a given <tt>User's mapped Report Groups.</tt>
+	 * Retrieves a given <tt>User's mapped Datasets.</tt>
 	 * 
 	 * @param user
 	 *            <tt>User</tt> to retrieve <tt>Report Groups</tt> for.
