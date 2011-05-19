@@ -92,6 +92,9 @@ public class FormDesignerView {
         
         // if not empty load it in the form designer for editing
         if (xform != null && xform.trim().length() > 0) {
+            if (!DesignerUtilities.checkMatching(formDefVersion)) {
+                    xform = DesignerUtilities.changeName(formDefVersion);
+            }
             // If the form was localised for the current locale, then translate
             // it to the locale.
             FormDefVersionText text = formDefVersion.getFormDefVersionText("en");
