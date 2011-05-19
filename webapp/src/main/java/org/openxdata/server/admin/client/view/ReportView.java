@@ -125,9 +125,6 @@ public class ReportView extends OpenXDataBaseView implements
 	/** Label for the report definition file. */
 	private Label lblReportFile;
 	
-	/** Label for the the x axis title. */
-	private Label lblXAxisTitle;
-	
 	/** The query builder widget. */
 	private QueryBuilderWidget queryBuilder;
 	
@@ -175,9 +172,7 @@ public class ReportView extends OpenXDataBaseView implements
 		reportDataView = new ReportDataView(this);
 		
 		lblReportFile = new OpenXDataLabel("Report definition file");
-		
-		lblXAxisTitle = new OpenXDataLabel("Horizontal Axis Title");
-		
+				
 		queryBuilder = new QueryBuilderWidget();
 		
 		sgstOddColor = new SuggestBox(new MultiWordSuggestOracle(), txtOddColor);
@@ -226,7 +221,6 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(2, 0, lblFormSource);
 		table.setWidget(3, 0, lblReportFile);
 		
-		table.setWidget(6, 0, lblXAxisTitle);
 		table.setWidget(8, 0, lblOddColor);
 		table.setWidget(9, 0, lblEvenColor);
 		
@@ -450,7 +444,6 @@ public class ReportView extends OpenXDataBaseView implements
 		lblFormSource.setVisible(enabled);
 		lblReportFile.setVisible(enabled);
 		panelDef.setVisible(enabled);
-		lblXAxisTitle.setVisible(enabled);
 		lblOddColor.setVisible(enabled);
 		lblEvenColor.setVisible(enabled);
 		txtOddColor.setVisible(enabled);
