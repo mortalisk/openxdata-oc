@@ -106,9 +106,6 @@ public class ReportView extends OpenXDataBaseView implements
 	/** Button for clicking to select the report definiton file. */
 	private Button btnRptDef;
 	
-	/** Label for the report definition file. */
-	private Label lblReportFile;
-	
 	/** The query builder widget. */
 	private QueryBuilderWidget queryBuilder;
 		
@@ -139,9 +136,7 @@ public class ReportView extends OpenXDataBaseView implements
 		panelDef = new HorizontalPanel();
 														
 		btnRptDef = new OpenXDataButton("Select");
-						
-		lblReportFile = new OpenXDataLabel("Report definition file");
-				
+										
 		queryBuilder = new QueryBuilderWidget();
 						
 		openxdataStackPanel = widgetFactory.getOpenXdataStackPanel();
@@ -183,7 +178,6 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(0, 0, new Label(constants.label_name()));
 		table.setWidget(1, 0, new Label(constants.label_description()));
 		table.setWidget(2, 0, lblFormSource);
-		table.setWidget(3, 0, lblReportFile);
 				
 		table.setWidget(0, 1, txtName);
 		table.setWidget(1, 1, txtDescription);
@@ -382,7 +376,6 @@ public class ReportView extends OpenXDataBaseView implements
 	private void enableReportProperties(boolean enabled) {
 		lbForms.setVisible(enabled);
 		lblFormSource.setVisible(enabled);
-		lblReportFile.setVisible(enabled);
 		panelDef.setVisible(enabled);
 	}
 	
