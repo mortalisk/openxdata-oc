@@ -298,7 +298,6 @@ public class ReportView extends OpenXDataBaseView implements
 	private void setReportForm() {
 		if (report != null) {
 			
-			// TODO May want to localize this.
 			FormDefVersion formDefVersion = forms.get(lbForms
 			        .getSelectedIndex() - 1);
 			if (formDefVersion.getXform() != null) {
@@ -671,7 +670,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 * @return
 	 */
 	public List<UserReportMap> getDeletedUserMappedReportGroups() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
