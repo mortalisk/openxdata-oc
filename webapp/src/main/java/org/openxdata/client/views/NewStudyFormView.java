@@ -8,15 +8,11 @@ import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.model.StudySummary;
-import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -44,6 +40,11 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import org.openxdata.client.model.UserSummary;
+import org.openxdata.client.util.UsermapUtilities;
+import org.openxdata.server.admin.model.FormDefVersionText;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
@@ -115,6 +116,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newForm.hide();
 				newForm.setValue(true);
 				existingForm.hide();
+                                userFormAccessGrid.setEnabled(false);
 			} else if (!newForm.isVisible()) {
 				// make sure all radio buttons are showing
 				existingFormName.show();
@@ -123,6 +125,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newForm.setValue(false);
 				setStudyForms();
 				existingForm.show();
+                                userFormAccessGrid.setEnabled(true);
 			}
 			userStudyAccessGrid.setExpanded(false);
 			userFormAccessGrid.setExpanded(false);
@@ -198,6 +201,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
+                                //cant map a new study
+                                userStudyAccessGrid.setEnabled(false);
 				if (existingStudyName.getValue() != null) {
 					existingStudyName.clearSelections();
 					existingStudyDescription.setValue("");
@@ -234,6 +239,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					@Override
 					public void handleEvent(FieldEvent be) {
 						nextButton.setEnabled(false);
+                                                userStudyAccessGrid.setEnabled(true);
 						newStudyName.setValue("");
 						newStudyDescription.setValue("");
 					}
@@ -317,6 +323,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
+                                userFormAccessGrid.setEnabled(false);
 				if (existingFormName.getValue() != null) {
 					existingFormName.clearSelections();
 					existingFormDescription.setValue("");
@@ -352,6 +359,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
+                                userStudyAccessGrid.setEnabled(true);
 				newFormName.setValue("");
 				newFormDescription.setValue("");
 			}
@@ -468,52 +476,15 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		NewStudyFormController controller2 = (NewStudyFormController) NewStudyFormView.this
 				.getController();
 		controller2.saveStudy(studyDef);
-		// save any mapped study or form
-		saveUserStudyMap();
-		saveUserFormMap();
 	}
-
-	public void saveUserStudyMap() {
-		if (!userStudyAccessGrid.getTempMappedItems().isEmpty()) {
-			for (int i = 0; i < userStudyAccessGrid.getTempMappedItems().size(); ++i) {
-				for (User user : users) {
-					if (user.getName().equals(
-							userStudyAccessGrid.getTempMappedItems().get(i)
-									.getName())
-							&& !(user.getName().equals(((User) Registry
-									.get(Emit.LOGGED_IN_USER_NAME)).getName()))) {
-						// check already mapped users to this study
-						UserStudyMap map = new UserStudyMap();
-						map.addStudy(studyDef);
-						map.addUser(user);
-						map.setDirty(true);
-						((NewStudyFormController) NewStudyFormView.this
-								.getController()).saveUserMappedStudy(map);
-						break;
-					}
-				}
-			}
-		}
-		if (!userStudyAccessGrid.getTempItemstoUnmap().isEmpty()) {
-			for (int i = 0; i < userStudyAccessGrid.getTempItemstoUnmap()
-					.size(); ++i) {
-				for (UserStudyMap map : mappedStudies) {
-					for (User user : users) {
-						if ((user.getName().equals(userStudyAccessGrid
-								.getTempItemstoUnmap().get(i).getName()))
-								&& (user.getUserId() == map.getUserId())) {
-							((NewStudyFormController) NewStudyFormView.this
-									.getController())
-									.deleteUserMappedStudy(map);
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void saveUserFormMap() {
+    public void onSaveStudyComplete() {
+        // save any mapped study or form
+        UsermapUtilities utils = new UsermapUtilities(((NewStudyFormController) NewStudyFormView.this.getController()), mappedStudies);
+        utils.saveUserStudyMap(userStudyAccessGrid, studyDef, users);
+        saveUserFormMap();
+    }
+    
+    public void saveUserFormMap() {
 		if (!userFormAccessGrid.getTempMappedItems().isEmpty()) {
 			for (int i = 0; i < userFormAccessGrid.getTempMappedItems().size(); ++i) {
 				for (User user : users) {

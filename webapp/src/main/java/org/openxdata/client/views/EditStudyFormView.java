@@ -48,6 +48,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import org.openxdata.client.model.UserSummary;
+import org.openxdata.client.util.UsermapUtilities;
 
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version..
@@ -298,7 +299,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.showProgressBar();
 		save();
 		// save any mapped study or form
-		saveUserStudyMap();
+                UsermapUtilities utils = new UsermapUtilities(studyFormController, mappedStudies);
+                utils.saveUserStudyMap(userAccessToStudy, form.getStudy(), users);
 		saveUserFormMap();
 		ProgressIndicator.hideProgressBar();
 	}
@@ -436,41 +438,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			}
 		}
 		userAccessToForm.updateLists(unMappedUsers, mappedUsers);
-	}
-
-	public void saveUserStudyMap() {
-		String loggedInUsername = ((User) Registry
-				.get(Emit.LOGGED_IN_USER_NAME)).getName();
-
-		for (User mappedUser : userAccessToStudy.getTempMappedItems()) {
-			for (User user : users) {
-				if (user.getName().equals(mappedUser.getName())
-						&& !user.getName().equals(loggedInUsername)) {
-					// check already mapped users to this study
-					UserStudyMap map = new UserStudyMap();
-					map.addStudy(form.getStudy());
-					map.addUser(user);
-					map.setDirty(true);
-					studyFormController.saveUserMappedStudy(map);
-					break;
-				}
-			}
-		}
-		deleteUserMappedStudy();
-	}
-
-	private void deleteUserMappedStudy() {
-		for (User unmappedUser : userAccessToStudy.getTempItemstoUnmap()) {
-			for (UserStudyMap map : mappedStudies) {
-				for (User user : users) {
-					if (user.getName().equals(unmappedUser.getName())
-							&& (user.getUserId() == map.getUserId())) {
-						studyFormController.deleteUserMappedStudy(map);
-						break;
-					}
-				}
-			}
-		}
 	}
 
 	public void saveUserFormMap() {
