@@ -93,9 +93,7 @@ public class ReportView extends OpenXDataBaseView implements
 	 * Widget for displaying status and selection of the report definition file.
 	 */
 	private HorizontalPanel panelDef;
-			
-	private TextBox txtEvenColor;
-	
+				
 	/** List of forms versions. */
 	private List<FormDefVersion> forms;
 	
@@ -120,9 +118,7 @@ public class ReportView extends OpenXDataBaseView implements
 	
 	/** The query builder widget. */
 	private QueryBuilderWidget queryBuilder;
-	
-	private SuggestBox sgstEvenColor;
-	
+		
 	/**
 	 * Creates a new instance of the report view.
 	 * 
@@ -148,9 +144,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lblFormSource = new OpenXDataLabel("Form Source");
 								
 		panelDef = new HorizontalPanel();
-												
-		txtEvenColor = new TextBox();
-		
+														
 		btnRptDef = new OpenXDataButton("Select");
 				
 		reportDataView = new ReportDataView(this);
@@ -158,10 +152,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lblReportFile = new OpenXDataLabel("Report definition file");
 				
 		queryBuilder = new QueryBuilderWidget();
-				
-		sgstEvenColor = new SuggestBox(new MultiWordSuggestOracle(),
-		        txtEvenColor);
-		
+						
 		openxdataStackPanel = widgetFactory.getOpenXdataStackPanel();
 		
 		// Register this class with Event Dispatchers.
@@ -210,14 +201,11 @@ public class ReportView extends OpenXDataBaseView implements
 		panelDef.add(btnRptDef);
 		panelDef.setCellWidth(btnRptDef, "20%");
 		table.setWidget(3, 1, panelDef);
-		
-		table.setWidget(9, 1, sgstEvenColor);
-		
+				
 		txtName.setWidth("100%");
 		txtDescription.setWidth("100%");
 		lbForms.setWidth("100%");
 		panelDef.setWidth("100%");
-		sgstEvenColor.setWidth("100%");
 		
 		FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 		cellFormatter.setWidth(0, 0, "20%");
@@ -247,10 +235,7 @@ public class ReportView extends OpenXDataBaseView implements
 		setupEventListeners();
 		tabs.selectTab(0);
 		tabs.addSelectionHandler(this);
-		
-		StyleUtil.loadColorNames((MultiWordSuggestOracle) sgstEvenColor
-		        .getSuggestOracle());
-		
+				
 		queryBuilder.hideDebugTabs();
 		
 	}
@@ -419,7 +404,6 @@ public class ReportView extends OpenXDataBaseView implements
 		lblFormSource.setVisible(enabled);
 		lblReportFile.setVisible(enabled);
 		panelDef.setVisible(enabled);
-		txtEvenColor.setVisible(enabled);
 	}
 	
 	/**
@@ -615,7 +599,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 */
 	private void getTypeAndTitle() {
 		try {
-			sgstEvenColor.setText("#AACCFF");
 			
 			String values = report.getParamValues();
 			if (values == null || values.trim().length() == 0)
@@ -658,7 +641,6 @@ public class ReportView extends OpenXDataBaseView implements
 			pos2 = values.indexOf('|', pos1);
 			if (pos2 < 0)
 				pos2 = values.length();
-			sgstEvenColor.setText(values.substring(pos1, pos2));
 		} catch (Exception ex) {
 		}
 	}
