@@ -8,7 +8,9 @@ import org.openxdata.server.admin.client.controller.facade.MainViewControllerFac
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
+import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataButton;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
@@ -20,7 +22,14 @@ import org.openxdata.server.admin.model.ReportGroup;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserReportMap;
-import org.purc.purcforms.client.util.StyleUtil;
+import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
+import org.purc.purcforms.client.model.OptionDef;
+import org.purc.purcforms.client.model.QuestionDef;
+import org.purc.purcforms.client.querybuilder.QueryBuilderWidget;
+import org.purc.purcforms.client.util.FormUtil;
+import org.purc.purcforms.client.view.OpenFileDialog;
+import org.purc.purcforms.client.xforms.XformBuilder;
+import org.purc.purcforms.client.xforms.XformParser;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -43,21 +52,8 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
-import org.purc.purcforms.client.querybuilder.QueryBuilderWidget;
-import org.openxdata.server.admin.client.view.event.EditableEvent;
-import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
-import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
-import org.purc.purcforms.client.model.OptionDef;
-import org.purc.purcforms.client.model.QuestionDef;
-import org.purc.purcforms.client.util.FormUtil;
-import org.purc.purcforms.client.view.OpenFileDialog;
-import org.purc.purcforms.client.xforms.XformBuilder;
-import org.purc.purcforms.client.xforms.XformParser;
 
 /**
  * This widget displays properties of the selected report and lets you edit
