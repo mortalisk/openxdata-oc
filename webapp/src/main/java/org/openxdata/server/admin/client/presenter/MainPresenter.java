@@ -1,5 +1,6 @@
 package org.openxdata.server.admin.client.presenter;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -12,6 +13,8 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
+
+import org.openxdata.server.admin.client.OpenXDataAppMessages;
 import org.openxdata.server.admin.client.controller.MainViewController;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.listeners.StackPanelListener;
@@ -45,6 +48,8 @@ import org.openxdata.server.admin.model.User;
  */
 public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
+	private OpenXDataAppMessages appMessages = GWT.create(OpenXDataAppMessages.class);
+	
     public interface Display extends WidgetDisplay {
 
         public void addStack(WidgetDisplay display, String stackText);
@@ -114,8 +119,8 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
                 Utilities.createHeaderHTML(images.tasks(), CONSTANTS.label_tasks()));
         display.addStack(settingListPresenter.getDisplay(),
                 Utilities.createHeaderHTML(images.settings(), CONSTANTS.label_settings()));
-        display.addStack(reportTreeView.getDisplay(),
-                Utilities.createHeaderHTML(images.reports(), CONSTANTS.label_reports()));
+        display.addStack(datasetTreeView.getDisplay(),
+                Utilities.createHeaderHTML(images.reports(), appMessages.datasets()));
 
         display.addMobileInstallHandler(new MobileInstallEvent.Handler() {
 
