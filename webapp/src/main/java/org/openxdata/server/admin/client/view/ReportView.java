@@ -94,9 +94,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 */
 	private HorizontalPanel panelDef;
 	
-	/** Widget for entering the title for chart x axis. */
-	private TextBox txtXAxisTitle;
-	
 	/** Widget for entering the title for chart y axis. */
 	private TextBox txtYAxisTitle;
 	
@@ -171,9 +168,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lblEvenColor = new OpenXDataLabel("Even Row Color");
 				
 		panelDef = new HorizontalPanel();
-						
-		txtXAxisTitle = new TextBox();
-		
+								
 		txtYAxisTitle = new TextBox();
 		
 		txtOddColor = new TextBox();
@@ -248,7 +243,6 @@ public class ReportView extends OpenXDataBaseView implements
 		panelDef.setCellWidth(btnRptDef, "20%");
 		table.setWidget(3, 1, panelDef);
 		
-		table.setWidget(6, 1, txtXAxisTitle);
 		table.setWidget(7, 1, txtYAxisTitle);
 		table.setWidget(8, 1, sgstOddColor);
 		table.setWidget(9, 1, sgstEvenColor);
@@ -257,7 +251,6 @@ public class ReportView extends OpenXDataBaseView implements
 		txtDescription.setWidth("100%");
 		lbForms.setWidth("100%");
 		panelDef.setWidth("100%");
-		txtXAxisTitle.setWidth("100%");
 		txtYAxisTitle.setWidth("100%");
 		sgstOddColor.setWidth("100%");
 		sgstEvenColor.setWidth("100%");
@@ -465,7 +458,6 @@ public class ReportView extends OpenXDataBaseView implements
 		lblReportFile.setVisible(enabled);
 		panelDef.setVisible(enabled);
 		lblXAxisTitle.setVisible(enabled);
-		txtXAxisTitle.setVisible(enabled);
 		txtYAxisTitle.setVisible(enabled);
 		lblOddColor.setVisible(enabled);
 		lblEvenColor.setVisible(enabled);
@@ -666,7 +658,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 */
 	private void getTypeAndTitle() {
 		try {
-			txtXAxisTitle.setText(null);
 			txtYAxisTitle.setText(null);
 			sgstOddColor.setText(null);
 			sgstEvenColor.setText("#AACCFF");
@@ -688,7 +679,6 @@ public class ReportView extends OpenXDataBaseView implements
 			pos2 = values.indexOf('|', pos1);
 			if (pos2 < 0)
 				pos2 = values.length();
-			txtXAxisTitle.setText(values.substring(pos1, pos2));
 			
 			if (pos2 == values.length())
 				return;
