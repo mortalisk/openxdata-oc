@@ -78,9 +78,6 @@ public class ReportView extends OpenXDataBaseView implements
 	/** The report group object. */
 	private ReportGroup reportGroup;
 	
-	/** Label for the report title. */
-	private Label lblTitle;
-	
 	/** Widget for entering the name of the report or group. */
 	private TextBox txtName;
 	
@@ -96,9 +93,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 * Widget for displaying status and selection of the report definition file.
 	 */
 	private HorizontalPanel panelDef;
-	
-	/** Widget for entering the report title. */
-	private TextBox txtTitle;
 	
 	/** Widget for entering the title for chart x axis. */
 	private TextBox txtXAxisTitle;
@@ -166,10 +160,7 @@ public class ReportView extends OpenXDataBaseView implements
 	}
 	
 	private void setUp() {
-		
-		
-		lblTitle = new OpenXDataLabel("Title");
-		
+				
 		txtName = new TextBox();
 		
 		txtDescription = new TextBox();
@@ -183,11 +174,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lblEvenColor = new OpenXDataLabel("Even Row Color");
 				
 		panelDef = new HorizontalPanel();
-				
-		txtTitle = new TextBox();
-		
-		txtTitle = new TextBox();
-		
+						
 		txtXAxisTitle = new TextBox();
 		
 		txtYAxisTitle = new TextBox();
@@ -254,7 +241,6 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(2, 0, lblFormSource);
 		table.setWidget(3, 0, lblReportFile);
 		
-		table.setWidget(5, 0, lblTitle);
 		table.setWidget(6, 0, lblXAxisTitle);
 		table.setWidget(7, 0, lblYAxisTitle);
 		table.setWidget(8, 0, lblOddColor);
@@ -268,7 +254,6 @@ public class ReportView extends OpenXDataBaseView implements
 		panelDef.setCellWidth(btnRptDef, "20%");
 		table.setWidget(3, 1, panelDef);
 		
-		table.setWidget(5, 1, txtTitle);
 		table.setWidget(6, 1, txtXAxisTitle);
 		table.setWidget(7, 1, txtYAxisTitle);
 		table.setWidget(8, 1, sgstOddColor);
@@ -278,7 +263,6 @@ public class ReportView extends OpenXDataBaseView implements
 		txtDescription.setWidth("100%");
 		lbForms.setWidth("100%");
 		panelDef.setWidth("100%");
-		txtTitle.setWidth("100%");
 		txtXAxisTitle.setWidth("100%");
 		txtYAxisTitle.setWidth("100%");
 		sgstOddColor.setWidth("100%");
@@ -485,9 +469,7 @@ public class ReportView extends OpenXDataBaseView implements
 		lbForms.setVisible(enabled);
 		lblFormSource.setVisible(enabled);
 		lblReportFile.setVisible(enabled);
-		lblTitle.setVisible(enabled);
 		panelDef.setVisible(enabled);
-		txtTitle.setVisible(enabled);
 		lblXAxisTitle.setVisible(enabled);
 		lblYAxisTitle.setVisible(enabled);
 		txtXAxisTitle.setVisible(enabled);
@@ -691,7 +673,6 @@ public class ReportView extends OpenXDataBaseView implements
 	 */
 	private void getTypeAndTitle() {
 		try {
-			txtTitle.setText(null);
 			txtXAxisTitle.setText(null);
 			txtYAxisTitle.setText(null);
 			sgstOddColor.setText(null);
@@ -706,7 +687,6 @@ public class ReportView extends OpenXDataBaseView implements
 			int pos2 = values.indexOf('|', pos1);
 			if (pos2 < 0)
 				pos2 = values.length();
-			txtTitle.setText(values.substring(pos1, pos2));
 			
 			if (pos2 == values.length())
 				return;
