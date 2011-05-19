@@ -53,7 +53,6 @@ import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
  * hierarchical view.
  * 
  * @author daniel
- * @author Angel
  * @Edited by Victor
  * 
  */
