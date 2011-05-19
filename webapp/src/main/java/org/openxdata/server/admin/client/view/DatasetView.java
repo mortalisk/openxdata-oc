@@ -64,8 +64,7 @@ import com.google.inject.Inject;
  */
 public class DatasetView extends OpenXDataBaseView implements
         SelectionHandler<Integer>,
-        OpenXDataExportImportApplicationEventListener,
-        OpenFileDialogEventListener {
+        OpenXDataExportImportApplicationEventListener {
 	
 	/** The report definition object. */
 	private Report report;
@@ -504,38 +503,6 @@ public class DatasetView extends OpenXDataBaseView implements
 		}
 		
 		reportDefChanged = (selectedIndex == TAB_INDEX_DESIGN);
-	}
-	
-	/**
-	 * @see org.purc.purcforms.client.controller.OpenFileDialogEventListener#onSetFileContents(String)
-	 */
-	@Override
-	public void onSetFileContents(String contents) {
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-		        "formopen");
-		
-		try {
-			builder.sendRequest(null, new RequestCallback() {
-				@Override
-				public void onResponseReceived(Request request,
-				        Response response) {
-					String contents = response.getText();
-					if (contents != null && contents.trim().length() > 0) {
-						report.setDefinition(contents);
-						 eventBus.fireEvent(new EditableEvent<Report>(report));
-					}
-				}
-				
-				@Override
-				public void onError(Request request, Throwable exception) {
-					exception.printStackTrace();
-					Window.alert(exception.getMessage());
-				}
-			});
-		} catch (RequestException ex) {
-			ex.printStackTrace();
-			Window.alert(ex.getMessage());
-		}
 	}
 	
 	/**
