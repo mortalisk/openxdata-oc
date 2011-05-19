@@ -42,13 +42,13 @@ import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 public class DatasetTreeView extends OpenXDataBaseTreeView implements
         ExtendedContextInitMenuListener, OpenXDataViewApplicationEventListener, WidgetDisplay{
 	
-	/** List of deleted reports. */
+	/** List of deleted Datasets. */
 	private List<Report> deletedDatasets;
 	
-	/** List of report groups. */
+	/** List of Dataset groups. */
 	private List<ReportGroup> datasetGroups;
 	
-	/** List of deleted report groups. */
+	/** List of deleted Datasets groups. */
 	private List<ReportGroup> deletedDatasetGroups;
 	
 	private List<UserReportGroupMap> mappedDatasetGroups;
