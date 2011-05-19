@@ -46,12 +46,12 @@ public class MainViewController {
 	
 	/**
 	 * An instance of
-	 * {@link org.openxdata.server.admin.client.controller.ReportsViewController}
+	 * {@link org.openxdata.server.admin.client.controller.DatasetViewController}
 	 * 
 	 * This will handle all movement of data for the views in relation to
 	 * loading, saving and movement of Reports related data.
 	 */
-	private ReportsViewController reportsViewController;
+	private DatasetViewController datasetViewController;
 	
 	/**
 	 * Initializes the MainViewController with all the ancillary controllers for
@@ -74,7 +74,7 @@ public class MainViewController {
                 StudyView studyView,
                 DatasetView reportView) {
                 studiesViewController = new StudiesViewController(studiesTreeView);
-                reportsViewController = new ReportsViewController(reportsTreeView,
+                datasetViewController = new DatasetViewController(reportsTreeView,
 		        reportView);
                 MainViewControllerFacade.setMVCInstance(this);
 
@@ -98,8 +98,8 @@ public class MainViewController {
 	 * 
 	 * @return The ReportsViewController
 	 */
-	public ReportsViewController getReportsViewController() {
-		return reportsViewController;
+	public DatasetViewController getReportsViewController() {
+		return datasetViewController;
 	}
 	
 }
