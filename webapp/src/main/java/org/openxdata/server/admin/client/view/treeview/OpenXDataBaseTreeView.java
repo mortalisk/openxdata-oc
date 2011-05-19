@@ -17,20 +17,20 @@
  */
 package org.openxdata.server.admin.client.view.treeview;
 
-import org.openxdata.client.AppMessages;
+import org.openxdata.server.admin.client.OpenXDataAppMessages;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 import org.openxdata.server.admin.model.Editable;
 
 import com.google.gwt.core.client.GWT;
@@ -60,7 +60,7 @@ public abstract class OpenXDataBaseTreeView extends Composite implements
 			.create(OpenXdataConstants.class);
 	protected static OpenXDataImages images = GWT.create(OpenXDataImages.class);
 	
-	protected final static AppMessages appMessages = GWT.create(AppMessages.class);
+	protected final static OpenXDataAppMessages appMessages = GWT.create(OpenXDataAppMessages.class);
 
 	/** The tree widget to holding the items. */
 	protected Tree tree;

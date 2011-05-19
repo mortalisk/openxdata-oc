@@ -17,7 +17,7 @@
  */
 package org.openxdata.server.admin.client.view;
 
-import org.openxdata.client.AppMessages;
+import org.openxdata.server.admin.client.OpenXDataAppMessages;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.presenter.WidgetDisplay;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
@@ -49,7 +49,7 @@ public abstract class OpenXDataBaseView extends Composite {
 	protected static OpenXdataConstants constants = GWT
 			.create(OpenXdataConstants.class);
 	
-	protected AppMessages appMessages = GWT.create(AppMessages.class);
+	protected OpenXDataAppMessages appMessages = GWT.create(OpenXDataAppMessages.class);
 
 	/** Widget for organizing display in tabular format. */
 	protected FlexTable table;
