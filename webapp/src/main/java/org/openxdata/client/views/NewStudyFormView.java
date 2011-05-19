@@ -481,46 +481,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
         // save any mapped study or form
         UsermapUtilities utils = new UsermapUtilities(((NewStudyFormController) NewStudyFormView.this.getController()), mappedStudies);
         utils.saveUserStudyMap(userStudyAccessGrid, studyDef, users);
-        saveUserFormMap();
+        utils.saveUserFormMap(userFormAccessGrid, formDef, users, mappedForms);
     }
-    
-    public void saveUserFormMap() {
-		if (!userFormAccessGrid.getTempMappedItems().isEmpty()) {
-			for (int i = 0; i < userFormAccessGrid.getTempMappedItems().size(); ++i) {
-				for (User user : users) {
-					if (user.getName().equals(
-							userFormAccessGrid.getTempMappedItems().get(i)
-									.getName())
-							&& !(user.getName().equals(((User) Registry
-									.get(Emit.LOGGED_IN_USER_NAME)).getName()))) {
-						UserFormMap map = new UserFormMap();
-						map.addForm(formDef);
-						map.addUser(user);
-						map.setDirty(true);
-						((NewStudyFormController) NewStudyFormView.this
-								.getController()).saveUserMappedForm(map);
-						break;
-					}
-				}
-			}
-		}
-		if (!userFormAccessGrid.getTempItemstoUnmap().isEmpty()) {
-			for (int i = 0; i < userFormAccessGrid.getTempItemstoUnmap().size(); ++i) {
-				for (UserFormMap map : mappedForms) {
-					for (User user : users) {
-						if ((user.getName().equals(userFormAccessGrid
-								.getTempItemstoUnmap().get(i).getName()))
-								&& (user.getUserId() == map.getUserId())) {
-							((NewStudyFormController) NewStudyFormView.this
-									.getController()).deleteUserMappedForm(map);
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-
+   
 	@Override
 	protected void saveAndExit() {
 		ProgressIndicator.showProgressBar();

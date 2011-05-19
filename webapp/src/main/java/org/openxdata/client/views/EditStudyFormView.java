@@ -301,7 +301,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		// save any mapped study or form
                 UsermapUtilities utils = new UsermapUtilities(studyFormController, mappedStudies);
                 utils.saveUserStudyMap(userAccessToStudy, form.getStudy(), users);
-		saveUserFormMap();
+                utils.saveUserFormMap(userAccessToForm, form, users, mappedForms);
 		ProgressIndicator.hideProgressBar();
 	}
 
@@ -438,41 +438,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			}
 		}
 		userAccessToForm.updateLists(unMappedUsers, mappedUsers);
-	}
-
-	public void saveUserFormMap() {
-		if (!userAccessToForm.getTempMappedItems().isEmpty()) {
-			for (int i = 0; i < userAccessToForm.getTempMappedItems().size(); ++i) {
-				for (User user : users) {
-					if (user.getName().equals(
-							userAccessToForm.getTempMappedItems().get(i)
-									.getName())
-							&& !(user.getName().equals(((User) Registry
-									.get(Emit.LOGGED_IN_USER_NAME)).getName()))) {
-						UserFormMap map = new UserFormMap();
-						map.addForm(form);
-						map.addUser(user);
-						map.setDirty(true);
-						studyFormController.saveUserMappedForm(map);
-						break;
-					}
-				}
-			}
-		}
-		if (!userAccessToForm.getTempItemstoUnmap().isEmpty()) {
-			for (int i = 0; i < userAccessToForm.getTempItemstoUnmap().size(); ++i) {
-				for (UserFormMap map : mappedForms) {
-					for (User user : users) {
-						if ((user.getName().equals(userAccessToForm
-								.getTempItemstoUnmap().get(i).getName()))
-								&& (user.getUserId() == map.getUserId())) {
-							studyFormController.deleteUserMappedForm(map);
-							break;
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public Button getDesignFormButton(String label) {
