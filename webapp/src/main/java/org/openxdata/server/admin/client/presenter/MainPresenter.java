@@ -74,8 +74,8 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
     private RolezListPresenter rolezPresenter;
     private TasksListPresenter tasksListPresenter;
     private SettingListPresenter settingListPresenter;
-    private DatasetTreeView reportTreeView;
-    private final DatasetView reportView;
+    private DatasetTreeView datasetTreeView;
+    private final DatasetView datasetView;
     private final StudyView studyView;
     private EventBus eventBus;
     private Display display;
@@ -99,10 +99,10 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
         this.rolezPresenter = rolezPresenter;
         this.tasksListPresenter = tasksListPresenter;
         this.settingListPresenter = settingListPresenter;
-        this.reportTreeView = reportTreeView;
+        this.datasetTreeView = reportTreeView;
         this.display = display;
         images = WidgetDisplay.images;
-        this.reportView = reportView;
+        this.datasetView = reportView;
         this.studyView = studyView;
         bindHandlers();
         bindUI();
@@ -283,7 +283,7 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
                     MainViewControllerFacade.loadAllUserMappedReports(false);
                     MainViewControllerFacade.loadReports(false);
                 }
-                display.setCurrentDisplay(reportView.getDisplay());
+                display.setCurrentDisplay(datasetView.getDisplay());
                 break;
         }
     }
