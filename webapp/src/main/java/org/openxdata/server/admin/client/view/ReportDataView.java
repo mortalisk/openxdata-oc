@@ -53,7 +53,7 @@ public class ReportDataView extends Composite {
 	 * Reference to the report properties view. For now the only use of this is
 	 * to to get us the report definition sql.
 	 */
-	private ReportView reportView;
+	private DatasetView reportView;
 	
 	/**
 	 * Creates the report data view.
@@ -61,7 +61,7 @@ public class ReportDataView extends Composite {
 	 * @param rptView
 	 *            a reference to report properties view
 	 */
-	public ReportDataView(ReportView rptView) {
+	public ReportDataView(DatasetView rptView) {
 		this.reportView = rptView;
 		
 		VerticalPanel verticalPanel = new VerticalPanel();

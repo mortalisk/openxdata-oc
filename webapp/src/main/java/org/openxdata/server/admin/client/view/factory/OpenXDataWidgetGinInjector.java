@@ -19,7 +19,7 @@ package org.openxdata.server.admin.client.view.factory;
 
 import com.google.gwt.event.shared.EventBus;
 import org.openxdata.server.admin.client.view.MainView;
-import org.openxdata.server.admin.client.view.ReportView;
+import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
@@ -53,7 +53,7 @@ public interface OpenXDataWidgetGinInjector extends Ginjector {
 
     public DatasetTreeView getReportsTreeView();
 
-    public ReportView getReportView();
+    public DatasetView getReportView();
 
     public StudyView getStudyView();
 

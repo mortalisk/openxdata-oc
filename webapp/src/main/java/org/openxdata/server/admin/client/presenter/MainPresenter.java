@@ -22,7 +22,7 @@ import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.MobileInstaller;
-import org.openxdata.server.admin.client.view.ReportView;
+import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
 import org.openxdata.server.admin.client.view.event.LogOutEvent;
@@ -70,7 +70,7 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
     private TasksListPresenter tasksListPresenter;
     private SettingListPresenter settingListPresenter;
     private DatasetTreeView reportTreeView;
-    private final ReportView reportView;
+    private final DatasetView reportView;
     private final StudyView studyView;
     private EventBus eventBus;
     private Display display;
@@ -87,7 +87,7 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
             SettingPresenter settingPresenter,
             DatasetTreeView reportTreeView,
             MainViewController controller,
-            ReportView reportView,
+            DatasetView reportView,
             StudyView studyView) {
         this.eventBus = eventBus;
         this.usersListPresenter = usersListPresenter;

@@ -37,7 +37,7 @@ import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.view.MainDisplay;
 import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ParameterDisplay;
-import org.openxdata.server.admin.client.view.ReportView;
+import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.RoleDisplay;
 import org.openxdata.server.admin.client.view.SettingDisplay;
 import org.openxdata.server.admin.client.view.StudyView;
@@ -91,7 +91,7 @@ public class OpenXdataClientModule extends AbstractGinModule {
         bind(DatasetTreeView.class).in(Singleton.class);
 
         // Views
-        bind(ReportView.class).in(Singleton.class);
+        bind(DatasetView.class).in(Singleton.class);
         bind(StudyView.class).in(Singleton.class);
         bind(OpenXDataNotificationBar.class).in(Singleton.class);
 

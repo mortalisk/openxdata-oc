@@ -28,7 +28,7 @@ import org.openxdata.server.admin.client.internationalization.OpenXdataText;
 import org.openxdata.server.admin.client.listeners.TextConstants;
 import org.openxdata.server.admin.client.util.AsyncCallBackUtil;
 import org.openxdata.server.admin.client.util.MainViewControllerUtil;
-import org.openxdata.server.admin.client.view.ReportView;
+import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.Report;
@@ -49,7 +49,7 @@ import org.purc.purcforms.client.util.FormUtil;
  */
 public class ReportsViewController  implements SaveCompleteListener {
 
-	private ReportView reportView;
+	private DatasetView reportView;
 	private List<ReportGroup> reportGroups;
 	private DatasetTreeView reportsTreeView;
 	
@@ -63,7 +63,7 @@ public class ReportsViewController  implements SaveCompleteListener {
 	 * @param reportView <tt>ReportView</tt> to receive updates from this <tt>class.</tt>
 	 * @param userView <tt>UserView</tt> listening for updates from this <tt>class.</tt>
 	 */
-	public ReportsViewController(DatasetTreeView reportsTreeView, ReportView reportView) {
+	public ReportsViewController(DatasetTreeView reportsTreeView, DatasetView reportView) {
 		this.reportView = reportView;
 		this.reportsTreeView = reportsTreeView;
 	}

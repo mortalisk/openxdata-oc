@@ -19,7 +19,7 @@ package org.openxdata.server.admin.client.controller;
 
 import com.google.inject.Inject;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
-import org.openxdata.server.admin.client.view.ReportView;
+import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
@@ -72,7 +72,7 @@ public class MainViewController {
         public MainViewController(StudiesTreeView studiesTreeView,
                 DatasetTreeView reportsTreeView,
                 StudyView studyView,
-                ReportView reportView) {
+                DatasetView reportView) {
                 studiesViewController = new StudiesViewController(studiesTreeView);
                 reportsViewController = new ReportsViewController(reportsTreeView,
 		        reportView);

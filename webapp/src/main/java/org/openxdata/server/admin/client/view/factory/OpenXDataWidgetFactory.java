@@ -19,7 +19,7 @@ package org.openxdata.server.admin.client.view.factory;
 
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.view.MainView;
-import org.openxdata.server.admin.client.view.ReportView;
+import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
@@ -69,9 +69,9 @@ public interface OpenXDataWidgetFactory {
 	/**
 	 * Retrieves the <tt>ReportView</tt>
 	 * 
-	 * @return Instance of {@link ReportView}
+	 * @return Instance of {@link DatasetView}
 	 */
-	ReportView getReportView();
+	DatasetView getReportView();
 	
 	/**
 	 * Retrieves the <tt>MainView</tt>
