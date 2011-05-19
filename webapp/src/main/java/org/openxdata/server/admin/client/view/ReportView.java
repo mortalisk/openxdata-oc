@@ -728,40 +728,6 @@ public class ReportView extends OpenXDataBaseView implements
 	}
 	
 	/**
-	 * Gets the position index of a given chart type.
-	 * 
-	 * @param text
-	 *            the chart type.
-	 * @return the chart type index.
-	 */
-	private int getChartTypeIndex(String text) {
-		if (text.equals("Bar Chart"))
-			return 1;
-		else if (text.equals("Line Chart"))
-			return 2;
-		else if (text.equals("Pie Chart"))
-			return 3;
-		else if (text.equals("Area Chart"))
-			return 4;
-		else if (text.equals("Tube Chart"))
-			return 5;
-		else if (text.equals("Cone Chart"))
-			return 6;
-		else if (text.equals("Pyramid Chart"))
-			return 7;
-		else if (text.equals("Scatter Chart"))
-			return 8;
-		else if (text.equals("Stock Chart"))
-			return 9;
-		else if (text.equals("Bubble Chart"))
-			return 10;
-		else if (text.equals("Difference Chart"))
-			return 11;
-		
-		return 0; // "Report Listing"
-	}
-	
-	/**
 	 * Reloads report data.
 	 */
 	public void refresh() {
