@@ -60,7 +60,6 @@ import com.google.inject.Inject;
  * them.
  * 
  * @author daniel
- * @author Angel
  * 
  */
 public class ReportView extends OpenXDataBaseView implements
