@@ -390,7 +390,6 @@ public class ReportsTreeView extends OpenXDataBaseTreeView implements
 			Report report = (Report) item.getUserObject();
 			deletedReports.add(report);
 			report.getReportGroup().removeReport(report);
-			// report.getReportGroup().setDirty(true);
 		} else {
 			deletedReportGroups.add((ReportGroup) item.getUserObject());
 			reportGroups.remove(item.getUserObject());
