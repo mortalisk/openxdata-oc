@@ -125,9 +125,6 @@ public class ReportView extends OpenXDataBaseView implements
 	/** Button for clicking to select the report definiton file. */
 	private Button btnRptDef;
 	
-	/** Label for the y axis title. */
-	private Label lblYAxisTitle;
-	
 	/** Widget for displaying report data in html format. */
 	private ReportDataView reportDataView;
 	
@@ -184,9 +181,7 @@ public class ReportView extends OpenXDataBaseView implements
 		txtEvenColor = new TextBox();
 		
 		btnRptDef = new OpenXDataButton("Select");
-		
-		lblYAxisTitle = new OpenXDataLabel("Vertical Axis Title");
-		
+				
 		reportDataView = new ReportDataView(this);
 		
 		lblReportFile = new OpenXDataLabel("Report definition file");
@@ -242,7 +237,6 @@ public class ReportView extends OpenXDataBaseView implements
 		table.setWidget(3, 0, lblReportFile);
 		
 		table.setWidget(6, 0, lblXAxisTitle);
-		table.setWidget(7, 0, lblYAxisTitle);
 		table.setWidget(8, 0, lblOddColor);
 		table.setWidget(9, 0, lblEvenColor);
 		
@@ -471,7 +465,6 @@ public class ReportView extends OpenXDataBaseView implements
 		lblReportFile.setVisible(enabled);
 		panelDef.setVisible(enabled);
 		lblXAxisTitle.setVisible(enabled);
-		lblYAxisTitle.setVisible(enabled);
 		txtXAxisTitle.setVisible(enabled);
 		txtYAxisTitle.setVisible(enabled);
 		lblOddColor.setVisible(enabled);
