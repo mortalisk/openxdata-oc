@@ -24,6 +24,7 @@ import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConst
 import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.Role;
+import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.admin.model.User;
 
@@ -32,7 +33,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
-import org.openxdata.server.admin.model.SettingGroup;
 
 /**
  * This class encapsulates direct calls to the specific
@@ -248,16 +248,10 @@ public class MainViewControllerFacade  {
 						break;
 
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:
-						if ((widgetFactory.getReportView())
-						        .isInReportDataMode())
-							(widgetFactory.getReportView())
-							        .refresh();
-						else {
-							if (RolesListUtil.getPermissionResolver()
-							        .isViewPermission("Perm_View_Reports")) {
-								loadReports(true);
-								loadAllUserMappedReports(true);
-							}
+						if (RolesListUtil.getPermissionResolver()
+						        .isViewPermission("Perm_View_Reports")) {
+							loadReports(true);
+							loadAllUserMappedReports(true);
 						}
 						break;
 				}
