@@ -288,9 +288,7 @@ public class FormListView extends View implements Refreshable {
 								.hasFormData(formVersion);
 					}
 				});
-			} else {
-				// log.info("FormDef '"+formDef.getName()+"' has been ignored because it does not have any versions (or version marked default)");
-			}
+			} 
 		}
 		ProgressIndicator.hideProgressBar();
 	}
