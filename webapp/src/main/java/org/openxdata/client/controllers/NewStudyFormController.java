@@ -78,7 +78,6 @@ public class NewStudyFormController extends Controller {
         studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
-//                newStudyFormView.saveUserStudyMap();
                 newStudyFormView.onSaveStudyComplete();
                 newStudyFormView.closeWindow();
                 RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
