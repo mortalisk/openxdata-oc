@@ -146,4 +146,9 @@ public interface AppMessages extends Messages {
 	String cannotSave();
 	
 	String removeFormIdAttribute();
+	
+	String saveSuccess();
+	
+	String deleteSuccess();
+	
 }

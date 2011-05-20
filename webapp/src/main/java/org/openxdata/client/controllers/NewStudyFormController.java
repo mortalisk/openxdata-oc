@@ -15,6 +15,7 @@ import org.openxdata.server.admin.model.StudyDef;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 import org.openxdata.client.service.UserServiceAsync;
 import org.openxdata.server.admin.model.User;
@@ -81,6 +82,7 @@ public class NewStudyFormController extends Controller {
                 newStudyFormView.onSaveStudyComplete();
                 newStudyFormView.closeWindow();
                 RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
+                MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }
@@ -91,6 +93,7 @@ public class NewStudyFormController extends Controller {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Successfully saves mapped study");
+                MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }
@@ -101,6 +104,7 @@ public class NewStudyFormController extends Controller {
             @Override
             public void onSuccess(Void result) {
                GWT.log("Successfully saves mapped form");
+               MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }
@@ -121,6 +125,7 @@ public class NewStudyFormController extends Controller {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Successfully deleted user mapped study");
+                MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
             }
         });
     }
@@ -141,6 +146,7 @@ public class NewStudyFormController extends Controller {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Successfully deleted user mapped form");
+                MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
             }
         });
     }

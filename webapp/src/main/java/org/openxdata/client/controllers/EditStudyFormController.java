@@ -11,6 +11,7 @@ import org.openxdata.server.admin.model.FormDef;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 import java.util.List;
 import org.openxdata.client.service.UserServiceAsync;
@@ -66,6 +67,7 @@ public class EditStudyFormController extends Controller {
 						new RefreshableEvent(
 								RefreshableEvent.Type.UPDATE_STUDY, form
 										.getStudy()));
+				MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 			}
 		});
 	}
@@ -100,6 +102,7 @@ public class EditStudyFormController extends Controller {
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("Successfully deleted user mapped study");
+				MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
 			}
 		});
 	}
@@ -124,6 +127,7 @@ public class EditStudyFormController extends Controller {
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("Successfully deleted user mapped form");
+				MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
 			}
 		});
 	}
@@ -136,6 +140,7 @@ public class EditStudyFormController extends Controller {
 					@Override
 					public void onSuccess(Void result) {
 						GWT.log("Successfully saves mapped study");
+						MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 					}
 				});
 	}
@@ -147,6 +152,7 @@ public class EditStudyFormController extends Controller {
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("Successfully saves mapped form");
+				MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 			}
 		});
 	}
