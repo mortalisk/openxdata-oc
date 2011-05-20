@@ -476,6 +476,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				.getController();
 		controller2.saveStudy(studyDef);
 	}
+	
     public void onSaveStudyComplete() {
         // save any mapped study or form
         utils.saveUserStudyMap(userStudyAccessGrid, studyDef, users);
