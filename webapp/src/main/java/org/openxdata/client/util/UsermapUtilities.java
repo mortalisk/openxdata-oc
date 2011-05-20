@@ -74,7 +74,7 @@ public class UsermapUtilities {
     }
 
     /*
-     * Load formdefinition names into left and right listboxes appropriately
+     * Load Form Definition names into left and right List Boxes appropriately
      */
     public void setUserFormMap(UserAccessGrids grid, FormDef form, List<User> users) {
         grid.clear();
