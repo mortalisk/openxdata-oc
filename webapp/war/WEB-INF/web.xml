@@ -297,9 +297,9 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
-  <listener>
-<listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
-</listener>
+	<listener>
+		<listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+	</listener>
   
   <!-- Default page to serve -->
   <welcome-file-list>
