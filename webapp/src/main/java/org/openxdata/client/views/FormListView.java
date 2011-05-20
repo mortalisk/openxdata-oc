@@ -244,7 +244,7 @@ public class FormListView extends View implements Refreshable {
 		cp.add(grid);
 		portlet.add(cp);
 		portlet.setScrollMode(Scroll.AUTOY);
-		portlet.setSize(725, 225);
+		portlet.setSize(725, 500);
 		portlet.setBottomComponent(buttonBar);
 		configPanel(portlet);
 	}
