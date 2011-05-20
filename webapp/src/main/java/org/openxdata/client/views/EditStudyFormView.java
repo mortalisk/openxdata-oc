@@ -312,8 +312,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			form.getDefaultVersion().setDirty(true);
 
 			return true;
-			// We shall use the onSaveLocaleText() such that we avoid double
-			// saving
+			// We shall use the onSaveLocaleText() such that we avoid double saving
 		} catch (Exception ex) {
 			//
 		}
@@ -386,6 +385,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			launchDesigner(false);
 		}
 	}
+
 	public Button getDesignFormButton(String label) {
 		Button designFormButton = new Button(label);
 		designFormButton.addListener(Events.Select,
