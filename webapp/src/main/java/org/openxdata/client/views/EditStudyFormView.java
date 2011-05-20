@@ -54,7 +54,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private List<User> users;
 	private int currentPage = 0;
 	private final EditStudyFormController studyFormController;
-        private UsermapUtilities utils ;
+	private UsermapUtilities utils;
 
 	/**To control the saving of a form if it has data*/
 	protected boolean editingWithData;
@@ -62,7 +62,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	public EditStudyFormView(EditStudyFormController controller) {
 		super(controller);
 		this.studyFormController = controller;
-                utils = new UsermapUtilities(studyFormController);
+		utils = new UsermapUtilities(studyFormController);
 	}
 
 	@Override
@@ -120,8 +120,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 					public void handleEvent(ComponentEvent be) {
 						studyName.hide();
 						studyDescription.hide();
-//						setUserStudyMap(form.getStudy(), users);
-                                                utils.setUserStudyMap(userAccessToStudy, form.getStudy(), users);
+						// setUserStudyMap(form.getStudy(), users);
+						utils.setUserStudyMap(userAccessToStudy,
+								form.getStudy(), users);
 						resizeWindow(200, userAccessToStudy.getWidth() + 40);
 						userAccessToStudy.refreshToolbars();
 					}
@@ -166,8 +167,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ComponentEvent be) {
-//						setUserFormMap(form, users);
-                                                utils.setUserFormMap(userAccessToForm, form, users);
+						// setUserFormMap(form, users);
+						utils.setUserFormMap(userAccessToForm, form, users);
 						resizeWindow(200, userAccessToForm.getWidth() + 40);
 						userAccessToForm.refreshToolbars();
 					}
@@ -291,8 +292,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.showProgressBar();
 		save();
 		// save any mapped study or form
-                utils.saveUserStudyMap(userAccessToStudy, form.getStudy(), users);
-                utils.saveUserFormMap(userAccessToForm, form, users, utils.getUserMappedForms());
+		utils.saveUserStudyMap(userAccessToStudy, form.getStudy(), users);
+		utils.saveUserFormMap(userAccessToForm, form, users,
+				utils.getUserMappedForms());
 		ProgressIndicator.hideProgressBar();
 	}
 
