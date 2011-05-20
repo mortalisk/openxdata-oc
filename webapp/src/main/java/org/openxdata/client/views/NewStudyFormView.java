@@ -238,7 +238,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					@Override
 					public void handleEvent(FieldEvent be) {
 						nextButton.setEnabled(false);
-                                                userStudyAccessGrid.setEnabled(true);
+						userStudyAccessGrid.setEnabled(true);
 						newStudyName.setValue("");
 						newStudyDescription.setValue("");
 					}
@@ -322,7 +322,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-                                userFormAccessGrid.setEnabled(false);
+				userFormAccessGrid.setEnabled(false);
 				if (existingFormName.getValue() != null) {
 					existingFormName.clearSelections();
 					existingFormDescription.setValue("");
@@ -358,7 +358,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-                                userStudyAccessGrid.setEnabled(true);
+				userStudyAccessGrid.setEnabled(true);
 				newFormName.setValue("");
 				newFormDescription.setValue("");
 			}
