@@ -494,9 +494,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			String javaScriptSrc) {
 		try {
 			if (formDefVersion == null) {
-				MessageBox.alert("Error",
-						"Please remove the formId attribute from the xform",
-						null);
+				MessageBox.alert(appMessages.error(),
+						appMessages.removeFormIdAttribute(), null);
 				return false;
 			}
 
