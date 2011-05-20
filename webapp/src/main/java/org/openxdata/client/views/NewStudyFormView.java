@@ -200,8 +200,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-                                //cant map a new study
-                                userStudyAccessGrid.setEnabled(false);
+				// cant map a new study
+				userStudyAccessGrid.setEnabled(false);
 				if (existingStudyName.getValue() != null) {
 					existingStudyName.clearSelections();
 					existingStudyDescription.setValue("");
