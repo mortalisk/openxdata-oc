@@ -21,13 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.client.controllers.EditStudyFormController;
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
-import org.purc.purcforms.client.controller.IFormSaveListener;
+import org.openxdata.client.util.UsermapUtilities;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -46,8 +48,6 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
-import org.openxdata.client.model.UserSummary;
-import org.openxdata.client.util.UsermapUtilities;
 
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version..
