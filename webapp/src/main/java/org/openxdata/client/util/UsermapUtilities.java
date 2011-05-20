@@ -2,10 +2,12 @@ package org.openxdata.client.util;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.mvc.Controller;
+import java.util.ArrayList;
 import java.util.List;
 import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.controllers.NewStudyFormController;
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.views.UserAccessGrids;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
@@ -21,11 +23,79 @@ public class UsermapUtilities {
 
     private Controller controller;
     private List<UserStudyMap> mappedStudies;
+    private List<UserFormMap> mappedForms;
 
-    public UsermapUtilities(Controller controller, List<UserStudyMap> mappedStudies) {
+    public UsermapUtilities(Controller controller) {
         this.controller = controller;
-        this.mappedStudies = mappedStudies;
     }
+    public void setUserMappedStudies(List<UserStudyMap> amappedStudies) {
+	this.mappedStudies = amappedStudies;
+    }
+    public void setUserMappedForms(List<UserFormMap> amappedForms) {
+	this.mappedForms = amappedForms;
+    }
+    public List<UserStudyMap> getUserMappedStudies(){
+        return this.mappedStudies;
+    }
+    public List<UserFormMap> getUserMappedForms(){
+        return this.mappedForms;
+    }
+
+    /*
+     * Load study names into left and right listboxes appropriately
+     */
+    public void setUserStudyMap(UserAccessGrids grid, StudyDef study, List<User> users) {
+        grid.clear();
+
+        List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
+        List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
+        for (User u : users) {
+            // check whether user is mapped to this study
+            boolean found = false;
+            for (UserStudyMap map : mappedStudies) {
+                if ((map.getUserId() == u.getId())
+                        && (map.getStudyId() == study.getStudyId())) {
+                    grid.addMappedUser(new UserSummary(u));
+                    mappedUsers.add(new UserSummary(u));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                grid.addUnmappedUser(new UserSummary(u));
+                unMappedUsers.add(new UserSummary(u));
+            }
+        }
+        grid.updateLists(unMappedUsers, mappedUsers);
+    }
+
+    /*
+     * Load formdefinition names into left and right listboxes appropriately
+     */
+    public void setUserFormMap(UserAccessGrids grid, FormDef form, List<User> users) {
+        grid.clear();
+
+        List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
+        List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
+        for (User user : users) {
+            boolean found = false;
+            for (UserFormMap map : mappedForms) {
+                if ((map.getUserId() == user.getId())
+                        && (map.getFormId() == form.getFormId())) {
+                    grid.addMappedUser(new UserSummary(user));
+                    mappedUsers.add(new UserSummary(user));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                grid.addUnmappedUser(new UserSummary(user));
+                unMappedUsers.add(new UserSummary(user));
+            }
+        }
+        grid.updateLists(unMappedUsers, mappedUsers);
+    }
+
 
     public void saveUserStudyMap(UserAccessGrids grid, StudyDef study, List<User> users) {
         String loggedInUsername = ((User) Registry.get(Emit.LOGGED_IN_USER_NAME)).getName();

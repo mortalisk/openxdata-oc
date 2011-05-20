@@ -77,18 +77,17 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	private List<StudyDef> studies;
 	private List<FormDef> forms;
 	private List<User> users;
-	private List<UserStudyMap> mappedStudies;
-	private List<UserFormMap> mappedForms;
-
 	ListStore<StudySummary> store;
 	ListStore<FormSummary> formStore;
 
 	private int currentPage = 0;
     private FormDesignerView formDesignerView;
 	private boolean formVersionEditMode;
+        private UsermapUtilities utils ;
 
 	public NewStudyFormView(Controller controller) {
 		super(controller);
+                utils = new UsermapUtilities(((NewStudyFormController) NewStudyFormView.this.getController()));
 	}
 
 	@Override
@@ -224,7 +223,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					public void selectionChanged(
 							SelectionChangedEvent<StudySummary> se) {
 						existingStudyDescription.setValue(se.getSelectedItem().getDescription());
-						setUserStudyMap(se.getSelectedItem().getStudyDefinition(), users);
+                                                utils.setUserStudyMap(userStudyAccessGrid, se.getSelectedItem().getStudyDefinition(), users);
 						nextButton.setEnabled(true);
 					}
 				});
@@ -345,7 +344,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					public void selectionChanged(
 							SelectionChangedEvent<FormSummary> se) {
 						existingFormDescription.setValue(se.getSelectedItem().getFormDefinition().getDescription());
-						setUserFormMap(se.getSelectedItem().getFormDefinition(), users);
+						utils.setUserFormMap(userFormAccessGrid,se.getSelectedItem().getFormDefinition(), users);
 						nextButton.setEnabled(true);
 					}
 				});
@@ -479,9 +478,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	}
     public void onSaveStudyComplete() {
         // save any mapped study or form
-        UsermapUtilities utils = new UsermapUtilities(((NewStudyFormController) NewStudyFormView.this.getController()), mappedStudies);
         utils.saveUserStudyMap(userStudyAccessGrid, studyDef, users);
-        utils.saveUserFormMap(userFormAccessGrid, formDef, users, mappedForms);
+        utils.saveUserFormMap(userFormAccessGrid, formDef, users,utils.getUserMappedForms());
     }
    
 	@Override
@@ -612,11 +610,12 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	public void setUserMappedStudies(List<UserStudyMap> amappedStudies) {
-		this.mappedStudies = amappedStudies;
+                utils.setUserMappedStudies(amappedStudies);
+
 	}
 
 	public void setUserMappedForms(List<UserFormMap> amappedForms) {
-		this.mappedForms = amappedForms;
+                utils.setUserMappedForms(amappedForms);
 	}
 
 	public void setForms(List<FormDef> forms) {
@@ -660,60 +659,5 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			}
 		}
 		return isFound;
-	}
-
-	/*
-	 * Load study names into left and right List Boxes appropriately
-	 */
-	private void setUserStudyMap(StudyDef study, List<User> users) {
-		userStudyAccessGrid.clear();
-
-		List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
-		List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
-		for (User u : users) {
-			// check whether user is mapped to this study
-			boolean found = false;
-			for (UserStudyMap map : mappedStudies) {
-				if ((map.getUserId() == u.getId())
-						&& (map.getStudyId() == study.getStudyId())) {
-					userStudyAccessGrid.addMappedUser(new UserSummary(u));
-					mappedUsers.add(new UserSummary(u));
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				userStudyAccessGrid.addUnmappedUser(new UserSummary(u));
-				unMappedUsers.add(new UserSummary(u));
-			}
-		}
-		userStudyAccessGrid.updateLists(unMappedUsers, mappedUsers);
-	}
-
-	/*
-	 * Load Form Definition names into left and right List Boxes appropriately
-	 */
-	private void setUserFormMap(FormDef form, List<User> users) {
-		userFormAccessGrid.clear();
-
-		List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
-		List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
-		for (User user : users) {
-			boolean found = false;
-			for (UserFormMap map : mappedForms) {
-				if ((map.getUserId() == user.getId())
-						&& (map.getFormId() == form.getFormId())) {
-					userFormAccessGrid.addMappedUser(new UserSummary(user));
-					mappedUsers.add(new UserSummary(user));
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				userFormAccessGrid.addUnmappedUser(new UserSummary(user));
-				unMappedUsers.add(new UserSummary(user));
-			}
-		}
-		userFormAccessGrid.updateLists(unMappedUsers, mappedUsers);
 	}
 }

@@ -20,18 +20,15 @@ package org.openxdata.client.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersionText;
-import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
-import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -70,10 +67,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private UserAccessGrids userAccessToStudy;
 	private UserAccessGrids userAccessToForm;
 	private List<User> users;
-	private List<UserStudyMap> mappedStudies;
-	private List<UserFormMap> mappedForms;
 	private int currentPage = 0;
 	private final EditStudyFormController studyFormController;
+        private UsermapUtilities utils ;
 
 	/**
 	 * @param controller
@@ -81,6 +77,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	public EditStudyFormView(EditStudyFormController controller) {
 		super(controller);
 		this.studyFormController = controller;
+                utils = new UsermapUtilities(studyFormController);
 	}
 
 	@Override
@@ -138,7 +135,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 					public void handleEvent(ComponentEvent be) {
 						studyName.hide();
 						studyDescription.hide();
-						setUserStudyMap(form.getStudy(), users);
+//						setUserStudyMap(form.getStudy(), users);
+                                                utils.setUserStudyMap(userAccessToStudy, form.getStudy(), users);
 						resizeWindow(200, userAccessToStudy.getWidth() + 40);
 						userAccessToStudy.refreshToolbars();
 					}
@@ -183,7 +181,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ComponentEvent be) {
-						setUserFormMap(form, users);
+//						setUserFormMap(form, users);
+                                                utils.setUserFormMap(userAccessToForm, form, users);
 						resizeWindow(200, userAccessToForm.getWidth() + 40);
 						userAccessToForm.refreshToolbars();
 					}
@@ -299,9 +298,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.showProgressBar();
 		save();
 		// save any mapped study or form
-                UsermapUtilities utils = new UsermapUtilities(studyFormController, mappedStudies);
                 utils.saveUserStudyMap(userAccessToStudy, form.getStudy(), users);
-                utils.saveUserFormMap(userAccessToForm, form, users, mappedForms);
+                utils.saveUserFormMap(userAccessToForm, form, users, utils.getUserMappedForms());
 		ProgressIndicator.hideProgressBar();
 	}
 
@@ -370,11 +368,13 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	public void setUserMappedStudies(List<UserStudyMap> amappedStudies) {
-		this.mappedStudies = amappedStudies;
+//		this.mappedStudies = amappedStudies;
+                utils.setUserMappedStudies(amappedStudies);
 	}
 
 	public void setUserMappedForms(List<UserFormMap> amappedForms) {
-		this.mappedForms = amappedForms;
+//		this.mappedForms = amappedForms;
+                utils.setUserMappedForms(amappedForms);
 	}
 
 	public void onFormDataCheckComplete(Boolean hasData) {
@@ -384,62 +384,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			launchDesigner(false);
 		}
 	}
-
-	/*
-	 * Load study names into left and right listboxes appropriately
-	 */
-	private void setUserStudyMap(StudyDef study, List<User> users) {
-		userAccessToStudy.clear();
-
-		List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
-		List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
-		for (User u : users) {
-			// check whether user is mapped to this study
-			boolean found = false;
-			for (UserStudyMap map : mappedStudies) {
-				if ((map.getUserId() == u.getId())
-						&& (map.getStudyId() == study.getStudyId())) {
-					userAccessToStudy.addMappedUser(new UserSummary(u));
-					mappedUsers.add(new UserSummary(u));
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				userAccessToStudy.addUnmappedUser(new UserSummary(u));
-				unMappedUsers.add(new UserSummary(u));
-			}
-		}
-		userAccessToStudy.updateLists(unMappedUsers, mappedUsers);
-	}
-
-	/*
-	 * Load formdefinition names into left and right listboxes appropriately
-	 */
-	private void setUserFormMap(FormDef form, List<User> users) {
-		userAccessToForm.clear();
-
-		List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
-		List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
-		for (User user : users) {
-			boolean found = false;
-			for (UserFormMap map : mappedForms) {
-				if ((map.getUserId() == user.getId())
-						&& (map.getFormId() == form.getFormId())) {
-					userAccessToForm.addMappedUser(new UserSummary(user));
-					mappedUsers.add(new UserSummary(user));
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				userAccessToForm.addUnmappedUser(new UserSummary(user));
-				unMappedUsers.add(new UserSummary(user));
-			}
-		}
-		userAccessToForm.updateLists(unMappedUsers, mappedUsers);
-	}
-
 	public Button getDesignFormButton(String label) {
 		Button designFormButton = new Button(label);
 		designFormButton.addListener(Events.Select,
