@@ -304,9 +304,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			String javaScriptSrc) {
 		try {
 			if (form.getDefaultVersion() == null) {
-				MessageBox.alert("Error",
-						"Please remove the formId attribute from the xform",
-						null);
+				MessageBox.alert(appMessages.error(),
+						appMessages.removeFormIdAttribute(), null);
+				
 				return false;
 			}
 
@@ -328,8 +328,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	public void onSaveLocaleText(int formId, String xformsLocaleText,
 			String layoutLocaleText) {
 		if (form.getDefaultVersion() == null) {
-			// TODO add message for internationalization purposes
-			MessageBox.alert("Error", "Please select the form version first",
+			MessageBox.alert(appMessages.error(), appMessages.selectFormVersion(),
 					null);
 			return;
 		}
