@@ -120,7 +120,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 					public void handleEvent(ComponentEvent be) {
 						studyName.hide();
 						studyDescription.hide();
-						// setUserStudyMap(form.getStudy(), users);
 						utils.setUserStudyMap(userAccessToStudy,
 								form.getStudy(), users);
 						resizeWindow(200, userAccessToStudy.getWidth() + 40);
@@ -167,7 +166,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ComponentEvent be) {
-						// setUserFormMap(form, users);
 						utils.setUserFormMap(userAccessToForm, form, users);
 						resizeWindow(200, userAccessToForm.getWidth() + 40);
 						userAccessToForm.refreshToolbars();
@@ -361,13 +359,11 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	public void setUserMappedStudies(List<UserStudyMap> amappedStudies) {
-//		this.mappedStudies = amappedStudies;
-                utils.setUserMappedStudies(amappedStudies);
+		utils.setUserMappedStudies(amappedStudies);
 	}
 
 	public void setUserMappedForms(List<UserFormMap> amappedForms) {
-//		this.mappedForms = amappedForms;
-                utils.setUserMappedForms(amappedForms);
+		utils.setUserMappedForms(amappedForms);
 	}
 
 	public void onFormDataCheckComplete(Boolean hasData) {
