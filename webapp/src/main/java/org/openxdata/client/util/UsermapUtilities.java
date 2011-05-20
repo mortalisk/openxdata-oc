@@ -28,15 +28,19 @@ public class UsermapUtilities {
     public UsermapUtilities(Controller controller) {
         this.controller = controller;
     }
-    public void setUserMappedStudies(List<UserStudyMap> amappedStudies) {
-	this.mappedStudies = amappedStudies;
-    }
-    public void setUserMappedForms(List<UserFormMap> amappedForms) {
-	this.mappedForms = amappedForms;
-    }
+    
+	public void setUserMappedStudies(List<UserStudyMap> amappedStudies) {
+		this.mappedStudies = amappedStudies;
+	}
+
+	public void setUserMappedForms(List<UserFormMap> amappedForms) {
+		this.mappedForms = amappedForms;
+	}
+    
     public List<UserStudyMap> getUserMappedStudies(){
         return this.mappedStudies;
     }
+    
     public List<UserFormMap> getUserMappedForms(){
         return this.mappedForms;
     }
