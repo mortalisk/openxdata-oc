@@ -23,19 +23,7 @@
 		<property name="password" value="${hibernate.connection.password}" />
 	</bean>
 
-	<!--  **************************  SESSION MANAGEMENT CONFIGURATION  *************************  -->
-	<bean name="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="singleSession" value="false"/>
-	</bean>
-
-	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="interceptors">
-			<list>
-				<ref bean="openSessionInViewInterceptor"/>
-			</list>
-		</property>
-	</bean>
+	<!--  **************************  LIQUIBASE  *************************  -->
 	
 	<bean id="liquibase" class="org.openxdata.server.database.SpringLiquibaseUpdater"
 		init-method="init">
