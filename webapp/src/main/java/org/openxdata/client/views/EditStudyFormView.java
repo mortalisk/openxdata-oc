@@ -59,9 +59,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	/**To control the saving of a form if it has data*/
 	protected boolean editingWithData;
 
-	/**
-	 * @param controller
-	 */
 	public EditStudyFormView(EditStudyFormController controller) {
 		super(controller);
 		this.studyFormController = controller;
