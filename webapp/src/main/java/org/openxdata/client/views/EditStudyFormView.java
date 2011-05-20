@@ -34,7 +34,9 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -70,6 +72,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private int currentPage = 0;
 	private final EditStudyFormController studyFormController;
         private UsermapUtilities utils ;
+
+	/**To control the saving of a form if it has data*/
+	protected boolean editingWithData;
 
 	/**
 	 * @param controller
@@ -282,6 +287,14 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		if (form == null) {
 			return;
 		}
+		if (editingWithData) {
+			MessageBox.info(appMessages.existingDataTitle(), appMessages.cannotSave(), new Listener<MessageBoxEvent>() {
+				@Override
+				public void handleEvent(MessageBoxEvent be) {
+				}
+			});
+			return;
+		}
 		// update study/form/version information
 		form.getStudy().setName(studyName.getValue());
 		form.getStudy().setDescription(studyDescription.getValue());
@@ -379,8 +392,18 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	public void onFormDataCheckComplete(Boolean hasData) {
 		if (hasData) {
-			launchDesigner(true);
+			MessageBox.confirm(appMessages.existingDataTitle(), appMessages.existingDataMessage(), new Listener<MessageBoxEvent>() {
+				
+				@Override
+				public void handleEvent(MessageBoxEvent be) {
+					if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
+						editingWithData = true;
+						launchDesigner(true);
+					}
+				}
+			});
 		} else {
+			editingWithData = false;
 			launchDesigner(false);
 		}
 	}

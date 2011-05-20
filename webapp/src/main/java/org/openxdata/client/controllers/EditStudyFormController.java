@@ -153,7 +153,7 @@ public class EditStudyFormController extends Controller {
 
 	public void formHasData(FormDef form) {
 		GWT.log("EditStudyFormController : formHasData");
-		formService.hasEditableData(form, new EmitAsyncCallback<Boolean>() {
+		formService.hasEditableData(form.getDefaultVersion(), new EmitAsyncCallback<Boolean>() {
 
 			@Override
 			public void onSuccess(Boolean result) {

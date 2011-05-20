@@ -138,4 +138,10 @@ public interface AppMessages extends Messages {
 	String exportError();
 	
 	String exportA();
+	
+	String existingDataTitle();
+	
+	String existingDataMessage();
+	
+	String cannotSave();
 }
