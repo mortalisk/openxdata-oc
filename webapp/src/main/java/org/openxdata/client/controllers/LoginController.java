@@ -36,7 +36,7 @@ public class LoginController extends Controller {
 
     @Override
     public void handleEvent(AppEvent event) {
-        System.out.println("LoginController handleEvent");
+        GWT.log("LoginController handleEvent");
         EventType type = event.getType();
         if (type == LOGIN) {
             forwardToView(loginView, event);
