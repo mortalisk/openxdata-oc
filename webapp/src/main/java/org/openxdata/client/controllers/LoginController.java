@@ -18,6 +18,7 @@ public class LoginController extends Controller {
     AppMessages appMessages = GWT.create(AppMessages.class);
     
     public final static EventType LOGIN = new EventType();
+    public final static EventType SESSION_TIMEOUT = new EventType();
 
     private LoginView loginView;
     private UserServiceAsync userService;
@@ -26,6 +27,7 @@ public class LoginController extends Controller {
         super();
         userService = aUserService;
         registerEventTypes(LOGIN);
+        registerEventTypes(SESSION_TIMEOUT);
     }
     
     @Override

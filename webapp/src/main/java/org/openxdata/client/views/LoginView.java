@@ -64,13 +64,12 @@ public class LoginView extends View {
         binding.addButton(submit);        
     }
 
-    @Override
-    protected void handleEvent(AppEvent event) {
-        if (event.getType() == LoginController.LOGIN) {
-            window = createWindow(appMessages.sessionExpired(), loginForm);
-            window.show();
-          }
-    }
+	@Override
+	protected void handleEvent(AppEvent event) {
+		if (event.getType() == LoginController.SESSION_TIMEOUT) {
+			showReloginWindow();
+		}
+	}
     
     public void reset() {
         loginForm.clear();
