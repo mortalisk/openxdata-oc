@@ -4,13 +4,12 @@ import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.LoginController;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
-import com.extjs.gxt.ui.client.widget.Component;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormButtonBinding;
@@ -76,22 +75,19 @@ public class LoginView extends View {
         loginForm.reset();
     }
 
-    public void close(){
-        reset();
-        window.hide();
-    }
-    
-    private Window createWindow(String title, Component component) {
-        Window window = new Window();
-        window.setAutoHeight(true);
-        window.setWidth(400);
-        window.setPlain(true);  
-        window.setHeading(title);
-        window.add(component);
-        window.setClosable(false);           
-        window.setDraggable(true);
-        window.setResizable(true);
-        window.setScrollMode(Scroll.AUTO);
-        return window;
-    }
+	public void reset() {
+		loginForm.clear();
+		loginForm.reset();
+	}
+
+	public void close() {
+		reset();
+		window.hide();
+	}
+
+	private void showReloginWindow() {
+		Dialog reloginDialog = ((LoginController) controller).getReloginView();
+		reloginDialog.show();
+		reloginDialog.center();
+	}
 }
