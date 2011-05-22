@@ -1,11 +1,13 @@
 package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.Context;
+import org.openxdata.server.admin.client.OpenXDataAppMessages;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataException;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -31,10 +33,10 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * The idea is to take the <code>User</code> back to where they were with all their work intact.
  * </P>
  * 
- * @author Angel
- *
  */
 public class ReLoginDialog extends DialogBox {
+	
+	OpenXDataAppMessages appMessages = GWT.create(OpenXDataAppMessages.class);
 	
 	/**
 	 * The login <code>button</code> on the <code>Dialog.</code>
@@ -91,14 +93,14 @@ public class ReLoginDialog extends DialogBox {
 		FlexTable table = new OpenXDataFlexTable();	
 		FlexCellFormatter formatter = table.getFlexCellFormatter();
 		
-		table.setWidget(0, 0, new Label("To Resume, Enter your credentials."));
+		table.setWidget(0, 0, new Label(appMessages.resumeCredentials()));
 		formatter.setColSpan(0, 0, 7);
 		formatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
 		
 		table.setWidget(1, 0, utilLabel = new Label(" "));
 		formatter.setColSpan(1, 0, 7);
 		
-		Label nameLabel = new Label("UserName:");
+		Label nameLabel = new Label(appMessages.uname());
 		table.setWidget(2, 0, nameLabel);
 		formatter.setColSpan(2, 0, 2);
 		formatter.setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_LEFT);
@@ -108,7 +110,7 @@ public class ReLoginDialog extends DialogBox {
 		table.setWidget(2, 1, userNameTextBox);
 		formatter.setWidth(2, 1, "70%");
 		
-		Label passLabel = new Label("Password:");
+		Label passLabel = new Label(appMessages.pass());
 		table.setWidget(3, 0, passLabel);
 		formatter.setColSpan(3, 0, 2);
 		formatter.setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_LEFT);
@@ -118,7 +120,7 @@ public class ReLoginDialog extends DialogBox {
 		table.setWidget(3, 1, passwordTextBox);
 		formatter.setWidth(3, 1, "70%");
 		
-		loginBtn = new OpenXDataButton("Re-Login");
+		loginBtn = new OpenXDataButton(appMessages.login());
 		loginBtn.addStyleName("btn");
 		table.setWidget(4, 0, loginBtn);
 		formatter.setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_LEFT);
@@ -204,10 +206,10 @@ public class ReLoginDialog extends DialogBox {
 		User currentlyLoggedOnUser = Context.getAuthenticatedUser();
 		
 		if(userNameTextBox.getText().length() <= 0)
-			throw new OpenXDataException("Enter User Name to Proceed");
+			throw new OpenXDataException(appMessages.enterNameProceed());
 		
 		if(passwordTextBox.getText().length() <= 0)
-			throw new OpenXDataException("Enter Password to Proceed");
+			throw new OpenXDataException(appMessages.enterPassProceed());
 		
 		String username = userNameTextBox.getText();
 		String password = passwordTextBox.getText();
@@ -265,20 +267,12 @@ public class ReLoginDialog extends DialogBox {
 				this.hide();
 			}				
 			else{
-				String newLoginMsg = 
-					"System cannot login you in because " +
-					"your credentials DO NOT match those of " +
-					"the currently logged on User. Current User's data might be lost!";
 				
-				onReAuthenticationFailed(newLoginMsg);
+				onReAuthenticationFailed(appMessages.wrongCredentials());
 			}				
 		}			
 		else{
-			String msg = 
-				"Authentication Failed! " +
-				"User credentials do not match!";
-			
-			onReAuthenticationFailed(msg);
+			onReAuthenticationFailed(appMessages.authenticationFailure());
 		}
 	}
 }
