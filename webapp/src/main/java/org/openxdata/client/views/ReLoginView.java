@@ -100,8 +100,8 @@ public class ReLoginView extends Dialog {
 	}
 
 	protected void reset() {
-		username.clear();
-		password.clearInvalid();
+		username.reset();
+		password.reset();
 	}
 
 	protected boolean validate() {
