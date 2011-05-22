@@ -136,7 +136,6 @@ public class FormDesignerView {
                 com.google.gwt.user.client.Window.getClientHeight());
         formDesignerWindow.add(formDesigner);
         formDesignerWindow.setScrollMode(Scroll.AUTO);
-        formDesignerWindow.setModal(true);
 
         formDesignerWindow.show();
         formDesignerWindow.maximize();
