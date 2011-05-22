@@ -66,7 +66,7 @@ public class LoginView extends View {
 
 	@Override
 	protected void handleEvent(AppEvent event) {
-		if (event.getType() == LoginController.SESSION_TIMEOUT) {
+		if (event.getType() == LoginController.SESSIONTIMEOUT) {
 			showReloginWindow();
 		}
 	}
