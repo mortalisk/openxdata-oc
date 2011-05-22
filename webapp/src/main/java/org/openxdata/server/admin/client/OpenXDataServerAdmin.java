@@ -337,7 +337,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 
 			@Override
 			public void onOtherFailure(Throwable throwable) {
-				// Do nothing -- probably log the message.
+				GWT.log(throwable.getLocalizedMessage());
 			}
 		});
 	}
