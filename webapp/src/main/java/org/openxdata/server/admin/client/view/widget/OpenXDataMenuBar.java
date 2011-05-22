@@ -23,8 +23,6 @@ import org.openxdata.server.admin.model.Permission;
 
 /**
  * Encapsulates <code>Menu Bar</code> controls on the view.
- * 
- * @author Angel
  *
  */
 public class OpenXDataMenuBar extends Composite implements EventDispatcher {
