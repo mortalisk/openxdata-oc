@@ -40,6 +40,8 @@ import org.purc.purcforms.client.util.FormUtil;
 public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 		LoginListener {
 
+	private OpenXDataAppMessages appMessages = GWT.create(OpenXDataAppMessages.class);
+	
 	// mainView is not instantiated here because the form designer route panel
 	// will be referencing
 	// that of the login view and as a result widget drag will have no valid
@@ -137,11 +139,11 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 							if (!user.isDisabled()) {
 								onSuccessfulLogin(user);
 							} else {
-								loginView.onUnSuccessfulLogin("You account has been disabled. Contact the system administrator.");
+								loginView.onUnSuccessfulLogin(appMessages.accountDisabled());
 								logOut(false);
 							}
 						} else
-							loginView.onUnSuccessfulLogin("Invalid UserName or Password");
+							loginView.onUnSuccessfulLogin(appMessages.invalidUnameOrPass());
 					}
 				});
 	}
@@ -155,8 +157,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 	private void onSuccessfulLogin(User user) {
 
 		if (user.getRoles().isEmpty()) {
-			loginView
-					.onUnSuccessfulLogin("You have No Permissions! Contact the Administrator");
+			loginView.onUnSuccessfulLogin(appMessages.noPermissions());
 			logOut(false);
 			return;
 		} else {
@@ -319,8 +320,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 					new PasswordChangeDialog().initializeDialog();
 
 					// Alert the User of the operation.
-					Utilities.displayMessage("For security reasons, the administrator should change their password on initial login. "
-									+ "Please change your password to avoid seeing this message and to protect your data.");
+					Utilities.displayMessage(appMessages.securityChangePass());
 				}
 			}
 		});

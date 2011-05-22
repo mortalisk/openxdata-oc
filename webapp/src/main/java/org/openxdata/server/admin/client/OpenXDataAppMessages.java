@@ -35,4 +35,12 @@ public interface OpenXDataAppMessages extends Messages {
 	String datasetFields();
 	
 	String formHasNoQuestions();
+
+	String accountDisabled();
+
+	String invalidUnameOrPass();
+
+	String noPermissions();
+
+	String securityChangePass();
 }
