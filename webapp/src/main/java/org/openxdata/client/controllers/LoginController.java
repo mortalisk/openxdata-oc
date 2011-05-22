@@ -32,13 +32,13 @@ public class LoginController extends Controller {
     
     @Override
     protected void initialize() {
-        System.out.println("LoginController initialize");
+    	GWT.log("LoginController : initialize");
         loginView = new LoginView(this);
     }
 
     @Override
     public void handleEvent(AppEvent event) {
-        GWT.log("LoginController handleEvent");
+        GWT.log("LoginController : handleEvent");
         forwardToView(loginView, event);
     }
     
