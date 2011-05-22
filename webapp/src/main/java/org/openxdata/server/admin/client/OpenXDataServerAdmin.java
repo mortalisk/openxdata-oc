@@ -73,8 +73,6 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 
 		Context.startup();
 
-		// FormDesignerWidget designer = new FormDesignerWidget(true,true,true);
-
 		// Hook the window resize event, so that we can adjust the UI.
 		Window.addResizeHandler(this);
 
