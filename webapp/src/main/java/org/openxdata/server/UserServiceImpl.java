@@ -5,6 +5,7 @@ import javax.servlet.ServletContext;
 
 import org.openxdata.client.service.UserService;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
@@ -72,4 +73,10 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements UserS
     public List<User> getUsers() {
         return getUserService().getUsers();
     }
+
+	@Override
+	public Boolean checkIfUserChangedPassword(User user)
+			throws OpenXDataSecurityException {
+		return getUserService().checkIfUserChangedPassword(user);
+	}
 }
