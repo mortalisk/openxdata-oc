@@ -19,49 +19,50 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 
 public class LoginView extends View {
-    
-    AppMessages appMessages = GWT.create(AppMessages.class);
-    private FormPanel loginForm;
-    private Window window;  
 
-    public LoginView(Controller controller) {
-        super(controller);
-    }
-    
-    @Override
-    protected void initialize() {
-        loginForm = new FormPanel();
-        loginForm.setHeaderVisible(false);
-        loginForm.setFrame(false);
-        loginForm.setBorders(false);
-        loginForm.setBodyBorder(false);
-        loginForm.setLayout(new FormLayout());
-        
-        final TextField<String> username = new TextField<String>();  
-        username.setFieldLabel(appMessages.username());  
-        username.setAllowBlank(false);  
-        loginForm.add(username);
-        
-        final TextField<String> password = new TextField<String>();  
-        password.setFieldLabel(appMessages.passWord());  
-        password.setAllowBlank(false);
-        password.setPassword(true);
-        loginForm.add(password);
-       
-        Button submit = new Button(appMessages.login());
-        submit.setType("submit");
-        loginForm.addButton(submit);
-        submit.addSelectionListener(new SelectionListener<ButtonEvent>() {
-            @Override
+	AppMessages appMessages = GWT.create(AppMessages.class);
+	private FormPanel loginForm;
+	private Window window;
+
+	public LoginView(Controller controller) {
+		super(controller);
+	}
+
+	@Override
+	protected void initialize() {
+		loginForm = new FormPanel();
+		loginForm.setHeaderVisible(false);
+		loginForm.setFrame(false);
+		loginForm.setBorders(false);
+		loginForm.setBodyBorder(false);
+		loginForm.setLayout(new FormLayout());
+		
+		final TextField<String> username = new TextField<String>();
+		username.setFieldLabel(appMessages.username());
+		username.setAllowBlank(false);
+		loginForm.add(username);
+
+		final TextField<String> password = new TextField<String>();
+		password.setFieldLabel(appMessages.passWord());
+		password.setAllowBlank(false);
+		password.setPassword(true);
+		loginForm.add(password);
+
+		Button submit = new Button(appMessages.login());
+		submit.setType("submit");
+		loginForm.addButton(submit);
+		submit.addSelectionListener(new SelectionListener<ButtonEvent>() {
+			@Override
 			public void componentSelected(ButtonEvent ce) {
-                ((LoginController)controller).performLogin(username.getValue(), password.getValue());
-              }
-        });
-        
-        loginForm.setButtonAlign(HorizontalAlignment.CENTER);
-        FormButtonBinding binding = new FormButtonBinding(loginForm);  
-        binding.addButton(submit);        
-    }
+				((LoginController) controller).performLogin(
+						username.getValue(), password.getValue());
+			}
+		});
+
+		loginForm.setButtonAlign(HorizontalAlignment.LEFT);
+		FormButtonBinding binding = new FormButtonBinding(loginForm);
+		binding.addButton(submit);
+	}
 
 	@Override
 	protected void handleEvent(AppEvent event) {
@@ -69,11 +70,6 @@ public class LoginView extends View {
 			showReloginWindow();
 		}
 	}
-    
-    public void reset() {
-        loginForm.clear();
-        loginForm.reset();
-    }
 
 	public void reset() {
 		loginForm.clear();

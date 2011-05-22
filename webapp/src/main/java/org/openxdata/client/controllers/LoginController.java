@@ -47,7 +47,7 @@ public class LoginController extends Controller {
         forwardToView(loginView, event);
     }
     
-    public void performLogin(String username, String password) {
+	public void performLogin(String username, String password) {
     	ProgressIndicator.showProgressBar();
         userService.authenticate(username, password,
         new EmitAsyncCallback<User>() {
