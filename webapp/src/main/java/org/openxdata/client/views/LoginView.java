@@ -61,12 +61,7 @@ public class LoginView extends View {
         
         loginForm.setButtonAlign(HorizontalAlignment.CENTER);
         FormButtonBinding binding = new FormButtonBinding(loginForm);  
-        binding.addButton(submit);
-        
-        // this opens a new popup
-        //String LOGIN_SERVICE_URI = "j_spring_security_check";
-        //loginForm.setAction(GWT.getModuleBaseURL() + LOGIN_SERVICE_URI+"?ajax=true");
-        //loginForm.setMethod(Method.POST);  
+        binding.addButton(submit);        
     }
 
     @Override
