@@ -199,31 +199,22 @@ public class MainView extends Composite implements ResizeHandler {
         // Stack Panel to organize MainView
         openXdataStackPanel = widgetFactory.getOpenXdataStackPanel();
 
-//        openXdataStackPanel.add(
-//                widgetFactory.getStudiesTreeView(),
-//                Utilities.createHeaderHTML(images.studies(),
-//                OpenXdataText.get(TextConstants.STUDIES)), true);
-
         openXdataStackPanel.add(
-                //widgetFactory.getUsersTreeView(),
                 usersListPresenter.getDisplay().asWidget(),
                 Utilities.createHeaderHTML(images.users(),
                 OpenXdataText.get(TextConstants.USERS)), true);
 
         openXdataStackPanel.add(
-                //widgetFactory.getRolesTreeView(),
                 rolezListPresenter.getDisplay().asWidget(),
                 Utilities.createHeaderHTML(images.roles(),
                 OpenXdataText.get(TextConstants.ROLES)), true);
 
         openXdataStackPanel.add(
-               // widgetFactory.getTasksTreeView(),
                 tasksListPresenter.getDisplay().asWidget(),
                 Utilities.createHeaderHTML(images.tasks(),
                 OpenXdataText.get(TextConstants.TASKS)), true);
 
         openXdataStackPanel.add(
-                //widgetFactory.getSettingsTreeView(),
                 settingPresenter.getDisplay().asWidget(),
                 Utilities.createHeaderHTML(images.settings(),
                 OpenXdataText.get(TextConstants.SETTINGS)), true);
