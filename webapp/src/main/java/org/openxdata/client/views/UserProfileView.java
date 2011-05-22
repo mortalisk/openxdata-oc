@@ -42,6 +42,8 @@ public class UserProfileView extends View {
 	private final TextField<String> lastName = new TextField<String>();
 	private final TextField<String> phoneNo = new TextField<String>();
 	private final TextField<String> email = new TextField<String>();
+	
+	private boolean adminDefaultPasswordChange = false;
 
 	public UserProfileView(Controller controller) {
 		super(controller);
@@ -196,30 +198,50 @@ public class UserProfileView extends View {
 			user = event.getData();
 			GWT.log("UserProfileView : UserProfileController.USERPROFILE : Edit User");
 
-			// Set the values of the form to that of the User
-			username.setValue(user.getName());
-			password.setValue("");
-			newPassword.setValue("");
-			confirmPassword.setValue("");
-			firstName.setValue(user.getFirstName());
-			lastName.setValue(user.getLastName());
-			phoneNo.setValue(user.getPhoneNo());
-			email.setValue(user.getEmail());
-
-			window.setAutoHeight(true);
-			window.setWidth(425);
-			window.setPlain(true);
-			window.setHeading(appMessages.userProfile() + " : "
-					+ user.getFullName());
-			window.add(formPanel);
-			window.setDraggable(true);
-			window.setResizable(true);
-			window.setScrollMode(Scroll.AUTO);
-			window.show();
+			initializeWindow();
+		}
+		else if(event.getType() == UserProfileController.PASSWORDCHANGE){
+			user = event.getData();
+			GWT.log("UserProfileView : UserProfileController.PASSWORDCHANGE : Change Admin User Password");
+			initializeWindow();
+			disableUserBioControls();
+			pwFieldSet.setExpanded(true);
+			MessageBox.alert(appMessages.adminUserDefaultPasswordChange(), appMessages.securityAdminChangePassInfo(), null);
+			adminDefaultPasswordChange = true;
 		}
 	}
 
+	private void initializeWindow() {
+		// Set the values of the form to that of the User
+		username.setValue(user.getName());
+		password.setValue("");
+		newPassword.setValue("");
+		confirmPassword.setValue("");
+		firstName.setValue(user.getFirstName());
+		lastName.setValue(user.getLastName());
+		phoneNo.setValue(user.getPhoneNo());
+		email.setValue(user.getEmail());
+
+		window.setAutoHeight(true);
+		window.setWidth(425);
+		window.setPlain(true);
+		window.setHeading(appMessages.userProfile() + " : "
+				+ user.getFullName());
+		window.add(formPanel);
+		window.setDraggable(true);
+		window.setResizable(true);
+		window.setScrollMode(Scroll.AUTO);
+		window.show();
+	}
+
 	public void cancel() {
+		if(adminDefaultPasswordChange){
+			closeWindow();
+			MessageBox.info(appMessages.adminUserDefaultPasswordChange(), appMessages.adminDefaultPasswordChangeCancel(), null);
+			adminDefaultPasswordChange = false;
+			return;
+		}
+		
 		MessageBox.confirm(appMessages.cancel(), appMessages.areYouSure(),
 				new Listener<MessageBoxEvent>() {
 					@Override
@@ -229,5 +251,15 @@ public class UserProfileView extends View {
 						}
 					}
 				});
+	}
+
+	/**
+	 * Disables controls that capture User Bio Data with the exception of the Password UI Controls.
+	 */
+	public void disableUserBioControls() {
+		this.firstName.disable();
+		this.lastName.disable();
+		this.phoneNo.disable();
+		this.email.disable();
 	}
 }

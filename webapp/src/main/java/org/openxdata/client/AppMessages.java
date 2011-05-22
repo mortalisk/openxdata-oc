@@ -161,4 +161,14 @@ public interface AppMessages extends Messages {
 	
 	String anotherLoggedInUser();
 	
+	String adminUserDefaultPasswordChange();
+	
+	String securityAdminChangePassInfo();
+	
+	String adminDefaultPasswordChangeCancel();
+	
+	String sameAdminPassword();
+	
+	String emptyPasswords();
+	
 }

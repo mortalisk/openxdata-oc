@@ -124,6 +124,9 @@ public class Emit implements EntryPoint, Refreshable {
                     	setUserName(usr);
                     	toggleAdminButton(usr);
                     	Dispatcher.get().dispatch(FormListController.FORMLIST);
+                    	
+                    	// Check if Admin changed default password
+                    	Dispatcher.get().dispatch(LoginController.CHECKADMINPASS);
                     }
                 });
             }

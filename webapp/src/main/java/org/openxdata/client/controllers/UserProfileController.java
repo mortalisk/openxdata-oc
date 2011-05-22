@@ -17,13 +17,17 @@ import com.google.gwt.core.client.GWT;
 
 public class UserProfileController extends Controller {
     AppMessages appMessages = GWT.create(AppMessages.class); 
+    
     public final static EventType USERPROFILE = new EventType();
+	public static final EventType PASSWORDCHANGE = new EventType();
+	
     private UserProfileView userProfileView;
     private UserServiceAsync userService;
     
     public UserProfileController(UserServiceAsync aUserService) {
         super();
         registerEventTypes(USERPROFILE);
+        registerEventTypes(PASSWORDCHANGE);
         userService = aUserService;
     }
     
@@ -45,6 +49,18 @@ public class UserProfileController extends Controller {
                     forwardToView(userProfileView, event);                    
                 }
             });
+        }
+        else if(type == PASSWORDCHANGE){
+        	userService.getUser("admin", new EmitAsyncCallback<User>() {
+
+				@Override
+				public void onSuccess(User user) {
+					event.setData(user);
+					userProfileView = new UserProfileView(UserProfileController.this);
+		            forwardToView(userProfileView, event); 
+				}
+			});
+        	
         }
     }
     
