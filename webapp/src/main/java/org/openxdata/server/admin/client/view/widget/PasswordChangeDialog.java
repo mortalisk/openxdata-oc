@@ -18,11 +18,13 @@
 package org.openxdata.server.admin.client.view.widget;
 
 import org.openxdata.server.admin.client.Context;
+import org.openxdata.server.admin.client.OpenXDataAppMessages;
 import org.openxdata.server.admin.client.controller.callback.OpenXDataAsyncCallback;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataException;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -43,7 +45,9 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  *
  */
 public class PasswordChangeDialog extends DialogBox {
-
+	
+	OpenXDataAppMessages appMessages = GWT.create(OpenXDataAppMessages.class);
+	
 	private Button okButton;
 	private Button cancelButton;
 	
@@ -51,8 +55,10 @@ public class PasswordChangeDialog extends DialogBox {
 	private TextBox newPasswordTextBox;
 	private TextBox repeatNewPasswordTextBox;
 	
+	
+	
 	public PasswordChangeDialog(){
-		setText("Enter Details to Change Your Password");
+		setText(appMessages.enterDetailsToChangePassword());
 	}
 	
 	/**
@@ -66,7 +72,7 @@ public class PasswordChangeDialog extends DialogBox {
 		formatter.setColSpan(0, 0, 7);
 		formatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
 		
-		Label oldPasswordLabel = new Label("Old Password: ");
+		Label oldPasswordLabel = new Label(appMessages.oldPassword());
 		formatter.setColSpan(1, 0, 7);
 		oldPasswordLabel.setWordWrap(false);
 		table.setWidget(1, 0, oldPasswordLabel);
@@ -77,7 +83,7 @@ public class PasswordChangeDialog extends DialogBox {
 		oldPasswordTextBox.setWidth("95%");
 		table.setWidget(1, 1, oldPasswordTextBox);
 		
-		Label newPasswordLabel = new Label("New Password: ");
+		Label newPasswordLabel = new Label(appMessages.newPassword());
 		formatter.setColSpan(2, 0, 7);
 		newPasswordLabel.setWordWrap(false);
 		table.setWidget(2, 0, newPasswordLabel);
@@ -88,7 +94,7 @@ public class PasswordChangeDialog extends DialogBox {
 		newPasswordTextBox .setWidth("95%");
 		table.setWidget(2, 1, newPasswordTextBox);		
 		
-		Label repeatNewPasswordLabel = new Label("Re-Enter Password: ");
+		Label repeatNewPasswordLabel = new Label(appMessages.reenterPassword());
 		formatter.setColSpan(3, 0, 7);
 		repeatNewPasswordLabel.setWordWrap(false);		
 		table.setWidget(3, 0, repeatNewPasswordLabel);
@@ -105,7 +111,7 @@ public class PasswordChangeDialog extends DialogBox {
 		table.setWidget(4, 0, okButton);
 		formatter.setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_LEFT);
 		
-		cancelButton = new OpenXDataButton("Cancel");
+		cancelButton = new OpenXDataButton(appMessages.cancel());
 		cancelButton.setWidth("100px");
 		cancelButton.setStyleName("btn");
 		table.setWidget(4, 1, cancelButton);
@@ -166,18 +172,15 @@ public class PasswordChangeDialog extends DialogBox {
 					}
 				}
 				else{
-					String newPasswordMismatchMessage =	"The new passwords do not match! Enter similar passwords to proceed.";
-					Utilities.displayMessage(newPasswordMismatchMessage);
+					Utilities.displayMessage(appMessages.mismatchPasswords());
 					newPasswordTextBox.setText("");
 					repeatNewPasswordTextBox.setText("");
 				}
 			}
 		} 
 		else{
-				String passwordMismatchMessage =
-					"The password you entered is not the same as the current administrator password. Check to proceed!";
 				
-				Utilities.displayMessage(passwordMismatchMessage);
+				Utilities.displayMessage(appMessages.notAdminPassword());
 				oldPasswordTextBox.setText("");
 		}
 	}
@@ -213,8 +216,7 @@ public class PasswordChangeDialog extends DialogBox {
 		
 		String newPassword = newPasswordTextBox.getText();		
 		if(newPassword.equals("admin")){
-			Utilities.displayMessage("The new password is the same as the old one. For security purposes, you are recommended to enter a different " +
-					"strong password.");
+			Utilities.displayMessage(appMessages.sameAdminPassword());
 			
 			newPasswordTextBox.setText("");
 			repeatNewPasswordTextBox.setText("");
@@ -253,11 +255,8 @@ public class PasswordChangeDialog extends DialogBox {
 			return true;
 		}
 		else{
-			String message =
-				"The User password specified is less than the default length that is specified in the system. " +
-				"The Password should be equal or more than " + Context.getSetting("defaultUserPasswordLength", "6") + " characters.";
 			
-			Utilities.displayMessage(message);
+			Utilities.displayMessage(appMessages.lessThanDefaultLengthPassword() + Context.getSetting("defaultUserPasswordLength", "6") + " characters.");
 			return false;
 		}
 	}
@@ -266,10 +265,8 @@ public class PasswordChangeDialog extends DialogBox {
 	 * Aborts the whole change password operation.
 	 */
 	protected void abortChangePasswordOperation() {		
-		String abortedPasswordChangeNotificationMessage = 
-			"You have chosen to cancel the Password Change Operation. It is advisable that you do this as soon as possible!";
 		
-		Utilities.displayMessage(abortedPasswordChangeNotificationMessage);		
+		Utilities.displayMessage(appMessages.adminDefaultPasswordChangeCancel());		
 		this.hide();
 		
 	}
@@ -280,8 +277,7 @@ public class PasswordChangeDialog extends DialogBox {
 	 * @param result
 	 */
 	protected void finalizePasswordChange() {
-		String message = "Administrator Password Changed successfully";
-		Utilities.displayMessage(message);
+		Utilities.displayMessage(appMessages.passwordChangeSuccessful());
 		this.hide();
 		
 	}

@@ -42,7 +42,7 @@ public interface OpenXDataAppMessages extends Messages {
 
 	String noPermissions();
 
-	String securityChangePass();
+	String securityAdminChangePassInfo();
 
 	String resumeCredentials();
 
@@ -59,4 +59,26 @@ public interface OpenXDataAppMessages extends Messages {
 	String wrongCredentials();
 
 	String authenticationFailure();
+
+	String enterDetailsToChangePassword();
+
+	String oldPassword();
+
+	String reenterPassword();
+
+	String newPassword();
+
+	String cancel();
+
+	String mismatchPasswords();
+
+	String notAdminPassword();
+
+	String sameAdminPassword();
+
+	String lessThanDefaultLengthPassword();
+
+	String adminDefaultPasswordChangeCancel();
+
+	String passwordChangeSuccessful();
 }

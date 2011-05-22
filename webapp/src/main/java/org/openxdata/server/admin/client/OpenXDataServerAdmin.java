@@ -317,7 +317,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 					new PasswordChangeDialog().initializeDialog();
 
 					// Alert the User of the operation.
-					Utilities.displayMessage(appMessages.securityChangePass());
+					Utilities.displayMessage(appMessages.securityAdminChangePassInfo());
 				}
 			}
 		});
