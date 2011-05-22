@@ -1,25 +1,24 @@
 package org.openxdata.server.admin.client.view.widget;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
+import org.openxdata.server.admin.client.view.event.LogOutEvent;
+import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
+import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.event.dispatcher.EventDispatcher;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
+import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.Permission;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
-import org.openxdata.server.admin.client.permissions.PermissionResolver;
-import org.openxdata.server.admin.client.view.event.LogOutEvent;
-import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
-import org.openxdata.server.admin.client.view.event.ViewEvent;
-import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.server.admin.model.Permission;
 
 /**
  * Encapsulates <code>Menu Bar</code> controls on the view.
