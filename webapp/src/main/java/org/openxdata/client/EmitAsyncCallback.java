@@ -28,14 +28,15 @@ public abstract class EmitAsyncCallback<T> implements AsyncCallback<T> {
         GWT.log("Error caught while performing an action on the server: "+throwable.getMessage(), throwable);
         if (throwable instanceof OpenXDataSessionExpiredException) {
             // allow the user to login again (show a login popup so they can continue where they left off)
-            Dispatcher.get().dispatch(LoginController.SESSION_TIMEOUT);
+            Dispatcher.get().dispatch(LoginController.SESSIONTIMEOUT);
         } else if (throwable instanceof OpenXDataSecurityException) {
             // access denied
             MessageBox.alert(appMessages.error(), appMessages.accessDeniedError(), null);
         } else {
             // all other errors
-        	onFailurePostProcessing(throwable);
+        	MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(throwable.getMessage()), null);
         }
+        onFailurePostProcessing(throwable);
     }
     
     /**
@@ -44,6 +45,6 @@ public abstract class EmitAsyncCallback<T> implements AsyncCallback<T> {
      * @param throwable
      */
     public void onFailurePostProcessing(Throwable throwable) {
-    	MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(throwable.getMessage()), null);
+    	
     }
 }
