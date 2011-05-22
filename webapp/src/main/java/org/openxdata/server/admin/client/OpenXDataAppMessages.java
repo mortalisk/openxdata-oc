@@ -43,4 +43,20 @@ public interface OpenXDataAppMessages extends Messages {
 	String noPermissions();
 
 	String securityChangePass();
+
+	String resumeCredentials();
+
+	String uname();
+
+	String pass();
+
+	String login();
+
+	String enterNameProceed();
+	
+	String enterPassProceed();
+
+	String wrongCredentials();
+
+	String authenticationFailure();
 }
