@@ -125,8 +125,7 @@ public class UserProfileView extends View {
 												.checkPasswordSaveUser(user);
 									}
 								});
-					} else {
-						displayError(appMessages.passwordNotSame());
+					} else {						
 						newPassword.reset();
 						confirmPassword.reset();
 					}
@@ -163,19 +162,30 @@ public class UserProfileView extends View {
 	}
 
 	private boolean newPasswordMatch(String password, String confirmPassword) {
-		if (((password == null || password.equals("")) && (confirmPassword != null && !confirmPassword
-				.equals("")))
-				|| ((confirmPassword == null || confirmPassword.equals("")) && (password != null && !password
-						.equals("")))) {
-			// one is empty and the other not
+		if (password == null || password.equals("")) {
+			displayError(appMessages.emptyPasswords());
 			return false;
-		} else if (password != null && !password.equals(confirmPassword)) {
-			// they just don't match
-			return false;
-		} else {
-			// match ok
-			return true;
 		}
+
+		if (confirmPassword == null || confirmPassword.equals("")) {
+			displayError(appMessages.emptyPasswords());
+			return false;
+		}
+
+		if (!confirmPassword.equals(password)) {
+			displayError(appMessages.passwordNotSame());
+			return false;
+		}
+		if (adminDefaultPasswordChange) {
+			if (password.equals("admin")) {
+				displayError(appMessages.sameAdminPassword());
+				return false;
+			}
+
+		}
+		
+		return true;
+	
 	}
 
 	public void displayError(String errorMessage) {
