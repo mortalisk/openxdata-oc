@@ -89,7 +89,6 @@ public class ReLoginDialog extends DialogBox {
 	 */
 	private void setUpWidgets() {
 		
-		// Table to organize widgets.
 		FlexTable table = new OpenXDataFlexTable();	
 		FlexCellFormatter formatter = table.getFlexCellFormatter();
 		
