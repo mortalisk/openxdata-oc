@@ -394,7 +394,7 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 			RolesListUtil.setPermissionResolver(new PermissionResolver(false,
 					RolesListUtil.getInstance().getUserPermissions()));
 		} else {
-			GWT.log("USer had no roles");
+			GWT.log("User had no roles");
 		}
 	}
 
