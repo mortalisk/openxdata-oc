@@ -151,4 +151,14 @@ public interface AppMessages extends Messages {
 	
 	String deleteSuccess();
 	
+	String sessionTimeout();
+	
+	String invalidUsernameOrPassword();
+	
+	String rightCredentials();
+	
+	String conflictingLogins();
+	
+	String anotherLoggedInUser();
+	
 }
