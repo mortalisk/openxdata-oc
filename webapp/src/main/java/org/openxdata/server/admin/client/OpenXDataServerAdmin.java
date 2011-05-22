@@ -187,14 +187,11 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 
 						// Construct the MainView.
 
-						// mainView = widgetFactory.getMainView();
 						mainPresenter = injector.getMainPresenter();
 						// Load Preliminary data.
 						MainViewControllerFacade.loadPreliminaryViewData();
 
-						// RootPanel.get().add(mainView);
-						RootPanel.get().add(
-								mainPresenter.getDisplay().asWidget());
+						RootPanel.get().add(mainPresenter.getDisplay().asWidget());
 
 						FormUtil.dlg.hide();
 
