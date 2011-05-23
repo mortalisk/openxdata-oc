@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  * 
  * @author dagmar@cell-life.org.za
- * @author Mark
  */
 @Transactional (readOnly=true)
 public class OpenXDataUserDetailsServiceImpl implements OpenXdataUserDetailsService {

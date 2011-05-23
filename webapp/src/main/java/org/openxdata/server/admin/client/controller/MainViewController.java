@@ -12,7 +12,6 @@ import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
  * database, for the various views.
  * 
  * @author daniel
- * @author Mark
  * 
  */
 public class MainViewController {

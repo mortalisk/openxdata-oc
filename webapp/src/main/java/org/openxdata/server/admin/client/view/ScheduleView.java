@@ -27,7 +27,6 @@ import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
  * This widget displays schedules of the selected task and lets you edit them.
  * 
  * @author daniel
- * @author Mark - For the Handling of switching of Cron algorithms back to UI
  * @author Ronald.K
  * 
  */

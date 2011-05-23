@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * to get the selected option when an <code>object</code> has <code>data.</code>
  * An <code>Object</code> can be a <code>Study, Form, Form version, report </code> etc.
  * 
- * @author Mark
  *
  */
 public class FormVersionOpenDialog extends DialogBox{

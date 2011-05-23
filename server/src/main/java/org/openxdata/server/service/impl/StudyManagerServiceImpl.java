@@ -32,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Default implementation for study manager service.
  * 
  * @author daniel
- * @author Mark
  *
  */
 @Service("studyManagerService")
