@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.purc</groupId>
             <artifactId>gwt-purcforms</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.1-r4550</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
