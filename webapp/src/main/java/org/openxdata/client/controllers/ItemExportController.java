@@ -4,10 +4,7 @@ import org.openxdata.client.AppMessages;
 import org.openxdata.client.util.DesignerUtilities;
 import org.openxdata.server.admin.client.listeners.GetFileNameDialogEventListener;
 import org.openxdata.server.admin.client.view.widget.GetFileNameDialog;
-import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.Exportable;
 
 import com.google.gwt.core.client.GWT;
 
@@ -18,7 +15,7 @@ import com.google.gwt.core.client.GWT;
 public class ItemExportController implements
 		GetFileNameDialogEventListener {
 
-	private Editable editable;
+	private Exportable exportable;
 	AppMessages appMessages = GWT.create(AppMessages.class);
 
 	GetFileNameDialog getFileNameDialog;
@@ -28,30 +25,20 @@ public class ItemExportController implements
 
 	}
 
-	public void loadExportDialog(Editable editable) {
-		this.editable = editable;
-		String defaultName = getName(editable);
+	public void loadExportDialog(Exportable exportable) {
+		this.exportable = exportable;
+		String defaultName = exportable.getName();
+		
 		defaultName.replace(" ", "");
 		getFileNameDialog = new GetFileNameDialog(this,
 				appMessages.exportAs(), appMessages.exportA(), defaultName);
 		getFileNameDialog.center();
 	}
 
-	private String getName(Editable editable) {
-		if(editable instanceof StudyDef)
-			return ((StudyDef)editable).getName();
-		if(editable instanceof FormDef)
-			return ((FormDef)editable).getName();
-		if(editable instanceof FormDefVersion)
-			return ((FormDefVersion)editable).getName();
-		
-		return "";
-	}
-
 	@Override
 	public void onSetFileName(String fileName) {
 		if (fileName != null && fileName.trim().length() > 0)
-			DesignerUtilities.exportEditable(editable, fileName);
+			DesignerUtilities.exportEditable(exportable, fileName);
 
 	}
 }

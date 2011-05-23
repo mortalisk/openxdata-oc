@@ -13,7 +13,7 @@ import java.util.Vector;
  * changing of a form language in order to have a more efficient implementation
  * as a trade off for more flexibility which may not be used most of the times.
  */
-public class FormDef extends AbstractEditable{
+public class FormDef extends AbstractEditable implements Exportable {
 
 	/**
 	 * Serialisation ID
@@ -304,4 +304,9 @@ public class FormDef extends AbstractEditable{
         }
         this.users.add(user);
     }
+
+	@Override
+	public String getType() {
+		return "form";
+	}
 }

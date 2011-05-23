@@ -8,7 +8,7 @@ import java.util.Vector;
  * The form definition version. For each form defined, we can have many versions to support
  * changing of form definition without breaking already collected data.
  */
-public class FormDefVersion extends AbstractEditable{
+public class FormDefVersion extends AbstractEditable implements Exportable {
 
 	/**
 	 * Serialisation ID
@@ -248,5 +248,10 @@ public class FormDefVersion extends AbstractEditable{
 		}
 		
 		return null;
+	}
+
+	@Override
+	public String getType() {
+		return "version";
 	}
 }

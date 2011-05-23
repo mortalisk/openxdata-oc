@@ -8,7 +8,7 @@ import java.util.Vector;
 /**
  * This class encapsulates all form definitions of a particular study.
  */
-public class StudyDef extends AbstractEditable{
+public class StudyDef extends AbstractEditable implements Exportable {
 	
 	private static final long serialVersionUID = -8072038229430076563L;
 
@@ -255,4 +255,9 @@ public class StudyDef extends AbstractEditable{
         }
         this.users.add(user);
     }
+
+	@Override
+	public String getType() {
+		return "study";
+	}
 }

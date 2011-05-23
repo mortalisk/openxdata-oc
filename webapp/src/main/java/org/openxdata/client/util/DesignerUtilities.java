@@ -1,17 +1,9 @@
 package org.openxdata.client.util;
 
 import org.openxdata.client.AppMessages;
-import org.openxdata.server.admin.model.Editable;
-import com.google.gwt.xml.client.Attr;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NamedNodeMap;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.XMLParser;
+import org.openxdata.server.admin.model.Exportable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.server.admin.model.StudyDef;
 import org.purc.purcforms.client.util.FormDesignerUtil;
 
 import com.extjs.gxt.ui.client.widget.MessageBox;
@@ -20,6 +12,13 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.xml.client.Attr;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NamedNodeMap;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
 
 /**
  * Encapsulates utility functions used by the PurcForms Designer.
@@ -48,25 +47,15 @@ public class DesignerUtilities {
 	 * @param editable Editable to export.
 	 * @param fileName File Name for the item to export.
 	 */
-	public static void exportEditable(final Editable editable, final String fileName){
+	public static void exportEditable(final Exportable exportable, final String fileName){
 
 		ProgressIndicator.showProgressBar();
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
 				try{
-					Integer id = null;
-					String type = "study";
-					if(editable instanceof FormDef){
-						type = "form";
-						id = ((FormDef)editable).getFormId();
-					}
-					else if(editable instanceof FormDefVersion){
-						type = "version";
-						id = ((FormDefVersion)editable).getFormDefVersionId();
-					}
-					else
-						id = ((StudyDef)editable).getStudyId();
+					Integer id = exportable.getId();
+					String type = exportable.getType();
 
 					String url = "studyexport?";
 					url += "type=" + type;

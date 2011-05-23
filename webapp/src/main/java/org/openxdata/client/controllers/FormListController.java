@@ -10,6 +10,7 @@ import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.views.FormListView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.Editable;
+import org.openxdata.server.admin.model.Exportable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 
@@ -130,9 +131,21 @@ public class FormListController extends Controller {
         });
     }
 
+    /**
+     * Editable must be instanceof Exportable.
+     * 
+     * @param editable Editable to export
+     * @throws IllegalArgumentException if Editable is not instance of Exportable.
+     */
 	public void forwardToItemExportController(Editable editable) {
+		
 		ItemExportController controller = new ItemExportController();
-		controller.loadExportDialog(editable);
+		
+		if (editable instanceof Exportable) {
+			controller.loadExportDialog((Exportable) editable);
+		} else {
+			throw new IllegalArgumentException("Item is not Exportable");
+		}
 		
 	}
 }
