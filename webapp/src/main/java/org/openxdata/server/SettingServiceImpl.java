@@ -13,7 +13,6 @@ import org.springframework.web.context.WebApplicationContext;
 /**
  * Default Implementation for the <code>SettingService Interface.</code>
  * 
- * @author Angel
  *
  */
 public class SettingServiceImpl extends OxdPersistentRemoteService implements SettingService {

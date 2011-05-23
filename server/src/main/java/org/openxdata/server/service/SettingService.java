@@ -10,7 +10,6 @@ import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
  * This service is used for 
  * managing <code>Settings</code>.
  * 
- * @author Angel
  *
  */
 public interface SettingService {

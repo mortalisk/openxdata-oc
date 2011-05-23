@@ -20,7 +20,6 @@ import org.purc.purcforms.client.util.FormUtil;
  * Encapsulates the actions required to 
  * perform a data check on an <code>Editable</code> like <code>Study, Form or Form Version</code>.
  * 
- * @author Angel
  * 
  */
 public class DataCheckUtil implements OnDataReturnedListener {

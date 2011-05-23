@@ -5,7 +5,6 @@ import java.util.List;
 import org.openxdata.server.admin.model.SettingGroup;
 
 /**
- * @author Angel
  *
  */
 public interface SettingGroupDAO extends BaseDAO<SettingGroup> {

@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Label;
  * We want to check the <tt>text</tt> to see if its null and then make the back ground transparent.
  * </p>
  * 
- * @author Angel
  *
  */
 public class OpenXDataLabel extends Label {

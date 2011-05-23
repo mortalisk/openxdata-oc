@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.User;
  * Provides data access 
  * services to the <code>User service</code>.
  * 
- * @author Angel
  *
  */
 public interface UserDAO extends BaseDAO<User> {

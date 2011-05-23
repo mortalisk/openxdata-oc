@@ -5,7 +5,6 @@ import java.util.List;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 /**
- * @author Angel
  *
  */
 public interface UserStudyMapDAO extends BaseDAO<UserStudyMap> {

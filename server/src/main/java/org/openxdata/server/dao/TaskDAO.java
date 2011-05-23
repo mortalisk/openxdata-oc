@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.TaskDef;
  * Provides data access 
  * services to the <code>Task service</code>.
  * 
- * @author Angel
  *
  */
 public interface TaskDAO extends BaseDAO<TaskDef>{

@@ -28,7 +28,6 @@ import org.openxdata.server.admin.model.User;
  * If something needs to be accessed by more than one guy, it could be put here.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class Context  {

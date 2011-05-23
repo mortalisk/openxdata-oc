@@ -11,7 +11,6 @@ import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
  * Tests permissions for accessing reports.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class ReportPermissionsTest extends PermissionsTest {

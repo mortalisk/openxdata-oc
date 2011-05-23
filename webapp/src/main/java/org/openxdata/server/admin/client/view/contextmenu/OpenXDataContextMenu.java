@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 /**
  * Encapsulates Context Menu pop up on the tree view <code>objects.</code>
  * 
- * @author Angel
  *
  */
 public class OpenXDataContextMenu {

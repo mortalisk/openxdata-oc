@@ -6,7 +6,6 @@ package org.openxdata.server.admin.client.view.listeners;
  * Please review the {@link OpenXDataViewApplicationEventListener} contract.
  * </p>
  * 
- * @author Angel
  *
  */
 public interface OpenXDataViewExtendedApplicationEventListener extends	OpenXDataViewApplicationEventListener {

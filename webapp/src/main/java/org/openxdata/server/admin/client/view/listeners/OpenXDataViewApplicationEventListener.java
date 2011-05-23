@@ -8,7 +8,6 @@ import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
  * Defines a contract for the {@linkplain OpenXDataBaseView}  
  * <tt>objects</tt> that want to listen to application level events like on the {@link OpenXDataToolBar} or {@link OpenXDataMenuBar}.</tt>
  * 
- * @author Angel
  *
  */
 public interface OpenXDataViewApplicationEventListener {

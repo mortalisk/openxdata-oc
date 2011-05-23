@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Test class for the HibernateStudyManagerDAO
  * 
- * @author Angel
  *
  */
 public class HibernateStudyManagerDAOTest extends BaseContextSensitiveTest {

@@ -13,7 +13,6 @@ import java.util.List;
  * Tests permissions for accessing locales.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class LocalePermissionsTest extends PermissionsTest {

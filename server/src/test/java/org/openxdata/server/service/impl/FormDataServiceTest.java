@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Tests the FormService type contract.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class FormDataServiceTest extends BaseContextSensitiveTest {

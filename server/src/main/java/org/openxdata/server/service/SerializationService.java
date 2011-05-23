@@ -7,7 +7,6 @@ import org.openxdata.server.serializer.XformSerializer;
 /**
  * Handles the invoking of different serializers.
  * 
- * @author Angel
  *
  */
 public interface SerializationService {

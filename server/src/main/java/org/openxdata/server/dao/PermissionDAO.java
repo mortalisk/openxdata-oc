@@ -5,7 +5,6 @@ import java.util.List;
 import org.openxdata.server.admin.model.Permission;
 
 /**
- * @author Angel
  *
  */
 public interface PermissionDAO extends BaseDAO<Permission> {

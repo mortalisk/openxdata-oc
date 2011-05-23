@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.Setting;
  * Provides data access 
  * services to the <code>Setting service</code>.
  * 
- * @author Angel
  *
  */
 public interface SettingDAO extends BaseDAO<Setting> {

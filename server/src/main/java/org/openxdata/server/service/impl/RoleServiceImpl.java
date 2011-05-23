@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Default implementation for <code>Permission Service</code>.
  * 
- * @author Angel
  *
  */
 @Service("roleService")

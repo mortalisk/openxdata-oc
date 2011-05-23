@@ -57,7 +57,6 @@ import org.openxdata.server.admin.model.User;
  * </p>
  * 
  * @author daniel
- * @author Angel
  * 
  */
 public class MainView extends Composite implements ResizeHandler {

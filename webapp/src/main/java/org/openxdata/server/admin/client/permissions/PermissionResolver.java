@@ -22,7 +22,6 @@ import org.openxdata.server.admin.model.mapping.UserStudyMap;
  * and consequently determines the access of level of the <tt>User</tt> depending on their <tt>Permissions.</tt>
  * </p>
  * 
- * @author Angel
  *
  */
 public class PermissionResolver {	

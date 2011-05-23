@@ -9,7 +9,6 @@ package org.openxdata.server.admin.client.view.treeview.listeners;
  * studies > forms > form versions, report groups > reports, Setting groups > setting
  * </code></p>
  * 
- * @author Angel
  * 
  */
 public interface ExtendedContextInitMenuListener extends ContextMenuInitListener{

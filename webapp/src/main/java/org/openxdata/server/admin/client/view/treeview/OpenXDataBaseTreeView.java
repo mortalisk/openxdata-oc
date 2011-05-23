@@ -34,7 +34,6 @@ import com.google.gwt.user.client.ui.TreeItem;
  * <tt>context menus</tt> for the different <tt>tree views.</tt>
  * 
  * @author dagmar@cell-life.org.za
- * @author Angel
  */
 public abstract class OpenXDataBaseTreeView extends Composite implements
 		SelectionHandler<TreeItem>, ContextMenuInitListener {

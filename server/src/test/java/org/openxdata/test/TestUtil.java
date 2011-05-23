@@ -7,7 +7,6 @@ import java.net.URL;
  * Tests Utility class
  *
  * @author daniel
- * @author Angel
  *
  */
 public class TestUtil {

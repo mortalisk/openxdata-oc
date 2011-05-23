@@ -54,7 +54,6 @@ import org.openxdata.server.admin.client.view.event.EditableEvent;
  * and lets you edit them.
  * 
  * @author daniel
- * @author Angel
  * 
  */
 public class StudyView extends OpenXDataBaseView implements

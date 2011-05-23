@@ -13,7 +13,6 @@ import org.openxdata.server.admin.model.Editable;
  * either the success or failure of saving.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class SaveAsyncCallback extends OpenXDataAsyncCallback<Void>{

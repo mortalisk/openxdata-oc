@@ -7,7 +7,6 @@ import org.openxdata.server.dao.PermissionDAO;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author Angel
  *
  */
 @Repository("permissionDAO")

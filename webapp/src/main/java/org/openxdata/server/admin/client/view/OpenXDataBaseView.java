@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.Widget;
  * <tt>Base class</tt> for all Views that are <tt>Composites</tt> and want to be
  * notified of selections on the {@link OpenXDataBaseTreeView} intances.
  * 
- * @author Angel
  * 
  */
 public abstract class OpenXDataBaseView extends Composite {

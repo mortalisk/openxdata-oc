@@ -19,7 +19,6 @@ import org.openxdata.server.admin.client.presenter.MainPresenter;
 /**
  * Declares Methods that will return the required types to the client.
  * 
- * @author Angel
  * 
  */
 @GinModules(OpenXdataClientModule.class)

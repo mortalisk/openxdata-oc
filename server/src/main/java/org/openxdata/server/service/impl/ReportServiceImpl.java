@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default implementation for <code>Report Service</code>.
- * @author Angel
  *
  */
 @Service("reportService")

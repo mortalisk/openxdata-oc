@@ -12,7 +12,6 @@ import org.openxdata.server.admin.model.exception.UnexpectedException;
  * OpenXData utilities.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class OpenXDataUtil {

@@ -6,7 +6,6 @@ package org.openxdata.server.admin.client.view.treeview.listeners;
  * through the context menu that is loaded when the <code>User</code> right clicks on the <code>Objects.</code>
  * </P>
  * 
- * @author Angel
  * 
  */
 public interface ContextMenuInitListener {

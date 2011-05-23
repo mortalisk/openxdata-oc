@@ -51,7 +51,6 @@ import com.google.inject.Singleton;
 /**
  * Binds the classes and providers using a Guice module.
  * 
- * @author Angel
  * 
  */
 public class OpenXdataClientModule extends AbstractGinModule {

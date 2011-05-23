@@ -9,7 +9,6 @@ package org.openxdata.server.admin.client.view.listeners;
  * An option can be <code>(Read only, Create New or Cancel)</code>.
  * </P>
  * 
- * @author Angel
  * 
  */
 public interface FormVersionOpenDialogListener {

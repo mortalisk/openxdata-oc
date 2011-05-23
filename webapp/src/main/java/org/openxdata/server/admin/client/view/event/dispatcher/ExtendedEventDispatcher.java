@@ -7,7 +7,6 @@ import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApp
  * <p>
  * Please review the {@link OpenXDataViewExtendedApplicationEventListener} contract.
  * </p>
- * @author Angel
  *
  */
 public interface ExtendedEventDispatcher extends EventDispatcher {

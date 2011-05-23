@@ -20,7 +20,6 @@ import org.springframework.util.StringUtils;
  * Provides a hibernate implementation of the study manager data access interface.
  * 
  * @author daniel
- * @author Angel
  * @author dagmar@cell-life.org.za
  * @author Ronald
  *

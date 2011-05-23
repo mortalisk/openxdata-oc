@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.MenuBar;
  * <code>Base class</code> for <code>Menu Bar widgets</code> in OpenXData
  * <code>overriding</code> the <code>onBrowserEvent()</code> to do custom checking of items.
  * 
- * @author Angel on Jan 15, 2010
  *
  */
 public class OpenXDataBaseMenuBar extends MenuBar {

@@ -5,7 +5,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 /**
  * <code>Extends GWT FlexTable</code<> to add default style names.
  * 
- * @author Angel
  *
  */
 public class OpenXDataFlexTable extends FlexTable {

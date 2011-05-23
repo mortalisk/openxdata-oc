@@ -12,7 +12,6 @@ import com.trg.search.Search;
  * Provides a hibernate implementation
  * of the <code>TaskDAO</code> data access <code> interface.</code>
  * 
- * @author Angel
  *
  */
 @Repository("taskDAO")

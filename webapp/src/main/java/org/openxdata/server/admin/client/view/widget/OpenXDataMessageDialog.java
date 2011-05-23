@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * <code>Dialog</code> that notifies the <code>User</code> with a message.
  * 
- * @author Angel
  *
  */
 public class OpenXDataMessageDialog extends DialogBox  {

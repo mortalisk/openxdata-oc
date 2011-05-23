@@ -29,7 +29,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * 
  * @version 1.0
  * 
- * @author Angel
  * 
  */
 public class OpenXDataViewFactory implements OpenXDataWidgetFactory {

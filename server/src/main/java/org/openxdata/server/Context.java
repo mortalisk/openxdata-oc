@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * The Server application context.
  * @author daniel
- * @author Angel
  *
  */
 @Transactional

@@ -6,7 +6,6 @@ import org.purc.purcforms.client.util.FormUtil;
 /**
  * Utilities used by the <code>OpenXDataAsyncCallback</code>.
  * 
- * @author Angel
  *
  */
 public class AsyncCallBackUtil {

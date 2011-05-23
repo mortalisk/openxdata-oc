@@ -30,7 +30,6 @@ import org.openxdata.server.admin.model.Editable;
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version.
  * 
- * @author Angel
  * 
  */
 public class DeleteStudyFormView extends View {

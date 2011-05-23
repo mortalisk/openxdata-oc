@@ -10,7 +10,6 @@ import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
  * Tests permissions for accessing tasks.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class TaskPermissionsTest extends PermissionsTest {

@@ -57,7 +57,6 @@ import org.purc.purcforms.client.util.FormUtil;
  *          <code>void</code> return type becomes a {@link Void} type
  *          argument, which is always <code>null</code>).
  *          
- * @author Angel
  *
  */
 public abstract class OpenXDataAsyncCallback<T> implements AsyncCallback<T> {

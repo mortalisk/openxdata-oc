@@ -24,7 +24,6 @@ import org.purc.purcforms.client.util.FormUtil;
  * This controller deals with loading and saving of Studies and mapped studies related data
  * to and from the database for the various Study and Mapped Studies related views.
  * 
- * @author Angel
  *
  */
 public class StudiesViewController implements SaveCompleteListener {

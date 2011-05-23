@@ -31,7 +31,6 @@ import org.purc.purcforms.client.util.FormUtil;
 /**
  * Helper class for the {@link StudyView}.
  * 
- * @author Angel 
  *
  */
 public class StudyViewHelper {

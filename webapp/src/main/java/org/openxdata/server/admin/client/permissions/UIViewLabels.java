@@ -3,7 +3,6 @@ package org.openxdata.server.admin.client.permissions;
 /**
  * Encapsulates the dynamic setting of the labels on the UI views like the Context Menu, Mapping dialogs.
  * 
- * @author Angel
  *
  */
 public class UIViewLabels {

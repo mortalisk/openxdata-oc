@@ -5,7 +5,6 @@ import java.util.List;
 import org.openxdata.server.admin.model.ReportGroup;
 
 /**
- * @author Angel
  *
  */
 public interface ReportGroupDAO extends BaseDAO<ReportGroup> {

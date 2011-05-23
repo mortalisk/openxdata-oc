@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.TaskDef;
  * This service is used for 
  * managing <code>Tasks</code>.
  * 
- * @author Angel
  *
  */
 public interface TaskService {

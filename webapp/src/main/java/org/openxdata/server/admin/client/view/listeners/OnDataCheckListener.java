@@ -4,7 +4,6 @@ package org.openxdata.server.admin.client.view.listeners;
  * 
  * This is an interface defines a contract for a member that intends to check if an object has data.
  * 
- * @author Angel
  */
 public interface OnDataCheckListener {
 

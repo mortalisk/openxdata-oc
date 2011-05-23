@@ -11,7 +11,6 @@ import org.openxdata.server.serializer.XformSerializer;
 import org.openxdata.test.BaseContextSensitiveTest;
 
 /**
- * @author Angel
  *
  */
 public class SerializationServiceTest extends BaseContextSensitiveTest {

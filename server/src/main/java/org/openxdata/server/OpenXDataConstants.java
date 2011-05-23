@@ -4,7 +4,6 @@ package org.openxdata.server;
  * This class holds constants used in the OpenXdata.
  * 
  * @author daniel
- * @author Angel
  */
 public class OpenXDataConstants {
 

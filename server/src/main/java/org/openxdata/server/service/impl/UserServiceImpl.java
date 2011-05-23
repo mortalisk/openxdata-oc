@@ -40,7 +40,6 @@ import org.openxdata.server.security.OpenXDataSessionRegistry;
  * Default implementation for <code>UserService interface</code>.
  * 
  * @author dagmar@cell-life.org.za
- * @author Angel
  * 
  */
 @Service("userService")

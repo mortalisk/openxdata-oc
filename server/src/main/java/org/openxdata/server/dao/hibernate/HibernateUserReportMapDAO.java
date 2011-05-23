@@ -7,7 +7,6 @@ import org.openxdata.server.dao.UserReportMapDAO;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author Angel
  *
  */
 @Repository("userReportMapDAO")

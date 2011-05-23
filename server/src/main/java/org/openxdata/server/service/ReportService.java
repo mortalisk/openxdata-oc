@@ -11,7 +11,6 @@ import org.openxdata.server.admin.model.mapping.UserReportMap;
  * This service is used for 
  * managing <code>Reports</code>.
  * 
- * @author Angel
  *
  */
 public interface ReportService {

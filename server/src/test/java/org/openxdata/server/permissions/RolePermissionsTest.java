@@ -10,7 +10,6 @@ import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
  * Tests permissions for accessing roles.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public class RolePermissionsTest extends PermissionsTest {

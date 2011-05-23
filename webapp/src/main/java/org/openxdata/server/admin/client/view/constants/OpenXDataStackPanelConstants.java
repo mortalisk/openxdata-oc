@@ -3,7 +3,6 @@ package org.openxdata.server.admin.client.view.constants;
 /**
  * Maintains the constants for the Views on the <tt>Stack Panel.</tt>
  * 
- * @author Angel
  *
  */
 public class OpenXDataStackPanelConstants {

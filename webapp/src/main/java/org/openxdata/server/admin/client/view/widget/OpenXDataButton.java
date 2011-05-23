@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.Button;
 /**
  * Extends the <code>GWT Button</code> to add default style names.
  * 
- * @author Angel
  *
  */
 public class OpenXDataButton extends Button {

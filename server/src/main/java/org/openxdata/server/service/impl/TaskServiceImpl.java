@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Default implementation for <code>Task Service</code>.
  * 
- * @author Angel
  *
  */
 @Service("taskService")

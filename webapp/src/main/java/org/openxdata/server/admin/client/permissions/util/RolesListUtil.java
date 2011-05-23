@@ -20,7 +20,6 @@ import org.openxdata.server.admin.model.User;
  * This <tt>class</tt> can not be instantiated.
  * </p>
  * 
- * @author Angel
  * 
  */
 public class RolesListUtil {
@@ -47,7 +46,6 @@ public class RolesListUtil {
 	 * <tt>Inner class</tt> to holder a <tt>singleton instance</tt> of this <tt>class.</tt>
 	 * Meant to make the testing of this class easier.
 	 * 
-	 * @author Angel
 	 *
 	 */
 	private static class RolesListUtilHolder{

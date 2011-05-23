@@ -12,7 +12,6 @@ import org.openxdata.server.admin.model.FormDef;
  * Provides data access services to the study manager service.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public interface EditableDAO extends BaseDAO<FormDef> {	

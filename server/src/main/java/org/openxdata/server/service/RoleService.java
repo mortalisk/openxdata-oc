@@ -9,7 +9,6 @@ import org.openxdata.server.admin.model.Role;
  * This service is used for managing 
  * <code>Permissions</code> and <code>Roles</code>.
  * 
- * @author Angel
  *
  */
 public interface RoleService {

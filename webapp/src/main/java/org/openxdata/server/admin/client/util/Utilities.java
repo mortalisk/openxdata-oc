@@ -39,7 +39,6 @@ import com.google.gwt.xml.client.Element;
  * Utilities used by the the server admin.
  * 
  * @author daniel
- * @author Angel
  * 
  */
 public class Utilities {

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default implementation for <code>Utility Service</code>.
- * @author Angel
  *
  */
 @Transactional

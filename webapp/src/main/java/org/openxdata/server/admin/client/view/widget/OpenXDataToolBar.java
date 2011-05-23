@@ -31,7 +31,6 @@ import org.openxdata.server.admin.client.view.event.LogOutEvent;
  * 
  * Encapsulates <tt>Tool Bar</tt> controls on the view.
  *  
- * @author Angel
  *
  */
 public class OpenXDataToolBar extends Composite implements ExtendedEventDispatcher {

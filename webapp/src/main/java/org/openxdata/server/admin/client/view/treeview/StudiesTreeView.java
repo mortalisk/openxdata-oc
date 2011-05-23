@@ -46,7 +46,6 @@ import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
  * format.
  * 
  * @author daniel
- * @author Angel
  * 
  */
 public class StudiesTreeView extends OpenXDataBaseTreeView implements

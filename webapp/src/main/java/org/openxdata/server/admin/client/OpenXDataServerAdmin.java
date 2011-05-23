@@ -35,7 +35,6 @@ import org.purc.purcforms.client.util.FormUtil;
  * Entry point classes define <code>onModuleLoad()</code>. This acts as the
  * controller for starting the application.
  * 
- * @author Angel
  */
 public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 		LoginListener {

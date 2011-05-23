@@ -5,7 +5,6 @@ import java.util.List;
 import org.openxdata.server.admin.model.FormDef;
 
 /**
- * @author Angel
  *
  */
 public interface FormDAO extends BaseDAO<FormDef> {

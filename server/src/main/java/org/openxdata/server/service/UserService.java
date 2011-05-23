@@ -11,7 +11,6 @@ import org.openxdata.server.admin.model.exception.UserNotFoundException;
  * managing <code>Users</code> and provide user related functionality.
  * 
  * @author dagmar@cell-life.org.za
- * @author Angel
  */
 public interface UserService {
 

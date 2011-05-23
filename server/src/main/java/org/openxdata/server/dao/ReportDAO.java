@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.Report;
  * Provides data access 
  * services to the <code>Report service</code>.
  * 
- * @author Angel
  *
  */
 public interface ReportDAO extends BaseDAO<Report> {

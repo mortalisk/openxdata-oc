@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
  * Provides a hibernate implementation
  * of the <code>UserDAO</code> data access <code> interface.</code>
  * 
- * @author Angel
  * @author Jonny Heggheim
  *
  */

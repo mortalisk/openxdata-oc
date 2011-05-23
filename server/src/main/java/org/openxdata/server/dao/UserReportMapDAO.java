@@ -5,7 +5,6 @@ import java.util.List;
 import org.openxdata.server.admin.model.mapping.UserReportMap;
 
 /**
- * @author Angel
  *
  */
 public interface UserReportMapDAO extends BaseDAO<UserReportMap> {

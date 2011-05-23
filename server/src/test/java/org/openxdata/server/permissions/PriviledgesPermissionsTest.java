@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 /**
  * For testing the permissions that access permissions.
  * 
- * @author Angel on Dec 17, 2009
  *
  */
 public class PriviledgesPermissionsTest extends PermissionsTest {

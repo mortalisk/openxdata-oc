@@ -27,7 +27,6 @@ import org.purc.purcforms.client.util.FormUtil;
  * This controller deals with loading and saving of
  * Datasets related data to and from the database for the various dataset related views.
  * 
- * @author Angel
  *
  */
 public class DatasetViewController  implements SaveCompleteListener {

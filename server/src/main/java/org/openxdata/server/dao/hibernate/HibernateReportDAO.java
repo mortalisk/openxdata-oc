@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Provides a hibernate implementation
  * of the <code>ReportDAO</code> data access <code> interface.</code>
  * 
- * @author Angel
  *
  */
 @Repository("reportDAO")

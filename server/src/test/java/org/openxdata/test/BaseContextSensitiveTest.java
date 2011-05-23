@@ -34,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author daniel
  * @author charles
- * @author Angel
  * @author Jonny Heggheim
  *
  */

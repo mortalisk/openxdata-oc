@@ -7,7 +7,6 @@ import java.util.List;
  * This service is used for 
  * managing <code>Utilities</code> and any other unclassified operations.
  * 
- * @author Angel
  *
  */
 

@@ -22,7 +22,6 @@ import com.google.inject.Inject;
  * <code>MainViewController</code> from the caller and forwards those calls to
  * the correct <code>View Controller</code> to effect an operation.
  * 
- * @author Angel on Dec 17, 2009
  * 
  */
 public class MainViewControllerFacade  {

@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 /**
  * Bound to the <tt>MainView</tt> to display notifications to the <tt>User.</tt>
  * 
- * @author Angel
  *
  */
 public class OpenXDataNotificationBar extends Composite {

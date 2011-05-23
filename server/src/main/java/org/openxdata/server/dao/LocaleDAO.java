@@ -5,7 +5,6 @@ import java.util.List;
 import org.openxdata.server.admin.model.Locale;
 
 /**
- * @author Angel
  *
  */
 public interface LocaleDAO extends BaseDAO<Locale> {

@@ -18,7 +18,6 @@ import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.Editable;
 
 /**
- * @author Angel
  *
  */
 public class DeleteStudyFormController extends Controller {

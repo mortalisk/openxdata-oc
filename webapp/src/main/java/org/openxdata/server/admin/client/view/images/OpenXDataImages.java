@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.Tree.Resources;
 /**
  * The OpenXData Image bundle to be used by the application.
  * 
- * @author Angel
  */
 public interface OpenXDataImages extends Resources {
 	

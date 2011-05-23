@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.RootPanel;
  * be in this <code>Class.</code>
  * </P>
  * 
- * @author Angel
  * 
  */
 public class MainViewControllerUtil {

@@ -7,7 +7,6 @@ import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 
 /**
- * @author Angel
  *
  */
 public interface UserFormMapDAO extends BaseDAO<UserFormMap> {

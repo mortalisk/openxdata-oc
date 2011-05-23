@@ -11,7 +11,6 @@ import org.openxdata.server.dao.FormDataDAO;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author Angel
  *
  */
 @Repository("formDataDAO")

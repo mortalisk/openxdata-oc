@@ -23,7 +23,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * Abstracts away the concrete implementation of the 
  * <tt>{@link OpenXDataViewFactory} by providing a common access <tt>interface.</tt>
  * 
- * @author Angel
  *
  */
 public interface OpenXDataWidgetFactory {

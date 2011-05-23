@@ -51,7 +51,6 @@ import org.purc.purcforms.client.view.OpenFileDialog;
 
 /**
  * Helper class for the {@link StudiesTreeView}.
- * @author Angel
  *
  */
 public class StudiesTreeViewHelper {

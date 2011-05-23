@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Tests the {@link OpenXDataUtil} <tt>class.</tt>
  * 
- * @author Angel
  *
  */
 public class OpenXDataUtilTest extends BaseContextSensitiveTest {

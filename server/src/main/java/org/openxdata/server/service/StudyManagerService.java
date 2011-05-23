@@ -18,7 +18,6 @@ import org.openxdata.server.admin.model.mapping.UserStudyMap;
  * This service is used for managing studies and their forms together with versions.
  * 
  * @author daniel
- * @author Angel
  *
  */
 public interface StudyManagerService {

@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Default implementation of the {@link AuthenticationService}
  * 
- * @author Angel
  *
  */
 @Transactional

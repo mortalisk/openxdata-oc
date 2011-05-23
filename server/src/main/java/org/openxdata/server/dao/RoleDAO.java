@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.Role;
  * Provides data access 
  * services to the <code>Permission service</code>.
  * 
- * @author Angel
  *
  */
 public interface RoleDAO extends BaseDAO<Role> {

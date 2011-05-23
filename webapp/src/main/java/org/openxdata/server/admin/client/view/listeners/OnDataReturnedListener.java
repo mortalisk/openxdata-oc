@@ -7,7 +7,6 @@ import org.openxdata.server.admin.model.exception.OpenXDataException;
  * This is the interface defines a contract for a member that 
  * intends to receive notification that data has been returned from the server.
  * 
- * @author Angel
  */
 public interface OnDataReturnedListener {
 	
