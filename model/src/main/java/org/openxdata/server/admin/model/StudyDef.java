@@ -18,8 +18,6 @@ public class StudyDef extends AbstractEditable implements Exportable {
 	
 	private String studyKey;
 	
-	//Assuming the number of studies will not exceed 127.
-	/** The numeric identifier of the study. */
 	private int studyId = 0;
 	
 	/** A list of form definitions (FormDef) in the the study. */

@@ -10,9 +10,6 @@ import java.util.Vector;
  */
 public class FormDefVersion extends AbstractEditable implements Exportable {
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 3882276404608627490L;
 
 	/** The display name of the form version. */
