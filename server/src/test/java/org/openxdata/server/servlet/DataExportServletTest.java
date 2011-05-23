@@ -1,4 +1,3 @@
- */
 package org.openxdata.server.servlet;
 
 import java.io.PrintWriter;
