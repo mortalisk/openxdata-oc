@@ -6,7 +6,7 @@ import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.dao.TaskDAO;
 import org.springframework.stereotype.Repository;
 
-import com.trg.search.Search;
+import com.googlecode.genericdao.search.Search;
 
 /**
  * Provides a hibernate implementation

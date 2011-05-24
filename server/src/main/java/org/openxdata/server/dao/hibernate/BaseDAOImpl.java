@@ -7,8 +7,8 @@ import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.dao.BaseDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.trg.dao.hibernate.GenericDAOImpl;
-import com.trg.search.Search;
+import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
+import com.googlecode.genericdao.search.Search;
 
 abstract class BaseDAOImpl<T extends Editable> extends GenericDAOImpl<T, Long> implements BaseDAO<T> {
 

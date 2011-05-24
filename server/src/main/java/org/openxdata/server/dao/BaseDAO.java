@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.Editable;
 
-import com.trg.dao.hibernate.GenericDAO;
+import com.googlecode.genericdao.dao.hibernate.GenericDAO;
 
 public interface BaseDAO<T extends Editable> extends GenericDAO<T, Long> {
 

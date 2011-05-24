@@ -25,14 +25,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>trg-dao-repo</id>
-			<name>Repository for The Revere Group's Hibernate Generic DAO framework</name>
-			<url>http://hibernate-generic-dao.googlecode.com/svn/trunk/maven-repo/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
 
 	<dependencyManagement>
@@ -243,11 +235,11 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.5</version>
 		</dependency>
-		<dependency>
-			<groupId>com.trg</groupId>
-			<artifactId>trg-dao-hibernate</artifactId>
-			<version>0.5.1</version>
-		</dependency>
+        <dependency>
+            <groupId>com.googlecode.genericdao</groupId>
+            <artifactId>dao-hibernate</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 		<dependency>
 			<groupId>net.sf.kxml</groupId>
 			<artifactId>kxml2</artifactId>

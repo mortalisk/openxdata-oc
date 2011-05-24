@@ -8,7 +8,7 @@ import org.openxdata.server.dao.SettingDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.trg.search.Search;
+import com.googlecode.genericdao.search.Search;
 
 /**
  * Provides a hibernate implementation

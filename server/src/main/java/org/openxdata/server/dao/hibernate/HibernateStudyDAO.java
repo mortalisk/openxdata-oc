@@ -6,7 +6,7 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.dao.StudyDAO;
 import org.springframework.stereotype.Repository;
 
-import com.trg.search.Search;
+import com.googlecode.genericdao.search.Search;
 
 /**
  *
