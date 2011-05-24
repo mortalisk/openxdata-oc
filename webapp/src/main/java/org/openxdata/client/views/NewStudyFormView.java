@@ -581,6 +581,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		if (currentPage > 1) {
 			if(formVersionEditMode){
 				formDefVersion = new FormDefVersion(0,"v"+(formDef.getVersions().size()+1),formDef);
+                                if(formDef.getDefaultVersion()!= null){
+                                    formDefVersion.setXform(formDef.getDefaultVersion().getXform());
+                                }
 			}
 			else{
 				formDefVersion = new FormDefVersion(0,
