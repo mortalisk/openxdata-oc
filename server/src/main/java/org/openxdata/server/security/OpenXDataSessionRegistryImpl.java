@@ -29,7 +29,7 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
         }
         log.debug("Adding Disabled User: " + user.getName());
         synchronized (disabledUsers) {
-            disabledUsers.put(user.getName(), user);
+            disabledUsers.put(user.getName(),cloneUser(user));
         }
     }
 
@@ -116,5 +116,12 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
                 }
             }
         }
+    }
+
+    private User cloneUser(User user) {
+       User clone = new User();
+       clone.setUserId(user.getId());
+       clone.setName(user.getName());
+       return clone;
     }
 }
