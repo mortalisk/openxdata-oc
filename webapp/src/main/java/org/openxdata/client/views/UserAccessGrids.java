@@ -55,9 +55,7 @@ public class UserAccessGrids extends FieldSet {
     private String gridHeight = "150px";
     private ListStore<UserSummary> userStore;
     private String itemTomap = "Study";
-    private Button addAllUsersBtn;
     private Button addUserBtn;
-    private Button removeAllUsersBtn;
     private Button removeUserBtn;
     private FlexTable userTable;
     private List<User> temporalyMappedItems = new ArrayList<User>();
@@ -78,20 +76,7 @@ public class UserAccessGrids extends FieldSet {
             setHeading(appMessages.setUserAccessToForm());
         setCollapsible(true);
         setExpanded(false);
-        addAllUsersBtn = new Button(appMessages.addAllUsers());
-        addAllUsersBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
 
-            @Override
-            public void handleEvent(ButtonEvent be) {
-                Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-                    @Override
-                    public void execute() {
-                        //add all users to the study
-                    }
-                });
-            }
-        });
         addUserBtn = new Button(appMessages.addUser());
         addUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
 
@@ -112,20 +97,7 @@ public class UserAccessGrids extends FieldSet {
                 });
             }
         });
-        removeAllUsersBtn = new Button(appMessages.removeAllUsers());
-        removeAllUsersBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
 
-            @Override
-            public void handleEvent(ButtonEvent be) {
-                Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-                    @Override
-                    public void execute() {
-                        //
-                    }
-                });
-            }
-        });
         removeUserBtn = new Button(appMessages.removeUser());
         removeUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
 
@@ -151,7 +123,6 @@ public class UserAccessGrids extends FieldSet {
         userTable.getFlexCellFormatter().setRowSpan(1, 0, 4);
         userTable.getFlexCellFormatter().setWidth(1, 0, "300");
         userTable.getFlexCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_TOP);
-        userTable.setWidget(1, 1, addAllUsersBtn);
         userTable.getFlexCellFormatter().setAlignment(1, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
         userTable.setWidget(1, 2, rightGridPanel(userStore, rightList));
         userTable.getFlexCellFormatter().setRowSpan(1, 2, 4);
@@ -159,7 +130,6 @@ public class UserAccessGrids extends FieldSet {
         userTable.getFlexCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_TOP);
         userTable.setWidget(2, 0, addUserBtn);
         userTable.getFlexCellFormatter().setAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-        userTable.setWidget(3, 0, removeAllUsersBtn);
         userTable.getFlexCellFormatter().setAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
         userTable.setWidget(4, 0, removeUserBtn);
         userTable.getFlexCellFormatter().setAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
