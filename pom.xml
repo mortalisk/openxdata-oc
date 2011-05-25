@@ -137,47 +137,10 @@
 
     <repositories>
         <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Repository Group</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>openxdata</id>
-            <url>http://nexus.openxdata.org/content/repositories/thirdparty/</url>
+            <url>http://nexus.openxdata.org/content/repositories/public/</url>
             <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>openxdata-snapshots</id>
-            <url>http://nexus.openxdata.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>openxdata-releases</id>
-            <url>http://nexus.openxdata.org/content/repositories/releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>z80-repository.fr</id>
-            <name>z80-repository</name>
-            <url>https://z80-repository.googlecode.com/svn/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>gilead</id>
-            <url>http://gilead.svn.sourceforge.net/svnroot/gilead/gilead/maven-repo/</url>
-            <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
