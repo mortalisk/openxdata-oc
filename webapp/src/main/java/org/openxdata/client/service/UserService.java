@@ -17,6 +17,6 @@ public interface UserService extends RemoteService {
     User getLoggedInUser() throws OpenXDataSecurityException;
     User findUserByEmail(String email) throws OpenXDataSecurityException, UserNotFoundException;
     void resetPassword(User user, int size) throws OpenXDataSecurityException;
-    List<User> getUsers();
+    List<User> getUsers() throws OpenXDataSecurityException;
 	Boolean checkIfUserChangedPassword(User user) throws OpenXDataSecurityException;
 }

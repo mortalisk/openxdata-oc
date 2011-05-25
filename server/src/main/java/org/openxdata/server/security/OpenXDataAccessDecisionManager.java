@@ -126,7 +126,11 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	}
 
     private void mayBeFireUserDisabledException() {
-        User user = OpenXDataSecurityUtil.getLoggedInUser();
+        User user = null;
+        try {
+            user = OpenXDataSecurityUtil.getLoggedInUser();
+        } catch (OpenXDataSessionExpiredException e) {
+        }
 
         if(sessionRegistry.containsDisabledUser(user))
             throw new OpenXDataDisabledUserException("User : "+user.getName()+ " is Disabled");
