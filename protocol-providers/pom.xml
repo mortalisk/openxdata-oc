@@ -21,7 +21,6 @@
 
     <modules>
         <module>mforms-proto</module>
-        <module>proto-v1.7</module>
     </modules>
 
     <build> 
