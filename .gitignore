@@ -31,3 +31,9 @@ protocol-providers/mforms-proto/.classpath
 protocol-providers/mforms-proto/.project
 protocol-providers/mforms-proto/.settings/
 protocol-providers/mforms-proto/target/
+webapp/war/OpenXDataServerAdmin/
+webapp/war/WEB-INF/deploy/
+webapp/war/WEB-INF/lib/
+webapp/war/emit/
+webapp/openxdata.log
+.DS_Store
