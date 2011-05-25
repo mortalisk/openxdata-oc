@@ -1,5 +1,6 @@
 package org.openxdata.server.admin.client.view;
 
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import org.openxdata.server.admin.client.internationalization.OpenXDataFacade;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.listeners.LoginListener;
@@ -11,6 +12,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.DOM;
@@ -84,15 +86,16 @@ public class LoginView extends Composite {
 		passwordText = new PasswordTextBox();
 		passwordText.setWidth("95%");
 		table.setWidget(3, 1, passwordText);
-		
-		passwordText.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
-					doLogin();
-				}
-			}
-		});
+                //used keydownhandler due to the bag in Keypresshandler
+                passwordText.addKeyDownHandler(new KeyDownHandler() {
+
+                @Override
+                    public void onKeyDown(KeyDownEvent event) {
+                        if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+                            doLogin();
+                        }
+                    }
+                });
 		
 		Button loginButton = new OpenXDataButton("Login", new ClickHandler() {
 			@Override
