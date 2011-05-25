@@ -7,7 +7,6 @@ import org.openxdata.server.admin.client.internationalization.OpenXdataText;
 import org.openxdata.server.admin.client.listeners.TextConstants;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.LoginView;
-import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.widget.PasswordChangeDialog;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.User;
@@ -41,17 +40,16 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 
 	private OpenXDataAppMessages appMessages = GWT.create(OpenXDataAppMessages.class);
 	
-	// mainView is not instantiated here because the form designer route panel
-	// will be referencing
-	// that of the login view and as a result widget drag will have no valid
-	// drop targets
-	private MainView mainView;
 	// The Login View.
 	private LoginView loginView = new LoginView(this);
 	private final OpenXDataWidgetFactory widgetFactory;
 	private static OpenXDataWidgetGinInjector injector = GWT
 			.create(OpenXDataWidgetGinInjector.class);
 	private EventBus eventBus;
+        // mainView is not instantiated here because the form designer route panel
+	// will be referencing
+	// that of the login view and as a result widget drag will have no valid
+	// drop targets
 	private MainPresenter mainPresenter;
 
 	public OpenXDataServerAdmin() {
@@ -370,9 +368,6 @@ public class OpenXDataServerAdmin implements EntryPoint, ResizeHandler,
 	 * Resizes the <tt>MainView</tt> in the <tt>browser.</tt>
 	 */
 	private void resizeMainView(int width, int height) {
-		if (mainView != null) {
-			mainView.resize(width, height);
-		}
 		if (mainPresenter != null) {
 			mainPresenter.getDisplay().resize(width, height);
 		}

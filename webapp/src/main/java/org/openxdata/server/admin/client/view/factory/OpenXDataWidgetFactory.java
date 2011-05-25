@@ -1,7 +1,6 @@
 package org.openxdata.server.admin.client.view.factory;
 
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
-import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
@@ -54,14 +53,6 @@ public interface OpenXDataWidgetFactory {
 	 * @return Instance of {@link DatasetView}
 	 */
 	DatasetView getReportView();
-	
-	/**
-	 * Retrieves the <tt>MainView</tt>
-	 * 
-	 * @return Instance of {@link MainView}
-	 */
-	MainView getMainView();
-	
 	
 	/**
 	 * Retrieves the <tt>OpenXdata Stack Panel object</tt> that has been configured for this session.

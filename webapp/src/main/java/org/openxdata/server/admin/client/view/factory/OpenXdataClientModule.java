@@ -18,7 +18,6 @@ import org.openxdata.server.admin.client.presenter.tree.SettingListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.view.MainDisplay;
-import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.ParameterDisplay;
 import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.RoleDisplay;
@@ -76,9 +75,6 @@ public class OpenXdataClientModule extends AbstractGinModule {
         bind(DatasetView.class).in(Singleton.class);
         bind(StudyView.class).in(Singleton.class);
         bind(OpenXDataNotificationBar.class).in(Singleton.class);
-
-        // Map views
-        bind(MainView.class).in(Singleton.class);
 
         // Other ImportanWidgets
         bind(OpenXDataStackPanel.class).in(Singleton.class);

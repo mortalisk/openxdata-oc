@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.openxdata.server.admin.client.Context;
-import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.model.Editable;
 
 import com.google.gwt.user.client.ui.RootPanel;
@@ -63,11 +62,11 @@ public class MainViewControllerUtil {
 	public static void removeAllProgressWindows() {
 		int size = RootPanel.get().getWidgetCount();
 		for (int index = 0; index < size; index++) {
-			if (!(RootPanel.get().getWidget(index) instanceof MainView)) {
-				RootPanel.get().remove(index);
-				index--;
-				size--;
-			}
+//			if (!(RootPanel.get().getWidget(index) instanceof MainView)) {
+//				RootPanel.get().remove(index);
+//				index--;
+//				size--;
+//			}
 		}
 	}
 	

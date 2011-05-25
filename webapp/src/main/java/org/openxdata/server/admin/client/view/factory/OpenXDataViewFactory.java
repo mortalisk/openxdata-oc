@@ -1,7 +1,6 @@
 package org.openxdata.server.admin.client.view.factory;
 
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
-import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.contextmenu.OpenXDataContextMenu;
@@ -63,11 +62,6 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
     @Override
     public StudyView getStudyView() {
         return injector.getStudyView();
-    }
-
-    @Override
-    public MainView getMainView() {
-        return injector.getMainView();
     }
 
     @Override

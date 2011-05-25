@@ -1,7 +1,6 @@
 package org.openxdata.server.admin.client.view.factory;
 
 import com.google.gwt.event.shared.EventBus;
-import org.openxdata.server.admin.client.view.MainView;
 import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
@@ -48,8 +47,6 @@ public interface OpenXDataWidgetGinInjector extends Ginjector {
     public OpenXDataLabel getNotificationLabel();
 
     public OpenXDataToolBar getOpenXDataToolBar();
-
-    public MainView getMainView();
 
     public MainPresenter getMainPresenter();
 }
