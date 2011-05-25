@@ -7,10 +7,35 @@
     <packaging>pom</packaging>
     <version>1.2</version>
     <name>OpenXdata Protocols</name>
- 
+
+    <repositories>
+        <repository>
+            <id>openxdata</id>
+            <name>OpenXData Maven Repo</name>
+            <url>http://nexus.openxdata.org/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <modules>
         <module>mforms-proto</module>
         <module>proto-v1.7</module>
     </modules>
+
+    <build> 
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
