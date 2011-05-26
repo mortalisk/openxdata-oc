@@ -9,9 +9,6 @@ import net.sf.gilead.pojo.gwt.LightEntity;
  */
 public abstract class AbstractEditable extends LightEntity implements Editable{
 	
-	/**
-	 * Generated <code>serialisation</code> ID.
-	 */
 	private static final long serialVersionUID = 7939951597182605859L;
 
 	/** A flag to determine if the object has been changed and hence needs saving. */
