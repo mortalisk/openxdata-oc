@@ -8,6 +8,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -229,7 +230,9 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
     private void showDataList() {
         //TODO  widget code does not belong here
-        final PopupPanel popup = new PopupPanel(false);
+        final DialogBox dataListBox = new DialogBox(false);
+
+//        final PopupPanel popup = new PopupPanel(false);
         VerticalPanel vp = new VerticalPanel();
         vp.add(studyView);
         VerticalPanel bottomPanel = new VerticalPanel();
@@ -238,7 +241,7 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
             @Override
             public void onClick(ClickEvent event) {
-                popup.hide();
+                dataListBox.hide();
             }
         });
         bottomPanel.setWidth("100%");
@@ -246,8 +249,11 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
         bottomPanel.add(new HTML("<br>"));
         bottomPanel.add(btn);
         vp.add(bottomPanel);
-        popup.add(vp);
-        popup.center();
+        dataListBox.setWidget(vp);
+        dataListBox.center();
+
+//        popup.add(vp);
+//        popup.center();
     }
 
     @Override
