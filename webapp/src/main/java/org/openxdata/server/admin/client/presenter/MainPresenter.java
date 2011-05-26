@@ -1,20 +1,5 @@
 package org.openxdata.server.admin.client.presenter;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.inject.Inject;
-
 import org.openxdata.server.admin.client.OpenXDataAppMessages;
 import org.openxdata.server.admin.client.controller.MainViewController;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
@@ -25,8 +10,8 @@ import org.openxdata.server.admin.client.presenter.tree.SettingListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.server.admin.client.view.MobileInstaller;
 import org.openxdata.server.admin.client.view.DatasetView;
+import org.openxdata.server.admin.client.view.MobileInstaller;
 import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
 import org.openxdata.server.admin.client.view.event.LogOutEvent;
@@ -42,6 +27,20 @@ import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.admin.model.User;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.inject.Inject;
 
 /**
  *
