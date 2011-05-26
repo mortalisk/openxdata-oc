@@ -86,6 +86,7 @@ public class ReLoginView extends Dialog {
 						} else {
 							((LoginController) controller).performLogin(
 									username.getValue(), password.getValue());
+                                                        password.clear();
 						}
 					}
 				} else {
