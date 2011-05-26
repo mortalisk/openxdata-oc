@@ -231,8 +231,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
     private void showDataList() {
         //TODO  widget code does not belong here
         final DialogBox dataListBox = new DialogBox(false);
-
-//        final PopupPanel popup = new PopupPanel(false);
         VerticalPanel vp = new VerticalPanel();
         vp.add(studyView);
         VerticalPanel bottomPanel = new VerticalPanel();
@@ -251,9 +249,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
         vp.add(bottomPanel);
         dataListBox.setWidget(vp);
         dataListBox.center();
-
-//        popup.add(vp);
-//        popup.center();
     }
 
     @Override
