@@ -122,8 +122,8 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
 
     private UIViewLabels getContextMenuLabels() {
         UIViewLabels labels = new UIViewLabels();
-        labels.setAddLabel(constants.label_addnewuser());
-        labels.setDeleteLabel(constants.label_deleteuser());
+        labels.setAddLabel(constants.label_add_new());
+        labels.setDeleteLabel(constants.label_delete());
         return labels;
     }
 
