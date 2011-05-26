@@ -12,6 +12,7 @@ import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.admin.model.state.EditableState;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -55,9 +56,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private int currentPage = 0;
 	private final EditStudyFormController studyFormController;
 	private UsermapUtilities utils;
-
-	/**To control the saving of a form if it has data*/
-	protected boolean editingWithData;
 
 	public EditStudyFormView(EditStudyFormController controller) {
 		super(controller);
@@ -266,7 +264,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		if (form == null) {
 			return;
 		}
-		if (editingWithData) {
+		
+		if (form.getState() == EditableState.HASDATA) {
 			MessageBox.info(appMessages.existingDataTitle(), appMessages.cannotSave(), new Listener<MessageBoxEvent>() {
 				@Override
 				public void handleEvent(MessageBoxEvent be) {
@@ -373,13 +372,12 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 				@Override
 				public void handleEvent(MessageBoxEvent be) {
 					if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-						editingWithData = true;
+						form.setState(EditableState.HASDATA);
 						launchDesigner(true);
 					}
 				}
 			});
 		} else {
-			editingWithData = false;
 			launchDesigner(false);
 		}
 	}

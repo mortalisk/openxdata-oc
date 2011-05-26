@@ -3,6 +3,8 @@ package org.openxdata.server.admin.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.openxdata.server.admin.model.state.EditableState;
+
 /**
  * This interface is implemented by objects which can be edited.
  */
@@ -61,8 +63,23 @@ public interface Editable extends Serializable{
 	public void setHasErrors(boolean hasErrors);
 	
 	/**
-	 * Returns the id of this editable item
-	 * @return
+	 * Returns the id of this editable item. This method should be prefered over the hard code Objected id like getFooId().
+	 * @return the object unique id.
 	 */
 	public int getId();
+	
+	/**
+	 * Sets the current state of the object.
+	 * @param state the object state.
+	 */
+	public void setState(EditableState state);
+	
+	/**
+	 * Returns the objects state to aid in state transition.
+	 * 
+	 * @return the current object state.
+	 */
+	public EditableState getState();
+	
+	
 }

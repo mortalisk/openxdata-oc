@@ -2,6 +2,8 @@ package org.openxdata.server.admin.model;
 
 import java.util.Date;
 
+import org.openxdata.server.admin.model.state.EditableState;
+
 import net.sf.gilead.pojo.gwt.LightEntity;
 
 /**
@@ -29,7 +31,9 @@ public abstract class AbstractEditable extends LightEntity implements Editable{
 	protected User creator;
 	
 	/** The date when this data was first submitted. */ 
-	protected Date dateCreated;	
+	protected Date dateCreated;
+
+	private EditableState state = EditableState.LOADED;	
 	
 	@Override
 	public boolean isNew(){
@@ -88,5 +92,13 @@ public abstract class AbstractEditable extends LightEntity implements Editable{
 	
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+	
+	public EditableState getState(){
+		return this.state ;
+	}
+	
+	public void setState(EditableState state){
+		this.state = state;
 	}
 }
