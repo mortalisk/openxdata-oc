@@ -75,7 +75,7 @@ public interface FormService extends RemoteService {
      * @return ExportedFormDataList containing ExportedData
      * @throws ExportedDataNotFoundException when the exported table does not exist
      */
-    ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws ExportedDataNotFoundException;
+    ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws OpenXDataSecurityException,ExportedDataNotFoundException;
 
     List<UserFormMap> getUserMappedForms() throws OpenXDataSecurityException;
       /**
