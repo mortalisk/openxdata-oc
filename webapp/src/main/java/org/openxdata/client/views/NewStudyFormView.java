@@ -82,7 +82,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	private int currentPage = 0;
     private FormDesignerView formDesignerView;
-	private boolean formVersionEditMode;
+	private boolean formVersionEditMode = false;
         private UsermapUtilities utils ;
 
 	public NewStudyFormView(Controller controller) {
@@ -98,7 +98,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
-		formVersionEditMode = false;
 		nextButton.setEnabled(false);
 		// resize window if the previous window was expanded
 		if (activePage == 0 && currentPage != 0) {
