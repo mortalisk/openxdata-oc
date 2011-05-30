@@ -417,8 +417,10 @@ public class DatasetView extends OpenXDataBaseView implements
 		for (User user : users)
 			qtnDef.addOption(new OptionDef(++index, user.getName(), user
 			        .getName(), qtnDef));
-		
-		return FormUtil.formatXml(XformBuilder.fromFormDef2Xform(formDef));
+             
+                String xForm = XformBuilder.fromFormDef2Xform(formDef);
+                xForm = xForm.replaceFirst("<xf:xforms ", "<xf:xforms xmlns:xf=\"http://www.w3.org/2002/xforms\" ");
+		return FormUtil.formatXml(xForm);
 	}
 	
 	/**
