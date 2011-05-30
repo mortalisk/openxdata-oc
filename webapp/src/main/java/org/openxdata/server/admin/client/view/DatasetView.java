@@ -418,10 +418,17 @@ public class DatasetView extends OpenXDataBaseView implements
 			qtnDef.addOption(new OptionDef(++index, user.getName(), user
 			        .getName(), qtnDef));
              
-                String xForm = XformBuilder.fromFormDef2Xform(formDef);
+            String xForm = XformBuilder.fromFormDef2Xform(formDef);
+            int startTag = xForm.indexOf("<xf:xforms");
+            int closeTag = xForm.indexOf('>',startTag);
+        
+            if(startTag>=0 && closeTag>0){
+            String fistTag = xForm.substring(startTag,closeTag);
+            if(!fistTag.contains("xmlns:xf=\"http://www.w3.org/2002/xforms\""))
                 xForm = xForm.replaceFirst("<xf:xforms ", "<xf:xforms xmlns:xf=\"http://www.w3.org/2002/xforms\" ");
-		return FormUtil.formatXml(xForm);
-	}
+            }
+            return FormUtil.formatXml(xForm);
+    }
 	
 	/**
 	 * Gets the list box index of a given form version id.
