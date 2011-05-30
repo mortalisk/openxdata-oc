@@ -409,5 +409,14 @@
         <addForeignKeyConstraint baseColumnNames="setting_group_id" baseTableName="setting" constraintName="setting_setting_group_id" deferrable="false" initiallyDeferred="false" referencedColumnNames="setting_group_id" referencedTableName="setting_group"/>
     </changeSet>
     <!-- END re-run foreign key constraints -->
+    
+    <changeSet author="Morten" id="unique_form_definition_version_text">
+        <comment>
+            Adds unique constraint to fields locale_key and form_defintion_version_id in table form_defintion_version_text
+        </comment>
+        <addUniqueConstraint tableName="form_definition_version_text"
+                columnNames="form_definition_version_id,locale_key"
+                constraintName="form_definition_version_text_unique"/>
+    </changeSet>
 
 </databaseChangeLog>
