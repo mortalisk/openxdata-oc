@@ -419,4 +419,14 @@
                 constraintName="form_definition_version_text_unique"/>
     </changeSet>
 
+	<changeSet author="Mark" id="form_definition_version_text_foreign_key">
+		<comment>
+    		Adds a foreign key to the column form_definition_version_id in the table form_definition_version_text
+    	</comment>
+		<addForeignKeyConstraint
+			constraintName="form_definition_version_text_form_definition_version"
+			referencedTableName="form_definition_version" baseColumnNames="form_definition_version_id"
+			baseTableName="form_definition_version_text" referencedColumnNames="form_definition_version_id" />
+	</changeSet>
+
 </databaseChangeLog>
