@@ -1,6 +1,7 @@
 package org.openxdata.client.views;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -20,13 +21,16 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.RowEditor;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.TableLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.user.client.Element;
 import java.util.ArrayList;
 import java.util.List;
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.FormVersionsController;
 import org.openxdata.client.model.FormVersionSummary;
+import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 
@@ -41,6 +45,7 @@ public class FormVersionsView extends View {
     private Grid<FormVersionSummary> grid;
     private Window window;
     private ContentPanel cp;
+    private Button publishBtn;
 
     public FormVersionsView(Controller controller) {
         super(controller);
@@ -73,7 +78,42 @@ public class FormVersionsView extends View {
         ColumnModel cm = new ColumnModel(configs);
         cm.setHidden(0, true);
         ListStore<FormVersionSummary> store = new ListStore<FormVersionSummary>();
-        RowEditor<FormVersionSummary> re = new RowEditor<FormVersionSummary>();
+        publishBtn = new Button(appMessages.formVersionDefault());
+        RowEditor<FormVersionSummary> re = new RowEditor<FormVersionSummary>(){
+        @Override
+			protected void onRender(Element target, int index) {
+				super.onRender(target, index);
+				if (btns != null) {
+					btns.setLayout(new TableLayout(3));
+					publishBtn.setMinWidth(getMinButtonWidth());
+					btns.add(publishBtn);
+					btns.layout(true);
+				}
+			}
+            @Override
+			protected void afterRender() {
+				super.afterRender();
+				if (renderButtons) {
+				      btns.setWidth((getMinButtonWidth() * 3) + (5 * 3) + (3 * 4));
+				}
+			}
+        };
+        publishBtn.addListener(Events.Select, new Listener<ButtonEvent>(){
+
+            @Override
+            public void handleEvent(ButtonEvent be) {
+                FormVersionSummary summary = grid.getSelectionModel().getSelectedItem();
+                        for(FormDefVersion version:form.getVersions()){
+                            if(version.getName().equals(summary.getFormVersion())){
+                                version.setName(summary.getFormVersion());
+                                version.setDescription(summary.getDescription());
+                                version.getFormDef().turnOffOtherDefaults(version);
+                            }
+                        }
+                        ((FormVersionsController)FormVersionsView.this.getController())
+                                .saveFormDefVersion(form);
+            }
+        });
         re.addListener(Events.AfterEdit, new Listener<RowEditorEvent>() {
 
             @Override
