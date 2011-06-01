@@ -2,6 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	
 	<!-- master changelog includes all other changelogs	-->
 	<include file="database/mysql/liquibase-create-tables.xml" />
 	<include file="database/mysql/liquibase-insert-data.xml" />
@@ -16,4 +17,5 @@
 	<include file="database/mysql/liquibase-update-to-1.0.xml" />
 	<include file="database/mysql/liquibase-permissions.xml" />
 	<include file="database/mysql/liquibase-update-to-1.3.xml" />
+	<include file="database/mysql/liquibase-foreign-keys.xml" />
 </databaseChangeLog>
