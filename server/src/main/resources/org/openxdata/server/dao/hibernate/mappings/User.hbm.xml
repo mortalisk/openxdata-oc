@@ -72,7 +72,7 @@
 			column="online" length="11" />
 	
 		<!-- Associations -->
-		<set name="roles" table="user_role" lazy="false" cascade="save-update">
+		<set name="roles" table="user_role" lazy="false">
 			<key>
 				<column name="user_id" />
 			</key>
