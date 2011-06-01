@@ -56,23 +56,14 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 		setDescription(description);
 	}
 
-	/**
-	 * @return the description
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * @param description the description to set
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * @return returns the id
-	 */
 	public int getFormDefVersionId() {
 		return formDefVersionId;
 	}
@@ -82,23 +73,14 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 		return formDefVersionId;
 	}
 
-	/**
-	 * @param formDefVersionId the id to set
-	 */
 	public void setFormDefVersionId(int formDefVersionId) {
 		this.formDefVersionId = formDefVersionId;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -159,16 +141,10 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 		this.formDef = formDef;
 	}
 
-	/**
-	 * @return the isDefault
-	 */
 	public boolean getIsDefault() {
 		return isDefault;
 	}
 
-	/**
-	 * @param isDefault the isDefault to set
-	 */
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
