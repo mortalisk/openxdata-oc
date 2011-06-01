@@ -303,11 +303,12 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				if (value == null) {
 					return "Field required";
 				}
-				nextButton.setEnabled(true);
 				// check that new form is unique
 				if (checkFormExistance(value, forms)) {
 					return "Form Already Exists";
 				}
+
+				nextButton.setEnabled(true);
 				return null;
 			}
 		});
