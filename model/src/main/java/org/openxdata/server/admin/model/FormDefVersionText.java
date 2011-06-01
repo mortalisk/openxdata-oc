@@ -13,9 +13,6 @@ public class FormDefVersionText extends AbstractEditable{
 	/** The database identifier of the form version text. */
 	private int formDefVersionTextId = 0;
 	
-	/** The database identifier of the form version whose text we represent. */
-	private int formDefVersionId;
-	
 	/** The key of the locale. */
 	private String localeKey;
 	
@@ -33,9 +30,8 @@ public class FormDefVersionText extends AbstractEditable{
 		
 	}
 	
-	public FormDefVersionText(String locale, int formDefVersionId, String xformText, String layoutText){
+	public FormDefVersionText(String locale, String xformText, String layoutText){
 		this.localeKey = locale;
-		this.formDefVersionId = formDefVersionId;
 		this.xformText = xformText;
 		this.layoutText = layoutText;
 	}
@@ -51,14 +47,6 @@ public class FormDefVersionText extends AbstractEditable{
 	
 	public void setFormDefVersionTextId(int formDefVersionTextId) {
 		this.formDefVersionTextId = formDefVersionTextId;
-	}
-	
-	public int getFormDefVersionId() {
-		return formDefVersionId;
-	}
-	
-	public void setFormDefVersionId(int formDefVersionId) {
-		this.formDefVersionId = formDefVersionId;
 	}
 	
 	public String getLocaleKey() {

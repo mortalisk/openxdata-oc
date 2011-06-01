@@ -56,9 +56,9 @@
 		<property name="isDefault" type="boolean" column="is_default"
 			length="1" not-null="true" />
 			
-		<bag name="versionText" lazy="false" cascade="all,delete-orphan" inverse="true" >
-			<key column="form_definition_version_id" />
-			<one-to-many class="FormDefVersionText" />
+		<bag name="versionText" lazy="false" cascade="all,delete-orphan" >
+			<key column="form_definition_version_id" not-null="true"/>
+			<one-to-many class="FormDefVersionText"/>
 		</bag>
 		
 	</class>

@@ -190,7 +190,7 @@ public class StudyViewHelper {
 
 			FormDefVersionText formDefVersionText = formDefVersion.getFormDefVersionText(Context.getLocale());
 			if(formDefVersionText == null){
-				formDefVersionText = new FormDefVersionText(Context.getLocale(),formDefVersion.getFormDefVersionId(),xformsLocaleText,layoutLocaleText);
+				formDefVersionText = new FormDefVersionText(Context.getLocale(),xformsLocaleText,layoutLocaleText);
 				formDefVersion.addVersionText(formDefVersionText);
 			}
 			else{
@@ -217,7 +217,7 @@ public class StudyViewHelper {
 		if(selectedItem != null && selectedItem instanceof FormDefVersion){
 			FormDefVersionText text = ((FormDefVersion)selectedItem).getFormDefVersionText(locale);
 			if(text != null)
-				formDesigner.setLocaleText(text.getFormDefVersionId(),locale, text.getXformText(), text.getLayoutText());
+				formDesigner.setLocaleText(((FormDefVersion)selectedItem).getId(),locale, text.getXformText(), text.getLayoutText());
 		}
 
 		formDesigner.changeLocale(new Locale(locale,""));

@@ -41,7 +41,7 @@ public class VersionTextExportTest extends BaseContextSensitiveTest {
 	@Test
 	public void export_shouldReturnValidExportXmlForVersionTextWithNoXformsText() throws Exception {
 
-		String xml = VersionTextExport.export(new FormDefVersionText("en",1,null,""),getVersionTextParent());
+		String xml = VersionTextExport.export(new FormDefVersionText("en",null,""),getVersionTextParent());
 		
 		Assert.assertNotNull(xml);
 		Assert.assertTrue(xml.trim().length() > 50);
@@ -50,7 +50,7 @@ public class VersionTextExportTest extends BaseContextSensitiveTest {
 	@Test
 	public void export_shouldReturnValidExportXmlForVersionTextWithNoText() throws Exception {
 
-		String xml = VersionTextExport.export(new FormDefVersionText("en",1,"",null),getVersionTextParent());
+		String xml = VersionTextExport.export(new FormDefVersionText("en","",null),getVersionTextParent());
 		
 		Assert.assertNotNull(xml);
 		Assert.assertTrue(xml.trim().length() > 50);

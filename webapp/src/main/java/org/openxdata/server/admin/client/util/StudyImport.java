@@ -149,7 +149,6 @@ public class StudyImport {
 	 */
 	private static void importFormVersionText(FormDefVersion formDefVersion, Element versionTextNode){
 		FormDefVersionText formDefVersionText = new FormDefVersionText();
-		formDefVersionText.setFormDefVersionId(0);
 		formDefVersion.addVersionText(formDefVersionText);
 		
 		formDefVersionText.setLocaleKey(versionTextNode.getAttribute("locale"));

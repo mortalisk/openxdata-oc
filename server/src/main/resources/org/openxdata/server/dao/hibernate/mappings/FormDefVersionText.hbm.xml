@@ -15,9 +15,6 @@
 		</id>
 	
 		<discriminator column="form_definition_version_text_id" insert="false" />
-		
-		<property name="formDefVersionId" type="java.lang.Integer"
-				column="form_definition_version_id" not-null="true" />
 				
 		<property name="localeKey" type="java.lang.String"
 				column="locale_key" not-null="true" />

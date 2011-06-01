@@ -525,8 +525,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			FormDefVersionText formDefVersionText = formDefVersion
 					.getFormDefVersionText("en");
 			if (formDefVersionText == null) {
-				formDefVersionText = new FormDefVersionText("en",
-						formDefVersion.getFormDefVersionId(), xformsLocaleText,
+				formDefVersionText = new FormDefVersionText("en", xformsLocaleText,
 						layoutLocaleText);
 				formDefVersion.addVersionText(formDefVersionText);
 			} else {
