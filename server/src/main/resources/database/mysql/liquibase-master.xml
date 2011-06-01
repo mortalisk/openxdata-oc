@@ -6,7 +6,6 @@
 	<include file="database/mysql/liquibase-create-tables.xml" />
 	<include file="database/mysql/liquibase-insert-data.xml" />
 	<include file="database/mysql/liquibase-mobile-menu.xml" />
-	<include file="database/mysql/liquibase-create-foreignkeys.xml" />
 	<changeSet author="simon" id="0">
 		<comment>renamed changelog file</comment>
 		<update tableName="DATABASECHANGELOG">
