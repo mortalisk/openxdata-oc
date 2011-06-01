@@ -1,7 +1,15 @@
 package org.openxdata.client.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openxdata.client.AppMessages;
+import org.openxdata.client.controllers.FormVersionsController;
+import org.openxdata.client.model.FormVersionSummary;
+import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
+
 import com.extjs.gxt.ui.client.Style.Scroll;
-import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -25,14 +33,6 @@ import com.extjs.gxt.ui.client.widget.layout.TableLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Element;
-import java.util.ArrayList;
-import java.util.List;
-import org.openxdata.client.AppMessages;
-import org.openxdata.client.controllers.FormVersionsController;
-import org.openxdata.client.model.FormVersionSummary;
-import org.openxdata.client.util.ProgressIndicator;
-import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.FormDefVersion;
 
 /**
  *UI for viewing all version of a selected form

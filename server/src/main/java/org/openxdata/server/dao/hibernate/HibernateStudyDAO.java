@@ -30,7 +30,6 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
         return super.save(entity);
     }
 
-
     @Override
     public void saveStudy(StudyDef studyDef) {
         save(studyDef);
