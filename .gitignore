@@ -35,5 +35,5 @@ webapp/war/OpenXDataServerAdmin/
 webapp/war/WEB-INF/deploy/
 webapp/war/WEB-INF/lib/
 webapp/war/emit/
-webapp/openxdata.log
+webapp/openxdata.log*
 .DS_Store
