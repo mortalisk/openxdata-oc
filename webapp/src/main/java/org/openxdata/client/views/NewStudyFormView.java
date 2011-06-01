@@ -114,7 +114,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newForm.hide();
 				newForm.setValue(true);
 				existingForm.hide();
-                                userFormAccessGrid.setEnabled(false);
+				userFormAccessGrid.setEnabled(false);
 			} else if (!newForm.isVisible()) {
 				// make sure all radio buttons are showing
 				existingFormName.show();
@@ -123,7 +123,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newForm.setValue(false);
 				setStudyForms();
 				existingForm.show();
-                                userFormAccessGrid.setEnabled(true);
+				userFormAccessGrid.setEnabled(true);
 			}
 			userStudyAccessGrid.setExpanded(false);
 			userFormAccessGrid.setExpanded(false);
