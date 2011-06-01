@@ -22,12 +22,7 @@ public class FormDefVersionText extends AbstractEditable{
 	/** The locale text for the layout xml as per the localeKey field. */
 	private String layoutText;
 	
-	
-	/**
-	 * Constructs a new form definition version text object.
-	 */
-	public FormDefVersionText(){
-		
+	public FormDefVersionText() {
 	}
 	
 	public FormDefVersionText(String locale, String xformText, String layoutText){
