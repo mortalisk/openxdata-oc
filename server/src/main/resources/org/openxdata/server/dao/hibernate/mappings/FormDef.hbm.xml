@@ -48,17 +48,17 @@
 	
 		<!-- Associations -->
 		
-		<bag name="text" lazy="false" cascade="all,delete-orphan,evict" inverse="true" >
+		<bag name="text" lazy="false" cascade="all,delete-orphan" inverse="true" >
 			<key column="form_definition_id" not-null="true" />
 			<one-to-many class="FormDefText" />
 		</bag>
 		
-		<bag name="versions" lazy="false" cascade="all,delete-orphan,evict" inverse="true" order-by="name asc">
+		<bag name="versions" lazy="false" cascade="all,delete-orphan" inverse="true" order-by="name asc">
 			<key column="form_definition_id" not-null="true" />
 			<one-to-many class="FormDefVersion" />
 		</bag>
 
-        <bag name="users" table="user_form" lazy="true" cascade="save-update">
+        <bag name="users" table="user_form" lazy="true" cascade="all,delete-orphan">
             <key column="form_id" />
             <many-to-many class="User">
                 <column name="user_id" />
