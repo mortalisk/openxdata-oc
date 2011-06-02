@@ -61,46 +61,49 @@ public class DeleteStudyFormController extends Controller {
 	}
 	
 	public void delete(final FormDef form) {
-    	GWT.log("DeleteStudyFormController : delete form");
-		// TODO: implement delete
-		// FIXME: on success
-            StudyDef study = form.getStudy();
-            study.removeForm(form);
+		GWT.log("DeleteStudyFormController : delete form");
+		StudyDef study = form.getStudy();
+		study.removeForm(form);
 
-            studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
+		studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
 
-                @Override
-                public void onSuccess(Void result) {
-                    RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, form));
-                    deleteStudyFormView.closeWindow();
-                }
-            });
+			@Override
+			public void onSuccess(Void result) {
+				RefreshablePublisher.get().publish(
+						new RefreshableEvent(
+								RefreshableEvent.Type.CREATE_STUDY, form));
+				deleteStudyFormView.closeWindow();
+			}
+		});
 	}
-	
+
 	public void delete(final FormDefVersion formVersion) {
-    	    GWT.log("DeleteStudyFormController : delete form version");
-            // TODO: implement delete
-            // FIXME: on success
-            FormDef form = formVersion.getFormDef();
-            form.removeVersion(formVersion);
+		GWT.log("DeleteStudyFormController : delete form version");
+		FormDef form = formVersion.getFormDef();
+		form.removeVersion(formVersion);
 
-            studyService.saveStudy(form.getStudy(), new EmitAsyncCallback<Void>() {
+		studyService.saveStudy(form.getStudy(), new EmitAsyncCallback<Void>() {
 
-                @Override
-                public void onSuccess(Void result) {
-                    deleteStudyFormView.closeWindow();
-                    RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, formVersion));
-                }
-            });
+			@Override
+			public void onSuccess(Void result) {
+				deleteStudyFormView.closeWindow();
+				RefreshablePublisher.get()
+						.publish(
+								new RefreshableEvent(
+										RefreshableEvent.Type.CREATE_STUDY,
+										formVersion));
+			}
+		});
 	}
-        public void itemHasData(Editable item){
-            GWT.log("EditStudyFormController : formHasData");
-            formService.hasEditableData(item, new EmitAsyncCallback<Boolean>() {
 
-                @Override
-                public void onSuccess(Boolean result) {
-                    deleteStudyFormView.onItemDataCheckComplete(result);
-                }
-            });
-        }
+	public void itemHasData(Editable item) {
+		GWT.log("EditStudyFormController : formHasData");
+		formService.hasEditableData(item, new EmitAsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				deleteStudyFormView.onItemDataCheckComplete(result);
+			}
+		});
+	}
 }
