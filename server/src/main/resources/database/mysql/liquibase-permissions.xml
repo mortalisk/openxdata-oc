@@ -2670,4 +2670,114 @@
 		<addUniqueConstraint tableName="report_user"
 			columnNames="report_id,user_id" constraintName="un_ReportUser" />
 	</changeSet>
+	
+	<changeSet author="cattabanks@gmail.com" id="assign-emit-permission-to-Study-Manager-Role">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role, role_permission, 
+		permission where role.name = 'Role_Study_Manager' 
+		and role_permission.role_id = role.role_id 
+		and role_permission.permission_id = permission.permission_id 
+		and permission.name = 'Perm_Emit';
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding Emit permission to Study_Manager Standard role
+  	</comment>
+ 	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Emit'));
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="cattabanks@gmail.com" id="assign-emit-permission-to-Report-Manager-Role">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role, role_permission, 
+		permission where role.name = 'Role_Report_Manager' 
+		and role_permission.role_id = role.role_id 
+		and role_permission.permission_id = permission.permission_id 
+		and permission.name = 'Perm_Emit';
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding Emit permission to Report_Manager Standard role
+  	</comment>
+  	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_Emit'));
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="cattabanks@gmail.com" id="assign-emit-permission-to-Data-Manager-Role">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role, role_permission, 
+		permission where role.name = 'Role_Data_Manager' 
+		and role_permission.role_id = role.role_id 
+		and role_permission.permission_id = permission.permission_id 
+		and permission.name = 'Perm_Emit';
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding Emit permission to Data_Manager Standard role
+  	</comment>
+  	<sql>
+         insert into role_permission (role_id, permission_id)
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_Emit'));
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="cattabanks@gmail.com" id="assign-emit-permission-to-Data-Collector-Role">
+     <preConditions onFail="MARK_RAN">
+   		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role, role_permission, 
+		permission where role.name = 'Role_Data_Collector' 
+		and role_permission.role_id = role.role_id 
+		and role_permission.permission_id = permission.permission_id 
+		and permission.name = 'Perm_Emit';
+    	]]>
+   		</sqlCheck>
+  	</preConditions>
+  	<comment>
+   		Adding Emit permission to Data_Collector Standard role
+  	</comment>
+	<sql>
+		insert into role_permission (role_id, permission_id)
+		values ((select role_id from role where name='Role_Data_Collector'),
+		(select permission_id from permission where name='Perm_Emit'));
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="cattabanks@gmail.com" id="assign-emit-permission-to-Report-User-Role">
+	<preConditions onFail="MARK_RAN">
+		<sqlCheck expectedResult="0">
+    	<![CDATA[
+		SELECT count(*) FROM role, role_permission, 
+		permission where role.name = 'Role_Report_User' 
+		and role_permission.role_id = role.role_id 
+		and role_permission.permission_id = permission.permission_id 
+		and permission.name = 'Perm_Emit';
+    	]]>
+		</sqlCheck>
+	</preConditions>
+  	<comment>
+   		Adding Emit permission to Report_User Standard role
+  	</comment>
+	<sql>
+		insert into role_permission (role_id, permission_id)
+		values ((select role_id from role where name='Role_Report_User'),
+		(select permission_id from permission where name='Perm_Emit'));
+  	</sql>
+  </changeSet>
 </databaseChangeLog>
