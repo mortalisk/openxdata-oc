@@ -50,8 +50,6 @@ public class DeleteStudyFormController extends Controller {
 	
 	public void delete(final StudyDef study) {
     	       GWT.log("DeleteStudyFormController : delete study");
-            // TODO: implement delete
-            // FIXME: on success
             studyService.deleteStudy(study, new EmitAsyncCallback<Void>() {
 
                 @Override
