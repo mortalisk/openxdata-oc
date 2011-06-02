@@ -193,15 +193,6 @@ public class FormResponsesView extends View implements Refreshable  {
         });
         rowEditor.setAutoHeight(true);
         grid.addPlugin(rowEditor);
-    	
-        // this is how we could plug in validation
-        /*re.addListener(Events.ValidateEdit, new Listener<RowEditorEvent>() {
-            public void handleEvent(RowEditorEvent be) {
-                Map<String, Object> changes = be.getChanges();
-                System.out.println("changes="+changes);
-                FormDataSummary data = (FormDataSummary)be.getRecord().getModel();
-            }
-        });*/
 
         rowEditor.addListener(Events.AfterEdit, new Listener<RowEditorEvent>() {
                 @Override
