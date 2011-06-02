@@ -97,7 +97,6 @@ public class DeleteStudyFormView extends View {
 
                                 @Override
                                 public void execute() {
-//						delete();
                                     if (deleteStudy.getValue()) {
                                         checkItemHasData(form.getStudy());
                                     } else if (deleteForm.getValue()) {
@@ -225,9 +224,11 @@ public class DeleteStudyFormView extends View {
         }
 
     }
+	   
     public void checkItemHasData(Editable item){
         ((DeleteStudyFormController) this.getController()).itemHasData(item);
     }
+    
     public void onItemDataCheckComplete(Boolean hasData) {
         if (!hasData) {
             delete();
