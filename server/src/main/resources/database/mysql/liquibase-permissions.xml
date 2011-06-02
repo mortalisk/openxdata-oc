@@ -2657,13 +2657,17 @@
   	</sql>
   </changeSet>
 
-    <changeSet id="add-unique-constraint-to-study_user" author="vkakama@gmail.com">
-        <comment>
+	<changeSet id="add-unique-constraint-to-study_user" author="vkakama@gmail.com">
+		<comment>
 			Add unique constraint to mapping tables
         </comment>
-	<addUniqueConstraint tableName="study_user" columnNames="study_id,user_id" constraintName="un_studyUsermap"/>
-	<addUniqueConstraint tableName="user_form" columnNames="form_id,user_id" constraintName="un_formUsermap"/>
-	<addUniqueConstraint tableName="user_report" columnNames="report_id,user_id" constraintName="un_userReport"/>
-	<addUniqueConstraint tableName="report_user" columnNames="report_id,user_id" constraintName="un_ReportUser"/>
-    </changeSet>
+		<addUniqueConstraint tableName="study_user"
+			columnNames="study_id,user_id" constraintName="un_studyUsermap" />
+		<addUniqueConstraint tableName="user_form"
+			columnNames="form_id,user_id" constraintName="un_formUsermap" />
+		<addUniqueConstraint tableName="user_report"
+			columnNames="report_id,user_id" constraintName="un_userReport" />
+		<addUniqueConstraint tableName="report_user"
+			columnNames="report_id,user_id" constraintName="un_ReportUser" />
+	</changeSet>
 </databaseChangeLog>
