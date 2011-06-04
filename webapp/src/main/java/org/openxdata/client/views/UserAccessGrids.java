@@ -61,7 +61,7 @@ public class UserAccessGrids extends FieldSet {
     private List<User> temporalyMappedItems = new ArrayList<User>();
     private List<User> tempItemsToUnmap = new ArrayList<User>();
     protected final AppMessages appMessages = GWT.create(AppMessages.class);
-    private String category = appMessages.usersWithAccessToStudy();
+    private final String category;
 
     public UserAccessGrids(String category) {
         this.category = category;
@@ -71,9 +71,7 @@ public class UserAccessGrids extends FieldSet {
     private void init() {
 
         setWidth(805);
-        setHeading(appMessages.setUserAccessToStudy());
-        if(category.equals(appMessages.usersWithAccessToForm()))
-            setHeading(appMessages.setUserAccessToForm());
+        setHeading(category);
         setCollapsible(true);
         setExpanded(false);
 
