@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- ********************************************************* -->
 <!-- ** OpenXData Server Admin                                      ** -->
-<!-- **	                                                    ** -->
+<!-- **                                                        ** -->
 <!-- ** @author Daniel Kayiwa                                   ** -->
 <!-- ** @version 1.0                                        ** -->
 <!-- ********************************************************* -->
@@ -15,29 +15,32 @@
     <property name="version.revision.regexp" value='revision=\"(.*)\"' />
 
     <target name="run">
-        <loadfile srcfile="${subversion.entries}" property="repositoryFileInput" />
+
+        <available file="${subversion.entries}" property="using.svn" />
+
         <if>
-            <contains string="${repositoryFileInput}" substring="&lt;?xml" casesensitive="false" />
+            <equals arg1="${using.svn}" arg2="true" />
             <then>
-				<!-- SVN pre-1.4 uses XML format -->
-                <propertyregex property="revision"
-					input="${repositoryFileInput}"
-					regexp="${openxdata.version.revision.regexp}"
-					select="\1"
-					defaultValue="? (error with pre-1.4 revision regexp)" />
-            </then>
-            <else>
-				<!-- SVN 1.4+ does not use XML format, just grab 11th line -->
-                <propertyregex property="revision"
-					input="${repositoryFileInput}"
-					regexp="^(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n"
-					select="\11"
-					defaultValue="? (error in post-1.4 revision regexp)" />				
-            </else>
+                <loadfile srcfile="${subversion.entries}" property="repositoryFileInput" />
+                <if>
+                    <contains string="${repositoryFileInput}" substring="&lt;?xml" casesensitive="false" />
+                    <then>
+                        <!-- SVN pre-1.4 uses XML format -->
+                        <propertyregex property="revision" input="${repositoryFileInput}" regexp="${openxdata.version.revision.regexp}" select="\1" defaultValue="? (error with pre-1.4 revision regexp)" />
+                    </then>
+                    <else>
+                        <!-- SVN 1.4+ does not use XML format, just grab 11th line -->
+                        <propertyregex property="revision" input="${repositoryFileInput}" regexp="^(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n" select="\11" defaultValue="? (error in post-1.4 revision regexp)" />
+                    </else>
+                </if>
+             </then>
+             <else>
+                <property name="revision" value="NOREV"/>
+             </else>
         </if>
 
         <property name="version.long" value="${version} @ r${revision}"/>
-			
+            
         <copy file="${resource.dir}/VersionInfo.java" toFile="${java.dir}/org/openxdata/server/admin/client/VersionInfo.java" overwrite="true">
             <filterset>
                 <filter token="Version" value="${version.long}"/>
