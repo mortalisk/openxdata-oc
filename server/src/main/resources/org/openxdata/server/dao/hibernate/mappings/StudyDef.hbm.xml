@@ -58,7 +58,7 @@
 			<one-to-many class="FormDef" />
 		</bag>
 
-        <bag name="users" table="study_user" lazy="true" cascade="all,delete-orphan" inverse="true">
+        <bag name="users" table="study_user" lazy="true" cascade="save-update" inverse="true">
             <key column="study_id" />
             <many-to-many class="User">
                 <column name="user_id" />

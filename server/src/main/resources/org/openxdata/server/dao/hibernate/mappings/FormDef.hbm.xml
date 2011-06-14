@@ -58,7 +58,7 @@
 			<one-to-many class="FormDefVersion" />
 		</bag>
 
-        <bag name="users" table="user_form" lazy="true" cascade="all,delete-orphan">
+        <bag name="users" table="user_form" lazy="true" cascade="save-update">
             <key column="form_id" />
             <many-to-many class="User">
                 <column name="user_id" />
