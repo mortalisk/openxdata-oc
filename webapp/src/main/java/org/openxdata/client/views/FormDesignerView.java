@@ -10,12 +10,13 @@ import org.purc.purcforms.client.controller.IFormSaveListener;
 import org.purc.purcforms.client.util.FormDesignerUtil;
 import org.purc.purcforms.client.util.LanguageUtil;
 
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Attr;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -149,23 +150,10 @@ public class FormDesignerView {
 	 */
 	private void createFormDesignerWindow(String formName,
 			Listener<? extends BaseEvent> beforeHide) {
-		formDesignerWindow = new Window();
-		formDesignerWindow.setPlain(true);
-		formDesignerWindow.setHeading(appMessages.designForm() + " : "
-				+ formName);
-		formDesignerWindow.setMaximizable(true);
-		formDesignerWindow.setMinimizable(false);
-		formDesignerWindow.setDraggable(false);
-		formDesignerWindow.setResizable(false);
-		formDesignerWindow.setModal(true);
-		formDesignerWindow.setSize(
-				com.google.gwt.user.client.Window.getClientWidth(),
-				com.google.gwt.user.client.Window.getClientHeight());
-		formDesignerWindow.add(formDesigner);
-		formDesignerWindow.setScrollMode(Scroll.AUTO);
-
-		formDesignerWindow.show();
-		formDesignerWindow.maximize();
+		Widget emit = RootPanel.get().getWidget(0);
+                RootPanel.get().clear();
+                FormdesignerContainer container = new FormdesignerContainer(formDesigner, formName, emit);
+                RootPanel.get().add(container);
 	}
 
 	final Listener<ComponentEvent> editStudyFormWindowListener = new EditWindowListener();

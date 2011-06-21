@@ -346,18 +346,19 @@
               return null;
           }
     </script>
-
+                        
 </head>
-<body>
+<body style="margin-top: 0px;">
 
 <!-- weird purcforms variables (no other way to set them, sigh) -->
-<div id="defaultFontSize" style="visibility:hidden;">12</div>
-<div id="defaultFontFamily" style="visibility:hidden;">Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif</div>
-<div id="localeKey" style="visibility:hidden;">en</div>
-<div id="localeList" style="visibility:hidden;">en:English</div>
+<div id="defaultFontSize" style="display:none;">12</div>
+<div id="defaultFontFamily" style="display:none">Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif</div>
+<div id="localeKey" style="display:none;">en</div>
+<div id="localeList" style="display:none;">en:English</div>
 
 <!-- history support -->
 <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
-	style="width: 0; height: 0; border: 0;"></iframe>
+	style="width: 0; height: 0; border: 0; display: none;"></iframe>
+
 </body>
 </html>
