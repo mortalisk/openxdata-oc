@@ -104,9 +104,10 @@ public class FormVersionsView extends View {
             public void handleEvent(ButtonEvent be) {
                 FormVersionSummary summary = grid.getSelectionModel().getSelectedItem();
                         for(FormDefVersion version:form.getVersions()){
-                            if(version.getName().equals(summary.getFormVersion())){
+                            if(version.getId()==summary.getFormVersionDef().getId()){
                                 version.setName(summary.getFormVersion());
                                 version.setDescription(summary.getDescription());
+                                version.setIsDefault(true);
                                 version.getFormDef().turnOffOtherDefaults(version);
                             }
                         }
@@ -162,7 +163,12 @@ public class FormVersionsView extends View {
             window.setScrollMode(Scroll.AUTO);
             window.setLayout(new FitLayout());
             for (FormDefVersion version : form.getVersions()) {
-                grid.getStore().add(new FormVersionSummary(String.valueOf(version.getFormDefVersionId()), version.getName(),version.getDescription(), version.getFormDef().getName(), version.getCreator().getName(), version.getDateChanged()));
+               FormVersionSummary summary = new FormVersionSummary(version);
+               summary.setId(String.valueOf(version.getId()));
+               summary.setFormVersion(version.getName());
+               summary.setDescription(version.getDescription());
+               summary.setForm(version.getName());
+                grid.getStore().add(summary);
             }
             window.add(cp);
             window.setDraggable(true);
