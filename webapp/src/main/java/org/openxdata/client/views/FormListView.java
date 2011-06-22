@@ -470,7 +470,7 @@ public class FormListView extends View implements Refreshable {
 			StudyDef study = event.getData();
 			ListStore<FormSummary> store = grid.getStore();
 			for (FormDef form : study.getForms()) {
-				FormSummary summary = store.findModel("id", form.getFormId());
+				FormSummary summary = store.findModel("id",String.valueOf(form.getFormId()));
 				if (summary != null) {
 					summary.updateFormDefinition(form);
 					store.update(summary);
