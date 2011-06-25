@@ -81,9 +81,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	ListStore<FormSummary> formStore;
 
 	private int currentPage = 0;
-    private FormDesignerView formDesignerView;
+	private FormDesignerView formDesignerView;
 	private boolean formVersionEditMode = false;
-        private UsermapUtilities utils ;
+	private UsermapUtilities utils;
 
 	public NewStudyFormView(Controller controller) {
 		super(controller);
