@@ -419,10 +419,13 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		formDefinitionVersionName.setFieldLabel(appMessages.formVersionName());
 		formDefinitionVersionName.setName("formVersionName");
 		formDefinitionVersionName.setAllowBlank(false);
+		formDefinitionVersionName.setEnabled(false);
 		createFormVersionPanel.add(formDefinitionVersionName);
+		
 		formDefinitionVersionDescription = new TextField<String>();
 		formDefinitionVersionDescription.setFieldLabel(appMessages.formVersionDescription());
 		formDefinitionVersionDescription.setName("formVersionDescription");
+		
 		createFormVersionPanel.add(formDefinitionVersionDescription);
 		formVersionDefault = new CheckBox();
 		formVersionDefault.setBoxLabel("");
