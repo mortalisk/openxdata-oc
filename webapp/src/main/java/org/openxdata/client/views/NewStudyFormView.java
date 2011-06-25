@@ -8,11 +8,16 @@ import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.model.StudySummary;
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.client.util.UsermapUtilities;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -40,12 +45,6 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.user.client.ui.DialogBox;
-import org.openxdata.client.model.UserSummary;
-import org.openxdata.client.util.UsermapUtilities;
-import org.openxdata.server.admin.model.FormDefVersionText;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
