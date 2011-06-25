@@ -67,8 +67,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	private Radio newForm;
 	private Radio existingForm;
 	// input fields for form versions
-	private TextField<String> formVersionNameTfld;
-	private TextField<String> formVersionDescr;
+	private TextField<String> formDefinitionVersionName;
+	private TextField<String> formDefinitionVersionDescription;
 	private CheckBox formVersionDefault;
 	// keep track of created study/form
 	private StudyDef studyDef;
@@ -131,7 +131,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		} else if (activePage == 2
 				&& createFormFS.getSelectedRadio().equals(
 						appMessages.addNewForm())) {
-			formVersionNameTfld.setValue("v1");
+			formDefinitionVersionName.setValue("v1");
 		} else if (activePage == 2) {
 			// TODO: set formVersionNameTfld
 			if (activePage == 2
@@ -139,7 +139,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 							appMessages.existingForm())) {
 				int versions = existingFormName.getValue().getFormDefinition()
 						.getVersions().size();
-				formVersionNameTfld.setValue("v" + (versions + 1));
+				formDefinitionVersionName.setValue("v" + (versions + 1));
 				formVersionEditMode = true;
 			}
 		}
@@ -416,15 +416,15 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		createFormVersionPanel.setLayout(formLayout);
 		createFormVersionPanel.add(createFormVersionPanel);
 
-		formVersionNameTfld = new TextField<String>();
-		formVersionNameTfld.setFieldLabel(appMessages.formVersionName());
-		formVersionNameTfld.setName("formVersionName");
-		formVersionNameTfld.setAllowBlank(false);
-		createFormVersionPanel.add(formVersionNameTfld);
-		formVersionDescr = new TextField<String>();
-		formVersionDescr.setFieldLabel(appMessages.formVersionDescription());
-		formVersionDescr.setName("formVersionDescription");
-		createFormVersionPanel.add(formVersionDescr);
+		formDefinitionVersionName = new TextField<String>();
+		formDefinitionVersionName.setFieldLabel(appMessages.formVersionName());
+		formDefinitionVersionName.setName("formVersionName");
+		formDefinitionVersionName.setAllowBlank(false);
+		createFormVersionPanel.add(formDefinitionVersionName);
+		formDefinitionVersionDescription = new TextField<String>();
+		formDefinitionVersionDescription.setFieldLabel(appMessages.formVersionDescription());
+		formDefinitionVersionDescription.setName("formVersionDescription");
+		createFormVersionPanel.add(formDefinitionVersionDescription);
 		formVersionDefault = new CheckBox();
 		formVersionDefault.setBoxLabel("");
 		formVersionDefault.setFieldLabel(appMessages.formVersionDefault());
@@ -586,10 +586,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			}
 			else{
 				formDefVersion = new FormDefVersion(0,
-						formVersionNameTfld.getValue(), formDef);
+						formDefinitionVersionName.getValue(), formDef);
 			}
 			
-			formDefVersion.setDescription(formVersionDescr.getValue());
+			formDefVersion.setDescription(formDefinitionVersionDescription.getValue());
 			formDefVersion.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 			formDefVersion.setDateCreated(new Date());
 			
