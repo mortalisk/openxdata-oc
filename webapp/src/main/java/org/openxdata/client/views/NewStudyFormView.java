@@ -133,7 +133,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 						appMessages.addNewForm())) {
 			formDefinitionVersionName.setValue("v1");
 		} else if (activePage == 2) {
-			// TODO: set formVersionNameTfld
 			if (activePage == 2
 					&& createFormFS.getSelectedRadio().equals(
 							appMessages.existingForm())) {
