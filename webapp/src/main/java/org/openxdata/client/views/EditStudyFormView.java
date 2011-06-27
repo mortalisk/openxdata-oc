@@ -45,7 +45,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private final TextField<String> studyName = new TextField<String>();
 	private final TextField<String> studyDescription = new TextField<String>();
 
-	private final TextField<String> formNameTfld = new TextField<String>();
+	private final TextField<String> formName = new TextField<String>();
 	private final TextField<String> formDescription = new TextField<String>();
 
 	private final TextField<String> formVersion = new TextField<String>();
@@ -150,9 +150,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		editFormPanel.setLayout(new FitLayout());
 		editFormPanel.setStyleAttribute("padding", "10px");
 		FormPanel formPanel = getWizardFormPanel();
-		formNameTfld.setFieldLabel(appMessages.formName());
-		formNameTfld.setAllowBlank(false);
-		formPanel.add(formNameTfld);
+		formName.setFieldLabel(appMessages.formName());
+		formName.setAllowBlank(false);
+		formPanel.add(formName);
 
 		formDescription.setFieldLabel(appMessages.formDescription());
 		formPanel.add(formDescription);
@@ -241,7 +241,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			studyName.setValue(form.getStudy().getName());
 			studyDescription.setValue(form.getStudy().getDescription());
 
-			formNameTfld.setValue(form.getName());
+			formName.setValue(form.getName());
 			formDescription.setValue(form.getDescription());
 
 			formVersion.setValue(form.getDefaultVersion().getName());
@@ -276,7 +276,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		// update study/form/version information
 		form.getStudy().setName(studyName.getValue());
 		form.getStudy().setDescription(studyDescription.getValue());
-		form.setName(formNameTfld.getValue());
+		form.setName(formName.getValue());
 		form.setDescription(formDescription.getValue());
 		form.getDefaultVersion().setName(formVersion.getValue());
 		form.getDefaultVersion().setDescription(
