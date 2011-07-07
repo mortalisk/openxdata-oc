@@ -17,7 +17,6 @@ import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
@@ -79,15 +78,10 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
-		// resize window if the previous window was expanded
-		if (activePage == 0 && currentPage != 0) {
-			resizeWindow(-200, getWizardWidth());
-		}
 		currentPage = activePage;
 		if (activePage == 1) {
 			userAccessToStudy.setExpanded(false);
 			userAccessToForm.setExpanded(false);
-			resizeWindow(0, getWizardWidth());
 		}
 	}
 
@@ -111,34 +105,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		userAccessToStudy = new UserAccessGrids(
 				appMessages.usersWithAccessToStudy());
 		formPanel.add(userAccessToStudy);
-		userAccessToStudy.addListener(Events.Expand,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						studyName.hide();
-						studyDescription.hide();
-						utils.setUserStudyMap(userAccessToStudy,
-								form.getStudy(), users);
-						resizeWindow(200, userAccessToStudy.getWidth() + 40);
-						userAccessToStudy.refreshToolbars();
-					}
-				});
-		userAccessToStudy.addListener(Events.BeforeCollapse,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						// be sure to check that it has been expanded
-						// to avoid resizing the initial window
-						if (userAccessToStudy.isExpanded()) {
-							studyName.show();
-							studyDescription.show();
-							resizeWindow((-200), getWizardWidth());
-							userAccessToStudy.refreshToolbars();
-						}
-					}
-				});
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
 		editStudyPanel.add(formPanel);
 
@@ -159,29 +125,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		userAccessToForm = new UserAccessGrids(
 				appMessages.usersWithAccessToForm());
 		formPanel.add(userAccessToForm);
-		userAccessToForm.addListener(Events.Expand,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						utils.setUserFormMap(userAccessToForm, form, users);
-						resizeWindow(200, userAccessToForm.getWidth() + 40);
-						userAccessToForm.refreshToolbars();
-					}
-				});
-		userAccessToForm.addListener(Events.BeforeCollapse,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						// be sure to check that it has been expanded
-						// to avoid resizing the initial window
-						if (userAccessToForm.isExpanded()) {
-							resizeWindow((-200), getWizardWidth());
-							userAccessToForm.refreshToolbars();
-						}
-					}
-				});
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
 		formPanel.add(getDesignFormButton(appMessages.designForm()));
 		editFormPanel.add(formPanel);
@@ -251,7 +194,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 			published.setEnabled(form.getDefaultVersion().getIsDefault());
 		}
-		showWindow(appMessages.editStudyOrForm(), 500, 210);
+		showWindow(appMessages.editStudyOrForm(), 550, 400);
 	}
 
 	private void launchDesigner(boolean readOnly) {
