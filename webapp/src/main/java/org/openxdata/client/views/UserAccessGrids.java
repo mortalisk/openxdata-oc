@@ -11,6 +11,9 @@ import org.openxdata.client.AppMessages;
 import org.openxdata.client.model.UserSummary;
 import org.openxdata.server.admin.model.User;
 
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
@@ -22,24 +25,19 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Label;
+import com.extjs.gxt.ui.client.widget.HorizontalPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.StoreFilterField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
-import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 
 /**
  *
@@ -52,13 +50,12 @@ public class UserAccessGrids extends FieldSet {
     private List<UserSummary> leftList = new ArrayList<UserSummary>();
     private List<UserSummary> rightList = new ArrayList<UserSummary>();
     private int pageSize = 5;
-    private String gridHeight = "150px";
     private ListStore<UserSummary> userStore;
     private String itemTomap = "Study";
     private Button addUserBtn;
     private Button removeUserBtn;
-    private FlexTable userTable;
-    private List<User> temporalyMappedItems = new ArrayList<User>();
+    private HorizontalPanel userTable;
+    private List<User> temporarilyMappedItems = new ArrayList<User>();
     private List<User> tempItemsToUnmap = new ArrayList<User>();
     protected final AppMessages appMessages = GWT.create(AppMessages.class);
     private final String category;
@@ -69,8 +66,7 @@ public class UserAccessGrids extends FieldSet {
     }
 
     private void init() {
-
-        setWidth(805);
+    	setAutoWidth(true);
         setHeading(category);
         setCollapsible(true);
         setExpanded(false);
@@ -86,7 +82,7 @@ public class UserAccessGrids extends FieldSet {
                     public void execute() {
                         UserSummary summary = leftPanelGrid.getSelectionModel().getSelectedItem();
                         rightPanelGrid.getStore().add(summary);
-                        temporalyMappedItems.add(summary.getUser());
+                        temporarilyMappedItems.add(summary.getUser());
                         leftPanelGrid.getStore().remove(summary);
                         rightList.add(summary);
                         leftList.remove(getSelecetedIndex(summary, leftList));
@@ -103,7 +99,7 @@ public class UserAccessGrids extends FieldSet {
             public void handleEvent(ButtonEvent be) {
                 UserSummary summary = rightPanelGrid.getSelectionModel().getSelectedItem();
                 leftPanelGrid.getStore().add(summary);
-                UnMapItem(summary.getUser(), temporalyMappedItems);
+                UnMapItem(summary.getUser(), temporarilyMappedItems);
                 tempItemsToUnmap.add(summary.getUser());
                 rightPanelGrid.getStore().remove(summary);
                 leftList.add(summary);
@@ -111,28 +107,27 @@ public class UserAccessGrids extends FieldSet {
                 refreshToolbars();
             }
         });
+        
+        userTable = new HorizontalPanel();
+        userTable.setVerticalAlign(VerticalAlignment.MIDDLE);
+        //HBoxLayout userTableLayout = new HBoxLayout();
+        //userTableLayout.setHBoxLayoutAlign(HBoxLayout.HBoxLayoutAlign.MIDDLE);
+        //userTable.setLayout(userTableLayout);
+        userTable.setBorders(false);
+        userTable.add(leftGridPanel(userStore, leftList));
+        
+        VerticalPanel buttons = new VerticalPanel();
+        buttons.setHorizontalAlign(HorizontalAlignment.CENTER);
+        //ContentPanel buttons = new ContentPanel();
+        //buttons.setLayout(new VBoxLayout(VBoxLayout.VBoxLayoutAlign.STRETCHMAX));
+        //buttons.setHeaderVisible(false);
+        buttons.setSpacing(10);
+        buttons.setBorders(false);
+        buttons.add(addUserBtn);
+        buttons.add(removeUserBtn);
+        userTable.add(buttons);
+        userTable.add(rightGridPanel(userStore, rightList));
 
-        userTable = new FlexTable();
-        userTable.setWidth("788");
-        userTable.setCellSpacing(5);
-        userTable.setWidget(0, 0, new Label(appMessages.allUsers()));
-        userTable.setWidget(0, 2, new Label(category));
-        userTable.setWidget(1, 0, leftGridPanel(userStore, leftList));
-        userTable.getFlexCellFormatter().setRowSpan(1, 0, 4);
-        userTable.getFlexCellFormatter().setWidth(1, 0, "300");
-        userTable.getFlexCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_TOP);
-        userTable.getFlexCellFormatter().setAlignment(1, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-        userTable.setWidget(1, 2, rightGridPanel(userStore, rightList));
-        userTable.getFlexCellFormatter().setRowSpan(1, 2, 4);
-        userTable.getFlexCellFormatter().setWidth(1, 2, "300");
-        userTable.getFlexCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_TOP);
-        userTable.setWidget(2, 0, addUserBtn);
-        userTable.getFlexCellFormatter().setAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-        userTable.getFlexCellFormatter().setAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-        userTable.setWidget(4, 0, removeUserBtn);
-        userTable.getFlexCellFormatter().setAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-
-        setLayout(new FormLayout());
         add(userTable);
     }
     private PagingToolBar leftGridToolBar;
@@ -141,14 +136,13 @@ public class UserAccessGrids extends FieldSet {
         PagingLoader<PagingLoadResult<ModelData>> loader;
         ColumnModel cm;
         ContentPanel cp = new ContentPanel();
-        cp.setLayout(new FitLayout());
+        cp.setHeading(appMessages.allUsers());
         cp.setBorders(false);
-//        cp.setSize(600, 200); 
 
         List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         ColumnConfig column1 = new ColumnConfig("id", "id", 20);
         configs.add(column1);
-        ColumnConfig column2 = new ColumnConfig("name", "Available users", 100);
+        ColumnConfig column2 = new ColumnConfig("name", "Available users", 160);
         configs.add(column2);
 
         cm = new ColumnModel(configs);
@@ -173,20 +167,24 @@ public class UserAccessGrids extends FieldSet {
             }
         };
         filter.bind(store);
+        filter.setEmptyText("Search for a User");
+        filter.setWidth(185);
 
-        //toolbar on top of the grid to hold the filter
-        ToolBar toolBar = new ToolBar();
-        toolBar.add(new LabelToolItem("Search for a User: "));
-        toolBar.add(filter);
-        leftGridToolBar = new PagingToolBar(pageSize);
+        leftGridToolBar = new SmallPagingToolBar(pageSize);
         leftGridToolBar.bind(loader);
+        leftGridToolBar.setEnableOverflow(true);
         loader.load(0, pageSize);
-        cp.setBottomComponent(leftGridToolBar);
-        cp.setTopComponent(toolBar);
+        LayoutContainer bottomComponent = new LayoutContainer();
+        bottomComponent.setBorders(false);
+        bottomComponent.add(filter);
+        bottomComponent.add(leftGridToolBar);
+        cp.setBottomComponent(bottomComponent);
         leftPanelGrid = new Grid<UserSummary>(store, cm);
         leftPanelGrid.setAutoExpandColumn("name");
-        leftPanelGrid.setHeight(gridHeight);
-        leftPanelGrid.setBorders(true);
+        leftPanelGrid.setHideHeaders(true);
+        leftPanelGrid.setBorders(false);
+        leftPanelGrid.setHeight(100);
+        cp.setScrollMode(Scroll.AUTOY);
         cp.add(leftPanelGrid);
 
         return cp;
@@ -197,13 +195,13 @@ public class UserAccessGrids extends FieldSet {
         PagingLoader<PagingLoadResult<ModelData>> loader;
         ColumnModel cm;
         ContentPanel cp = new ContentPanel();
-        cp.setLayout(new FitLayout());
+        cp.setHeading(category);
         cp.setBorders(false);
 
         List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         ColumnConfig column1 = new ColumnConfig("id", "id", 20);
         configs.add(column1);
-        ColumnConfig column2 = new ColumnConfig("name", "Users with Access To " + itemTomap, 100);
+        ColumnConfig column2 = new ColumnConfig("name", "Users with Access To " + itemTomap, 160);
         configs.add(column2);
 
         cm = new ColumnModel(configs);
@@ -229,21 +227,26 @@ public class UserAccessGrids extends FieldSet {
             }
         };
         filter.bind(store);
-
-        //toolbar on top of the grid to hold the filter
-        ToolBar toolBar = new ToolBar();
-        toolBar.add(new LabelToolItem("Search for a User: "));
-        toolBar.add(filter);
-        rightGridToolbar = new PagingToolBar(pageSize);
+        filter.setEmptyText("Search for a User");
+        filter.setWidth(185);
+        
+        rightGridToolbar = new SmallPagingToolBar(pageSize);
         rightGridToolbar.bind(loader);
+        
+        LayoutContainer bottomComponent = new LayoutContainer();
+        bottomComponent.setBorders(false);
+        bottomComponent.add(filter);
+        bottomComponent.add(rightGridToolbar);
+        cp.setBottomComponent(bottomComponent);
+
         loader.load(0, pageSize);
-        cp.setBottomComponent(rightGridToolbar);
-        cp.setTopComponent(toolBar);
 
         rightPanelGrid = new Grid<UserSummary>(store, cm);
         rightPanelGrid.setAutoExpandColumn("name");
-        rightPanelGrid.setHeight(gridHeight);
-        rightPanelGrid.setBorders(true);
+        rightPanelGrid.setHideHeaders(true);
+        rightPanelGrid.setBorders(false);
+        rightPanelGrid.setHeight(100);
+        cp.setScrollMode(Scroll.AUTOY);
         cp.add(rightPanelGrid);
 
         return cp;
@@ -258,7 +261,7 @@ public class UserAccessGrids extends FieldSet {
     }
 
     public List<User> getTempMappedItems() {
-        return temporalyMappedItems;
+        return temporarilyMappedItems;
     }
     public List<UserSummary> getLeftList() {
         return leftList;

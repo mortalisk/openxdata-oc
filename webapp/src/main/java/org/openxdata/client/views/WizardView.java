@@ -162,9 +162,7 @@ public abstract class WizardView extends View {
         window.addListener(Events.BeforeHide, windowListener);
 	    window.show();
     }
-    public void resizeWindow(int height,int width){
-        window.setSize(width,window.getHeight()+height);
-    }
+
     final Listener<ComponentEvent> windowListener = new WindowListener();
     class WindowListener implements Listener<ComponentEvent> {
     	@Override

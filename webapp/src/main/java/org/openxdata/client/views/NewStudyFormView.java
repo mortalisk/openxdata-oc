@@ -21,7 +21,6 @@ import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Registry;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -100,9 +99,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	protected void display(int activePage, List<LayoutContainer> pages) {
 		nextButton.setEnabled(false);
 		// resize window if the previous window was expanded
-		if (activePage == 0 && currentPage != 0) {
-			resizeWindow(-90, getWizardWidth());
-		}
+		//if (activePage == 0 && currentPage != 0) {
+		//	resizeWindow(-90, getWizardWidth());
+		//}
 		currentPage = activePage;
 		if (activePage == 1) {
 			// check what was selected in the page before
@@ -127,7 +126,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			}
 			userStudyAccessGrid.setExpanded(false);
 			userFormAccessGrid.setExpanded(false);
-			resizeWindow(0, getWizardWidth());
+			//resizeWindow(0, getWizardWidth());
 		} else if (activePage == 2
 				&& createFormFS.getSelectedRadio().equals(
 						appMessages.addNewForm())) {
@@ -221,7 +220,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					public void selectionChanged(
 							SelectionChangedEvent<StudySummary> se) {
 						existingStudyDescription.setValue(se.getSelectedItem().getDescription());
-                                                utils.setUserStudyMap(userStudyAccessGrid, se.getSelectedItem().getStudyDefinition(), users);
+                        utils.setUserStudyMap(userStudyAccessGrid, se.getSelectedItem().getStudyDefinition(), users);
 						nextButton.setEnabled(true);
 					}
 				});
@@ -245,43 +244,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				appMessages.usersWithAccessToStudy());
 		createStudyFS.add(userStudyAccessGrid);
 
-		userStudyAccessGrid.addListener(Events.Expand,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						// hide upper controls so that this control fills up
-						// the whole window
-						newStudy.hide();
-						newStudyName.hide();
-						newStudyDescription.hide();
-						existingStdyRdio.hide();
-						existingStudyName.hide();
-						existingStudyDescription.hide();
-						resizeWindow(90, userStudyAccessGrid.getWidth() + 40);
-						// hack just to resolve the icons overlapping issue.
-						userStudyAccessGrid.refreshToolbars();
-					}
-				});
-		userStudyAccessGrid.addListener(Events.BeforeCollapse,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						// be sure to check that it has been expanded
-						// to avoid resizing the initial window
-						if (userStudyAccessGrid.isExpanded()) {
-							// show upper controls
-							newStudy.show();
-							newStudyName.show();
-							newStudyDescription.show();
-							existingStdyRdio.show();
-							existingStudyName.show();
-							existingStudyDescription.show();
-							resizeWindow((-90), getWizardWidth());
-						}
-					}
-				});
 		return createStudyPanel;
 	}
 
@@ -365,41 +327,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		userFormAccessGrid = new UserAccessGrids(
 				appMessages.usersWithAccessToForm());
 		createFormFS.add(userFormAccessGrid);
-		userFormAccessGrid.addListener(Events.Expand,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						newForm.hide();
-						newFormName.hide();
-						newFormDescription.hide();
-						existingForm.hide();
-						existingFormName.hide();
-						existingFormDescription.hide();
-						resizeWindow(90, userFormAccessGrid.getWidth() + 40);
-						// hack just to resolve the icons overlapping issue.
-						userStudyAccessGrid.refreshToolbars();
-					}
-				});
-		userFormAccessGrid.addListener(Events.BeforeCollapse,
-				new Listener<ComponentEvent>() {
-
-					@Override
-					public void handleEvent(ComponentEvent be) {
-						// be sure to check that it has been expanded
-						// to avoid resizing the initial window
-						if (userFormAccessGrid.isExpanded()) {
-							// show upper controls
-							newForm.show();
-							newFormName.show();
-							newFormDescription.show();
-							existingForm.show();
-							existingFormName.show();
-							existingFormDescription.show();
-							resizeWindow((-90), getWizardWidth());
-						}
-					}
-				});
 
 		return createFormPanel;
 	}
@@ -455,7 +382,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				}
 			});
 
-			showWindow(appMessages.newStudyFormOrVersionHeading(), 500, 320);
+			showWindow(appMessages.newStudyFormOrVersionHeading(), 540, 500);
 		}
 	}
 
