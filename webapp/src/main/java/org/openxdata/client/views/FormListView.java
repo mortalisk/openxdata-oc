@@ -23,9 +23,7 @@ import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
-import com.extjs.gxt.ui.client.event.IconButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
@@ -38,7 +36,6 @@ import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.button.ToolButton;
 import com.extjs.gxt.ui.client.widget.custom.Portal;
 import com.extjs.gxt.ui.client.widget.custom.Portlet;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -244,9 +241,8 @@ public class FormListView extends View implements Refreshable {
 		cp.add(grid);
 		portlet.add(cp);
 		portlet.setScrollMode(Scroll.AUTOY);
-		portlet.setSize(725, 500);
+		portlet.setSize(725, 200);
 		portlet.setBottomComponent(buttonBar);
-		configPanel(portlet);
 	}
 
 	protected void export() {
@@ -441,6 +437,7 @@ public class FormListView extends View implements Refreshable {
 		if (event.getType() == FormListController.FORMLIST) {
 			Portal portal = Registry.get(Emit.PORTAL);
 			portal.add(portlet, 0);
+			maximisePortlet(portlet);
 		}
 	}
 
@@ -515,19 +512,24 @@ public class FormListView extends View implements Refreshable {
 		}
 	}
 
-	private void configPanel(final ContentPanel panel) {
-		panel.getHeader().addTool(
+	/*
+	// Adds a standard toolbutton to the portlet to maximise (now done by default)(
+	 private void configPanel(final Portlet portlet) {
+		portlet.getHeader().addTool(
 				new ToolButton("x-tool-restore",
 						new SelectionListener<IconButtonEvent>() {
 							@Override
 							public void componentSelected(IconButtonEvent ce) {
-								Portal p = (Portal) panel.getParent()
-										.getParent();
-								int height = p.getHeight() - 20;
-								panel.setHeight(height);
+								maximisePortlet(portlet);
 							}
 
 						}));
+	}*/
+	
+	private void maximisePortlet(Portlet portlet) {
+		Portal p = (Portal) portlet.getParent().getParent();
+		int height = p.getHeight() - 20;
+		portlet.setHeight(height);
 	}
 
 	public TreeGrid<FormSummary> formTreeGrid() {
