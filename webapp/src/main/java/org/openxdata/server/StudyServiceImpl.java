@@ -3,16 +3,15 @@ package org.openxdata.server;
 import java.util.List;
 
 import org.openxdata.client.service.StudyService;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-/**
- *
- * @author victor
- */
 public class StudyServiceImpl extends OxdPersistentRemoteService implements StudyService {
 	
 	private static final long serialVersionUID = 4681223938185113228L;
