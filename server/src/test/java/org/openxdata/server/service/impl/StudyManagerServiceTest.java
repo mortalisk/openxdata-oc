@@ -1,5 +1,6 @@
 package org.openxdata.server.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,11 @@ import org.junit.Test;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
@@ -136,5 +141,46 @@ public class StudyManagerServiceTest  extends BaseContextSensitiveTest {
 		}
 		
 		return null;
+	}
+	
+	@Test
+	public void testGetUserMappedStudies(){
+		List<UserStudyMap> permissions = studyManagerService.getUserMappedStudies();
+		Assert.assertEquals(8, permissions.size());
+	}
+	
+	@Test
+	public void testSetUserMappingForStudy(){
+		StudyDef study = studyManagerService.getStudies().get(0);
+		List<User> users = userService.getUsers();
+		
+		List<User> dummyPermissions = new ArrayList<User>();
+		dummyPermissions.add(users.get(0));
+		dummyPermissions.add(users.get(1));
+		dummyPermissions.add(users.get(2));
+		
+		studyManagerService.setUserMappingForStudy(study, dummyPermissions);
+		Assert.assertEquals(3, studyManagerService.getUserMappedStudies().size());
+	}
+	
+	@Test
+	public void testGetUserMappedForms(){
+		List<UserFormMap> permissions = studyManagerService.getUserMappedForms();
+		Assert.assertEquals(2, permissions.size());
+	}
+	
+	@Test
+	public void testSetUserMappingForForm(){
+		
+		FormDef form = studyManagerService.getStudies().get(0).getForms().get(0);
+		List<User> users = userService.getUsers();
+		
+		List<User> dummyPermissions = new ArrayList<User>();
+		dummyPermissions.add(users.get(0));
+		dummyPermissions.add(users.get(1));
+		dummyPermissions.add(users.get(2));
+		
+		studyManagerService.setUserMappingForForm(form, dummyPermissions);
+		Assert.assertEquals(3, studyManagerService.getUserMappedForms().size());
 	}
 }
