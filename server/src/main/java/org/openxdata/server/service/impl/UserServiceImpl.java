@@ -121,22 +121,30 @@ public class UserServiceImpl implements UserService {
     @Override
     @Secured("Perm_Add_Users")
 	public void saveUser(User user) {
-        if (user.hasNewPassword()) {
+    	
+        checkAndSetUserLoginProperties(user);
+		userDAO.saveUser(user);
+
+		sessionRegistry.updateUserEntries(user);
+
+		sendEmailToNewUser(user);
+    }
+
+	private void checkAndSetUserLoginProperties(User user) {
+		if (user.hasNewPassword()) {
             user.setSalt(OpenXDataSecurityUtil.getRandomToken());
             user.setPassword(OpenXDataSecurityUtil.encodeString(user.getClearTextPassword() + user.getSalt()));
         }
 	}
 
-        boolean newUser = user.getId() == 0 ? true : false;
-
-        userDAO.saveUser(user);
-
-         sessionRegistry.updateUserEntries(user);
-        
-        if (newUser && StringUtils.isNotEmpty(user.getEmail())) {
+	private void sendEmailToNewUser(User user) {
+		
+		boolean newUser = user.getId() == 0 ? true : false;
+		if (newUser && StringUtils.isNotEmpty(user.getEmail())) {
         	String enable = settingDAO.getSetting("enableNewUserEmail");
         	if (enable != null && enable.equalsIgnoreCase("true")) {
-        		Locale locale = Locale.ENGLISH; // FIXME: calculate user's actual locale (will have to be stored in their user profile)
+        		// FIXME: calculate user's actual locale (will have to be stored in their user profile)
+        		Locale locale = Locale.ENGLISH; 
         		String serverUrl = settingDAO.getSetting("serverUrl");
 		        String subject = messageSource.getMessage("newUserEmailSubject", new Object[]{}, locale);
 		        String text = messageSource.getMessage("newUserEmail", 
