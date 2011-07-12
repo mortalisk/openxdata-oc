@@ -138,15 +138,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Assert.assertTrue(user.getRoles().size() == 2);
 	}
 	
-	/**
-	 * Gets a user object for a given name from a list of user objects.
-	 * 
-	 * @param name
-	 *            the name of the user to look for.
-	 * @param users
-	 *            the list of user objects.
-	 * @return the user object that matches the given name.
-	 */
+	
 	private User getUser(String name, List<User> users) {
 		for (User user : users) {
 			if (user.getName().equals(name))
