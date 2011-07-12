@@ -110,4 +110,13 @@
                 constraintName="form_definition_version_text_unique"/>
     </changeSet>
 
+	<changeSet author="cattabanks@gmail.com" id="remove_unused_online_column">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="users" columnName="online" />
+		</preConditions>
+		<comment>
+			Removing unused online column on the User table.
+		</comment>
+		<dropColumn tableName="users" columnName="online" />
+	</changeSet>
 </databaseChangeLog>

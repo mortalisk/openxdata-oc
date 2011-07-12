@@ -81,10 +81,7 @@ public class User extends AbstractEditable {
 	
 	/** Models a new <code>User</code> pending approval*/
 	public static final int PENDING_APPROVAL = 2;
-	
-	/** Flag to determine if this user in already logged onto the system */
-	private int online = 0;
-	
+		
 	/**
 	 * Constructor used to create a new user object.
 	 */
@@ -363,14 +360,6 @@ public class User extends AbstractEditable {
      */
     public void setStatus(int status) {
     	this.status = status;
-    }
-
-    public void setOnline(int online){
-    	this.online = online;
-    }
-    
-    public int getOnline(){
-    	return this.online;
     }
     
     /**
