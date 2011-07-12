@@ -1,5 +1,6 @@
 package org.openxdata.server.admin.client.util;
 
+import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -18,6 +19,8 @@ import org.purc.purcforms.client.xforms.XmlUtil;
  */
 public class OdmImport {
 
+	static Logger log = Logger.getLogger(OdmImport.class);
+	
 	/**
 	 * Imports a study, form, or form version from xml.
 	 * 
@@ -61,6 +64,6 @@ public class OdmImport {
 		
 		formDefVersion.setXform(OdmXformImport.importXform(node,metaDataVersionNode));
 		
-		System.out.println(formDefVersion.getXform());
+		log.info(formDefVersion.getXform());
 	}
 }
