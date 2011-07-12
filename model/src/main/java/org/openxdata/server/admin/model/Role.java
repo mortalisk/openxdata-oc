@@ -11,9 +11,6 @@ import java.util.List;
  */
 public class Role extends AbstractEditable {
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 5331693197915876841L;
 
 	/** The database identifier of the role. */

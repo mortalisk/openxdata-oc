@@ -9,9 +9,6 @@ import java.util.Set;
  */
 public class User extends AbstractEditable {
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = -410052012755451028L;
 
 	/** The database identifier of the user. */

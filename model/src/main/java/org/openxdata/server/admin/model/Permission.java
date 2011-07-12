@@ -11,9 +11,6 @@ package org.openxdata.server.admin.model;
  */
 public class Permission extends AbstractEditable {
 	
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 4590744588070449021L;
 
 	/** The database identifier of the permission. */
