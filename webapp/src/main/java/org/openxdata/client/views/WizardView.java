@@ -248,12 +248,4 @@ public abstract class WizardView extends View {
     protected abstract void finish();
     
     protected abstract void saveAndExit();
-
-    public int getWizardWidth(){
-        return mainWindowWidth;
-    }
-    
-    public int getWizardHeight(){
-        return mainWindowHeight;
-    }
 }
