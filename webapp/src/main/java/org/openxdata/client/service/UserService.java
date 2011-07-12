@@ -19,4 +19,6 @@ public interface UserService extends RemoteService {
     void resetPassword(User user, int size) throws OpenXDataSecurityException;
     List<User> getUsers() throws OpenXDataSecurityException;
 	Boolean checkIfUserChangedPassword(User user) throws OpenXDataSecurityException;
+	void saveUsers(List<User> users) throws OpenXDataSecurityException;
+	void deleteUsers(List<User> users) throws OpenXDataSecurityException;
 }

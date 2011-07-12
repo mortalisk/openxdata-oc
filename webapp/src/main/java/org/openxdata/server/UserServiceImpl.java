@@ -79,4 +79,14 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements UserS
 			throws OpenXDataSecurityException {
 		return getUserService().checkIfUserChangedPassword(user);
 	}
+
+	@Override
+	public void saveUsers(List<User> users) throws OpenXDataSecurityException {
+		userService.saveUsers(users);
+	}
+
+	@Override
+	public void deleteUsers(List<User> users) throws OpenXDataSecurityException {
+		userService.deleteUsers(users);
+	}
 }
