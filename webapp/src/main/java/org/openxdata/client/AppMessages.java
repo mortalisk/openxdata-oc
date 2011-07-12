@@ -108,6 +108,8 @@ public interface AppMessages extends Messages {
 	String setUserAccessToStudy();
 
 	String allUsers();
+	String availableUsers();
+	String searchForAUser();
 
 	String usersWithAccessToStudy();
 
