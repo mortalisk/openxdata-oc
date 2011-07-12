@@ -53,8 +53,8 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Autowired
 	private UserStudyMapDAO userStudyMapDAO;
 
-        @Autowired
-        private EditableDAO editableDAO;
+	@Autowired
+	private EditableDAO editableDAO;
     
 	@Override
 	@Secured("Perm_Delete_Forms")
