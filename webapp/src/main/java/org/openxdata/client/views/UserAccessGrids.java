@@ -21,6 +21,7 @@ import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.IconButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Store;
@@ -30,33 +31,30 @@ import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
+import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.StoreFilterField;
-import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
- *
- * @author victor
+ * UserAccessGrid is used to create a DualFieldList, with search and paging functionality.
+ * A DualFieldList is two lists where items can be moved from one list to the other.
  */
 public class UserAccessGrids extends FieldSet {
 
-    private Grid<UserSummary> leftPanelGrid;
-    private Grid<UserSummary> rightPanelGrid;
+    private ListField<UserSummary> fromField;
+    private ListField<UserSummary> toField;
     private List<UserSummary> leftList = new ArrayList<UserSummary>();
     private List<UserSummary> rightList = new ArrayList<UserSummary>();
-    private int pageSize = 5;
     private ListStore<UserSummary> userStore;
-    private String itemTomap = "Study";
+    private List<User> temporarilyMappedItems = new ArrayList<User>();
+    private List<User> tempItemsToUnmap = new ArrayList<User>();
+    private int pageSize = 5;
+    private PagingToolBar leftGridToolBar;
+    private PagingToolBar rightGridToolbar;
     private Button addUserBtn;
     private Button removeUserBtn;
     private HorizontalPanel userTable;
-    private List<User> temporarilyMappedItems = new ArrayList<User>();
-    private List<User> tempItemsToUnmap = new ArrayList<User>();
     protected final AppMessages appMessages = GWT.create(AppMessages.class);
     private final String category;
 
@@ -73,37 +71,18 @@ public class UserAccessGrids extends FieldSet {
 
         addUserBtn = new Button(appMessages.addUser());
         addUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
-
             @Override
             public void handleEvent(ButtonEvent be) {
-                Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-                    @Override
-                    public void execute() {
-                        UserSummary summary = leftPanelGrid.getSelectionModel().getSelectedItem();
-                        rightPanelGrid.getStore().add(summary);
-                        temporarilyMappedItems.add(summary.getUser());
-                        leftPanelGrid.getStore().remove(summary);
-                        rightList.add(summary);
-                        leftList.remove(getSelecetedIndex(summary, leftList));
-                        refreshToolbars();
-                    }
-                });
+            	onButtonRight(be);
+            	refreshToolbars();
             }
         });
 
         removeUserBtn = new Button(appMessages.removeUser());
         removeUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
-
             @Override
             public void handleEvent(ButtonEvent be) {
-                UserSummary summary = rightPanelGrid.getSelectionModel().getSelectedItem();
-                leftPanelGrid.getStore().add(summary);
-                UnMapItem(summary.getUser(), temporarilyMappedItems);
-                tempItemsToUnmap.add(summary.getUser());
-                rightPanelGrid.getStore().remove(summary);
-                leftList.add(summary);
-                rightList.remove(getSelecetedIndex(summary, rightList));
+                onButtonLeft(be);
                 refreshToolbars();
             }
         });
@@ -130,32 +109,66 @@ public class UserAccessGrids extends FieldSet {
 
         add(userTable);
     }
-    private PagingToolBar leftGridToolBar;
+    
+    private void onButtonRight(ButtonEvent be) {
+    	//add to right(to), delete from left(from)
+        List<UserSummary> sel = fromField.getSelection();
+        leftList.removeAll(sel);
+        List<User> users = new ArrayList<User>();
+        for (UserSummary summary : sel) {
+            fromField.getStore().remove(summary);
+            users.add(summary.getUser());
+        }
+        toField.getStore().add(sel);
+        rightList.addAll(sel);
+        tempItemsToUnmap.removeAll(users);
+        temporarilyMappedItems.addAll(users);
+        
+	}
+    
+    private void onButtonLeft(ButtonEvent be) {
+    	//delete from right(to), add to left (from)
+    	List<UserSummary> sel = toField.getSelection();
+    	rightList.removeAll(sel);
+    	List<User> users = new ArrayList<User>();
+    	for (UserSummary summary : sel) {
+    		toField.getStore().remove(summary);
+    		users.add(summary.getUser());
+    	}
+    	fromField.getStore().add(sel);
+    	leftList.addAll(sel);
+    	tempItemsToUnmap.addAll(users);
+        temporarilyMappedItems.removeAll(users);
+    }
+    
+    protected void onButtonAllLeft(IconButtonEvent be) {
+        List<UserSummary> sel = toField.getStore().getModels();
+        fromField.getStore().add(sel);
+        toField.getStore().removeAll();
+    }
+
+    protected void onButtonAllRight(IconButtonEvent be) {
+        List<UserSummary> sel = fromField.getStore().getModels();
+        toField.getStore().add(sel);
+        fromField.getStore().removeAll();
+    }
+    
+    
 
     public ContentPanel leftGridPanel(ListStore<UserSummary> store, List<UserSummary> userList) {
         PagingLoader<PagingLoadResult<ModelData>> loader;
-        ColumnModel cm;
         ContentPanel cp = new ContentPanel();
         cp.setHeading(appMessages.allUsers());
         cp.setBorders(false);
 
-        List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-        ColumnConfig column1 = new ColumnConfig("id", "id", 20);
-        configs.add(column1);
-        ColumnConfig column2 = new ColumnConfig("name", "Available users", 160);
-        configs.add(column2);
-
-        cm = new ColumnModel(configs);
-        cm.setHidden(0, true);
         // add paging support for a local collection of models
         PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(userList);
         // loader
         loader = new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
         loader.setRemoteSort(true);
         store = new ListStore<UserSummary>(loader);
-//filter list
+        // filter list
         StoreFilterField<UserSummary> filter = new StoreFilterField<UserSummary>() {
-
             @Override
             protected boolean doSelect(Store<UserSummary> store, UserSummary parent,
                     UserSummary record, String property, String filter) {
@@ -179,43 +192,31 @@ public class UserAccessGrids extends FieldSet {
         bottomComponent.add(filter);
         bottomComponent.add(leftGridToolBar);
         cp.setBottomComponent(bottomComponent);
-        leftPanelGrid = new Grid<UserSummary>(store, cm);
-        leftPanelGrid.setAutoExpandColumn("name");
-        leftPanelGrid.setHideHeaders(true);
-        leftPanelGrid.setBorders(false);
-        leftPanelGrid.setHeight(100);
+        fromField = new ListField<UserSummary>();
+        fromField.setDisplayField("name");
+        fromField.setStore(store);
+        fromField.setBorders(false);
+        fromField.setSize(185, 100);
         cp.setScrollMode(Scroll.AUTOY);
-        cp.add(leftPanelGrid);
+        cp.add(fromField);
 
         return cp;
     }
-    private PagingToolBar rightGridToolbar;
 
     public ContentPanel rightGridPanel(ListStore<UserSummary> store, List<UserSummary> userList) {
         PagingLoader<PagingLoadResult<ModelData>> loader;
-        ColumnModel cm;
         ContentPanel cp = new ContentPanel();
         cp.setHeading(category);
         cp.setBorders(false);
 
-        List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-        ColumnConfig column1 = new ColumnConfig("id", "id", 20);
-        configs.add(column1);
-        ColumnConfig column2 = new ColumnConfig("name", "Users with Access To " + itemTomap, 160);
-        configs.add(column2);
-
-        cm = new ColumnModel(configs);
-        cm.setHidden(0, true);
         // add paging support for a local collection of models
         PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(userList);
         // loader
         loader = new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
         loader.setRemoteSort(true);
         store = new ListStore<UserSummary>(loader);
-
-//filter list
+        // filter list
         StoreFilterField<UserSummary> filter = new StoreFilterField<UserSummary>() {
-
             @Override
             protected boolean doSelect(Store<UserSummary> store, UserSummary parent,
                     UserSummary record, String property, String filter) {
@@ -241,56 +242,35 @@ public class UserAccessGrids extends FieldSet {
 
         loader.load(0, pageSize);
 
-        rightPanelGrid = new Grid<UserSummary>(store, cm);
-        rightPanelGrid.setAutoExpandColumn("name");
-        rightPanelGrid.setHideHeaders(true);
-        rightPanelGrid.setBorders(false);
-        rightPanelGrid.setHeight(100);
+        toField = new ListField<UserSummary>();
+        toField.setStore(store);
+        toField.setBorders(false);
+        toField.setDisplayField("name");
+        toField.setSize(185, 100);
         cp.setScrollMode(Scroll.AUTOY);
-        cp.add(rightPanelGrid);
+        cp.add(toField);
 
         return cp;
     }
 
+    // FIXME: i would like to remove all these methods, and combine this class with the usermaputilities class (it's weird)
     public void addUnmappedUser(UserSummary user) {
-        leftPanelGrid.getStore().add(user);
+        fromField.getStore().add(user);
     }
 
     public void addMappedUser(UserSummary user) {
-        rightPanelGrid.getStore().add(user);
+        toField.getStore().add(user);
     }
 
     public List<User> getTempMappedItems() {
         return temporarilyMappedItems;
-    }
-    public List<UserSummary> getLeftList() {
-        return leftList;
-    }
-    public List<UserSummary> getRightList() {
-        return rightList;
     }
 
     public List<User> getTempItemstoUnmap() {
         return tempItemsToUnmap;
     }
 
-    public void UnMapItem(User user, List<User> fromList) {
-        for (int i = 0; i < fromList.size(); ++i) {
-            if (fromList.get(i).getName().equals(user.getName())) {
-                fromList.remove(user);
-            }
-        }
-    }
-
-    public Grid<UserSummary> getUnmappedItemGrid() {
-        return leftPanelGrid;
-    }
-
-    public Grid<UserSummary> getMappedItemGrid() {
-        return rightPanelGrid;
-    }
-
-    public void refreshToolbars() {
+    private void refreshToolbars() {
         leftGridToolBar.refresh();
         rightGridToolbar.refresh();
     }
@@ -301,21 +281,11 @@ public class UserAccessGrids extends FieldSet {
         refreshToolbars();
     }
 
-    private int getSelecetedIndex(UserSummary item, List<UserSummary> items) {
-        int index = -1;
-        for (int i = 0; i < items.size(); ++i) {
-            if (items.get(i).getId().equals(item.getId())) {
-                index = i;
-            }
-        }
-        return index;
-    }
-
     public void clear() {
-        getUnmappedItemGrid().getStore().removeAll();
-        getMappedItemGrid().getStore().removeAll();
+        toField.getStore().removeAll();
+        fromField.getStore().removeAll();
         getTempMappedItems().clear();
-        getLeftList().clear();
-        getRightList().clear();
+        leftList.clear();
+        rightList.clear();
     }
 }
