@@ -174,9 +174,6 @@ public class UserServiceImpl implements UserService {
         return OpenXDataUtil.checkIfUserChangedPassword(user);
     }
 
-    /**
-     * @see org.openxdata.server.service.UserService#importUsers(java.lang.String)
-     */
     @Override
     @Secured("Perm_Add_Users")
 	public String importUsers(String filecontents) {
