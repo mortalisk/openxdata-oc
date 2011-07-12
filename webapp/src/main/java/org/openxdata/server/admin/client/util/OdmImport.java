@@ -1,16 +1,15 @@
 package org.openxdata.server.admin.client.util;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
+import org.purc.purcforms.client.xforms.XmlUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
-import org.purc.purcforms.client.xforms.XmlUtil;
 
 /**
  * Imports studies in ODM format
