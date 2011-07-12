@@ -428,29 +428,14 @@ public class User extends AbstractEditable {
 		return "";
 	}
 	
-	/* (non-Javadoc) on Feb 4, 2010
-	 * @see org.openxdata.server.admin.model.Editable#isActive()
-	 *
-	 * @return
-	 */
 	public boolean isActive() {
 		return status == 0;
 	}
 	
-	/* (non-Javadoc) on Feb 4, 2010
-	 * @see org.openxdata.server.admin.model.Editable#isDisabled()
-	 *
-	 * @return
-	 */
 	public boolean isDisabled() {
 		return status == 1;
 	}
 
-	/* (non-Javadoc) on Feb 4, 2010
-	 * @see org.openxdata.server.admin.model.Editable#setDisable(boolean)
-	 *
-	 * @param disable
-	 */
 	public void setUserStatus(int status) {
 		this.status = status;
 		
