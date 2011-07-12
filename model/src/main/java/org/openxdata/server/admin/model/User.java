@@ -29,7 +29,6 @@ public class User extends AbstractEditable {
 	/** The last name of the user. */
 	private String lastName;
 	
-	//TODO Should these four be included here?
 	/** The user hashed password. */
 	private String password;
 	
