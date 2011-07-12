@@ -256,4 +256,22 @@ public class UserServiceImpl implements UserService {
             SecurityContextHolder.clearContext();
         }
     }
+
+	
+    @Override
+    @Secured("Perm_Add_Users")
+	public void saveUsers(List<User> users) {
+    	for(User user : users){
+    		saveUser(user);
+    	}
+	}
+
+	
+    @Override
+    @Secured("Perm_Delete_Users")
+	public void deleteUsers(List<User> users) {
+    	for(User user : users){
+    		deleteUser(user);
+    	}
+	}
 }

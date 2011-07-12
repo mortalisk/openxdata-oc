@@ -29,6 +29,13 @@ public interface UserService extends RemoteService {
 	 * @throws OpenXDataSecurityException For any <tt>security related</tt> that occurs on the <tt>service layer.</tt>
 	 */
 	void saveUser(User user) throws OpenXDataSecurityException;
+	
+	/**
+	 * Persists a given list of Users to the database.
+	 * 
+	 * @param users List of Users to persist.
+	 */
+	void saveUsers(List<User> users) throws OpenXDataSecurityException;
     
 	/**
      * Gets a list of users in the database.
@@ -45,6 +52,13 @@ public interface UserService extends RemoteService {
 	 * @throws OpenXDataSecurityException For any <tt>security related</tt> that occurs on the <tt>service layer.</tt> 
 	 */
 	void deleteUser(User user) throws OpenXDataSecurityException;
+
+	/**
+	 * Deletes a given list of Users from the database.
+	 * 
+	 * @param users List of Users to delete.
+	 */
+	void deleteUsers(List<User> users) throws OpenXDataSecurityException;
 	
 	/**
 	 * Ascertains if the Administrator changed the default password on initial login.

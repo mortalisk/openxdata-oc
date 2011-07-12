@@ -104,4 +104,18 @@ public interface UserService {
 	 */
 	void logout();
 
+	/**
+	 * Persists a given list of Users to the database.
+	 * 
+	 * @param users List of Users to persist.
+	 */
+	void saveUsers(List<User> users);
+
+	/**
+	 * Deletes a given list of Users from the database.
+	 * 
+	 * @param users List of Users to delete.
+	 */
+	void deleteUsers(List<User> users);
+
 }
