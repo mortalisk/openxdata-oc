@@ -6,6 +6,7 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -18,8 +19,6 @@ import org.purc.purcforms.client.xforms.XmlUtil;
  *
  */
 public class OdmImport {
-
-	static Logger log = Logger.getLogger(OdmImport.class);
 	
 	/**
 	 * Imports a study, form, or form version from xml.
@@ -64,6 +63,6 @@ public class OdmImport {
 		
 		formDefVersion.setXform(OdmXformImport.importXform(node,metaDataVersionNode));
 		
-		log.info(formDefVersion.getXform());
+		GWT.log(formDefVersion.getXform());
 	}
 }
