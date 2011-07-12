@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.openxdata.client.service;
 
 import java.util.List;
@@ -13,10 +9,6 @@ import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-/**
- *
- * @author victor
- */
 @RemoteServiceRelativePath("study")
 public interface StudyService extends RemoteService {
 
