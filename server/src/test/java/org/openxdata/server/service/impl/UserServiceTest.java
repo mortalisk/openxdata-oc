@@ -2,12 +2,14 @@ package org.openxdata.server.service.impl;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
@@ -25,6 +27,32 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 
 	@Autowired
 	protected UserService userService;
+	
+	List<User> dummyUsers;
+	final String userName = "User Name";
+	
+	@Before
+	public void setUp(){
+		
+		List<User> users = userService.getUsers();
+		
+		dummyUsers = new ArrayList<User>();
+		User user = new User(userName);
+		user.setCreator(users.get(0));
+		user.setDateCreated(new Date());
+		
+		User user2 = new User(userName);
+		user2.setCreator(users.get(0));
+		user2.setDateCreated(new Date());
+		
+		User user3 = new User(userName);
+		user3.setCreator(users.get(0));
+		user3.setDateCreated(new Date());
+		
+		dummyUsers.add(user);
+		dummyUsers.add(user2);
+		dummyUsers.add(user3);
+	}
 
 	@Test
 	public void getUsers_shouldReturnAllUsers() throws Exception {
@@ -37,7 +65,6 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 
 	@Test
 	public void saveUser_shouldSaveUser() throws Exception {
-		final String userName = "User Name";
 
 		List<User> users = userService.getUsers();
 		Assert.assertEquals("There are 6 users", 6, users.size());
@@ -53,11 +80,32 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Assert.assertEquals("Added 1 user so now there are 7", 7, userService.getUsers().size());
 		Assert.assertNotNull(getUser(userName, users));
 	}
+	
+	@Test
+	public void testSaveUsers(){
+		List<User> users = userService.getUsers();
+		Assert.assertEquals("There are 6 users", 6, users.size());
+		Assert.assertNull(getUser(userName, users));
+		
+		userService.saveUsers(dummyUsers);
+		Assert.assertEquals("Added 3 users so now there are 9", 9, userService.getUsers().size());
+	}
+	
+	@Test
+	public void testDeleteUsers(){
+		List<User> users = userService.getUsers();
+		Assert.assertEquals("There are 6 users", 6, users.size());
+		Assert.assertNull(getUser(userName, users));
+		
+		userService.saveUsers(dummyUsers);
+		Assert.assertEquals("Added 3 users so now there are 9", 9, userService.getUsers().size());
+		
+		userService.deleteUsers(dummyUsers);
+		Assert.assertEquals("Deleted 3 users so now there are 6", 6, userService.getUsers().size());
+	}
 
 	@Test
 	public void deleteUser_shouldDeleteGivenUser() throws Exception {
-
-		final String userName = "User Name";
 
 		List<User> users = userService.getUsers();
 		Assert.assertEquals("There are 6 users", 6, users.size());
