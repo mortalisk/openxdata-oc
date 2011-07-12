@@ -129,13 +129,6 @@ public class StudyManagerServiceTest  extends BaseContextSensitiveTest {
 		Assert.assertNull(getStudy(studyName,studies));
 	}
 	
-	/**
-	 * Gets a study object for a given name from a list of study objects.
-	 * 
-	 * @param name the name of the study to look for.
-	 * @param studies the list of study objects.
-	 * @return the study object that matches the given name.
-	 */
 	private StudyDef getStudy(String name, List<StudyDef> studies){
 		for(StudyDef study : studies){
 			if(study.getName().equals(name))
