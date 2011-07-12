@@ -55,8 +55,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	private RadioFieldSet createStudyFS;
 	private Radio newStudy;
 	private Radio existingStdyRdio;
-	private UserAccessGrids userStudyAccessGrid;
-	private UserAccessGrids userFormAccessGrid;
+	private UserAccessListField userStudyAccessListField;
+	private UserAccessListField userFormAccessListField;
 	// input fields for new form page
 	private RadioFieldSet createFormFS;
 	private TextField<String> newFormName;
@@ -113,7 +113,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newForm.hide();
 				newForm.setValue(true);
 				existingForm.hide();
-				userFormAccessGrid.setEnabled(false);
+				userFormAccessListField.setEnabled(false);
 			} else if (!newForm.isVisible()) {
 				// make sure all radio buttons are showing
 				existingFormName.show();
@@ -122,10 +122,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newForm.setValue(false);
 				setStudyForms();
 				existingForm.show();
-				userFormAccessGrid.setEnabled(true);
+				userFormAccessListField.setEnabled(true);
 			}
-			userStudyAccessGrid.setExpanded(false);
-			userFormAccessGrid.setExpanded(false);
+			userStudyAccessListField.setExpanded(false);
+			userFormAccessListField.setExpanded(false);
 			//resizeWindow(0, getWizardWidth());
 		} else if (activePage == 2
 				&& createFormFS.getSelectedRadio().equals(
@@ -198,7 +198,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
 				// cant map a new study
-				userStudyAccessGrid.setEnabled(false);
+				userStudyAccessListField.setEnabled(false);
 				if (existingStudyName.getValue() != null) {
 					existingStudyName.clearSelections();
 					existingStudyDescription.setValue("");
@@ -220,7 +220,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					public void selectionChanged(
 							SelectionChangedEvent<StudySummary> se) {
 						existingStudyDescription.setValue(se.getSelectedItem().getDescription());
-                        utils.setUserStudyMap(userStudyAccessGrid, se.getSelectedItem().getStudyDefinition(), users);
+                        utils.setUserStudyMap(userStudyAccessListField, se.getSelectedItem().getStudyDefinition(), users);
 						nextButton.setEnabled(true);
 					}
 				});
@@ -235,14 +235,14 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					@Override
 					public void handleEvent(FieldEvent be) {
 						nextButton.setEnabled(false);
-						userStudyAccessGrid.setEnabled(true);
+						userStudyAccessListField.setEnabled(true);
 						newStudyName.setValue("");
 						newStudyDescription.setValue("");
 					}
 				});
-		userStudyAccessGrid = new UserAccessGrids(
+		userStudyAccessListField = new UserAccessListField(
 				appMessages.usersWithAccessToStudy());
-		createStudyFS.add(userStudyAccessGrid);
+		createStudyFS.add(userStudyAccessListField);
 
 		return createStudyPanel;
 	}
@@ -283,7 +283,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-				userFormAccessGrid.setEnabled(false);
+				userFormAccessListField.setEnabled(false);
 				if (existingFormName.getValue() != null) {
 					existingFormName.clearSelections();
 					existingFormDescription.setValue("");
@@ -305,7 +305,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					public void selectionChanged(
 							SelectionChangedEvent<FormSummary> se) {
 						existingFormDescription.setValue(se.getSelectedItem().getFormDefinition().getDescription());
-						utils.setUserFormMap(userFormAccessGrid,se.getSelectedItem().getFormDefinition(), users);
+						utils.setUserFormMap(userFormAccessListField,se.getSelectedItem().getFormDefinition(), users);
 						nextButton.setEnabled(true);
 					}
 				});
@@ -319,14 +319,14 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-				userStudyAccessGrid.setEnabled(true);
+				userStudyAccessListField.setEnabled(true);
 				newFormName.setValue("");
 				newFormDescription.setValue("");
 			}
 		});
-		userFormAccessGrid = new UserAccessGrids(
+		userFormAccessListField = new UserAccessListField(
 				appMessages.usersWithAccessToForm());
-		createFormFS.add(userFormAccessGrid);
+		createFormFS.add(userFormAccessListField);
 
 		return createFormPanel;
 	}
@@ -408,8 +408,8 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	
     public void onSaveStudyComplete() {
         // save any mapped study or form
-        utils.saveUserStudyMap(userStudyAccessGrid, studyDef, users);
-        utils.saveUserFormMap(userFormAccessGrid, formDef, users,utils.getUserMappedForms());
+        utils.saveUserStudyMap(userStudyAccessListField, studyDef, users);
+        utils.saveUserFormMap(userFormAccessListField, formDef, users,utils.getUserMappedForms());
     }
    
 	@Override
@@ -559,13 +559,13 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		this.users = users;
 		List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
 		for (User user : users) {
-			userStudyAccessGrid.addUnmappedUser(new UserSummary(user));
+			userStudyAccessListField.addUnmappedUser(new UserSummary(user));
 			unMappedUsers.add(new UserSummary(user));
-			userFormAccessGrid.addUnmappedUser(new UserSummary(user));
+			userFormAccessListField.addUnmappedUser(new UserSummary(user));
 		}
-		userStudyAccessGrid.updateLists(unMappedUsers,
+		userStudyAccessListField.updateLists(unMappedUsers,
 				new ArrayList<UserSummary>());
-		userFormAccessGrid.updateLists(unMappedUsers,
+		userFormAccessListField.updateLists(unMappedUsers,
 				new ArrayList<UserSummary>());
 	}
 

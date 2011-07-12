@@ -49,8 +49,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	private final TextField<String> formVersion = new TextField<String>();
 	private final TextField<String> formVersionDescription = new TextField<String>();
-	private UserAccessGrids userAccessToStudy;
-	private UserAccessGrids userAccessToForm;
+	private UserAccessListField userAccessToStudy;
+	private UserAccessListField userAccessToForm;
 	private List<User> users;
 	private int currentPage = 0;
 	private final EditStudyFormController studyFormController;
@@ -102,7 +102,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 		studyDescription.setFieldLabel(appMessages.studyDescription());
 		formPanel.add(studyDescription);
-		userAccessToStudy = new UserAccessGrids(
+		userAccessToStudy = new UserAccessListField(
 				appMessages.usersWithAccessToStudy());
 		formPanel.add(userAccessToStudy);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
@@ -122,7 +122,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 		formDescription.setFieldLabel(appMessages.formDescription());
 		formPanel.add(formDescription);
-		userAccessToForm = new UserAccessGrids(
+		userAccessToForm = new UserAccessListField(
 				appMessages.usersWithAccessToForm());
 		formPanel.add(userAccessToForm);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);

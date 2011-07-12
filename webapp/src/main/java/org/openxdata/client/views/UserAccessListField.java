@@ -34,7 +34,6 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.StoreFilterField;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.core.client.GWT;
 
@@ -43,7 +42,7 @@ import com.google.gwt.core.client.GWT;
  * A DualFieldList is two lists where items can be moved from one list to the other.
  * TODO: If this class is to be re-used elsewhere, it should be made generic (see DualFieldList for inspiration)
  */
-public class UserAccessGrids extends FieldSet {
+public class UserAccessListField extends FieldSet {
 
     private ListField<UserSummary> fromField = new ListField<UserSummary>();;
     private ListField<UserSummary> toField = new ListField<UserSummary>();;
@@ -57,7 +56,7 @@ public class UserAccessGrids extends FieldSet {
     protected final AppMessages appMessages = GWT.create(AppMessages.class);
     private final String category;
 
-    public UserAccessGrids(String category) {
+    public UserAccessListField(String category) {
         this.category = category;
         init();
     }

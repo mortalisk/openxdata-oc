@@ -9,7 +9,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
  * Extended the PagingToolBar so it is possible to hide
  * some of the elements (e.g. refresh button and display text).
  * This is to be used in situations where space is limited and
- * not all functionality is required (e.g. UserAccessGrids)
+ * not all functionality is required (e.g. UserAccessListField)
  */
 public class SmallPagingToolBar extends PagingToolBar {
 

@@ -8,7 +8,7 @@ import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.model.UserSummary;
-import org.openxdata.client.views.UserAccessGrids;
+import org.openxdata.client.views.UserAccessListField;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
@@ -48,8 +48,8 @@ public class UsermapUtilities {
     /*
      * Load study names into left and right listboxes appropriately
      */
-    public void setUserStudyMap(UserAccessGrids grid, StudyDef study, List<User> users) {
-        grid.clear();
+    public void setUserStudyMap(UserAccessListField list, StudyDef study, List<User> users) {
+        list.clear();
 
         List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
         List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
@@ -59,25 +59,25 @@ public class UsermapUtilities {
             for (UserStudyMap map : mappedStudies) {
                 if ((map.getUserId() == u.getId())
                         && (map.getStudyId() == study.getStudyId())) {
-                    grid.addMappedUser(new UserSummary(u));
+                    list.addMappedUser(new UserSummary(u));
                     mappedUsers.add(new UserSummary(u));
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                grid.addUnmappedUser(new UserSummary(u));
+                list.addUnmappedUser(new UserSummary(u));
                 unMappedUsers.add(new UserSummary(u));
             }
         }
-        grid.updateLists(unMappedUsers, mappedUsers);
+        list.updateLists(unMappedUsers, mappedUsers);
     }
 
     /*
      * Load Form Definition names into left and right List Boxes appropriately
      */
-    public void setUserFormMap(UserAccessGrids grid, FormDef form, List<User> users) {
-        grid.clear();
+    public void setUserFormMap(UserAccessListField list, FormDef form, List<User> users) {
+        list.clear();
 
         List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
         List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
@@ -86,22 +86,22 @@ public class UsermapUtilities {
             for (UserFormMap map : mappedForms) {
                 if ((map.getUserId() == user.getId())
                         && (map.getFormId() == form.getFormId())) {
-                    grid.addMappedUser(new UserSummary(user));
+                    list.addMappedUser(new UserSummary(user));
                     mappedUsers.add(new UserSummary(user));
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                grid.addUnmappedUser(new UserSummary(user));
+                list.addUnmappedUser(new UserSummary(user));
                 unMappedUsers.add(new UserSummary(user));
             }
         }
-        grid.updateLists(unMappedUsers, mappedUsers);
+        list.updateLists(unMappedUsers, mappedUsers);
     }
 
 
-    public void saveUserStudyMap(UserAccessGrids grid, StudyDef study, List<User> users) {
+    public void saveUserStudyMap(UserAccessListField grid, StudyDef study, List<User> users) {
         String loggedInUsername = ((User) Registry.get(Emit.LOGGED_IN_USER_NAME)).getName();
         for (User mappedUser : grid.getTempMappedItems()) {
             for (User user : users) {
@@ -124,8 +124,8 @@ public class UsermapUtilities {
         deleteUserMappedStudy(grid, users);
     }
 
-    private void deleteUserMappedStudy(UserAccessGrids grid, List<User> users) {
-        for (User unmappedUser : grid.getTempItemstoUnmap()) {
+    private void deleteUserMappedStudy(UserAccessListField list, List<User> users) {
+        for (User unmappedUser : list.getTempItemstoUnmap()) {
             for (UserStudyMap map : mappedStudies) {
                 for (User user : users) {
                     if (user.getName().equals(unmappedUser.getName())
@@ -142,12 +142,12 @@ public class UsermapUtilities {
         }
     }
 
-    public void saveUserFormMap(UserAccessGrids grid, FormDef form, List<User> users, List<UserFormMap> mappedForms) {
-        if (!grid.getTempMappedItems().isEmpty()) {
-            for (int i = 0; i < grid.getTempMappedItems().size(); ++i) {
+    public void saveUserFormMap(UserAccessListField list, FormDef form, List<User> users, List<UserFormMap> mappedForms) {
+        if (!list.getTempMappedItems().isEmpty()) {
+            for (int i = 0; i < list.getTempMappedItems().size(); ++i) {
                 for (User user : users) {
                     if (user.getName().equals(
-                            grid.getTempMappedItems().get(i).getName())
+                            list.getTempMappedItems().get(i).getName())
                             && !(user.getName().equals(((User) Registry.get(Emit.LOGGED_IN_USER_NAME)).getName()))) {
                         UserFormMap map = new UserFormMap();
                         map.addForm(form);
@@ -163,11 +163,11 @@ public class UsermapUtilities {
                 }
             }
         }
-        if (!grid.getTempItemstoUnmap().isEmpty()) {
-            for (int i = 0; i < grid.getTempItemstoUnmap().size(); ++i) {
+        if (!list.getTempItemstoUnmap().isEmpty()) {
+            for (int i = 0; i < list.getTempItemstoUnmap().size(); ++i) {
                 for (UserFormMap map : mappedForms) {
                     for (User user : users) {
-                        if ((user.getName().equals(grid.getTempItemstoUnmap().get(i).getName()))
+                        if ((user.getName().equals(list.getTempItemstoUnmap().get(i).getName()))
                                 && (user.getUserId() == map.getUserId())) {
                             if (controller instanceof EditStudyFormController) {
                                 ((EditStudyFormController) controller).deleteUserMappedForm(map);
