@@ -125,6 +125,7 @@ public class UserServiceImpl implements UserService {
             user.setSalt(OpenXDataSecurityUtil.getRandomToken());
             user.setPassword(OpenXDataSecurityUtil.encodeString(user.getClearTextPassword() + user.getSalt()));
         }
+	}
 
         boolean newUser = user.getId() == 0 ? true : false;
 
@@ -149,7 +150,7 @@ public class UserServiceImpl implements UserService {
 		        }
         	}
         }
-    }
+	}
 
     @Override
     // note: used during reset forgotten password, so security should be accessable to all users

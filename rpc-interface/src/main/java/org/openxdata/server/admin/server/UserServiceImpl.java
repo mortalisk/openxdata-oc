@@ -30,7 +30,6 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements org.o
 		authenticationService = (org.openxdata.server.service.AuthenticationService)ctx.getBean("authenticationService");
 	}
 
-	
 	@Override
 	public void deleteUser(User user) {
 		userService.deleteUser(user);
