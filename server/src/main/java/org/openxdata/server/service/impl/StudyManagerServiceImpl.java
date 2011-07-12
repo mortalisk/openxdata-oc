@@ -227,4 +227,40 @@ public class StudyManagerServiceImpl implements StudyManagerService {
                 name = "UNKNOWN STUDY";
         return name;
 	}
+
+	
+	@Override
+	public void setUserMappingForForm(FormDef form, List<User> users) {
+		
+		List<UserFormMap> currentPermissions = getUserMappedForms();
+		for(UserFormMap map : currentPermissions){
+			deleteUserMappedForm(map);
+		}
+		
+		for(User user : users){
+			UserFormMap map = new UserFormMap();
+			map.setUserId(user.getId());
+			map.setFormId(form.getId());
+			
+			saveUserMappedForm(map);
+		}
+	}
+	
+
+	@Override
+	public void setUserMappingForStudy(StudyDef study, List<User> users) {
+		
+		List<UserStudyMap> currentPermissions = getUserMappedStudies();
+		for(UserStudyMap map : currentPermissions){
+			deleteUserMappedStudy(map);
+		}
+		
+		for(User user : users){
+			UserStudyMap map = new UserStudyMap();
+			map.setUserId(user.getId());
+			map.setStudyId(study.getId());
+			
+			saveUserMappedStudy(map);
+		}
+	}
 }

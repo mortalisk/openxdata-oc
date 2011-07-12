@@ -55,4 +55,19 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
         }
         return studyService;
     }
+
+	
+    @Override
+	public void setUserMappingForForm(FormDef form, List<User> users)
+			throws OpenXDataSecurityException {
+    	getStudyManagerService().setUserMappingForForm(form, users);
+	}
+    
+
+	@Override
+	public void setUserMappingForStudy(StudyDef study, List<User> users)
+			throws OpenXDataSecurityException {
+		
+		getStudyManagerService().setUserMappingForStudy(study, users);
+	}
 }

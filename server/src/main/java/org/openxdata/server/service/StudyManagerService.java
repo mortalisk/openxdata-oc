@@ -10,6 +10,7 @@ import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
@@ -169,4 +170,22 @@ public interface StudyManagerService {
 	 * @return the name of the study or "UNKNOWN STUDY" if not found
 	 */
 	String getStudyName(int studyId);
+
+    /**
+     * Sets the Users who have permissions to access a given form. Note that existing permissions will be overridden.
+     * 
+     * @param form Form to restrict access for.
+     * @param users Definite list of users who will have access to the form.
+     * @throws OpenXDataSecurityException If User does not have permission to map objects.
+     */
+	void setUserMappingForForm(FormDef form, List<User> users);
+
+    /**
+     * Sets the Users who have permissions to access a given Study. Note that existing permissions will be overridden.
+     * 
+     * @param study Study to restrict access for.
+     * @param users Definite list of users who will have access to the form.
+     * @throws OpenXDataSecurityException If User does not have permission to map objects.
+     */
+	void setUserMappingForStudy(StudyDef study, List<User> users);
 }
