@@ -52,7 +52,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private UserAccessListField userAccessToStudy;
 	private UserAccessListField userAccessToForm;
 	private List<User> users;
-	private int currentPage = 0;
 	private final EditStudyFormController studyFormController;
 	private UsermapUtilities utils;
 
@@ -78,7 +77,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
-		currentPage = activePage;
 		if (activePage == 1) {
 			userAccessToStudy.setExpanded(false);
 			userAccessToForm.setExpanded(false);
@@ -257,10 +255,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			return true;
 			// We shall use the onSaveLocaleText() such that we avoid double saving
 		} catch (Exception ex) {
-			//
+			MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(ex.getMessage()), null);
+			return false;
 		}
-
-		return false;
 	}
 
 	@Override

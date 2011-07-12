@@ -437,10 +437,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			// We shall use the onSaveLocaleText() such that we avoid double
 			// saving
 		} catch (Exception ex) {
-			//
+			MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(ex.getMessage()), null);
+			return false;
 		}
-
-		return false;
 	}
 
 	@Override
@@ -471,7 +470,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				closeWindow();
 			}
 		} catch (Exception ex) {
-			//
+			MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(ex.getMessage()), null);
 		}
 	}
 
