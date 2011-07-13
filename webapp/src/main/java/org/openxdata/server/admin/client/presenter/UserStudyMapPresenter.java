@@ -93,8 +93,8 @@ public class UserStudyMapPresenter extends ExtendedBaseMapPresenter<UserStudyMap
     @Override
     protected UserStudyMap createNewMap(User selectedItem, StudyDef systemItem) {
         UserStudyMap userStudyMap = new UserStudyMap();
-        userStudyMap.addStudy(systemItem);
-        userStudyMap.addUser(selectedItem);
+        userStudyMap.setStudy(systemItem);
+        userStudyMap.setUser(selectedItem);
         return userStudyMap;
     }
 

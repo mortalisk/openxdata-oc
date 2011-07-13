@@ -73,35 +73,18 @@ public class UserFormMap extends AbstractEditable {
 	}
 	
 	/**
-	 * Adds the specified <code>User</code> to the Map.
+	 * Sets the specified <code>User</code> to the Map.
 	 * @param user <code>User</code> to remove.
 	 */
-	public void addUser(User user){
+	public void setUser(User user){
 		setUserId(user.getUserId());
 	}
 	
 	/**
-	 * Removes the specified <code>User</code> from the Map.
-	 * @param user <code>User</code> to remove.
-	 */
-	public void removeUser(User user){
-		setUserId(user.getUserId());
-	}
-	
-	/**
-	 * Adds the specified <code>FormDef</code> to the Map.
+	 * Sets the specified <code>FormDef</code> to the Map.
 	 * @param form <code>FormDef</code> to remove.
 	 */
-	public void addForm(FormDef form){
+	public void setForm(FormDef form){
 		setFormId(form.getFormId());
 	}
-	
-	/**
-	 * Removes the specified <code>FormDef</code> from the Map.
-	 * @param form <code>FormDef</code> to remove.
-	 */
-	public void removeForm(FormDef form){
-		setFormId(form.getFormId());
-	}
-
 }

@@ -128,8 +128,8 @@ public class StudyManagerServiceImpl implements StudyManagerService {
         //this avoid having to map a study every time it is saved
         if (!OpenXDataSecurityUtil.getLoggedInUser().hasAdministrativePrivileges()&& (studyDef.getUsers()== null)) {
             UserStudyMap map = new UserStudyMap();
-            map.addStudy(studyDef);
-            map.addUser(OpenXDataSecurityUtil.getLoggedInUser());
+            map.setStudy(studyDef);
+            map.setUser(OpenXDataSecurityUtil.getLoggedInUser());
             saveUserMappedStudy(map);
         }
     }

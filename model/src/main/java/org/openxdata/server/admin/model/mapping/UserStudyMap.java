@@ -22,6 +22,11 @@ public class UserStudyMap extends AbstractEditable {
 	 */
 	public UserStudyMap() {
 	}
+	
+	public UserStudyMap(int userId, int studyId) {
+		this.userId = userId;
+		this.studyId = studyId;
+	}
 
 	public int getUserStudyMapId() {
 		return this.userStudyMapId;
@@ -61,15 +66,7 @@ public class UserStudyMap extends AbstractEditable {
 	 * Adds the specified <code>User</code> to the Map.
 	 * @param user <code>User</code> to remove.
 	 */
-	public void addUser(User user) {
-		setUserId(user.getUserId());
-	}
-
-	/**
-	 * Removes the specified <code>User</code> from the Map.
-	 * @param user <code>User</code> to remove.
-	 */
-	public void removeUser(User user) {
+	public void setUser(User user) {
 		setUserId(user.getUserId());
 	}
 
@@ -77,15 +74,7 @@ public class UserStudyMap extends AbstractEditable {
 	 * Adds the specified <code>StudyDef</code> to the Map.
 	 * @param study <code>StudyDef</code> to remove.
 	 */
-	public void addStudy(StudyDef study) {
-		setStudyId(study.getStudyId());
-	}
-
-	/**
-	 * Removes the specified <code>StudyDef</code> from the Map.
-	 * @param study <code>StudyDef</code> to remove.
-	 */
-	public void removeStudy(StudyDef study) {
+	public void setStudy(StudyDef study) {
 		setStudyId(study.getStudyId());
 	}
 }
