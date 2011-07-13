@@ -5,11 +5,17 @@
 package org.openxdata.client.views;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.model.UserSummary;
+import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -48,13 +54,13 @@ public class UserAccessListField extends FieldSet {
     private ListField<UserSummary> toField = new ListField<UserSummary>();;
     private List<UserSummary> leftList = new ArrayList<UserSummary>();
     private List<UserSummary> rightList = new ArrayList<UserSummary>();
-    private List<User> temporarilyMappedItems = new ArrayList<User>();
-    private List<User> tempItemsToUnmap = new ArrayList<User>();
     private int pageSize = 5;
     private PagingToolBar leftPagingToolBar = new SmallPagingToolBar(pageSize);
     private PagingToolBar rightPagingToolbar = new SmallPagingToolBar(pageSize);
     protected final AppMessages appMessages = GWT.create(AppMessages.class);
-    private final String category;
+    private String category;
+    private StudyDef study;
+    private FormDef form;
 
     public UserAccessListField(String category) {
         this.category = category;
@@ -68,6 +74,8 @@ public class UserAccessListField extends FieldSet {
         setExpanded(false);
 
         Button addUserBtn = new Button(appMessages.addUser());
+        addUserBtn.setWidth(110); // note making the buttons manually the same width, so that different languages don't get extremely long buttons and mess up the width of the wizard
+        addUserBtn.setAutoHeight(true); //note: this might need extra word wrapping testing
         addUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
@@ -76,6 +84,8 @@ public class UserAccessListField extends FieldSet {
             }
         });
         Button addAllUserBtn = new Button(appMessages.addAllUsers());
+        addAllUserBtn.setWidth(110);
+        addAllUserBtn.setAutoHeight(true);
         addAllUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
@@ -85,6 +95,8 @@ public class UserAccessListField extends FieldSet {
         });
 
         Button removeUserBtn = new Button(appMessages.removeUser());
+        removeUserBtn.setWidth(110);
+        removeUserBtn.setAutoHeight(true);
         removeUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
@@ -93,6 +105,8 @@ public class UserAccessListField extends FieldSet {
             }
         });
         Button removeAllUserBtn = new Button(appMessages.removeAllUsers());
+        removeAllUserBtn.setWidth(110);
+        removeAllUserBtn.setAutoHeight(true);
         removeAllUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
@@ -128,7 +142,7 @@ public class UserAccessListField extends FieldSet {
         add(userTable);
     }
     
-    protected void onButtonAllLeft(ButtonEvent be) {
+    private void onButtonAllLeft(ButtonEvent be) {
         buttonLeft(toField.getStore().getModels());
     }
 
@@ -148,11 +162,9 @@ public class UserAccessListField extends FieldSet {
     	}
     	fromField.getStore().add(sel);
     	leftList.addAll(sel);
-    	tempItemsToUnmap.addAll(users);
-        temporarilyMappedItems.removeAll(users);
     }
 
-    protected void onButtonAllRight(ButtonEvent be) {
+    private void onButtonAllRight(ButtonEvent be) {
         buttonRight(fromField.getStore().getModels());
     }
     
@@ -172,8 +184,6 @@ public class UserAccessListField extends FieldSet {
             users.add(summary.getUser());
         }
         leftList.removeAll(sel);
-        tempItemsToUnmap.removeAll(users);
-        temporarilyMappedItems.addAll(users);
     }
 
     private ContentPanel createListPanel(String heading, List<UserSummary> userList, 
@@ -225,22 +235,92 @@ public class UserAccessListField extends FieldSet {
 
         return cp;
     }
+    
+    // create a comparator to make searching quicker
+    Comparator<User> c = new Comparator<User>() {
+        public int compare(User u1, User u2) {
+          return ((Integer)u1.getId()).compareTo((Integer)u2.getId());
+        }
+      };
 
-    // FIXME: i would like to remove all these methods, and combine this class with the usermaputilities class (it's weird)
-    public void addUnmappedUser(UserSummary user) {
-        fromField.getStore().add(user);
+    
+    /**
+     * Load study names into left and right list boxes appropriately
+     */
+    public void setUserStudyMap(StudyDef study, List<User> users, List<UserStudyMap> mappedStudies) {
+        clear();
+        this.study = study;
+        List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
+        List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
+        List<User> myUserList = new ArrayList<User>(users); // copy the list because we remove items from it and don't want to affect the original list
+        Collections.sort(myUserList, c); // sort the user list to make searching easier + quicker
+        for (UserStudyMap map : mappedStudies) {
+        	if (map.getStudyId() == study.getStudyId()) { // only look at the current study to make the method quicker
+        		int index = Collections.binarySearch(myUserList, new User(map.getUserId(), null), c);
+        		if (index >= 0) {
+        			// match found
+        			mappedUsers.add(new UserSummary(myUserList.get(index)));
+        			myUserList.remove(index);
+        		}
+        	}
+        }
+        for (User u : myUserList) {
+        	// all of these users are unmapped
+        	unMappedUsers.add(new UserSummary(u));
+        }
+        updateLists(unMappedUsers, mappedUsers);
     }
-
-    public void addMappedUser(UserSummary user) {
-        toField.getStore().add(user);
+    
+    /**
+     * Load Form Definition names into left and right List Boxes appropriately
+     * FIXME: this needs to also show users with access via the study....
+     */
+    public void setUserFormMap(FormDef form, List<User> users, List<UserFormMap> mappedForms) {
+        clear();
+        this.form = form;
+        List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
+        List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
+        List<User> myUserList = new ArrayList<User>(users); // copy the list because we remove items from it and don't want to affect the original list
+        Collections.sort(myUserList, c); // sort the user list to make searching easier + quicker
+        for (UserFormMap map : mappedForms) {
+        	if (map.getFormId() == form.getFormId()) {
+        		int index = Collections.binarySearch(myUserList, new User(map.getUserId(), null), c);
+        		if (index >= 0) {
+        			// match found
+        			mappedUsers.add(new UserSummary(myUserList.get(index)));
+        			myUserList.remove(index);
+        		}
+        	}
+        }
+        for (User u : myUserList) {
+        	// all of these users are unmapped
+        	unMappedUsers.add(new UserSummary(u));
+        }
+        updateLists(unMappedUsers, mappedUsers);
     }
-
-    public List<User> getTempMappedItems() {
-        return temporarilyMappedItems;
+    
+    public List<User> getMappedUsers() {
+    	List<User> users = new ArrayList<User>();
+    	for (UserSummary summary : rightList) {
+    		users.add(summary.getUser());
+    	}
+    	return users;
     }
-
-    public List<User> getTempItemstoUnmap() {
-        return tempItemsToUnmap;
+    
+    public List<User> getUnMappedUsers() {
+    	List<User> users = new ArrayList<User>();
+    	for (UserSummary summary : leftList) {
+    		users.add(summary.getUser());
+    	}
+    	return users;
+    }
+    
+    public FormDef getForm() {
+    	return form;
+    }
+    
+    public StudyDef getStudy() {
+    	return study;
     }
 
     private void refreshToolbars() {
@@ -248,17 +328,17 @@ public class UserAccessListField extends FieldSet {
         rightPagingToolbar.refresh();
     }
 
-    public void updateLists(List<UserSummary> leftList, List<UserSummary> rightList) {
-        this.leftList.addAll(leftList);
-        this.rightList.addAll(rightList);
+    private void updateLists(List<UserSummary> unmapped, List<UserSummary> mapped) {
+    	fromField.getStore().add(unmapped);
+        leftList.addAll(unmapped);
+        toField.getStore().add(mapped);
+        rightList.addAll(mapped);
         refreshToolbars();
     }
 
-    public void clear() {
+    private void clear() {
         toField.getStore().removeAll();
         fromField.getStore().removeAll();
-        getTempMappedItems().clear();
-        getTempItemstoUnmap().clear();
         leftList.clear();
         rightList.clear();
     }

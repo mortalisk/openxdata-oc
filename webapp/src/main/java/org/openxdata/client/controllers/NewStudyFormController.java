@@ -86,25 +86,23 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
-    public void saveUserMappedStudy(UserStudyMap studyMap){
+    public void saveUserMappedStudies(StudyDef study, List<User> users) {
         GWT.log("NewStudyFormController : saveUsermappedStudies");
-        studyService.saveUserMappedStudy(studyMap,new EmitAsyncCallback<Void>() {
-
+        studyService.setUserMappingForStudy(study, users,new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Successfully saves mapped study");
-                MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
+                //MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }
-    public void saveUserMappedForm(UserFormMap map){
+    public void saveUserMappedForms(FormDef form, List<User> users) {
         GWT.log("NewStudyFormController : saveUsermappedForms");
-        formService.saveUserMappedForm(map,new EmitAsyncCallback<Void>() {
-
+        studyService.setUserMappingForForm(form, users, new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                GWT.log("Successfully saves mapped form");
-               MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
+               //MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }
@@ -118,17 +116,7 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
-    public void deleteUserMappedStudy(UserStudyMap map){
-        GWT.log("NewStudyFormController : deleteUsermappedStudies");
-        studyService.deleteUserMappedStudy(map,new EmitAsyncCallback<Void>() {
 
-            @Override
-            public void onSuccess(Void result) {
-                GWT.log("Successfully deleted user mapped study");
-                MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
-            }
-        });
-    }
     public void getUserMappedForms(){
         GWT.log("NewStudyFormController : getUserMappedForms");
         formService.getUserMappedForms(new EmitAsyncCallback<List<UserFormMap>>() {
@@ -139,17 +127,7 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
-    public void deleteUserMappedForm(UserFormMap map){
-        GWT.log("NewStudyFormController : deleteUsermappedforms");
-        formService.deleteUserMappedForm(map,new EmitAsyncCallback<Void>() {
 
-            @Override
-            public void onSuccess(Void result) {
-                GWT.log("Successfully deleted user mapped form");
-                MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
-            }
-        });
-    }
     public void getUsers(){
     GWT.log("NewStudyFormController : getUsers");
     userService.getUsers(new EmitAsyncCallback<List<User>>() {

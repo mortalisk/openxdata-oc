@@ -1,24 +1,26 @@
 package org.openxdata.client.controllers;
 
+import java.util.List;
+
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.service.StudyServiceAsync;
+import org.openxdata.client.service.UserServiceAsync;
 import org.openxdata.client.views.EditStudyFormView;
+import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
-import java.util.List;
-import org.openxdata.client.service.UserServiceAsync;
-import org.openxdata.server.admin.client.service.FormServiceAsync;
-import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 /**
  * Event dispatcher for the EditStudyFormView.
@@ -95,18 +97,6 @@ public class EditStudyFormController extends Controller {
 				});
 	}
 
-	public void deleteUserMappedStudy(UserStudyMap map) {
-		GWT.log("EditStudyFormController : deleteUsermappedStudies");
-		studyService.deleteUserMappedStudy(map, new EmitAsyncCallback<Void>() {
-
-			@Override
-			public void onSuccess(Void result) {
-				GWT.log("Successfully deleted user mapped study");
-				MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
-			}
-		});
-	}
-
 	public void getUserMappedForms() {
 		GWT.log("EditStudyFormController : getUserMappedForms");
 		formService
@@ -120,41 +110,28 @@ public class EditStudyFormController extends Controller {
 
 	}
 
-	public void deleteUserMappedForm(UserFormMap map) {
-		GWT.log("EditStudyFormController : deleteUsermappedforms");
-		formService.deleteUserMappedForm(map, new EmitAsyncCallback<Void>() {
-
-			@Override
-			public void onSuccess(Void result) {
-				GWT.log("Successfully deleted user mapped form");
-				MessageBox.info(appMessages.success(), appMessages.deleteSuccess(), null);
-			}
-		});
-	}
-
-	public void saveUserMappedStudy(UserStudyMap studyMap) {
-		GWT.log("EditStudyFormController : saveUsermappedStudies");
-		studyService.saveUserMappedStudy(studyMap,
+	public void saveUserMappedForms(FormDef form, List<User> users) {
+		GWT.log("EditStudyFormController : saveUserMappedForms");
+		studyService.setUserMappingForForm(form, users, 
 				new EmitAsyncCallback<Void>() {
-
 					@Override
 					public void onSuccess(Void result) {
-						GWT.log("Successfully saves mapped study");
-						MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
+						GWT.log("Successfully saved mapped forms");
+						//MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 					}
 				});
 	}
 
-	public void saveUserMappedForm(UserFormMap map) {
-		GWT.log("EditStudyFormController : saveUsermappedForms");
-		formService.saveUserMappedForm(map, new EmitAsyncCallback<Void>() {
-
-			@Override
-			public void onSuccess(Void result) {
-				GWT.log("Successfully saves mapped form");
-				MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
-			}
-		});
+	public void saveUserMappedStudies(StudyDef study, List<User> users) {
+		GWT.log("EditStudyFormController : saveUserMappedStudies");
+		studyService.setUserMappingForStudy(study, users, 
+				new EmitAsyncCallback<Void>() {
+					@Override
+					public void onSuccess(Void result) {
+						GWT.log("Successfully saved mapped studies");
+						//MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
+					}
+				});
 	}
 
 	public void formHasData(FormDef form) {
