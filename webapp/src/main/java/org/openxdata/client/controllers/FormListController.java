@@ -121,12 +121,13 @@ public class FormListController extends Controller {
         formService.getFormResponseCount(formDefVersion.getFormDefVersionId(), new EmitAsyncCallback<Integer>() {
             @Override
 			public void onSuccess(Integer result) {
+            	GWT.log("got result="+result+" for formDefVersion="+formDefVersion.getId());
                 if (result > 0) {
                     formListView.setFormStatus(formDefVersion.getFormDef(), true);
                 } else {
                     formListView.setFormStatus(formDefVersion.getFormDef(), false);
                 }
-                formListView.setNumberOfFormResponses(formDefVersion.getFormDef(), result);
+                formListView.setNumberOfFormResponses(formDefVersion, result);
             }
         });
     }

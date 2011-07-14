@@ -71,7 +71,6 @@ public class FormVersionsView extends View {
         
         ColumnConfig column3 = new ColumnConfig("description", appMessages.formVersionDescription(), 580);
         TextField<String> textFld3 = new TextField<String>();
-        textFld3.setAllowBlank(false);
         column3.setEditor(new CellEditor(textFld3));
         configs.add(column3);
 
@@ -85,8 +84,12 @@ public class FormVersionsView extends View {
 				super.onRender(target, index);
 				if (btns != null) {
 					btns.setLayout(new TableLayout(3));
+					btns.remove(cancelBtn);
+					btns.remove(saveBtn);
 					publishBtn.setMinWidth(getMinButtonWidth());
 					btns.add(publishBtn);
+					btns.add(saveBtn);
+					btns.add(cancelBtn);
 					btns.layout(true);
 				}
 			}
@@ -142,6 +145,7 @@ public class FormVersionsView extends View {
         grid.setBorders(true);
         grid.addPlugin(re);
         cp = new ContentPanel();
+        cp.setHeaderVisible(false);
         cp.setLayout(new FitLayout());
         cp.add(grid);
     }
@@ -156,7 +160,7 @@ public class FormVersionsView extends View {
             // Initialize Window
             window.setModal(true);
             window.setPlain(true);
-            window.setHeading(form.getName());
+            window.setHeading(appMessages.showAllVersions() + " '" + form.getName() + "'");
             window.setMaximizable(true);
             window.setDraggable(true);
             window.setResizable(true);
