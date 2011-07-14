@@ -11,8 +11,6 @@ public class UserStudyMap extends AbstractEditable {
 
 	private int	userId;
 	private int	studyId;
-	private int	userStudyMapId;
-	
 	private static final long serialVersionUID = 2870582564160870766L;
 
 	public UserStudyMap() {
@@ -21,19 +19,6 @@ public class UserStudyMap extends AbstractEditable {
 	public UserStudyMap(int userId, int studyId) {
 		this.userId = userId;
 		this.studyId = studyId;
-	}
-
-	public int getUserStudyMapId() {
-		return this.userStudyMapId;
-	}
-
-	@Override
-	public int getId() {
-		return this.userStudyMapId;
-	}
-	
-	public void setUserStudyMapId(int userStudyId) {
-		this.userStudyMapId = userStudyId;
 	}
 
 	public int getUserId() {
@@ -50,11 +35,6 @@ public class UserStudyMap extends AbstractEditable {
 
 	public void setStudyId(int studyId) {
 		this.studyId = studyId;
-	}
-
-	@Override
-	public boolean isNew() {
-		return this.userStudyMapId == 0;
 	}
 
 	/**

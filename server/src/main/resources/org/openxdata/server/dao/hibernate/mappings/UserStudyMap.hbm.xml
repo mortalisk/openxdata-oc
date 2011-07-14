@@ -7,7 +7,7 @@
 
 	<class name="UserStudyMap" table="study_user" lazy="false">
 	
-		<id name="userStudyMapId" type="java.lang.Integer" column="study_user_id" unsaved-value="0">
+		<id name="id" type="java.lang.Integer" column="study_user_id" unsaved-value="0">
 			<generator class="native">
 					 <param name="sequence"> study_study_users_id_seq </param>
 			</generator>
