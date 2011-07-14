@@ -22,7 +22,6 @@ import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
@@ -154,14 +153,16 @@ public class UserAccessListField extends FieldSet {
      * delete from right(to), add to left (from)
      */
     private void buttonLeft(List<UserSummary> sel) {
-    	rightList.removeAll(sel);
     	List<User> users = new ArrayList<User>();
     	for (UserSummary summary : sel) {
-    		toField.getStore().remove(summary);
-    		users.add(summary.getUser());
+    		if (summary.getUser() != null) { // user would be null for "study access" users
+    			fromField.getStore().add(summary);
+    			leftList.add(summary);
+    			toField.getStore().remove(summary);
+    			rightList.remove(summary);
+    			users.add(summary.getUser());
+    		}
     	}
-    	fromField.getStore().add(sel);
-    	leftList.addAll(sel);
     }
 
     private void onButtonAllRight(ButtonEvent be) {
@@ -176,32 +177,27 @@ public class UserAccessListField extends FieldSet {
      * add to right(to), delete from left(from)
      */
     private void buttonRight(List<UserSummary> sel) {
-    	toField.getStore().add(sel);
-        rightList.addAll(sel);
         List<User> users = new ArrayList<User>();
         for (UserSummary summary : sel) {
-            fromField.getStore().remove(summary);
-            users.add(summary.getUser());
+        	if (summary.getUser() != null) { // user would be null for "study access" users
+        		toField.getStore().add(summary);
+        		rightList.add(summary);
+        		fromField.getStore().remove(summary);
+        		leftList.remove(summary);
+        		users.add(summary.getUser());
+        	}
         }
-        leftList.removeAll(sel);
     }
 
-    private ContentPanel createListPanel(String heading, List<UserSummary> userList, 
+    private ContentPanel createListPanel(String heading, final List<UserSummary> userList, 
     		ListField<UserSummary> listField, PagingToolBar pagingToolBar) 
     {
         ContentPanel cp = new ContentPanel();
         cp.setHeading(heading);
         cp.setBorders(false);
-
-        // add paging support for a local collection of models
-        PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(userList);
-        PagingLoader<PagingLoadResult<ModelData>> loader = new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
-        loader.setRemoteSort(true);
-        loader.setSortField("name");
-        loader.setSortDir(SortDir.ASC);
-        ListStore<UserSummary> store = new ListStore<UserSummary>(loader);
+        
         // filter to search for users
-        StoreFilterField<UserSummary> filter = new StoreFilterField<UserSummary>() {
+        final StoreFilterField<UserSummary> filterField = new StoreFilterField<UserSummary>() {
             @Override
             protected boolean doSelect(Store<UserSummary> store, UserSummary parent,
                     UserSummary record, String property, String filter) {
@@ -212,15 +208,63 @@ public class UserAccessListField extends FieldSet {
                 return false;
             }
         };
-        filter.bind(store);
-        filter.setEmptyText(appMessages.searchForAUser());
-        filter.setWidth(185);
+        filterField.setEmptyText(appMessages.searchForAUser());
+        filterField.setWidth(185);
+
+        // add paging support for a local collection of models
+        PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(userList);
+        PagingLoader<PagingLoadResult<UserSummary>> loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(proxy);
+        /*PagingLoader<PagingLoadResult<UserSummary>> loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(
+                new RpcProxy<PagingLoadResult<UserSummary>>() {
+                    @Override
+                    public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
+                        final FilterPagingLoadConfig config = (FilterPagingLoadConfig)loadConfig;
+                        // FIXME: this should eventually load via a serverside call, because client side paging isn't saving us much
+                        // step 1: sort userList
+                        Collections.sort(userList, new Comparator<UserSummary>() {
+                            public int compare(UserSummary o1, UserSummary o2) {
+                            	return o1.getName().compareTo(o2.getName());
+                            }
+                        });
+                        // step 2: filter list (if necessary)
+                        FilterConfig filter = config.getFilterConfigs().get(0);
+                        List<UserSummary> filteredList = new ArrayList<UserSummary>();
+                        for (UserSummary summary : userList) {
+                        	if (summary.getUser() != null) { // will be null for "study access" users
+                        		if (filter.isFiltered(summary, filterField.getValue(), "", summary.getUser().getName())) {
+                        			filteredList.add(summary);
+                        		}
+                        	}
+                        }
+                        // step 3: get correct page
+                        int start = config.getOffset();
+                        int limit = userList.size();
+                        if (config.getLimit() > 0) {
+                          limit = Math.min(start + config.getLimit(), limit);
+                        }
+                        List<UserSummary> results = new ArrayList<UserSummary>();
+                        for (int i = config.getOffset(); i < limit; i++) {
+                            results.add((UserSummary) userList.get(i));
+                        }
+                        // return paged result
+                        BasePagingLoadResult<UserSummary> result = new BasePagingLoadResult<UserSummary>(results, 
+                        		config.getOffset(),  userList.size());
+                        callback.onSuccess(result);
+                    }
+                }
+        );*/
+        loader.setRemoteSort(true);
+        loader.setSortField("name");
+        loader.setSortDir(SortDir.ASC);
+        ListStore<UserSummary> store = new ListStore<UserSummary>(loader);
+        
+        filterField.bind(store);
         
         pagingToolBar.bind(loader);
         
         LayoutContainer bottomComponent = new LayoutContainer();
         bottomComponent.setBorders(false);
-        bottomComponent.add(filter);
+        bottomComponent.add(filterField);
         bottomComponent.add(pagingToolBar);
         cp.setBottomComponent(bottomComponent);
 
@@ -275,7 +319,7 @@ public class UserAccessListField extends FieldSet {
      * Load Form Definition names into left and right List Boxes appropriately
      * FIXME: this needs to also show users with access via the study....
      */
-    public void setUserFormMap(FormDef form, List<User> users, List<UserFormMap> mappedForms) {
+    public void setUserFormMap(FormDef form, List<User> users, List<UserFormMap> mappedForms, List<UserStudyMap> mappedStudies) {
         clear();
         this.form = form;
         List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
@@ -292,6 +336,18 @@ public class UserAccessListField extends FieldSet {
         		}
         	}
         }
+        for (UserStudyMap map : mappedStudies) {
+        	int thisStudyId = form.getStudy().getId();
+        	if (map.getStudyId() == thisStudyId) {
+        		int index = Collections.binarySearch(myUserList, new User(map.getUserId(), null), c);
+        		if (index >= 0) {
+        			// match found
+        			User user = myUserList.get(index);
+        			mappedUsers.add(new UserSummary(null, user.getName()+" ("+appMessages.studyAccess()+")"));
+        			myUserList.remove(index);
+        		}
+        	}
+        }
         for (User u : myUserList) {
         	// all of these users are unmapped
         	unMappedUsers.add(new UserSummary(u));
@@ -302,7 +358,9 @@ public class UserAccessListField extends FieldSet {
     public List<User> getMappedUsers() {
     	List<User> users = new ArrayList<User>();
     	for (UserSummary summary : rightList) {
-    		users.add(summary.getUser());
+    		if (summary.getUser() != null) { // it would be null for "study access" users
+    			users.add(summary.getUser());
+    		}
     	}
     	return users;
     }

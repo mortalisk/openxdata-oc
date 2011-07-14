@@ -173,4 +173,9 @@ public interface AppMessages extends Messages {
 	
 	String emptyPasswords();
 	
+	String formNameUnique();
+	String studyNameUnique();
+	
+	String studyAccess();
+	
 }

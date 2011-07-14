@@ -52,6 +52,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private UserAccessListField userAccessToStudy;
 	private UserAccessListField userAccessToForm;
 	private List<User> users;
+	private List<UserStudyMap> mappedStudies;
 	private final EditStudyFormController studyFormController;
 
 	public EditStudyFormView(EditStudyFormController controller) {
@@ -94,6 +95,22 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		FormPanel formPanel = getWizardFormPanel();
 		studyName.setFieldLabel(appMessages.studyName());
 		studyName.setAllowBlank(false);
+		// FIXME: need to validate this name also, but it's expensive to fetch all studies just for that, 
+		// we should be able to query just the names... 
+		/*studyName.setValidator(new Validator() {
+
+			@Override
+			public String validate(Field<?> field, String value) {
+				if (value != null) {
+					// check that new study is unique
+					if (checkStudyExistance(value, studies)) {
+						return appMessages.studyNameUnique();
+					}
+					nextButton.setEnabled(true);
+				}
+				return null;
+			}
+		});*/
 		formPanel.add(studyName);
 
 		studyDescription.setFieldLabel(appMessages.studyDescription());
@@ -114,6 +131,21 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		FormPanel formPanel = getWizardFormPanel();
 		formName.setFieldLabel(appMessages.formName());
 		formName.setAllowBlank(false);
+		// FIXME: need to validate this name also, but it's expensive to fetch all forms just for that, 
+		// we should be able to query just the names... 
+		/*formName.setValidator(new Validator() {
+			@Override
+			public String validate(Field<?> field, String value) {
+				if (value != null) {
+					// check that new form is unique
+					if (checkFormExistance(value, forms)) {
+						return appMessages.formNameUnique();
+					}
+					nextButton.setEnabled(true);
+				}
+				return null;
+			}
+		});*/
 		formPanel.add(formName);
 
 		formDescription.setFieldLabel(appMessages.formDescription());
@@ -305,7 +337,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 					// note: calling these methods now to ensure that the users are populated before the mapping, 
 					// otherwise we might get an intermittent bug if they happen in the wrong order. 
 					studyFormController.getUserMappedStudies();
-					studyFormController.getUserMappedForms();
 				} finally {
 					ProgressIndicator.hideProgressBar();
 				}
@@ -314,11 +345,25 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	public void setUserMappedStudies(List<UserStudyMap> mappedStudies) {
+		this.mappedStudies = mappedStudies;
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ProgressIndicator.showProgressBar();
+				try {
+					// note: calling these methods now to ensure that the users are populated before the mapping, 
+					// otherwise we might get an intermittent bug if they happen in the wrong order. 
+					studyFormController.getUserMappedForms();
+				} finally {
+					ProgressIndicator.hideProgressBar();
+				}
+			}
+		});
 		userAccessToStudy.setUserStudyMap(form.getStudy(), users, mappedStudies);
 	}
 
 	public void setUserMappedForms(List<UserFormMap> mappedForms) {
-		userAccessToForm.setUserFormMap(form, users, mappedForms);
+		userAccessToForm.setUserFormMap(form, users, mappedForms, mappedStudies);
 	}
 
 	public void onFormDataCheckComplete(Boolean hasData) {

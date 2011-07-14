@@ -96,45 +96,35 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
 		nextButton.setEnabled(false);
-		// resize window if the previous window was expanded
-		//if (activePage == 0 && currentPage != 0) {
-		//	resizeWindow(-90, getWizardWidth());
-		//}
 		currentPage = activePage;
 		if (activePage == 1) {
 			// check what was selected in the page before
-			if (createStudyFS.getSelectedRadio().equals(
-					appMessages.addNewStudy())) {
-				// remove select existing page from page 2
+			if (createStudyFS.getSelectedRadio().equals(appMessages.addNewStudy())) {
+				// remove select existing form from page 2 if the user has selected to create a new study on page 1
 				existingFormName.hide();
 				existingFormDescription.hide();
 				newForm.hide();
 				newForm.setValue(true);
 				existingForm.hide();
-				userFormAccessListField.setEnabled(false);
+				userFormAccessListField.hide();
 			} else if (!newForm.isVisible()) {
-				// make sure all radio buttons are showing
+				// make sure all radio buttons are showing (if they were previous hidden by the code above)
 				existingFormName.show();
 				existingFormDescription.show();
 				newForm.show();
 				newForm.setValue(false);
 				setStudyForms();
 				existingForm.show();
-				userFormAccessListField.setEnabled(true);
+				userFormAccessListField.show();
+				userFormAccessListField.setEnabled(false);
 			}
 			userStudyAccessListField.setExpanded(false);
 			userFormAccessListField.setExpanded(false);
-			//resizeWindow(0, getWizardWidth());
-		} else if (activePage == 2
-				&& createFormFS.getSelectedRadio().equals(
-						appMessages.addNewForm())) {
-			formDefinitionVersionName.setValue("v1");
 		} else if (activePage == 2) {
-			if (activePage == 2
-					&& createFormFS.getSelectedRadio().equals(
-							appMessages.existingForm())) {
-				int versions = existingFormName.getValue().getFormDefinition()
-						.getVersions().size();
+			if (createFormFS.getSelectedRadio().equals(appMessages.addNewForm())) {
+				formDefinitionVersionName.setValue("v1");
+			} else  if (createFormFS.getSelectedRadio().equals(appMessages.existingForm())) {
+				int versions = existingFormName.getValue().getFormDefinition().getVersions().size();
 				formDefinitionVersionName.setValue("v" + (versions + 1));
 				formVersionEditMode = true;
 			}
@@ -175,13 +165,12 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 			@Override
 			public String validate(Field<?> field, String value) {
-				if (value == null) {
-					return "Field required";
-				}
-				nextButton.setEnabled(true);
-				// check that new study is unique
-				if (checkStudyExistance(value, studies)) {
-					return "Study Must be Unique";
+				if (value != null) {
+					// check that new study is unique
+					if (checkStudyExistance(value, studies)) {
+						return appMessages.studyNameUnique();
+					}
+					nextButton.setEnabled(true);
 				}
 				return null;
 			}
@@ -235,6 +224,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					}
 				});
 		userStudyAccessListField = new UserAccessListField(appMessages.usersWithAccessToStudy());
+		userStudyAccessListField.setEnabled(false);
 		createStudyFS.add(userStudyAccessListField);
 
 		return createStudyPanel;
@@ -254,15 +244,13 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		newFormName.setValidator(new Validator() {
 			@Override
 			public String validate(Field<?> field, String value) {
-				if (value == null) {
-					return "Field required";
+				if (value != null) {
+					// check that new form is unique
+					if (checkFormExistance(value, forms)) {
+						return appMessages.formNameUnique();
+					}
+					nextButton.setEnabled(true);
 				}
-				// check that new form is unique
-				if (checkFormExistance(value, forms)) {
-					return "Form Already Exists";
-				}
-
-				nextButton.setEnabled(true);
 				return null;
 			}
 		});
@@ -296,7 +284,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					@Override
 					public void selectionChanged(SelectionChangedEvent<FormSummary> se) {
 						existingFormDescription.setValue(se.getSelectedItem().getFormDefinition().getDescription());
-						userFormAccessListField.setUserFormMap(se.getSelectedItem().getFormDefinition(), users, usersMappedToForms);
+						userFormAccessListField.setUserFormMap(se.getSelectedItem().getFormDefinition(), users, usersMappedToForms, usersMappedToStudies);
 						nextButton.setEnabled(true);
 					}
 				});
@@ -309,12 +297,13 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-				userStudyAccessListField.setEnabled(true);
+				userFormAccessListField.setEnabled(true);
 				newFormName.setValue("");
 				newFormDescription.setValue("");
 			}
 		});
 		userFormAccessListField = new UserAccessListField(appMessages.usersWithAccessToForm());
+		userFormAccessListField.setEnabled(false);
 		createFormFS.add(userFormAccessListField);
 
 		return createFormPanel;
