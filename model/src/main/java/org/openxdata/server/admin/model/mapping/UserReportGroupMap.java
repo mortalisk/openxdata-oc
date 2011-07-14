@@ -11,8 +11,7 @@ public class UserReportGroupMap extends AbstractEditable {
 
 	private int	userId;
 	private int	reportGroupId;
-	private int	userReportGroupMapId;
-
+	
 	/**
 	 * Generated serialization Version ID.
 	 */
