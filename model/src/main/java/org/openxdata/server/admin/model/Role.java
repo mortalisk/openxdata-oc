@@ -104,6 +104,8 @@ public class Role extends AbstractEditable {
 	}
 
 	/**
+	 * Set the Users attached to this Role.
+	 * 
 	 * @param users
 	 *            the users to set
 	 */
@@ -127,7 +129,6 @@ public class Role extends AbstractEditable {
 		}
 	}
 
-	
 	/**
 	 * Checks if the given <code>Role</code> is the default administrator <code>Role</code> that ships with the system.
 	 * @param role <code>Role</code> to check.
