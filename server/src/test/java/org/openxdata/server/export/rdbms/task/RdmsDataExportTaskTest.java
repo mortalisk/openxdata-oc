@@ -48,9 +48,6 @@ public class RdmsDataExportTaskTest {
         // set up test data
         FormData formData = getFormData();
         FormDefVersion formDefVersion = getFormDefVersion();
-        //List<String> updateSql = new ArrayList<String>();
-        //updateSql.add("INSERT INTO patientreg \\(sex,starttime,openxdata_user_id,weight,openxdata_user_name,nokids,openxdata_form_data_id,lastname,firstname,country,picture,title,height,village,patientid,arvs,continent,birthdate,pregnant,Id,district,recordvideo,coughsound\\) VALUES \\(female,NULL,23,61,dagmar,1,1,gggg,ddd,uganda,NULL,mrs,6,kisenyi,123,azt,africa,1977-08-20,false,.*,kampala,NULL,NULL\\);");
-        //updateSql.add("INSERT INTO kid \\(openxdata_user_id,openxdata_user_name,openxdata_form_data_id,kidage,Id,kidsex,kidname,ParentId\\) VALUES \\(23,dagmar,1,1,.*,female,clara,.*\\);");
         
         // set up mock
         EasyMock.expect(exporter.tableExists("", "patientreg")).andReturn(Boolean.FALSE);

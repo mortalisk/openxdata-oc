@@ -60,7 +60,6 @@ public class DataBuilderTest {
         String actualSql1 = stmt.get(0).getSql();
         String sql1 = String.format(Constants.SQL_UPDATE,
                 "`patientreg`",
-                //"sex='female',starttime=NULL,openxdata_user_id=0,weight=61,openxdata_user_name='dagmar',nokids=1,lastname='gggg',firstname='ddd',country='uganda',picture=NULL,title='mrs',height=6,village='kisenyi',patientid='123',arvs='azt',continent='africa',birthdate=1977-08-20,pregnant='false',district='kampala',recordvideo=NULL,coughsound=NULL",
                 "`endtime`=?,`sex`=?,`starttime`=?,`openxdata_user_id`=?,`weight`=?,`openxdata_user_name`=?,`nokids`=?,`lastname`=?,`firstname`=?,`country`=?,`picture`=?,`title`=?,`height`=?,`village`=?,`patientid`=?,`arvs`=?,`continent`=?,`birthdate`=?,`pregnant`=?,`district`=?,`recordvideo`=?,`coughsound`=?",
                 "openxdata_form_data_id=?");
         assertEquals("First sql statement for patientreg", sql1, actualSql1);
