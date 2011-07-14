@@ -11,6 +11,9 @@ import net.sf.gilead.pojo.gwt.LightEntity;
  */
 public abstract class AbstractEditable extends LightEntity implements Editable{
 	
+	/**unique identifier for the model object. Correlates to the database PK. */
+	protected int id = 0;
+	
 	private static final long serialVersionUID = 7939951597182605859L;
 
 	/** A flag to determine if the object has been changed and hence needs saving. */
@@ -35,9 +38,18 @@ public abstract class AbstractEditable extends LightEntity implements Editable{
 
 	private EditableState state = EditableState.LOADED;	
 	
+	public void setId(int id){
+		this.id = id;
+	}
+	
+	@Override
+	public int getId(){
+		return id;
+	}
+	
 	@Override
 	public boolean isNew(){
-		return true;
+		return id == 0;
 	}
 	
 	@Override

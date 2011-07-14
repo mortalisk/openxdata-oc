@@ -62,6 +62,8 @@ public interface Editable extends Serializable{
 	 */
 	public void setHasErrors(boolean hasErrors);
 	
+	public void setId(int id);
+	
 	/**
 	 * Returns the id of this editable item. This method should be prefered over the hard code Objected id like getFooId().
 	 * @return the object unique id.
