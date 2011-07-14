@@ -24,19 +24,6 @@ public class UserReportGroupMap extends AbstractEditable {
 	public UserReportGroupMap() {
 	}
 
-	public int getUserReportGroupMapId() {
-		return this.userReportGroupMapId;
-	}
-
-	@Override
-	public int getId() {
-		return this.userReportGroupMapId;
-	}
-	
-	public void setUserReportGroupMapId(int userReportId) {
-		this.userReportGroupMapId = userReportId;
-	}
-
 	public int getUserId() {
 		return this.userId;
 	}
@@ -51,11 +38,6 @@ public class UserReportGroupMap extends AbstractEditable {
 
 	public void setReportGroupId(int reportId) {
 		this.reportGroupId = reportId;
-	}
-
-	@Override
-	public boolean isNew() {
-		return this.userReportGroupMapId == 0;
 	}
 
 	/**
