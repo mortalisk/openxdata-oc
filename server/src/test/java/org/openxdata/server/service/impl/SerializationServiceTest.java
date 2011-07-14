@@ -10,9 +10,6 @@ import org.openxdata.server.serializer.DefaultXformSerializer;
 import org.openxdata.server.serializer.XformSerializer;
 import org.openxdata.test.BaseContextSensitiveTest;
 
-/**
- *
- */
 public class SerializationServiceTest extends BaseContextSensitiveTest {
 
 	private SettingDAO settingDAOMock;	

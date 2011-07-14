@@ -13,12 +13,11 @@ import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Tests methods in the UtilityService which deal with locales.
  * 
  * @author daniel
- *
+ * 
  */
 public class LocaleServiceTest extends BaseContextSensitiveTest {
 

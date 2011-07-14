@@ -13,12 +13,11 @@ import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Tests methods in the ReportService which deal with reports.
  * 
  * @author daniel
- *
+ * 
  */
 public class ReportServiceTest extends BaseContextSensitiveTest {
 	

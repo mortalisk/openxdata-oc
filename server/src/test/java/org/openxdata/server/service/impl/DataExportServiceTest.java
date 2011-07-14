@@ -7,9 +7,6 @@ import org.openxdata.server.service.DataExportService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- */
 public class DataExportServiceTest extends BaseContextSensitiveTest {
 
 	@Autowired

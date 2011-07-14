@@ -67,9 +67,6 @@ public class StudyDef extends AbstractEditable implements Exportable {
 		this.name = name;
 	}
 	
-	/**
-	 * @return the description
-	 */
 	public String getDescription() {
 		return description;
 	}
@@ -82,9 +79,6 @@ public class StudyDef extends AbstractEditable implements Exportable {
 		this.studyKey = studyKey;
 	}
 
-	/**
-	 * @param description the description to set
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}

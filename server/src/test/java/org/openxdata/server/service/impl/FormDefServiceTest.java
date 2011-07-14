@@ -12,12 +12,11 @@ import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-
 /**
  * Tests methods in the StudyManagerService which deal with FormDef objects
+ * 
  * @author daniel
- *
+ * 
  */
 public class FormDefServiceTest extends BaseContextSensitiveTest {
 

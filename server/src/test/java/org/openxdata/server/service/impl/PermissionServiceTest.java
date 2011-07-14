@@ -10,12 +10,11 @@ import org.openxdata.server.service.RoleService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Tests methods in the PermissionService which deal with permissions.
  * 
  * @author daniel
- *
+ * 
  */
 public class PermissionServiceTest extends BaseContextSensitiveTest {
 	

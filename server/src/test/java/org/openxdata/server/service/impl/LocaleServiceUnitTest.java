@@ -19,7 +19,7 @@ import org.openxdata.server.dao.LocaleDAO;
  * Tests methods in the LocaleService which deal with locales.
  * 
  * @author Jonny Heggheim
- *
+ * 
  */
 public class LocaleServiceUnitTest {
 

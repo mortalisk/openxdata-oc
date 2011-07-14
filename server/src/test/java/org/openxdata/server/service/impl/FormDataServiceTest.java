@@ -11,12 +11,11 @@ import org.openxdata.server.service.FormService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Tests the FormService type contract.
  * 
  * @author daniel
- *
+ * 
  */
 public class FormDataServiceTest extends BaseContextSensitiveTest {
 

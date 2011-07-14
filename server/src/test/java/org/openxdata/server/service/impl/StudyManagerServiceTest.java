@@ -21,14 +21,13 @@ import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Tests methods in the StudyManagerService which deal with StudyDef.
  * 
  * @author daniel
- *
+ * 
  */
-public class StudyManagerServiceTest  extends BaseContextSensitiveTest {
+public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired
 	protected FormService formService;
