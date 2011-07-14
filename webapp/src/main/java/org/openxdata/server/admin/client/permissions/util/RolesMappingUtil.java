@@ -59,7 +59,7 @@ public class RolesMappingUtil {
 								
 								Set<Role> roles = user.getRoles();
 								for (Role role2 : roles) {
-									if (role2.getRoleId() == role.getRoleId()) {
+									if (role2.getId() == role.getId()) {
 										roleMapListener.isMappedToUser(true);
 										return;
 									}

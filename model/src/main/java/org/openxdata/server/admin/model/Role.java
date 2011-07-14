@@ -13,9 +13,6 @@ public class Role extends AbstractEditable {
 
 	private static final long serialVersionUID = 5331693197915876841L;
 
-	/** The database identifier of the role. */
-	private int roleId = 0;
-
 	/** The name of the role. */
 	private String name;
 
@@ -62,24 +59,6 @@ public class Role extends AbstractEditable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getRoleId() {
-		return roleId;
-	}
-
-	@Override
-	public int getId() {
-		return roleId;
-	}
-	
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
-	}
-
-	@Override
-	public boolean isNew() {
-		return roleId == 0;
 	}
 
 	public List<Permission> getPermissions() {
