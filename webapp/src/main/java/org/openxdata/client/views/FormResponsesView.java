@@ -161,8 +161,13 @@ public class FormResponsesView extends View implements Refreshable  {
 				super.onRender(target, index);
 				if (btns != null) {
 					btns.setLayout(new TableLayout(3));
+					editButton.setMinWidth(getMinButtonWidth());;
+					btns.remove(cancelBtn);
+					btns.remove(saveBtn);
 					editButton.setMinWidth(getMinButtonWidth());
 					btns.add(editButton);
+					btns.add(saveBtn);
+					btns.add(cancelBtn);
 					btns.layout(true);
 				}
 			}
