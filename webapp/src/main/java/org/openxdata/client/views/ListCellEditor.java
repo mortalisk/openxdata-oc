@@ -69,6 +69,7 @@ public class ListCellEditor extends CellEditor {
      * Set the options in the ComboBox - retrieved from the Question Definition
      * @param questionDef QuestionDef
      */
+    @SuppressWarnings("unchecked")
     public void setOptions(QuestionDef questionDef) {
         this.questionDef = questionDef;
         List<OptionDef> options = questionDef.getOptions();
