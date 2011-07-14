@@ -11,8 +11,6 @@ public class UserReportMap extends AbstractEditable {
 
 	private int userId;
 	private int reportId;
-	private int userReportMapId;
-	
 	private static final long serialVersionUID = 4321925710032960853L;
 
 	public void setUserId(int userId) {
@@ -29,25 +27,6 @@ public class UserReportMap extends AbstractEditable {
 
 	public int getReportId() {
 		return reportId;
-	}
-
-	/**
-	 * @param userReportId the userReportId to set
-	 */
-	public void setUserReportMapId(int userReportId) {
-		this.userReportMapId = userReportId;
-	}
-
-	/**
-	 * @return the userReportId
-	 */
-	public int getUserReportMapId() {
-		return userReportMapId;
-	}
-
-	@Override
-	public int getId() {
-		return userReportMapId;
 	}
 	
 	/**
@@ -80,10 +59,5 @@ public class UserReportMap extends AbstractEditable {
      */
     public void removeReport(Report report) {
         setReportId(report.getReportId());
-    }
-
-    @Override
-    public boolean isNew() {
-        return getId() == 0;
     }
 }
