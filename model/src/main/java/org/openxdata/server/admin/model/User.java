@@ -14,16 +14,12 @@ public class User extends AbstractEditable {
 	/** The database identifier of the user. */
 	private int userId = 0;
 	
-	/** The login name of the user. */
 	private String name;
 	
-	/** The first name of the user. */
 	private String firstName;
 	
-	/** The middle name of the user. */
 	private String middleName;
 	
-	/** The last name of the user. */
 	private String lastName;
 	
 	/** The user hashed password. */
@@ -32,10 +28,8 @@ public class User extends AbstractEditable {
 	/** The salt used to hash the user's password. */
 	private String salt;
 	
-	/** The secret question of the user. This is used for recovering forgotten passwards. */
 	private String secretQuestion;
 	
-	/** The answer to the user's secret question. This is also used to recover forgotten password. */
 	private String secretAnswer;
 	
 	/** The user's phone number. For now, this is used for optionally adding another
@@ -67,7 +61,6 @@ public class User extends AbstractEditable {
 	 */
 	private String clearTextPassword;
 	
-	/** The email address of the user. */
 	private String email;
 	
 	/** Flag to determine if <code>User</code> is disabled or not*/
@@ -82,15 +75,12 @@ public class User extends AbstractEditable {
 	/** Models a new <code>User</code> pending approval*/
 	public static final int PENDING_APPROVAL = 2;
 		
-	/**
-	 * Constructor used to create a new user object.
-	 */
 	public User(){
 		
 	}
 	
 	/**
-	 * Constructor used to create a user with a given login name and password.
+	 * Create a user with a given login name and password.
 	 * 
 	 * @param name the login name.
 	 * @param clearTextPassword the non hashed password.
@@ -101,7 +91,7 @@ public class User extends AbstractEditable {
 	}
 	
 	/**
-	 * Constructor used to create a user with a given database id,login name, hashed password and salt.
+	 * Create a user with a given database id,login name, hashed password and salt.
 	 * 
 	 * @param userId the database id.
 	 * @param name the login name.
@@ -116,7 +106,7 @@ public class User extends AbstractEditable {
 	}
 	
 	/**
-	 * Constructor used to create a user with a given login name.
+	 * Create a user with a given login name.
 	 * 
 	 * @param name the login name.
 	 */
@@ -125,7 +115,7 @@ public class User extends AbstractEditable {
 	}
 	
 	/**
-	 * Constructor used to create a user with a given database id and login name.
+	 * Create a user with a given database id and login name.
 	 * 
 	 * @param userId the database id.
 	 * @param name the login name.
@@ -340,8 +330,9 @@ public class User extends AbstractEditable {
 	}
  
     /**
-     * Determines if this user has the administrator role
-     * @return
+     * Determines if this user has the administrator role.
+     * 
+     * @return True if has ROLE_ADMIN attached to them. Else, false.
      */
     public boolean hasAdministrativePrivileges() {
         if (roles != null) {
@@ -354,10 +345,6 @@ public class User extends AbstractEditable {
         return false;
     }
     
-    /**
-     * Sets the <code>User status.</code>
-     * @param status <code>Status.</code>
-     */
     public void setStatus(int status) {
     	this.status = status;
     }
@@ -388,11 +375,6 @@ public class User extends AbstractEditable {
     	return ret;
     }
     
-	/**
-	 * Sets the <code>User</code> status.
-	 * 
-	 * @param status the status to set
-	 */
 	public void setStatusAfterGiveType(String status) {
 		if(status.equalsIgnoreCase("Active"))
 			this.status = 0;
@@ -406,17 +388,13 @@ public class User extends AbstractEditable {
 					this.status = -1;
 	}
 	
-	/**
-	 * Return the <code>User</code>.
-	 * 
-	 * @return the status
-	 */
 	public int getStatus() {
 		return status;
 	}
 	
 	/**
 	 * Returns a string indicating the <code>User Status.</code>
+	 * 
 	 * @return string corresponding to the <code>User status.</code>
 	 */
 	public String getStatusType() {
