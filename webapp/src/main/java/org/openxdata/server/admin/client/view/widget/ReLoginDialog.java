@@ -262,7 +262,7 @@ public class ReLoginDialog extends DialogBox {
 	 */
 	protected void onReAuthenticationPassed(User user, User currentlyLoggedOnUser) {
 		if(user != null){
-			if(user.getUserId() == currentlyLoggedOnUser.getUserId()){
+			if(user.getId() == currentlyLoggedOnUser.getId()){
 				this.hide();
 			}				
 			else{

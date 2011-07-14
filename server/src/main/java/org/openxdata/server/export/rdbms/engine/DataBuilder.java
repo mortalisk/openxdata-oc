@@ -82,7 +82,7 @@ public class DataBuilder {
             columnValues.put("openxdata_form_data_id", String.valueOf(formData.getFormDataId()));
         }
         columnValues.put("openxdata_user_name", formData.getCreator().getName());
-        columnValues.put("openxdata_user_id", String.valueOf(formData.getCreator().getUserId()));
+        columnValues.put("openxdata_user_id", String.valueOf(formData.getCreator().getId()));
 
         // initialise the columns specific to this form data (or form data child)
         NodeList columnElements = tableElement.getChildNodes();

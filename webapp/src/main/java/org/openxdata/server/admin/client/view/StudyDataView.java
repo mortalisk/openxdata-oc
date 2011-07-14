@@ -184,7 +184,7 @@ public class StudyDataView extends Composite implements
 		
 		lbUser.addItem("", "");
 		for (User user : users)
-			lbUser.addItem(user.getName(), String.valueOf(user.getUserId()));
+			lbUser.addItem(user.getName(), String.valueOf(user.getId()));
 	}
 	
 	private void loadForms() {
@@ -291,7 +291,7 @@ public class StudyDataView extends Composite implements
 	private Integer getSelUserId() {
 		int index = lbUser.getSelectedIndex();
 		if (index > 0)
-			return users.get(index - 1).getUserId();
+			return users.get(index - 1).getId();
 		return null;
 	}
 	

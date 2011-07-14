@@ -37,7 +37,7 @@ public class UserFormMap extends AbstractEditable {
 	 * @param user <code>User</code> to remove.
 	 */
 	public void setUser(User user){
-		setUserId(user.getUserId());
+		setUserId(user.getId());
 	}
 	
 	/**

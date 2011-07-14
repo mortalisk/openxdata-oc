@@ -608,7 +608,7 @@ public class PermissionResolver {
 			}
 			else{
 				for(UserFormMap map : mappedForms){
-					if(map.getUserId() == user.getUserId())
+					if(map.getUserId() == user.getId())
 						userMappedForms.add(map);
 				}	
 			}
@@ -640,7 +640,7 @@ public class PermissionResolver {
 			}
 			else{
 				for(UserReportGroupMap map : mappedReportGroups){
-					if(map.getUserId() == user.getUserId())
+					if(map.getUserId() == user.getId())
 						userMappedReportGroups.add(map);					
 				}				
 			}
@@ -672,7 +672,7 @@ public class PermissionResolver {
 			}
 			else{
 				for(UserReportMap map : mappedReports){
-					if(map.getUserId() == user.getUserId())
+					if(map.getUserId() == user.getId())
 						userMappedReports.add(map);
 				}
 			}
@@ -704,7 +704,7 @@ public class PermissionResolver {
 				}
 				else{
 					for(UserStudyMap map : mappedStudies){
-						if(map.getUserId() == user.getUserId())
+						if(map.getUserId() == user.getId())
 							userMappedStudies.add(map);
 					}
 				}

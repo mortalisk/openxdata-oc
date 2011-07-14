@@ -98,7 +98,7 @@ public class FormDownloadServiceImpl implements FormDownloadService {
 		List<Object[]> retUsers = new ArrayList<Object[]>();
 		for(User user : users){
 			Object[] retUser = new Object[4];
-			retUser[0] = user.getUserId();
+			retUser[0] = user.getId();
 			retUser[1] = user.getName();
 			retUser[2] = user.getPassword();
 			retUser[3] = user.getSalt();

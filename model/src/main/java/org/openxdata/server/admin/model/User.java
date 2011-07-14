@@ -10,9 +10,6 @@ import java.util.Set;
 public class User extends AbstractEditable {
 
 	private static final long serialVersionUID = -410052012755451028L;
-
-	/** The database identifier of the user. */
-	private int userId = 0;
 	
 	private String name;
 	
@@ -99,7 +96,7 @@ public class User extends AbstractEditable {
 	 * @param salt the salt.
 	 */
 	public User(int userId,String name, String password, String salt){
-		this.userId = userId;
+		this.id = userId;
 		this.name = name;
 		this.password = password;
 		this.salt = salt;
@@ -121,7 +118,7 @@ public class User extends AbstractEditable {
 	 * @param name the login name.
 	 */
 	public User(int userId, String name){
-		this.userId = userId;
+		this.id = userId;
 		this.name = name;
 	}
 
@@ -275,19 +272,6 @@ public class User extends AbstractEditable {
 		this.secretQuestion = secretQuestion;
 	}
 
-	public int getUserId() {
-		return userId;
-	}
-
-	@Override
-	public int getId() {
-		return userId;
-	}
-	
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
 	public Boolean getVoided() {
 		return voided;
 	}
@@ -311,12 +295,7 @@ public class User extends AbstractEditable {
 	public void setVoidReason(String voidReason) {
 		this.voidReason = voidReason;
 	}
-	
-	@Override
-	public boolean isNew(){
-		return userId == 0;
-	}
-	
+		
 	public boolean hasNewPassword(){
 		return (clearTextPassword != null && clearTextPassword.trim().length() > 0);
 	}

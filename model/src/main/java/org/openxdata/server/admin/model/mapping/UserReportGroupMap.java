@@ -38,7 +38,7 @@ public class UserReportGroupMap extends AbstractEditable {
 	 * @param user <code>User</code> to remove.
 	 */
 	public void addUser(User user) {
-		setUserId(user.getUserId());
+		setUserId(user.getId());
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class UserReportGroupMap extends AbstractEditable {
 	 * @param user <code>User</code> to remove.
 	 */
 	public void removeUser(User user) {
-		setUserId(user.getUserId());
+		setUserId(user.getId());
 	}
 
 	/**

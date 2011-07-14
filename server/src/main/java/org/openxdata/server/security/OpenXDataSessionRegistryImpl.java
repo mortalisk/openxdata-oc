@@ -116,7 +116,7 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
 
     private User cloneUser(User user) {
        User clone = new User();
-       clone.setUserId(user.getId());
+       clone.setId(user.getId());
        clone.setName(user.getName());
        return clone;
     }

@@ -145,7 +145,7 @@ public class DatasetTreeView extends OpenXDataBaseTreeView implements
 	private List<UserReportGroupMap> getUserMappedReportGroups(User user) {
 		List<UserReportGroupMap> xUserMappedReportGroups = new Vector<UserReportGroupMap>();
 		for (UserReportGroupMap map : mappedDatasetGroups) {
-			if (map.getUserId() == user.getUserId()) {
+			if (map.getUserId() == user.getId()) {
 				xUserMappedReportGroups.add(map);
 			}
 		}
