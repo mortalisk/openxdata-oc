@@ -50,6 +50,6 @@ public class UserStudyMap extends AbstractEditable {
 	 * @param study <code>StudyDef</code> to remove.
 	 */
 	public void setStudy(StudyDef study) {
-		setStudyId(study.getStudyId());
+		setStudyId(study.getId());
 	}
 }

@@ -61,7 +61,7 @@ public class StudyDefTest {
 	public void isNew_shouldReturnTrueForStudyWithNewForm() {
 
 		StudyDef studyDef = new StudyDef();
-		studyDef.setStudyId(1);
+		studyDef.setId(1);
 		Assert.assertFalse(studyDef.isNew());
 
 		studyDef.addForm(new FormDef());
@@ -74,7 +74,7 @@ public class StudyDefTest {
 	public void isNew_shouldReturnTrueForStudyWithNewFormVersion() {
 
 		StudyDef studyDef = new StudyDef();
-		studyDef.setStudyId(1);
+		studyDef.setId(1);
 		FormDef formDef = new FormDef();
 		formDef.setFormId(1);
 		studyDef.addForm(formDef);
@@ -90,7 +90,7 @@ public class StudyDefTest {
 	public void isNew_shouldReturnTrueForStudyWithNewFormVersionText() {
 
 		StudyDef studyDef = new StudyDef();
-		studyDef.setStudyId(1);
+		studyDef.setId(1);
 		FormDef formDef = new FormDef();
 		formDef.setFormId(1);
 		studyDef.addForm(formDef);

@@ -62,11 +62,11 @@ public class HibernateUserFormMapDAO extends BaseDAOImpl<UserFormMap> implements
     	List<FormDef> forms = null;
     	Session session = getSession();
     	if (user.hasAdministrativePrivileges()) {
-    		forms = session.createCriteria(FormDef.class).createAlias("study", "s").add(Restrictions.eq("s.studyId", studyDefId)).list();
+    		forms = session.createCriteria(FormDef.class).createAlias("study", "s").add(Restrictions.eq("s.id", studyDefId)).list();
     	} else {
 			Query query = session.createQuery(
 					"select distinct fd from FormDef as fd, User as u" +
-					" where u.name = :name and fd.study.studyId = :studyId" +
+					" where u.name = :name and fd.study.id = :studyId" +
 					" and (u in elements(fd.users) or u in elements(fd.study.users))");
 			query.setString("name", user.getName());
 			query.setInteger("studyId", studyDefId);

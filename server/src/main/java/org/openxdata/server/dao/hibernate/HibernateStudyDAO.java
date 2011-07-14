@@ -38,7 +38,7 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
 	@Override
 	public String getStudyKey(Integer studyId) {
 		Search search = new Search(StudyDef.class);
-		search.addFilterEqual("studyId", studyId);
+		search.addFilterEqual("id", studyId);
 		search.addField("studyKey");
 		return searchUnique(search);
 	}
@@ -46,7 +46,7 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
 	@Override
 	public String getStudyName(int studyId) {
 		Search search = new Search(StudyDef.class);
-		search.addFilterEqual("studyId", studyId);
+		search.addFilterEqual("id", studyId);
 		search.addField("name");
 		return searchUnique(search);
 	}

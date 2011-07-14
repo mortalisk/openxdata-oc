@@ -563,7 +563,7 @@ public class StudiesTreeViewHelper {
 						id = ((FormDefVersion)editable).getFormDefVersionId();
 					}
 					else
-						id = ((StudyDef)editable).getStudyId();
+						id = ((StudyDef)editable).getId();
 
 					String url = "studyexport?";
 					url += "type=" + type;
@@ -748,7 +748,7 @@ public class StudiesTreeViewHelper {
 			if(userMappedStudies != null && userMappedStudies.size() > 0){
 				for(UserStudyMap x : userMappedStudies){
 					for(StudyDef def : studies){	
-						if(x.getStudyId() == def.getStudyId())
+						if(x.getStudyId() == def.getId())
 							loadStudy(def);
 					}
 				}

@@ -7,7 +7,7 @@
 
 	<class name="StudyDef" table="study" lazy="false">
 	
-		<id name="studyId" type="java.lang.Integer" column="study_id"
+		<id name="id" type="java.lang.Integer" column="study_id"
 				unsaved-value="0" >
 				<generator class="native">
 					 <param name="sequence">study_study_id_seq</param>

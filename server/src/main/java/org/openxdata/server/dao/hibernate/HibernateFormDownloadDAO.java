@@ -49,7 +49,7 @@ public class HibernateFormDownloadDAO extends BaseDAOImpl<Editable> implements F
 		
 		Session session = getSessionFactory().getCurrentSession();
 
-		Query query = session.createQuery("select distinct s.studyId, s.name from StudyDef as s, User as u " +
+		Query query = session.createQuery("select distinct s.id, s.name from StudyDef as s, User as u " +
 				"where u.name = :name and (u in elements(s.users) or u in elements(s.forms.users))" + "order by s.name");
 		query.setString("name", user.getName());
 		return query.list();
@@ -103,7 +103,7 @@ public class HibernateFormDownloadDAO extends BaseDAOImpl<Editable> implements F
 					"select distinct fdv.formDefVersionId, fdv.xform, fdv.formDef.name from FormDefVersion as fdv, User u" +
 				    " where u.name = :name" +
 					(defaultForms ? " and fdv.isDefault = :default" : "") +
-					(studyId != null ? " and fdv.formDef.study.studyId = :studyId" : "") +
+					(studyId != null ? " and fdv.formDef.study.id = :studyId" : "") +
 					" and (u in elements(fdv.formDef.users) or u in elements(fdv.formDef.study.users))" +
 					" order by fdv.formDef.name"); 
 			query.setString("name", user.getName());

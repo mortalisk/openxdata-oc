@@ -17,9 +17,7 @@ public class StudyDef extends AbstractEditable implements Exportable {
 	private String description;
 	
 	private String studyKey;
-	
-	private int studyId = 0;
-	
+		
 	/** A list of form definitions (FormDef) in the the study. */
 	private List<FormDef> forms;
 	
@@ -39,12 +37,12 @@ public class StudyDef extends AbstractEditable implements Exportable {
 	
 	/** Copy constructor. */
 	public StudyDef(StudyDef studyDef) {
-		this(studyDef.getStudyId(),studyDef.getName());
+		this(studyDef.getId(), studyDef.getName());
 		copyForms(studyDef.getForms());
 	}
 	
 	public StudyDef(int studyId, String name) {
-		setStudyId(studyId);
+		setId(studyId);
 		setName(name);
 	}
 	
@@ -59,19 +57,6 @@ public class StudyDef extends AbstractEditable implements Exportable {
 
 	public void setForms(List<FormDef> forms) {
 		this.forms = forms;
-	}
-
-	public int getStudyId() {
-		return studyId;
-	}
-
-	@Override
-	public int getId() {
-		return studyId;
-	}
-	
-	public void setStudyId(int studyId) {
-		this.studyId = studyId;
 	}
 
 	public String getName() {
@@ -225,7 +210,7 @@ public class StudyDef extends AbstractEditable implements Exportable {
 	
 	@Override
 	public boolean isNew(){
-		if(studyId == 0)
+		if(id == 0)
 			return true;
 		
 		if(forms == null)

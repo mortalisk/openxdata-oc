@@ -157,6 +157,6 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
 
     @Override
 	public StudyDef getStudyDef(Integer studyId) {
-        return (StudyDef) getSessionFactory().getCurrentSession().createQuery("from StudyDef where studyId=" + studyId).uniqueResult();
+        return (StudyDef) getSessionFactory().getCurrentSession().createQuery("from StudyDef where id=" + studyId).uniqueResult();
     }
 }
