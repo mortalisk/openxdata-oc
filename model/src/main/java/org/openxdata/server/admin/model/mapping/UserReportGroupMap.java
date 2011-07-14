@@ -11,15 +11,9 @@ public class UserReportGroupMap extends AbstractEditable {
 
 	private int	userId;
 	private int	reportGroupId;
-	
-	/**
-	 * Generated serialization Version ID.
-	 */
-	private static final long	serialVersionUID	= 3676224125250551016L;
 
-	/**
-	 * Creates an instance of this <code>class</code>.
-	 */
+	private static final long serialVersionUID = 3676224125250551016L;
+
 	public UserReportGroupMap() {
 	}
 

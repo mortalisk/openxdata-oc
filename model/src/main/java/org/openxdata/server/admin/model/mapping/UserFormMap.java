@@ -12,37 +12,22 @@ public class UserFormMap extends AbstractEditable {
 	private int userId;
 	private int formId;
 	
-	/**
-	 * Generated serialization ID
-	 */
 	private static final long serialVersionUID = 4366549281586602840L;
 	
 	public UserFormMap(){}
 
-	/**
-	 * @param userId the userId to set
-	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * @return the userId
-	 */
 	public int getUserId() {
 		return userId;
 	}
 
-	/**
-	 * @param formId the formId to set
-	 */
 	public void setFormId(int formId) {
 		this.formId = formId;
 	}
 
-	/**
-	 * @return the formId
-	 */
 	public int getFormId() {
 		return formId;
 	}
