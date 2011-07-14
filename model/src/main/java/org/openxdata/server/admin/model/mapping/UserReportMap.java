@@ -13,35 +13,20 @@ public class UserReportMap extends AbstractEditable {
 	private int reportId;
 	private int userReportMapId;
 	
-	/**
-	 * Generated serialization ID.
-	 */
 	private static final long serialVersionUID = 4321925710032960853L;
 
-	/**
-	 * @param userId the userId to set
-	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * @return the userId
-	 */
 	public int getUserId() {
 		return userId;
 	}
 
-	/**
-	 * @param reportId the reportId to set
-	 */
 	public void setReportId(int reportId) {
 		this.reportId = reportId;
 	}
 
-	/**
-	 * @return the reportId
-	 */
 	public int getReportId() {
 		return reportId;
 	}

@@ -9,17 +9,12 @@ import org.openxdata.server.admin.model.User;
  */
 public class UserStudyMap extends AbstractEditable {
 
-	/**
-	 * Generated serialization version ID
-	 */
 	private int	userId;
 	private int	studyId;
 	private int	userStudyMapId;
-	private static final long	serialVersionUID	= 2870582564160870766L;
+	
+	private static final long serialVersionUID = 2870582564160870766L;
 
-	/**
-	 * Creates an instance of this <code>class</code>.
-	 */
 	public UserStudyMap() {
 	}
 	
