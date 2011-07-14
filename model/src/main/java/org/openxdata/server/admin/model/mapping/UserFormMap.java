@@ -11,7 +11,6 @@ public class UserFormMap extends AbstractEditable {
 
 	private int userId;
 	private int formId;
-	private int userFormMapId;
 	
 	/**
 	 * Generated serialization ID
@@ -46,30 +45,6 @@ public class UserFormMap extends AbstractEditable {
 	 */
 	public int getFormId() {
 		return formId;
-	}
-
-	/**
-	 * @param userFormId the userFormId to set
-	 */
-	public void setUserFormMapId(int userFormId) {
-		this.userFormMapId = userFormId;
-	}
-
-	/**
-	 * @return the userFormId
-	 */
-	public int getUserFormMapId() {
-		return userFormMapId;
-	}
-
-	@Override
-	public int getId() {
-		return userFormMapId;
-	}
-	
-	@Override
-	public boolean isNew(){
-		return this.userFormMapId == 0;
 	}
 	
 	/**
