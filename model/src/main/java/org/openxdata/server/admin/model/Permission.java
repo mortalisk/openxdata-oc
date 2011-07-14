@@ -12,9 +12,6 @@ package org.openxdata.server.admin.model;
 public class Permission extends AbstractEditable {
 	
 	private static final long serialVersionUID = 4590744588070449021L;
-
-	/** The database identifier of the permission. */
-	private int permissionId = 0;
 	
 	/** The name of the permission. */
 	private String name;
@@ -135,25 +132,12 @@ public class Permission extends AbstractEditable {
 		this.name = name;
 	}
 	
-	public int getPermissionId(){
-		return permissionId;
-	}
-	
-	@Override
-	public int getId(){
-		return permissionId;
-	}
-	
 	public String getName(){
 		return name;
 	}
 	
 	public String getDescription(){
 		return description;
-	}
-
-	public void setPermissionId(int permissionId){
-		this.permissionId = permissionId;
 	}
 	
 	public void setName(String name){
@@ -162,10 +146,5 @@ public class Permission extends AbstractEditable {
 	
 	public void setDescription(String description){
 		this.description = description;
-	}
-	
-	@Override
-	public boolean isNew(){
-		return permissionId == 0;
 	}
 }
