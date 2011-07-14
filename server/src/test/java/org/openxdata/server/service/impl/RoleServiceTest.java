@@ -10,14 +10,13 @@ import org.openxdata.server.service.RoleService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Tests methods in the PermissionService which deal with roles.
  * 
  * @author daniel
- *
+ * 
  */
-public class RoleServiceTest extends BaseContextSensitiveTest{
+public class RoleServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired
 	protected RoleService roleService;

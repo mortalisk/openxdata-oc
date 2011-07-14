@@ -15,14 +15,13 @@ public class StudyDefTest {
 		StudyDef studyDef = new StudyDef();
 		FormDef formDef = new FormDef();
 		studyDef.addForm(formDef);
-		
+
 		Assert.assertFalse(studyDef.isDirty());
 		formDef.setDirty(true);
-		
+
 		Assert.assertTrue(studyDef.isDirty());
 	}
-	
-	
+
 	@Test
 	public void isDirty_shouldReturnTrueForStudyWithDirtyFormVersion() {
 
@@ -31,14 +30,13 @@ public class StudyDefTest {
 		studyDef.addForm(formDef);
 		FormDefVersion formDefVersion = new FormDefVersion();
 		formDef.addVersion(formDefVersion);
-		
+
 		Assert.assertFalse(studyDef.isDirty());
 		formDefVersion.setDirty(true);
-		
+
 		Assert.assertTrue(studyDef.isDirty());
 	}
-	
-	
+
 	@Test
 	public void isDirty_shouldReturnTrueForStudyWithDirtyFormVersionText() {
 
@@ -49,14 +47,13 @@ public class StudyDefTest {
 		formDef.addVersion(formDefVersion);
 		FormDefVersionText formDefVersionText = new FormDefVersionText();
 		formDefVersion.addVersionText(formDefVersionText);
-		
+
 		Assert.assertFalse(studyDef.isDirty());
 		formDefVersionText.setDirty(true);
-		
+
 		Assert.assertTrue(studyDef.isDirty());
 	}
-	
-	
+
 	@Test
 	public void isNew_shouldReturnTrueForStudyWithNewForm() {
 
@@ -65,11 +62,10 @@ public class StudyDefTest {
 		Assert.assertFalse(studyDef.isNew());
 
 		studyDef.addForm(new FormDef());
-		
+
 		Assert.assertTrue(studyDef.isNew());
 	}
-	
-	
+
 	@Test
 	public void isNew_shouldReturnTrueForStudyWithNewFormVersion() {
 
@@ -79,13 +75,12 @@ public class StudyDefTest {
 		formDef.setFormId(1);
 		studyDef.addForm(formDef);
 		Assert.assertFalse(studyDef.isNew());
-		
+
 		formDef.addVersion(new FormDefVersion());
-		
+
 		Assert.assertTrue(studyDef.isNew());
 	}
-	
-	
+
 	@Test
 	public void isNew_shouldReturnTrueForStudyWithNewFormVersionText() {
 
@@ -98,9 +93,9 @@ public class StudyDefTest {
 		formDefVersion.setFormDefVersionId(1);
 		formDef.addVersion(formDefVersion);
 		Assert.assertFalse(studyDef.isNew());
-		
+
 		formDefVersion.addVersionText(new FormDefVersionText());
-		
+
 		Assert.assertTrue(studyDef.isNew());
 	}
 }

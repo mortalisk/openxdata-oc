@@ -69,8 +69,7 @@ public class StructureBuilderTest {
 	 */
 	@Test
 	public void testOXD330() throws Exception {
-		String formDefString = XFormsFixture
-				.getFormFromStudyExport(
+		String formDefString = XFormsFixture.getFormFromStudyExport(
 						"/org/openxdata/server/export/rdbms/engine/BaselineSurvey-MalariaConsortium.xml",
 						"Baseline Survey", "Household Questionnaire", "v1");
 		List<TableQuery> queryList = RdmsEngine.getStructureSql(formDefString);

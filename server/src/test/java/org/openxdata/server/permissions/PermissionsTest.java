@@ -14,46 +14,45 @@ import org.openxdata.server.service.UtilityService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Base class for unit tests for permissions.
  * 
  * @author daniel
- *
+ * 
  */
 @Ignore
 public abstract class PermissionsTest extends BaseContextSensitiveTest {
-	
+
 	public static String USER_NAME = "user";
 	public static String PASSWORD = "love";
-	
+
 	@Autowired
 	protected UserService userService;
-	
+
 	@Autowired
 	protected StudyManagerService studyManagerService;
-	
+
 	@Autowired
 	private AuthenticationService authenticationService;
-	
+
 	@Autowired
 	protected RoleService roleService;
-	
+
 	@Autowired
 	protected UtilityService utilityService;
-	
+
 	@Autowired
 	protected LocaleService localeService;
 
 	@Autowired
 	protected TaskService taskService;
-	
+
 	@Autowired
 	protected SettingService settingService;
-	
+
 	@Autowired
 	protected ReportService reportService;
-	
+
 	/**
 	 * Run before each unit test in this class.
 	 * 
@@ -61,7 +60,7 @@ public abstract class PermissionsTest extends BaseContextSensitiveTest {
 	 */
 	@Before
 	@Override
-	public void runBeforeEachTest() throws Exception {	
+	public void runBeforeEachTest() throws Exception {
 		authenticationService.authenticate(USER_NAME, PASSWORD);
 	}
 }
