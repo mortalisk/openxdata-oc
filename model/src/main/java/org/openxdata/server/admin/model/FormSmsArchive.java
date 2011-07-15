@@ -5,8 +5,6 @@ import java.util.Date;
 public class FormSmsArchive  extends FormData{
 
 	private static final long serialVersionUID = 3969864109678496787L;
-
-	private int formSmsArchiveId = 0;
 	
 	private User archiveCreator;
 	private Date archiveDateCreated;
@@ -20,15 +18,7 @@ public class FormSmsArchive  extends FormData{
 	public FormSmsArchive(FormData formData){
 		super(formData);
 	}
-	
-	public int getFormSmsArchiveId() {
-		return formSmsArchiveId;
-	}
-	
-	public void setFormSmsArchiveId(int formSmsArchiveId) {
-		this.formSmsArchiveId = formSmsArchiveId;
-	}
-	
+		
 	public User getArchiveCreator() {
 		return archiveCreator;
 	}
