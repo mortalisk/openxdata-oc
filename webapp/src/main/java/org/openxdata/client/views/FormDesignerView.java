@@ -177,9 +177,6 @@ public class FormDesignerView {
 		}
 	};
 
-	/**
-	 * Conceals the Form Designer window from the User.
-	 */
 	public void hide() {
 		ProgressIndicator.hideProgressBar();
 	}
@@ -244,7 +241,7 @@ public class FormDesignerView {
 		changeDescriptionTemplateValue(instanceRoot, oldName, newName);
 		nameNode.setNodeValue(formDefVersion.getFormDef().getName() + "_"
 				+ formDefVersion.getName());
-		replaceInstaceRoot(xformDocument, newName, instanceRoot);
+		replaceInstanceRoot(xformDocument, newName, instanceRoot);
 		changeNodesetOnBindElements(xformDocument, oldName, newName);
 
 		String xform = xformDocument.toString();
@@ -291,7 +288,7 @@ public class FormDesignerView {
 		}
 	}
 
-	private void replaceInstaceRoot(Document xformDocument, String newName,
+	private void replaceInstanceRoot(Document xformDocument, String newName,
 			Node instanceRoot) {
 		// We need to create a new element to replace the old name
 		// Renaming is not allowed in DOM
