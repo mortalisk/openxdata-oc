@@ -13,7 +13,6 @@ import org.purc.purcforms.client.util.LanguageUtil;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.widget.Window;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,9 +34,6 @@ public class FormDesignerView {
 
 	/** The form designer widget. */
 	private FormDesignerWidget formDesigner;
-
-	/** The formDesignerWindow for the form designer */
-	Window formDesignerWindow;
 
 	private final IFormSaveListener saveListener;
 
@@ -185,7 +181,6 @@ public class FormDesignerView {
 	 * Conceals the Form Designer window from the User.
 	 */
 	public void hide() {
-		formDesignerWindow.hide();
 		ProgressIndicator.hideProgressBar();
 	}
 
