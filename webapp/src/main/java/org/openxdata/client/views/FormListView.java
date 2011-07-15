@@ -120,8 +120,6 @@ public class FormListView extends View implements Refreshable {
 
             }
         };
-        store.addFilter(showAllFormVersionsFilter);
-        store.applyFilters(null);
 
 		grid.addListener(Events.CellDoubleClick,
 				new Listener<GridEvent<FormSummary>>() {
@@ -182,6 +180,7 @@ public class FormListView extends View implements Refreshable {
 				toggleAllFormVersions();
 			}
 		});
+		allVersions.hide();
 		/*allStudies = new CheckBox();
 		// FIXME: change text below
 		allStudies.setBoxLabel("All Studies");
@@ -200,6 +199,7 @@ public class FormListView extends View implements Refreshable {
 				toggleAllForms();
 			}
 		});
+		allForms.hide();
 
 		Button export = new Button(appMessages.exportA());
 		export.addListener(Events.Select, new Listener<ButtonEvent>() {
@@ -237,6 +237,11 @@ public class FormListView extends View implements Refreshable {
 					Permission.PERM_ADD_FORM_VERSIONS)) {
 				newButton.show();
 				allVersions.show();
+				allForms.show();
+				if (store.getFilters() != null && !store.getFilters().contains(showAllFormVersionsFilter)) {
+					store.addFilter(showAllFormVersionsFilter);
+					store.applyFilters(null);
+				}
 				showPublishedColumn(cm, false);
 				//allStudies.show();
 				export.show();
@@ -246,6 +251,11 @@ public class FormListView extends View implements Refreshable {
 					Permission.PERM_EDIT_FORM_VERSIONS)) {
 				edit.show();
 				allVersions.show();
+				allForms.show();
+				if (store.getFilters() != null && !store.getFilters().contains(showAllFormVersionsFilter)) {
+					store.addFilter(showAllFormVersionsFilter);
+					store.applyFilters(null);
+				}
 				showPublishedColumn(cm, false);
 				//allStudies.show();
 				export.show();
@@ -255,6 +265,11 @@ public class FormListView extends View implements Refreshable {
 					Permission.PERM_DELETE_FORM_VERSIONS)) {
 				delete.show();
 				allVersions.show();
+				allForms.show();
+				if (store.getFilters() != null && !store.getFilters().contains(showAllFormVersionsFilter)) {
+					store.addFilter(showAllFormVersionsFilter);
+					store.applyFilters(null);
+				}
 				showPublishedColumn(cm, false);
 				//allStudies.show();
 				export.show();
@@ -274,8 +289,6 @@ public class FormListView extends View implements Refreshable {
 		buttonBar.add(newButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(edit, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(delete, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
-		//buttonBar.add(allVersions, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
-		//buttonBar.add(publishedVersions, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(export, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		HBoxLayoutData flex = new HBoxLayoutData(new Margins(5, 5, 0, 0));
 		flex.setFlex(1);
