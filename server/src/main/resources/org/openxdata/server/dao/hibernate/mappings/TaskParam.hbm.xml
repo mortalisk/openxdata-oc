@@ -7,7 +7,7 @@
 
 	<class name="TaskParam" table="task_param" lazy="false">
 	
-		<id name="paramId" type="java.lang.Integer" column="task_param_id"
+		<id name="id" type="java.lang.Integer" column="task_param_id"
 				unsaved-value="0">
 			<generator class="native">
 					 <param name="sequence">task_param_task_param_id_seq</param>

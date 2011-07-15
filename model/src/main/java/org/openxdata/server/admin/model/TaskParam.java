@@ -6,9 +6,6 @@ package org.openxdata.server.admin.model;
 public class TaskParam  extends AbstractEditable{
 	
 	private static final long serialVersionUID = 5620957823593973227L;
-
-	/** The database identifier for the parameter. */
-	private int paramId = 0;
 	
 	/** The task definition to which this parameter belongs. */
 	private TaskDef taskDef;
@@ -45,19 +42,6 @@ public class TaskParam  extends AbstractEditable{
 		this.name = name;
 	}
 
-	public int getParamId() {
-		return paramId;
-	}
-
-	@Override
-	public int getId() {
-		return paramId;
-	}
-	
-	public void setParamId(int paramId) {
-		this.paramId = paramId;
-	}
-
 	public TaskDef getTaskDef() {
 		return taskDef;
 	}
@@ -73,10 +57,5 @@ public class TaskParam  extends AbstractEditable{
 
 	public void setValue(String value) {
 		this.value = value;
-	}
-	
-	@Override
-	public boolean isNew(){
-		return paramId == 0;
-	}
+	}	
 }
