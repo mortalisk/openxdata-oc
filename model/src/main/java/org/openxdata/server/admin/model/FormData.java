@@ -7,9 +7,6 @@ import java.util.Date;
  */
 public class FormData extends AbstractEditable {
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 6183444597939766009L;
 
 	/** The numeric unique identifier of the form data. */
@@ -34,9 +31,6 @@ public class FormData extends AbstractEditable {
 	/** Bitwise flag to indicate if the data has been exported. */
 	private Integer exported = 0;
 
-	/**
-	 * Constructs a new form data object.
-	 */
 	public FormData() {
 
 	}

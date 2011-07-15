@@ -5,9 +5,6 @@ package org.openxdata.server.admin.model;
  */
 public class Locale extends AbstractEditable{
 	
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 2100312849246884803L;
 
 	/** The data base identifier for the locale. */
@@ -19,8 +16,6 @@ public class Locale extends AbstractEditable{
 	/** The locale name. eg English. */
 	private String name;
 	
-	
-	/** Constructs a new locale object. */
 	public Locale(){
 		
 	}

@@ -12,9 +12,6 @@ import net.sf.gilead.pojo.gwt.LightEntity;
  */
 public class FormDataHeader extends LightEntity{
 	
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 8542417235341285428L;
 
 	/** The numeric unique identifier of the form data. */
@@ -50,9 +47,6 @@ public class FormDataHeader extends LightEntity{
 	//of getters and setters as for the rest.
 	public boolean deleted = false;
 	
-	/**
-	 * Creates a new instance of the form data header object.
-	 */
 	public FormDataHeader(){
 		
 	}
@@ -111,6 +105,7 @@ public class FormDataHeader extends LightEntity{
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -118,12 +113,15 @@ public class FormDataHeader extends LightEntity{
 	public String getFormName() {
 		return formName;
 	}
+
 	public void setFormName(String formName) {
 		this.formName = formName;
 	}
+
 	public String getVersionName() {
 		return versionName;
 	}
+
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}

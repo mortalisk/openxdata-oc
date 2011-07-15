@@ -4,9 +4,6 @@ import java.util.Date;
 
 public class FormSmsArchive  extends FormData{
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 3969864109678496787L;
 
 	private int formSmsArchiveId = 0;

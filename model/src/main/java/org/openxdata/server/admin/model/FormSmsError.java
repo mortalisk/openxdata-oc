@@ -9,9 +9,6 @@ import java.util.Date;
  */
 public class FormSmsError extends AbstractEditable {
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = -3919484259284142514L;
 
 	/** The numeric unique identifier of the form data. */
@@ -27,9 +24,6 @@ public class FormSmsError extends AbstractEditable {
 	private String errorMsg;
 	
 	
-	/**
-	 * Constructs a new sms form error object.
-	 */
 	public FormSmsError(){
 		
 	}

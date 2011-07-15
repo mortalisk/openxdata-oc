@@ -16,6 +16,7 @@ public class ExportedFormData extends LightEntity {
 
     /** original form data */
     private FormData formData;
+    
     /** array of exported form data in original format. question binding is used as the key*/
     private Map<String, ExportedDataType> exportedFields = new HashMap<String, ExportedDataType>();
 

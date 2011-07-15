@@ -5,9 +5,6 @@ package org.openxdata.server.admin.model;
  */
 public class FormDefVersionText extends AbstractEditable{
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = -8844252387415837817L;
 
 	/** The database identifier of the form version text. */

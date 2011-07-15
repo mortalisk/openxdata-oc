@@ -7,9 +7,6 @@ package org.openxdata.server.admin.model;
  */
 public class FormDefText extends AbstractEditable{
 	
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = -3343467905549659116L;
 
 	/** The database identifier of the form locale text. */
@@ -26,11 +23,7 @@ public class FormDefText extends AbstractEditable{
 	
 	/** The description of the form in the locale as in the localeKey field. */
 	private String description;
-	
-	
-	/** 
-	 * Constructs a new form locale text object.
-	 */
+
 	public FormDefText(){
 		
 	}

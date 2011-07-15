@@ -17,11 +17,7 @@ public class FormDataVersion extends AbstractEditable{
 	
 	/** The xml data. */
 	private String data;
-	
-	
-	/**
-	 * Constructs a new form data object.
-	 */
+
 	public FormDataVersion(){
 		
 	}
