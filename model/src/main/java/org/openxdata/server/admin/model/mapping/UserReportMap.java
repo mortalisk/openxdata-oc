@@ -50,7 +50,7 @@ public class UserReportMap extends AbstractEditable {
 	 * @param report <code>Report</code> to remove.
 	 */
 	public void addReport(Report report){
-		setReportId(report.getReportId());
+		setReportId(report.getId());
 	}
 	
    /**
@@ -58,6 +58,6 @@ public class UserReportMap extends AbstractEditable {
      * @param report <code>Report</code> to remove.
      */
     public void removeReport(Report report) {
-        setReportId(report.getReportId());
+        setReportId(report.getId());
     }
 }

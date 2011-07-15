@@ -168,7 +168,7 @@ public class DatasetTreeView extends OpenXDataBaseTreeView implements
 	private boolean isGroupParentReportGroup(UserReportGroupMap map,
 	        ReportGroup grp) {
 		for (Report rpt : grp.getReports()) {
-			if (rpt.getReportId() == map.getReportGroupId())
+			if (rpt.getId() == map.getReportGroupId())
 				return true;
 		}
 		

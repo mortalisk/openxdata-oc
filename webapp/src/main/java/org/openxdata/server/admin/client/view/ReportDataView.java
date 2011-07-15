@@ -121,7 +121,7 @@ public class ReportDataView extends Composite {
 				try {
 					reportWidget
 					        .setHTML("<object type=\"application/pdf\" data=\"report?format=pdf&name=rates.pdf&reportId="
-					                + report.getReportId()
+					                + report.getId()
 					                + "\" width=\"500\" height=\"650\" > </object>");
 					FormUtil.dlg.hide();
 				} catch (Exception ex) {

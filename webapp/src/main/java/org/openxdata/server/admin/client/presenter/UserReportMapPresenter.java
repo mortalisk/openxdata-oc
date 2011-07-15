@@ -54,7 +54,7 @@ public class UserReportMapPresenter extends ExtendedBaseMapPresenter<UserReportM
         if (user.hasAdministrativePrivileges()) return true;
         List<UserReportMap> userReportMaps = permissionResolver.getUserMappedReports(user, maps);
         for (UserReportMap userReportMap : userReportMaps) {
-            if (userReportMap.getReportId() == itemToMap.getReportId())
+            if (userReportMap.getReportId() == itemToMap.getId())
                 return true;
         }
         return false;

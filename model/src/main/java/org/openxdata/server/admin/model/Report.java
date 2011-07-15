@@ -7,9 +7,6 @@ public class Report extends AbstractEditable{
 
 	private static final long serialVersionUID = 6089598959091826602L;
 
-	/** The database unique identifier of the report. */
-	private int reportId = 0;
-	
 	/** The report name. */
 	private String name;
 	
@@ -95,19 +92,6 @@ public class Report extends AbstractEditable{
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public int getReportId() {
-		return reportId;
-	}
-
-	@Override
-	public int getId() {
-		return reportId;
-	}
-	
-	public void setReportId(int reportId) {
-		this.reportId = reportId;
-	}
 	
 	public String getParamValues() {
 		return paramValues;
@@ -125,11 +109,6 @@ public class Report extends AbstractEditable{
 		this.reportGroup = reportGroup;
 	}
 
-	@Override
-	public boolean isNew(){
-		return reportId == 0;
-	}
-	
 	@Override
 	public void setDirty(boolean dirty){
 		super.setDirty(dirty);
