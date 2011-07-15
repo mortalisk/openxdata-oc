@@ -100,10 +100,8 @@ public class DataCaptureView extends View implements SubmitListener {
                      window.setHeading(appMessages.captureData() + " : " +formVersion.getFormDef().getName());
 		             if (formVersion != null && formVersion.getXform() != null) {
 		            	 if (formData == null) {
-		            		 //widget.loadForm(formDefVersion.getXform(), formDefVersion.getLayout(), "");
 		            		 widget.loadForm(formVersion.getId(),formVersion.getXform(),null,formVersion.getLayout(),null);
 		            	 } else {
-		            		 //widget.loadForm(0, formDefVersion.getXform(), formData.getData(), formDefVersion.getLayout(), "");
 		            		 widget.loadForm(formData.getId(),formVersion.getXform(),formData.getData(),formVersion.getLayout(),null);
 		            	 }
 		                  window.show();
@@ -130,7 +128,6 @@ public class DataCaptureView extends View implements SubmitListener {
     	if (formData == null) {
     		formData = new FormData();
     		formData.setFormDefVersionId(formVersion.getId());
-    		//formData.setDescription(Utilities.getDescriptionTemplate(xformXml,xml)); // FIXME: figure out what to do about the description
     		formData.setDateCreated(new Date());
     	} else {
     		formData.setDateChanged(new Date());

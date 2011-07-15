@@ -123,7 +123,6 @@ public class FormResponsesController  extends Controller {
             }
         }
         return new FormDataBinding(purcFormDef, formColumnData, formColumnQuestionDef,  formColumnDataKey);
-        //  return new FormDataBinding(purcFormDef.getBinding(), formColumnData, formColumnQuestionDef, formColumnDataKey);
     }
     
     public void getFormDataSummary(final FormDefVersion formVersion, final FormDataBinding formDataBinding, 

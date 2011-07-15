@@ -41,7 +41,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	private FormDefVersion formDefVersion;
-	//private FormDef form;
 
 	private CheckBox published;
 	private final TextField<String> studyName = new TextField<String>();
@@ -98,22 +97,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		FormPanel formPanel = getWizardFormPanel();
 		studyName.setFieldLabel(appMessages.studyName());
 		studyName.setAllowBlank(false);
-		// FIXME: need to validate this name also, but it's expensive to fetch all studies just for that, 
-		// we should be able to query just the names... 
-		/*studyName.setValidator(new Validator() {
-
-			@Override
-			public String validate(Field<?> field, String value) {
-				if (value != null) {
-					// check that new study is unique
-					if (checkStudyExistance(value, studies)) {
-						return appMessages.studyNameUnique();
-					}
-					nextButton.setEnabled(true);
-				}
-				return null;
-			}
-		});*/
 		formPanel.add(studyName);
 
 		studyDescription.setFieldLabel(appMessages.studyDescription());
@@ -135,21 +118,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		FormPanel formPanel = getWizardFormPanel();
 		formName.setFieldLabel(appMessages.formName());
 		formName.setAllowBlank(false);
-		// FIXME: need to validate this name also, but it's expensive to fetch all forms just for that, 
-		// we should be able to query just the names... 
-		/*formName.setValidator(new Validator() {
-			@Override
-			public String validate(Field<?> field, String value) {
-				if (value != null) {
-					// check that new form is unique
-					if (checkFormExistance(value, forms)) {
-						return appMessages.formNameUnique();
-					}
-					nextButton.setEnabled(true);
-				}
-				return null;
-			}
-		});*/
 		formPanel.add(formName);
 
 		formDescription.setFieldLabel(appMessages.formDescription());

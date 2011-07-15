@@ -25,7 +25,6 @@ public class DataCaptureController extends Controller {
     private UserServiceAsync userService;
     private FormServiceAsync formService;
     
-    
     public DataCaptureController(UserServiceAsync aUserService, FormServiceAsync aFormService) {
         super();
         registerEventTypes(DATACAPTURE);

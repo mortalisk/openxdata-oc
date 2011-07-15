@@ -135,7 +135,6 @@ public class ListCellEditor extends CellEditor {
         if (parentQuestionDef != null) {
             dynOptionsDef = formDef.getDynamicOptions(parentQuestionDef.getId());
             if (dynOptionsDef != null) {
-                //parent.addDynamicChild(this);
                 List<OptionDef> options = dynOptionsDef.getOptions(); // FIXME: only select options depending on parent values...
                 setOptions(options);
             }

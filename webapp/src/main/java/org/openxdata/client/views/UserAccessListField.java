@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.openxdata.client.views;
 
 import java.util.ArrayList;
@@ -117,18 +113,12 @@ public class UserAccessListField extends FieldSet {
         
         HorizontalPanel userTable = new HorizontalPanel();
         userTable.setVerticalAlign(VerticalAlignment.MIDDLE);
-        //ContentPanel userTable = new ContentPanel();
-        //HBoxLayout userTableLayout = new HBoxLayout();
-        //userTableLayout.setHBoxLayoutAlign(HBoxLayout.HBoxLayoutAlign.MIDDLE);
-        //userTable.setLayout(userTableLayout);
         userTable.setBorders(false);
         
         userTable.add(createListPanel(appMessages.availableUsers(), leftList, fromField, leftPagingToolBar));
         
         VerticalPanel buttons = new VerticalPanel();
         buttons.setHorizontalAlign(HorizontalAlignment.CENTER);
-        //LayoutContainer buttons = new LayoutContainer();
-        //buttons.setLayout(new VBoxLayout(VBoxLayout.VBoxLayoutAlign.STRETCHMAX));
         buttons.setBorders(false);
         buttons.add(addUserBtn);
         buttons.add(addAllUserBtn);
@@ -217,45 +207,6 @@ public class UserAccessListField extends FieldSet {
         // add paging support for a local collection of models
         PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(userList);
         PagingLoader<PagingLoadResult<UserSummary>> loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(proxy);
-        /*PagingLoader<PagingLoadResult<UserSummary>> loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(
-                new RpcProxy<PagingLoadResult<UserSummary>>() {
-                    @Override
-                    public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
-                        final FilterPagingLoadConfig config = (FilterPagingLoadConfig)loadConfig;
-                        // FIXME: this should eventually load via a serverside call, because client side paging isn't saving us much
-                        // step 1: sort userList
-                        Collections.sort(userList, new Comparator<UserSummary>() {
-                            public int compare(UserSummary o1, UserSummary o2) {
-                            	return o1.getName().compareTo(o2.getName());
-                            }
-                        });
-                        // step 2: filter list (if necessary)
-                        FilterConfig filter = config.getFilterConfigs().get(0);
-                        List<UserSummary> filteredList = new ArrayList<UserSummary>();
-                        for (UserSummary summary : userList) {
-                        	if (summary.getUser() != null) { // will be null for "study access" users
-                        		if (filter.isFiltered(summary, filterField.getValue(), "", summary.getUser().getName())) {
-                        			filteredList.add(summary);
-                        		}
-                        	}
-                        }
-                        // step 3: get correct page
-                        int start = config.getOffset();
-                        int limit = userList.size();
-                        if (config.getLimit() > 0) {
-                          limit = Math.min(start + config.getLimit(), limit);
-                        }
-                        List<UserSummary> results = new ArrayList<UserSummary>();
-                        for (int i = config.getOffset(); i < limit; i++) {
-                            results.add((UserSummary) userList.get(i));
-                        }
-                        // return paged result
-                        BasePagingLoadResult<UserSummary> result = new BasePagingLoadResult<UserSummary>(results, 
-                        		config.getOffset(),  userList.size());
-                        callback.onSuccess(result);
-                    }
-                }
-        );*/
         loader.setRemoteSort(true);
         loader.setSortField("name");
         loader.setSortDir(SortDir.ASC);

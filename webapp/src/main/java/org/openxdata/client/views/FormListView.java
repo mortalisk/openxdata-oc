@@ -61,9 +61,7 @@ public class FormListView extends View implements Refreshable {
 	private Portlet portlet;
 	private Grid<FormSummary> grid;
 
-	//private boolean showAllStudies = false;
 	private CheckBox allVersions;
-	//private CheckBox allStudies;
 	private CheckBox allForms;
 	private List<FormSummary> allFormSummaries = new ArrayList<FormSummary>();
 
@@ -111,8 +109,6 @@ public class FormListView extends View implements Refreshable {
                     FormSummary item, String property) {
 				if (!allVersions.getValue() && !item.isPublished()) {
 					return false;
-				//} else if (!showAllStudies && item.getStudy()) == null)  {
-				//	return false;
 				} else if (!allForms.getValue() && item.getFormVersion() == null) {
 					return false;
 				}
@@ -183,15 +179,6 @@ public class FormListView extends View implements Refreshable {
 			}
 		});
 		allVersions.hide();
-		/*allStudies = new CheckBox();
-		// FIXME: change text below
-		allStudies.setBoxLabel("All Studies");
-		allStudies.addListener(Events.OnClick, new Listener<BaseEvent>() {
-			@Override
-			public void handleEvent(BaseEvent be) {
-				toggleAllStudies();
-			}
-		});*/
 		allForms = new CheckBox();
 		// FIXME: change text below
 		allForms.setBoxLabel("All Forms");
@@ -241,7 +228,6 @@ public class FormListView extends View implements Refreshable {
 				allVersions.show();
 				allForms.show();
 				showPublishedColumn(cm, false);
-				//allStudies.show();
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_EDIT_STUDIES,
@@ -251,7 +237,6 @@ public class FormListView extends View implements Refreshable {
 				allVersions.show();
 				allForms.show();
 				showPublishedColumn(cm, false);
-				//allStudies.show();
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_DELETE_STUDIES,
@@ -261,7 +246,6 @@ public class FormListView extends View implements Refreshable {
 				allVersions.show();
 				allForms.show();
 				showPublishedColumn(cm, false);
-				//allStudies.show();
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_ADD_FORM_DATA)) {
@@ -290,7 +274,6 @@ public class FormListView extends View implements Refreshable {
 		filterBar.setLayout(new HBoxLayout());
 		filterBar.add(new Text(), flex);
 		filterBar.add(allVersions);
-		//filterBar.add(allStudies);
 		filterBar.add(allForms);
 
 		portlet = new Portlet(new FitLayout());
@@ -342,7 +325,6 @@ public class FormListView extends View implements Refreshable {
 				allFormSummaries.add(formSummary);
 			} else {
 				for (final FormDefVersion formVersion : formDef.getVersions()) {
-				//final FormDefVersion formVersion = formDef.getDefaultVersion();
 					if (formVersion != null) {
 						FormSummary formSummary = new FormSummary(formVersion);
 						formSummary.setStatus(appMessages.loading());
@@ -423,25 +405,13 @@ public class FormListView extends View implements Refreshable {
 		});
 		ProgressIndicator.hideProgressBar();
 	}
-	
-	/*private void toggleAllStudies() {
-		ProgressIndicator.showProgressBar();
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				grid.getStore().applyFilters(null);
-			}
-		});
-		ProgressIndicator.hideProgressBar();
-	}*/
-	
+
 	private void toggleAllForms() {
 		ProgressIndicator.showProgressBar();
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
 				grid.getStore().applyFilters(null);
-				//grid.getView().refresh(false);
 			}
 		});
 		ProgressIndicator.hideProgressBar();
@@ -598,20 +568,6 @@ public class FormListView extends View implements Refreshable {
 			}
 		}
 	}
-
-	/*
-	// Adds a standard toolbutton to the portlet to maximise (now done by default)(
-	 private void configPanel(final Portlet portlet) {
-		portlet.getHeader().addTool(
-				new ToolButton("x-tool-restore",
-						new SelectionListener<IconButtonEvent>() {
-							@Override
-							public void componentSelected(IconButtonEvent ce) {
-								maximisePortlet(portlet);
-							}
-
-						}));
-	}*/
 	
 	private void maximisePortlet(Portlet portlet) {
 		Portal p = (Portal) portlet.getParent().getParent();

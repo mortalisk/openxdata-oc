@@ -92,7 +92,6 @@ public class NewStudyFormController extends Controller {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Successfully saves mapped study");
-                //MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }
@@ -102,7 +101,6 @@ public class NewStudyFormController extends Controller {
             @Override
             public void onSuccess(Void result) {
                GWT.log("Successfully saves mapped form");
-               //MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }

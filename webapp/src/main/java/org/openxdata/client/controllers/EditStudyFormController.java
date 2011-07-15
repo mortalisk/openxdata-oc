@@ -67,9 +67,7 @@ public class EditStudyFormController extends Controller {
 			public void onSuccess(Void result) {
 				editStudyFormView.closeWindow();
 				RefreshablePublisher.get().publish(
-						new RefreshableEvent(
-								RefreshableEvent.Type.UPDATE_STUDY, form
-										.getStudy()));
+						new RefreshableEvent(RefreshableEvent.Type.UPDATE_STUDY, form.getStudy()));
 				MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 			}
 		});
@@ -118,7 +116,6 @@ public class EditStudyFormController extends Controller {
 					@Override
 					public void onSuccess(Void result) {
 						GWT.log("Successfully saved mapped forms");
-						//MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 					}
 				});
 	}
@@ -130,7 +127,6 @@ public class EditStudyFormController extends Controller {
 					@Override
 					public void onSuccess(Void result) {
 						GWT.log("Successfully saved mapped studies");
-						//MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 					}
 				});
 	}

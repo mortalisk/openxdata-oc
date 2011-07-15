@@ -296,13 +296,6 @@ public class FormResponsesView extends View implements Refreshable  {
     private void initializeColumnEditor(ColumnConfig colConfig, QuestionDef questionDef) {
     	GWT.log("FormResponsesView : initializeColumnEditor");
 
-    	/* Debug code
-        System.out.println("DisplayText : " + questionDef.getDisplayText());
-        System.out.println("DataType : " + questionDef.getDataType());
-        System.out.println("Answer : " + questionDef.getAnswer());
-        System.out.println("bind : " + questionDef.getControlNode().getAttribute("bind"));
-        */
-
         switch(questionDef.getDataType()) {
             case QuestionDef.QTN_TYPE_TEXT:
                 TextField<String> text = new TextField<String>();
@@ -331,8 +324,6 @@ public class FormResponsesView extends View implements Refreshable  {
                 time.setFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
                 colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
                 colConfig.setEditor(new ListCellEditor(time)); //colConfig.setEditor(new CellEditor(time));s
-                //TextField<String> time = new TextField<String>();
-                //colConfig.setEditor(new CellEditor(time));
                 break;
                 // This is a question with a list of options where not more than one option can be selected at a time.
             case QuestionDef.QTN_TYPE_LIST_EXCLUSIVE:

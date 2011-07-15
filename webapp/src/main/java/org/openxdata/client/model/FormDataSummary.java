@@ -36,45 +36,6 @@ public class FormDataSummary extends BaseModel {
         }
     }
     
-    // convertFormDataUsing xml
-    /*private void convertFormData() {
-        // set general form summary data
-        setCapturer(formData.getCreator().getName());
-        setCaptureDate(formData.getDateCreated());
-        setStatus("submitted");
-        
-        // convert the FormData using purcForms
-        org.purc.purcforms.client.model.FormDef purcFormDef = XformParser.fromXform2FormDef(formDef.getDefaultVersion().getXform(), formData.getData());
-
-        // go through all the pages in this form
-        Iterator pageIt = purcFormDef.getPages().iterator();
-        while (pageIt.hasNext()) {
-            PageDef purcPageDef = (PageDef)pageIt.next();
-            // now go through all the questions in this page
-            Iterator questionIt = purcPageDef.getQuestions().iterator();
-            while (questionIt.hasNext()) {
-                QuestionDef purcQuestionDef = (QuestionDef)questionIt.next();
-                // get the question text (for the model)
-                String question = purcQuestionDef.getText();
-                String answer = purcQuestionDef.getAnswer();
-                // if this question has options, go through them to determine the correct answer text
-                if (answer != null && purcQuestionDef.getOptionCount() > 0) {
-                    StringBuilder answerBuilder = new StringBuilder();
-                    for (String option : answer.split(" ")) {
-                        OptionDef purcOptionDef = purcQuestionDef.getOptionWithValue(option);
-                        if (answerBuilder.length() > 0) {
-                            answerBuilder.append(" ");
-                        }
-                        answerBuilder.append(purcOptionDef.getText());
-                    }
-                    answer = answerBuilder.toString();
-                }
-                // finally, set the question/answer data
-                setData(question, answer);
-            }
-        }
-    }*/
-    
     public void setCapturer(String capturer) {
         set("openxdata_user_name", capturer);
     }
