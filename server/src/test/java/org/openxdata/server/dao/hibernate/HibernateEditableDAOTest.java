@@ -42,7 +42,7 @@ public class HibernateEditableDAOTest extends BaseContextSensitiveTest {
     public void getFormDataBetweenDates() {
         List<FormDataHeader> results = dao.getFormData(12, null, new Date(), new Date());
         for (FormDataHeader result : results) {
-        	System.out.println("result = "+result.getFormDataId());
+        	System.out.println("result = "+result.getId());
         }
     }
 

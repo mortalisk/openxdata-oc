@@ -150,8 +150,8 @@ public class FormServiceImpl implements FormService {
         List<FormData> formData = new ArrayList<FormData>();
         List<FormDataHeader> headers = studyDAO.getFormData(formDefVersionId, null, null, null);
         for (FormDataHeader header : headers) {
-            formData.add(formDataDAO.getFormData(header.getFormDataId()));
-            log.debug("Loaded form data with id " + header.getFormDataId());
+            formData.add(formDataDAO.getFormData(header.getId()));
+            log.debug("Loaded form data with id " + header.getId());
         }
         return formData;
     }

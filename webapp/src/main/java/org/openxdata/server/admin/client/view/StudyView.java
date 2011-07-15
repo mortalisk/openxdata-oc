@@ -387,7 +387,7 @@ public class StudyView extends OpenXDataBaseView implements
 		FormUtil.dlg.setText(constants.label_opening_form());
 		FormUtil.dlg.center();
 		
-		final Integer formDataId = formDataHeader.getFormDataId();
+		final Integer formDataId = formDataHeader.getId();
 		final Integer formDefVersionId = formDataHeader.getFormDefVersionId();
 		
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -546,7 +546,7 @@ public class StudyView extends OpenXDataBaseView implements
 			public void execute() {
 				try {
 					Context.getStudyManagerService().deleteFormData(
-					        frmDataHeader.getFormDataId(),
+					        frmDataHeader.getId(),
 					        new OpenXDataAsyncCallback<Void>() {
 						        
 						        @Override

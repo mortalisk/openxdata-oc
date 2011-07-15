@@ -14,8 +14,7 @@ public class FormDataHeader extends LightEntity{
 	
 	private static final long serialVersionUID = 8542417235341285428L;
 
-	/** The numeric unique identifier of the form data. */
-	private int formDataId = 0;
+	private int id = 0;
 	
 	/** The numeric unique identifier for the version of the form that this data belongs to. */
 	private Integer formDefVersionId;
@@ -96,11 +95,13 @@ public class FormDataHeader extends LightEntity{
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-	public int getFormDataId() {
-		return formDataId;
+
+	public int getId() {
+		return id;
 	}
-	public void setFormDataId(int formDataId) {
-		this.formDataId = formDataId;
+
+	public void setId(int formDataId) {
+		this.id = formDataId;
 	}
 
 	public Integer getFormDefVersionId() {
