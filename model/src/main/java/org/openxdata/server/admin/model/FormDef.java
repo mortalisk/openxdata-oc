@@ -1,7 +1,6 @@
 package org.openxdata.server.admin.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,14 +31,8 @@ public class FormDef extends AbstractEditable implements Exportable {
 	/** A list of users who have permission to work on this form */
 	private List<User> users;
 	
-	private Boolean retired = false;
-	private User retiredBy;
-	private Date dateRetired;
-	private String retiredReason;
-	
 	/** A list of the study text for different locales. */
 	private List<FormDefText> text;
-	
 	
 	public FormDef() {
 
@@ -129,38 +122,6 @@ public class FormDef extends AbstractEditable implements Exportable {
 
 	public void setVersions(List<FormDefVersion> versions) {
 		this.versions = versions;
-	}
-
-	public Date getDateRetired() {
-		return dateRetired;
-	}
-
-	public void setDateRetired(Date dateRetired) {
-		this.dateRetired = dateRetired;
-	}
-
-	public Boolean getRetired() {
-		return retired;
-	}
-
-	public void setRetired(Boolean retired) {
-		this.retired = retired;
-	}
-
-	public User getRetiredBy() {
-		return retiredBy;
-	}
-
-	public void setRetiredBy(User retiredBy) {
-		this.retiredBy = retiredBy;
-	}
-
-	public String getRetiredReason() {
-		return retiredReason;
-	}
-
-	public void setRetiredReason(String voidReason) {
-		this.retiredReason = voidReason;
 	}
 	
 	public List<FormDefText> getText() {

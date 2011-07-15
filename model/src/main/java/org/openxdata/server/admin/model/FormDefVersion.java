@@ -1,6 +1,5 @@
 package org.openxdata.server.admin.model;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -23,11 +22,6 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 	
 	/** The form definition whose version we represent. */
 	private FormDef formDef;
-	
-	private Boolean retired = false;
-	private User retiredBy;
-	private Date dateRetired;
-	private String retiredReason;
 	
 	private String xform;
 	private String layout;
@@ -83,38 +77,6 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Date getDateRetired() {
-		return dateRetired;
-	}
-
-	public void setDateRetired(Date dateRetired) {
-		this.dateRetired = dateRetired;
-	}
-
-	public Boolean getRetired() {
-		return retired;
-	}
-
-	public void setRetired(Boolean retired) {
-		this.retired = retired;
-	}
-
-	public User getRetiredBy() {
-		return retiredBy;
-	}
-
-	public void setRetiredBy(User retiredBy) {
-		this.retiredBy = retiredBy;
-	}
-
-	public String getRetiredReason() {
-		return retiredReason;
-	}
-
-	public void setRetiredReason(String retiredReason) {
-		this.retiredReason = retiredReason;
 	}
 
 	public String getLayout() {

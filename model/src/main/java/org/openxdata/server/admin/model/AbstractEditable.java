@@ -36,6 +36,11 @@ public abstract class AbstractEditable extends LightEntity implements Editable{
 	/** The date when this data was first submitted. */ 
 	protected Date dateCreated;
 
+	protected Boolean retired = false;
+	protected User retiredBy;
+	protected Date dateRetired;
+	protected String retiredReason;
+	
 	private EditableState state = EditableState.LOADED;	
 	
 	public void setId(int id){
@@ -112,5 +117,37 @@ public abstract class AbstractEditable extends LightEntity implements Editable{
 	
 	public void setState(EditableState state){
 		this.state = state;
+	}
+	
+	protected Date getDateRetired() {
+		return dateRetired;
+	}
+
+	protected void setDateRetired(Date dateRetired) {
+		this.dateRetired = dateRetired;
+	}
+
+	protected Boolean getRetired() {
+		return retired;
+	}
+
+	protected void setRetired(Boolean retired) {
+		this.retired = retired;
+	}
+
+	protected User getRetiredBy() {
+		return retiredBy;
+	}
+
+	public void setRetiredBy(User retiredBy) {
+		this.retiredBy = retiredBy;
+	}
+
+	public String getRetiredReason() {
+		return retiredReason;
+	}
+
+	public void setRetiredReason(String voidReason) {
+		this.retiredReason = voidReason;
 	}
 }
