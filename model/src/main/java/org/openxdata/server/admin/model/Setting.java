@@ -3,7 +3,6 @@ package org.openxdata.server.admin.model;
 public class Setting extends AbstractEditable{
 
 	private static final long serialVersionUID = -9195376892324311798L;
-	private int id = 0;
 	private String name;
 	private String description;
 	private String value;
@@ -35,15 +34,6 @@ public class Setting extends AbstractEditable{
 		this.description = description;
 	}
 
-	@Override
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -60,12 +50,7 @@ public class Setting extends AbstractEditable{
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	@Override
-	public boolean isNew(){
-		return id == 0;
-	}
-	
+		
 	@Override
 	public void setDirty(boolean dirty){
 		super.setDirty(dirty);
