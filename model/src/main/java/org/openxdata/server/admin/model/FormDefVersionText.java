@@ -6,9 +6,6 @@ package org.openxdata.server.admin.model;
 public class FormDefVersionText extends AbstractEditable{
 
 	private static final long serialVersionUID = -8844252387415837817L;
-
-	/** The database identifier of the form version text. */
-	private int formDefVersionTextId = 0;
 	
 	/** The key of the locale. */
 	private String localeKey;
@@ -27,20 +24,7 @@ public class FormDefVersionText extends AbstractEditable{
 		this.xformText = xformText;
 		this.layoutText = layoutText;
 	}
-	
-	public int getFormDefVersionTextId() {
-		return formDefVersionTextId;
-	}
-
-	@Override
-	public int getId() {
-		return formDefVersionTextId;
-	}
-	
-	public void setFormDefVersionTextId(int formDefVersionTextId) {
-		this.formDefVersionTextId = formDefVersionTextId;
-	}
-	
+		
 	public String getLocaleKey() {
 		return localeKey;
 	}
@@ -63,10 +47,5 @@ public class FormDefVersionText extends AbstractEditable{
 	
 	public void setLayoutText(String layoutText) {
 		this.layoutText = layoutText;
-	}
-	
-	@Override
-	public boolean isNew(){
-		return formDefVersionTextId == 0;
 	}
 }
