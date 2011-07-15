@@ -6,13 +6,11 @@ import java.util.List;
 public class SettingGroup extends AbstractEditable{
 
 	private static final long serialVersionUID = 1181738467655537369L;
-	private int settingGroupId = 0;
 	private SettingGroup parentSettingGroup;
 	private String name;
 	private String description;
 	private List<SettingGroup> groups = new ArrayList<SettingGroup>();
 	private List<Setting> settings = new ArrayList<Setting>();
-
 
 	public SettingGroup(){
 		
@@ -21,20 +19,7 @@ public class SettingGroup extends AbstractEditable{
 	public SettingGroup(String name){
 		this.name = name;
 	}
-	
-	public int getSettingGroupId() {
-		return settingGroupId;
-	}
-	
-	@Override
-	public int getId() {
-		return settingGroupId;
-	}
-	
-	public void setSettingGroupId(int settingGroupId) {
-		this.settingGroupId = settingGroupId;
-	}
-	
+		
 	public SettingGroup getParentSettingGroup() {
 		return parentSettingGroup;
 	}
@@ -89,7 +74,7 @@ public class SettingGroup extends AbstractEditable{
 
 	@Override
 	public boolean isNew(){
-		if(settingGroupId == 0)
+		if(id == 0)
 			return true;
 		
 		if(settings != null){
