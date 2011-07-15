@@ -13,9 +13,6 @@ import java.util.List;
 public class TaskDef extends AbstractEditable{
 
 	private static final long serialVersionUID = -4121837688631289120L;
-
-	/** The database identifier for the task definition. */
-	private int taskId = 0;
 	
 	/** The name. */
 	private String name;
@@ -63,19 +60,6 @@ public class TaskDef extends AbstractEditable{
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getTaskId() {
-		return taskId;
-	}
-
-	@Override
-	public int getId() {
-		return taskId;
-	}
-	
-	public void setTaskId(int taskId) {
-		this.taskId = taskId;
 	}
 
 	public String getTaskClass() {
@@ -159,10 +143,5 @@ public class TaskDef extends AbstractEditable{
 		}
 		
 		return null;
-	}
-	
-	@Override
-	public boolean isNew(){
-		return taskId == 0;
-	}
+	}	
 }

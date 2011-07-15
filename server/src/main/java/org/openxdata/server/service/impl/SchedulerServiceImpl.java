@@ -128,7 +128,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	
 	@Override
 	public void registerTaskRunningInstance(Task task){
-		tasks.put(task.getTaskDef().getTaskId(),task);
+		tasks.put(task.getTaskDef().getId(),task);
 	}
 
 	@Override
@@ -201,7 +201,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	 * @return the task object.
 	 */
 	private Task getTask(TaskDef taskDef){
-		return tasks.get(taskDef.getTaskId());
+		return tasks.get(taskDef.getId());
 	}
 
 
