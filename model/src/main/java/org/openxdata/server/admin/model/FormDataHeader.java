@@ -68,24 +68,31 @@ public class FormDataHeader extends LightEntity{
 	public String getChangedBy() {
 		return changedBy;
 	}
+
 	public void setChangedBy(String changedBy) {
 		this.changedBy = changedBy;
 	}
+
 	public String getCreator() {
 		return creator;
 	}
+
 	public void setCreator(String creator) {
 		this.creator = creator;
 	}
+
 	public Date getDateChanged() {
 		return dateChanged;
 	}
+
 	public void setDateChanged(Date dateChanged) {
 		this.dateChanged = dateChanged;
 	}
+
 	public Date getDateCreated() {
 		return dateCreated;
 	}
+
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
@@ -95,9 +102,11 @@ public class FormDataHeader extends LightEntity{
 	public void setFormDataId(int formDataId) {
 		this.formDataId = formDataId;
 	}
+
 	public Integer getFormDefVersionId() {
 		return formDefVersionId;
 	}
+
 	public void setFormDefVersionId(Integer formDefVersionId) {
 		this.formDefVersionId = formDefVersionId;
 	}
