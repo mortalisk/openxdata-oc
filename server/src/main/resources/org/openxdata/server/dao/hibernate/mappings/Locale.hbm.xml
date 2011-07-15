@@ -7,7 +7,7 @@
 
 	<class name="Locale" table="locale" lazy="false">
 
-		<id name="localeId" type="java.lang.Integer" column="locale_id" unsaved-value="0">
+		<id name="id" type="java.lang.Integer" column="locale_id" unsaved-value="0">
 			<generator class="native">
 					 <param name="sequence">locale_locale_id_seq</param>
 			</generator>

@@ -6,9 +6,6 @@ package org.openxdata.server.admin.model;
 public class Locale extends AbstractEditable{
 	
 	private static final long serialVersionUID = 2100312849246884803L;
-
-	/** The data base identifier for the locale. */
-	private int localeId = 0;
 	
 	/** The locale key. eg en */
 	private String key;
@@ -19,20 +16,7 @@ public class Locale extends AbstractEditable{
 	public Locale(){
 		
 	}
-	
-	public int getLocaleId() {
-		return localeId;
-	}
-	
-	@Override
-	public int getId() {
-		return localeId;
-	}
-	
-	public void setLocaleId(int localeId) {
-		this.localeId = localeId;
-	}
-	
+		
 	public String getKey() {
 		return key;
 	}
@@ -47,10 +31,5 @@ public class Locale extends AbstractEditable{
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	@Override
-	public boolean isNew(){
-		return localeId == 0;
-	}
+	}	
 }
