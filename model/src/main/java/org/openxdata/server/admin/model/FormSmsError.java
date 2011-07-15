@@ -10,9 +10,6 @@ import java.util.Date;
 public class FormSmsError extends AbstractEditable {
 
 	private static final long serialVersionUID = -3919484259284142514L;
-
-	/** The numeric unique identifier of the form data. */
-	private int formSmsErrorId = 0;
 	
 	/** The phone number of the sender. **/
 	private String sender;
@@ -66,18 +63,5 @@ public class FormSmsError extends AbstractEditable {
 
 	public void setErrorMsg(String errorMsg) {
 		this.errorMsg = errorMsg;
-	}
-
-	public int getFormSmsErrorId() {
-		return formSmsErrorId;
-	}
-
-	@Override
-	public int getId() {
-		return formSmsErrorId;
-	}
-	
-	public void setFormSmsErrorId(int formSmsErrorId) {
-		this.formSmsErrorId = formSmsErrorId;
 	}
 }
