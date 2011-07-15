@@ -399,9 +399,8 @@ public class FormListView extends View implements Refreshable {
 		}
 	}
 
-	public void setNumberOfFormResponses(FormDef formDef,
-			Integer numberOfResponses) {
-		FormSummary formSummary = getFormSummary(formDef.getFormId());
+	public void setNumberOfFormResponses(FormDef formDef, Integer numberOfResponses) {
+		FormSummary formSummary = getFormSummary(formDef.getId());
 		if (formSummary != null) {
 			formSummary.setResponses(String.valueOf(numberOfResponses));
 		}

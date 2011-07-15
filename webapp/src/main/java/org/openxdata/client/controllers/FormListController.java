@@ -127,7 +127,7 @@ public class FormListController extends Controller {
                 } else {
                     formListView.setFormStatus(formDefVersion.getFormDef(), false);
                 }
-                formListView.setNumberOfFormResponses(formDefVersion, result);
+                formListView.setNumberOfFormResponses(formDefVersion.getFormDef(), result);
             }
         });
     }
