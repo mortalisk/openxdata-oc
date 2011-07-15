@@ -6,7 +6,9 @@ import java.util.List;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.FormDefVersionText;
+import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
@@ -38,7 +40,8 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
  */
 public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
-	private FormDef form;
+	private FormDefVersion formDefVersion;
+	//private FormDef form;
 
 	private CheckBox published;
 	private final TextField<String> studyName = new TextField<String>();
@@ -202,7 +205,10 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		GWT.log("EditStudyFormView : handleEvent");
 		if (event.getType() == EditStudyFormController.EDITSTUDYFORM) {
 
-			form = event.getData("formDef");
+			formDefVersion = event.getData("formVersion");
+			FormDef form = formDefVersion.getFormDef();
+			StudyDef study = form.getStudy();
+			
 			GWT.log("EditStudyFormView : EditStudyFormController.EDITSTUDYFORM : Edit");
 
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -218,17 +224,13 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			});
 
 			// Set the values of the form to that of the selected Form
-			studyName.setValue(form.getStudy().getName());
-			studyDescription.setValue(form.getStudy().getDescription());
-
+			studyName.setValue(study.getName());
+			studyDescription.setValue(study.getDescription());
 			formName.setValue(form.getName());
 			formDescription.setValue(form.getDescription());
-
-			formVersion.setValue(form.getDefaultVersion().getName());
-			formVersionDescription.setValue(form.getDefaultVersion()
-					.getDescription());
-
-			published.setEnabled(form.getDefaultVersion().getIsDefault());
+			formVersion.setValue(formDefVersion.getName());
+			formVersionDescription.setValue(formDefVersion.getDescription());
+			published.setEnabled(formDefVersion.getIsDefault());
 		}
 		showWindow(appMessages.editStudyOrForm(), 555, 400);
 	}
@@ -236,16 +238,16 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private void launchDesigner(boolean readOnly) {
 
 		FormDesignerView editFormFormDesignerView = new FormDesignerView(this);
-		editFormFormDesignerView.openFormForEditing(form.getDefaultVersion(), readOnly);
+		editFormFormDesignerView.openFormForEditing(formDefVersion, readOnly);
 	}
 
 	private void save() {
 
-		if (form == null) {
+		if (formDefVersion == null) {
 			return;
 		}
 		
-		if (form.getState() == EditableState.HASDATA) {
+		if (formDefVersion.getState() == EditableState.HASDATA) {
 			MessageBox.info(appMessages.existingDataTitle(), appMessages.cannotSave(), new Listener<MessageBoxEvent>() {
 				@Override
 				public void handleEvent(MessageBoxEvent be) {
@@ -254,13 +256,13 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			return;
 		}
 		// update study/form/version information
+		final FormDef form = formDefVersion.getFormDef();
 		form.getStudy().setName(studyName.getValue());
 		form.getStudy().setDescription(studyDescription.getValue());
 		form.setName(formName.getValue());
 		form.setDescription(formDescription.getValue());
-		form.getDefaultVersion().setName(formVersion.getValue());
-		form.getDefaultVersion().setDescription(
-				formVersionDescription.getValue());
+		formDefVersion.setName(formVersion.getValue());
+		formDefVersion.setDescription(formVersionDescription.getValue());
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
@@ -274,8 +276,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.showProgressBar();
 		try {
 			save();
-			((EditStudyFormController)controller).saveUserMappedForms(form, userAccessToForm.getMappedUsers());
-			((EditStudyFormController)controller).saveUserMappedStudies(form.getStudy(), userAccessToStudy.getMappedUsers());
+			((EditStudyFormController)controller).saveUserMappedForms(formDefVersion.getFormDef(), userAccessToForm.getMappedUsers());
+			((EditStudyFormController)controller).saveUserMappedStudies(formDefVersion.getFormDef().getStudy(), userAccessToStudy.getMappedUsers());
 		} finally {
 			ProgressIndicator.hideProgressBar();
 		}
@@ -285,16 +287,16 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	public boolean onSaveForm(int formId, String xformsXml, String layoutXml,
 			String javaScriptSrc) {
 		try {
-			if (form.getDefaultVersion() == null) {
+			if (formDefVersion == null) {
 				MessageBox.alert(appMessages.error(),
 						appMessages.removeFormIdAttribute(), null);
 				
 				return false;
 			}
 
-			form.getDefaultVersion().setXform(xformsXml);
-			form.getDefaultVersion().setLayout(layoutXml);
-			form.getDefaultVersion().setDirty(true);
+			formDefVersion.setXform(xformsXml);
+			formDefVersion.setLayout(layoutXml);
+			formDefVersion.setDirty(true);
 
 			return true;
 			// We shall use the onSaveLocaleText() such that we avoid double saving
@@ -307,23 +309,22 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	@Override
 	public void onSaveLocaleText(int formId, String xformsLocaleText,
 			String layoutLocaleText) {
-		if (form.getDefaultVersion() == null) {
+		if (formDefVersion == null) {
 			MessageBox.alert(appMessages.error(), appMessages.selectFormVersion(),
 					null);
 			return;
 		}
 
-		FormDefVersionText formDefVersionText = form.getDefaultVersion()
-				.getFormDefVersionText("en");
+		FormDefVersionText formDefVersionText = formDefVersion.getFormDefVersionText("en");
 		if (formDefVersionText == null) {
 			formDefVersionText = new FormDefVersionText("en",
 					xformsLocaleText, layoutLocaleText);
-			form.getDefaultVersion().addVersionText(formDefVersionText);
+			formDefVersion.addVersionText(formDefVersionText);
 		} else {
 			formDefVersionText.setXformText(xformsLocaleText);
 			formDefVersionText.setLayoutText(layoutLocaleText);
 		}
-		form.getDefaultVersion().setDirty(true);
+		formDefVersion.setDirty(true);
 		save();
 	}
 
@@ -359,11 +360,11 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 				}
 			}
 		});
-		userAccessToStudy.setUserStudyMap(form.getStudy(), users, mappedStudies);
+		userAccessToStudy.setUserStudyMap(formDefVersion.getFormDef().getStudy(), users, mappedStudies);
 	}
 
 	public void setUserMappedForms(List<UserFormMap> mappedForms) {
-		userAccessToForm.setUserFormMap(form, users, mappedForms, mappedStudies);
+		userAccessToForm.setUserFormMap(formDefVersion.getFormDef(), users, mappedForms, mappedStudies);
 	}
 
 	public void onFormDataCheckComplete(Boolean hasData) {
@@ -373,7 +374,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 				@Override
 				public void handleEvent(MessageBoxEvent be) {
 					if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-						form.setState(EditableState.HASDATA);
+						formDefVersion.setState(EditableState.HASDATA);
 						launchDesigner(true);
 					}
 				}
@@ -390,7 +391,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ButtonEvent be) {
-						studyFormController.formHasData(form);
+						studyFormController.formHasData(formDefVersion);
 					}
 				});
 		return designFormButton;

@@ -38,6 +38,8 @@ public class ItemExportController implements
 		getFileNameDialog = new GetFileNameDialog(this,
 				appMessages.exportAs(), appMessages.exportA(), defaultName);
 		getFileNameDialog.center();
+		
+		ProgressIndicator.hideProgressBar();
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import org.openxdata.client.service.UserServiceAsync;
 import org.openxdata.client.views.EditStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
@@ -134,9 +135,9 @@ public class EditStudyFormController extends Controller {
 				});
 	}
 
-	public void formHasData(FormDef form) {
+	public void formHasData(FormDefVersion formVersion) {
 		GWT.log("EditStudyFormController : formHasData");
-		formService.hasEditableData(form.getDefaultVersion(), new EmitAsyncCallback<Boolean>() {
+		formService.hasEditableData(formVersion, new EmitAsyncCallback<Boolean>() {
 
 			@Override
 			public void onSuccess(Boolean result) {

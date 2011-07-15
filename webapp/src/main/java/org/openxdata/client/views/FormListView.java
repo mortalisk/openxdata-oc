@@ -20,6 +20,7 @@ import org.openxdata.server.admin.model.User;
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
@@ -29,6 +30,8 @@ import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.store.GroupingStore;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.Store;
+import com.extjs.gxt.ui.client.store.StoreFilter;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -38,6 +41,8 @@ import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.custom.Portal;
 import com.extjs.gxt.ui.client.widget.custom.Portlet;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.grid.CheckColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -56,9 +61,11 @@ public class FormListView extends View implements Refreshable {
 	private Portlet portlet;
 	private Grid<FormSummary> grid;
 
-	private boolean showAllFormVersions = true;
-	private Button allVersions;
-	private Button export;
+	//private boolean showAllStudies = false;
+	private CheckBox allVersions;
+	//private CheckBox allStudies;
+	private CheckBox allForms;
+	private List<FormSummary> allFormSummaries = new ArrayList<FormSummary>();
 
 	public FormListView(Controller controller) {
 		super(controller);
@@ -72,11 +79,11 @@ public class FormListView extends View implements Refreshable {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 		configs.add(new ColumnConfig("id", appMessages.id(), 20));
 		configs.add(new ColumnConfig("organisation", appMessages.study(), 290));
-		configs.add(new ColumnConfig("form", appMessages.form(), 580));
-		ColumnConfig ver = new ColumnConfig("version", appMessages.version(),
-				50);
+		configs.add(new ColumnConfig("form", appMessages.form(), 570));
+		ColumnConfig ver = new ColumnConfig("version", appMessages.version(), 50);
 		ver.setAlignment(HorizontalAlignment.CENTER);
 		configs.add(ver);
+		configs.add(new CheckColumnConfig("published", "Published", 60));
 		ColumnConfig responsesColConfig = new ColumnConfig("responses",
 				appMessages.responses(), 70);
 		responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
@@ -84,6 +91,7 @@ public class FormListView extends View implements Refreshable {
 
 		ColumnModel cm = new ColumnModel(configs);
 		cm.setHidden(0, true); // hide ID column
+		showPublishedColumn(cm, true);
 
 		GroupingView view = new GroupingView();
 		view.setShowGroupedColumn(false);
@@ -96,6 +104,24 @@ public class FormListView extends View implements Refreshable {
 		grid.setStripeRows(true);
 		grid.setBorders(true);
 		grid.setView(view);
+		
+		final StoreFilter<FormSummary> showAllFormVersionsFilter = new StoreFilter<FormSummary>() {
+			@Override
+            public boolean select(Store<FormSummary> store, FormSummary parent,
+                    FormSummary item, String property) {
+				if (!allVersions.getValue() && !item.isPublished()) {
+					return false;
+				//} else if (!showAllStudies && item.getStudy()) == null)  {
+				//	return false;
+				} else if (!allForms.getValue() && item.getFormVersion() == null) {
+					return false;
+				}
+				return true;
+
+            }
+        };
+        store.addFilter(showAllFormVersionsFilter);
+        store.applyFilters(null);
 
 		grid.addListener(Events.CellDoubleClick,
 				new Listener<GridEvent<FormSummary>>() {
@@ -103,7 +129,7 @@ public class FormListView extends View implements Refreshable {
 					public void handleEvent(GridEvent<FormSummary> be) {
 						if (be.getColIndex() == 2) {
 							captureData();
-						} else if (be.getColIndex() == 4) {
+						} else if (be.getColIndex() == 5) {
 							browseResponses();
 						}
 					}
@@ -148,16 +174,34 @@ public class FormListView extends View implements Refreshable {
 		});
 		delete.hide();
 
-		allVersions = new Button(appMessages.showAllVersions());
-		allVersions.addListener(Events.Select, new Listener<ButtonEvent>() {
+		allVersions = new CheckBox();
+		allVersions.setBoxLabel(appMessages.showAllVersions());
+		allVersions.addListener(Events.OnClick, new Listener<BaseEvent>() {
 			@Override
-			public void handleEvent(ButtonEvent be) {
+			public void handleEvent(BaseEvent be) {
 				toggleAllFormVersions();
 			}
 		});
-		allVersions.hide();
+		/*allStudies = new CheckBox();
+		// FIXME: change text below
+		allStudies.setBoxLabel("All Studies");
+		allStudies.addListener(Events.OnClick, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				toggleAllStudies();
+			}
+		});*/
+		allForms = new CheckBox();
+		// FIXME: change text below
+		allForms.setBoxLabel("All Forms");
+		allForms.addListener(Events.OnClick, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				toggleAllForms();
+			}
+		});
 
-		export = new Button(appMessages.exportA());
+		Button export = new Button(appMessages.exportA());
 		export.addListener(Events.Select, new Listener<ButtonEvent>() {
 
 			@Override
@@ -193,6 +237,8 @@ public class FormListView extends View implements Refreshable {
 					Permission.PERM_ADD_FORM_VERSIONS)) {
 				newButton.show();
 				allVersions.show();
+				showPublishedColumn(cm, false);
+				//allStudies.show();
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_EDIT_STUDIES,
@@ -200,6 +246,8 @@ public class FormListView extends View implements Refreshable {
 					Permission.PERM_EDIT_FORM_VERSIONS)) {
 				edit.show();
 				allVersions.show();
+				showPublishedColumn(cm, false);
+				//allStudies.show();
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_DELETE_STUDIES,
@@ -207,6 +255,8 @@ public class FormListView extends View implements Refreshable {
 					Permission.PERM_DELETE_FORM_VERSIONS)) {
 				delete.show();
 				allVersions.show();
+				showPublishedColumn(cm, false);
+				//allStudies.show();
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_ADD_FORM_DATA)) {
@@ -224,14 +274,21 @@ public class FormListView extends View implements Refreshable {
 		buttonBar.add(newButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(edit, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(delete, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
-		buttonBar.add(allVersions, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
+		//buttonBar.add(allVersions, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
+		//buttonBar.add(publishedVersions, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(export, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		HBoxLayoutData flex = new HBoxLayoutData(new Margins(5, 5, 0, 0));
 		flex.setFlex(1);
 		buttonBar.add(new Text(), flex);
 		buttonBar.add(capture, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
-		buttonBar.add(browseResponses, new HBoxLayoutData(new Margins(5, 0, 0,
-				0)));
+		buttonBar.add(browseResponses, new HBoxLayoutData(new Margins(5, 0, 0, 0)));
+		
+		LayoutContainer filterBar = new LayoutContainer();
+		filterBar.setLayout(new HBoxLayout());
+		filterBar.add(new Text(), flex);
+		filterBar.add(allVersions);
+		//filterBar.add(allStudies);
+		filterBar.add(allForms);
 
 		portlet = new Portlet(new FitLayout());
 		portlet.setHeading(appMessages.listOfForms());
@@ -243,7 +300,12 @@ public class FormListView extends View implements Refreshable {
 		portlet.setScrollMode(Scroll.AUTOY);
 		portlet.setSize(725, 200);
 		portlet.setBottomComponent(buttonBar);
+		portlet.setTopComponent(filterBar);
 	}
+
+	private void showPublishedColumn(ColumnModel cm, boolean hide) {
+	    cm.setHidden(4, hide);
+    }
 
 	protected void export() {
 		if (grid.getSelectionModel().getSelectedItem() != null) {
@@ -259,7 +321,7 @@ public class FormListView extends View implements Refreshable {
 				}
 			});
 		} else {
-			MessageBox.alert(appMessages.viewResponses(),
+			MessageBox.alert(appMessages.listOfForms(),
 					appMessages.formMustBeSelected(), null);
 		}
 	}
@@ -270,21 +332,31 @@ public class FormListView extends View implements Refreshable {
 		ListStore<FormSummary> store = grid.getStore();
 		store.removeAll();
 		for (FormDef formDef : formDefs) {
-			final FormDefVersion formVersion = formDef.getDefaultVersion();
-			if (formVersion != null) {
+			if (formDef.getVersions() == null || formDef.getVersions().size() == 0) {
 				FormSummary formSummary = new FormSummary(formDef);
-				formSummary.setStatus(appMessages.loading());
-				formSummary.setResponses(appMessages.loading());
+				formSummary.setResponses("0");
 				store.add(formSummary);
-				// get response data
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					@Override
-					public void execute() {
-						((FormListController) FormListView.this.getController())
-								.hasFormData(formVersion);
+				allFormSummaries.add(formSummary);
+			} else {
+				for (final FormDefVersion formVersion : formDef.getVersions()) {
+				//final FormDefVersion formVersion = formDef.getDefaultVersion();
+					if (formVersion != null) {
+						FormSummary formSummary = new FormSummary(formVersion);
+						formSummary.setStatus(appMessages.loading());
+						formSummary.setResponses(appMessages.loading());
+						store.add(formSummary);
+						allFormSummaries.add(formSummary);
+						// get response data
+						Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+							@Override
+							public void execute() {
+								((FormListController) FormListView.this.getController())
+										.hasFormData(formVersion);
+							}
+						});
 					}
-				});
-			} 
+				}
+			}
 		}
 		ProgressIndicator.hideProgressBar();
 	}
@@ -305,15 +377,18 @@ public class FormListView extends View implements Refreshable {
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 				@Override
 				public void execute() {
-					FormDef formDef = grid.getSelectionModel()
-							.getSelectedItem().getFormDefinition();
-					FormListController controller = (FormListController) getController();
-
-					controller.forwardToEditStudyFormController(formDef);
+					FormSummary formSummary = grid.getSelectionModel().getSelectedItem();
+					if (formSummary.getFormVersion() != null) {
+						FormListController controller = (FormListController) getController();
+						controller.forwardToEditStudyFormController(formSummary);
+					} else {
+						MessageBox.alert(appMessages.listOfForms(), appMessages.noFormVersion(), null);
+						ProgressIndicator.hideProgressBar();
+					}
 				}
 			});
 		} else {
-			MessageBox.alert(appMessages.viewResponses(),
+			MessageBox.alert(appMessages.listOfForms(),
 					appMessages.formMustBeSelected(), null);
 		}
 	}
@@ -325,36 +400,48 @@ public class FormListView extends View implements Refreshable {
 				@Override
 				public void execute() {
 					FormListController controller = (FormListController) getController();
-					controller.forwardToDeleteStudyFormController(grid
-							.getSelectionModel().getSelectedItem()
-							.getFormDefinition());
+					FormSummary formSummary = grid.getSelectionModel().getSelectedItem();
+					controller.forwardToDeleteStudyFormController(formSummary);
 				}
 			});
 		} else {
-			MessageBox.alert(appMessages.viewResponses(),
+			MessageBox.alert(appMessages.listOfForms(),
 					appMessages.formMustBeSelected(), null);
 		}
 	}
 
 	private void toggleAllFormVersions() {
-		if (grid.getSelectionModel().getSelectedItem() != null) {
-			ProgressIndicator.showProgressBar();
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					FormDef formDef = grid.getSelectionModel()
-							.getSelectedItem().getFormDefinition();
-					if (showAllFormVersions) {
-						FormListController controller = (FormListController) getController();
-						controller.forwardToFormVersionController(formDef);
-					}
-				}
-			});
-			ProgressIndicator.hideProgressBar();
-		} else {
-			MessageBox.alert(appMessages.showAllVersions(),
-					appMessages.formMustBeSelected(), null);
-		}
+		ProgressIndicator.showProgressBar();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				grid.getStore().applyFilters(null);
+			}
+		});
+		ProgressIndicator.hideProgressBar();
+	}
+	
+	/*private void toggleAllStudies() {
+		ProgressIndicator.showProgressBar();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				grid.getStore().applyFilters(null);
+			}
+		});
+		ProgressIndicator.hideProgressBar();
+	}*/
+	
+	private void toggleAllForms() {
+		ProgressIndicator.showProgressBar();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				grid.getStore().applyFilters(null);
+				//grid.getView().refresh(false);
+			}
+		});
+		ProgressIndicator.hideProgressBar();
 	}
 
 	private void captureData() {
@@ -363,15 +450,19 @@ public class FormListView extends View implements Refreshable {
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 				@Override
 				public void execute() {
-					FormDef formDef = grid.getSelectionModel()
-							.getSelectedItem().getFormDefinition();
-					FormListController controller = (FormListController) getController();
-					controller.forwardToDataCapture(formDef);
+					FormDefVersion formVersion = grid.getSelectionModel()
+							.getSelectedItem().getFormVersion();
+					if (formVersion != null) {
+						FormListController controller = (FormListController) getController();
+						controller.forwardToDataCapture(formVersion);
+					} else {
+						MessageBox.alert(appMessages.listOfForms(), appMessages.noFormVersion(), null);
+						ProgressIndicator.hideProgressBar();
+					}
 				}
 			});
 		} else {
-			MessageBox.alert(appMessages.viewResponses(),
-					appMessages.formMustBeSelected(), null);
+			MessageBox.alert(appMessages.listOfForms(), appMessages.formMustBeSelected(), null);
 		}
 	}
 
@@ -390,17 +481,16 @@ public class FormListView extends View implements Refreshable {
 					}
 				});
 			} else {
-				MessageBox.alert(appMessages.viewResponses(),
-						appMessages.noResponses(), null);
+				MessageBox.alert(appMessages.listOfForms(), appMessages.noResponses(), null);
+				ProgressIndicator.hideProgressBar();
 			}
 		} else {
-			MessageBox.alert(appMessages.viewResponses(),
-					appMessages.formMustBeSelected(), null);
+			MessageBox.alert(appMessages.listOfForms(), appMessages.formMustBeSelected(), null);
 		}
 	}
 
-	public void setNumberOfFormResponses(FormDef formDef, Integer numberOfResponses) {
-		FormSummary formSummary = getFormSummary(formDef.getId());
+	public void setNumberOfFormResponses(FormDefVersion formDefVersion, Integer numberOfResponses) {
+		FormSummary formSummary = getFormSummary(formDefVersion.getFormDefVersionId());
 		if (formSummary != null) {
 			formSummary.setResponses(String.valueOf(numberOfResponses));
 		}
@@ -419,14 +509,14 @@ public class FormListView extends View implements Refreshable {
 		grid.getView().refresh(false);
 	}
 
-	FormSummary getFormSummary(int formDefId) {
-		String formDefIdStr = String.valueOf(formDefId);
-		ListStore<FormSummary> store = grid.getStore();
-		for (FormSummary formSummary : store.getModels()) {
-			if (formDefIdStr.equals(formSummary.getId())) {
+	FormSummary getFormSummary(int formDefVersionId) {
+		String formDefVerId = String.valueOf(formDefVersionId);
+		for (FormSummary formSummary : allFormSummaries) {
+			if (formDefVerId.equals(formSummary.getId())) {
 				return formSummary;
 			}
 		}
+		GWT.log("ERROR: no form summary found id="+formDefVersionId);
 		return null;
 	}
 
@@ -447,8 +537,7 @@ public class FormListView extends View implements Refreshable {
 			ListStore<FormSummary> store = grid.getStore();
 			FormData data = event.getData();
 			for (final FormSummary summary : store.getModels()) {
-				FormDef formDef = summary.getFormDefinition();
-				FormDefVersion formDefVer = formDef.getDefaultVersion();
+				FormDefVersion formDefVer = summary.getFormVersion();
 				if (data.getFormDefVersionId().equals(
 						formDefVer.getFormDefVersionId())) {
 					Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -456,7 +545,7 @@ public class FormListView extends View implements Refreshable {
 						public void execute() {
 							((FormListController) FormListView.this
 									.getController()).hasFormData(summary
-									.getFormDefinition().getDefaultVersion());
+									.getFormVersion());
 						}
 					});
 					break;
@@ -466,13 +555,15 @@ public class FormListView extends View implements Refreshable {
 			StudyDef study = event.getData();
 			ListStore<FormSummary> store = grid.getStore();
 			for (FormDef form : study.getForms()) {
-				FormSummary summary = store.findModel("id",String.valueOf(form.getFormId()));
-				if (summary != null) {
-					summary.updateFormDefinition(form);
-					store.update(summary);
-				} else {
-					GWT.log("Could not find match for updated form "
-							+ form.getName() + " using ID=" + form.getId());
+				for (FormDefVersion formVersion : form.getVersions()) {
+					FormSummary summary = store.findModel("id",String.valueOf(form.getFormId()));
+					if (summary != null) {
+						summary.updateFormVersion(formVersion);
+						store.update(summary);
+					} else {
+						GWT.log("Could not find match for updated form "
+								+ form.getName() + " using ID=" + form.getId());
+					}
 				}
 			}
 
@@ -496,13 +587,11 @@ public class FormListView extends View implements Refreshable {
 						store.remove(summary);
 					}
 				} else if (event.getData() instanceof StudyDef) {
-					if (summary.getFormDefinition().getStudy() == event
-							.getData()) {
+					if (summary.getFormDefinition().getStudy() == event.getData()) {
 						store.remove(summary);
 					}
 				} else if (event.getData() instanceof FormDefVersion) {
-					if (summary.getFormDefinition().getDefaultVersion() == event
-							.getData()) {
+					if (summary.getFormVersion() == event.getData()) {
 						store.remove(summary);
 						break; // no chance to have more than one
 					}

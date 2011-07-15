@@ -3,7 +3,9 @@ package org.openxdata.client.views;
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.DeleteStudyFormController;
 import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -25,7 +27,6 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.openxdata.server.admin.model.Editable;
 
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version.
@@ -47,6 +48,7 @@ public class DeleteStudyFormView extends View {
 	private Button cancelButton;
 	
 	private FormDef form;
+	private FormDefVersion formVersion;
     
 	/**
 	 * @param controller
@@ -102,8 +104,7 @@ public class DeleteStudyFormView extends View {
                                     } else if (deleteForm.getValue()) {
                                         checkItemHasData(form);
                                     } else if (deleteFormVersion.getValue()) {
-                                        // FIXME: might not be default version!!!
-                                        checkItemHasData(form.getDefaultVersion());
+                                        checkItemHasData(formVersion);
                                     }
 					}
 				});
@@ -141,8 +142,7 @@ public class DeleteStudyFormView extends View {
                         } else if (deleteForm.getValue()) {
                             controller1.delete(form);
                         } else if (deleteFormVersion.getValue()) {
-                            // FIXME: might not be default version!!!
-                            controller1.delete(form.getDefaultVersion());
+                            controller1.delete(formVersion);
                         }
                     }
                 }
@@ -202,12 +202,18 @@ public class DeleteStudyFormView extends View {
         if (event.getType() == DeleteStudyFormController.DELETESTUDYFORM) {
             GWT.log("DeleteStudyFormView : DeleteStudyFormController.DELETESTUDYFORM: Delete");
 
-            form = event.getData();
+            formVersion = event.getData("formVersion");
+            form = event.getData("formDef");
 
             // Initialize Window
             deleteStudy.setBoxLabel(deleteStudy.getBoxLabel()+" - "+form.getStudy().getName());
             deleteForm.setBoxLabel(deleteForm.getBoxLabel()+" - "+form.getName());
-            deleteFormVersion.setBoxLabel(deleteFormVersion.getBoxLabel()+" - "+form.getDefaultVersion().getName());
+            if (formVersion != null) {
+            	deleteFormVersion.setBoxLabel(deleteFormVersion.getBoxLabel()+" - "+formVersion.getName());
+            	deleteFormVersion.show();
+            } else {
+            	deleteFormVersion.hide();
+            }
             window.setAutoHeight(true);
             window.setWidth(425);
             window.setPlain(true);

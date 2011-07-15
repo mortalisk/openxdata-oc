@@ -52,11 +52,11 @@ public class FormListController extends Controller {
         }
     }
     
-    public void forwardToDataCapture(FormDef formDef){
+    public void forwardToDataCapture(FormDefVersion formVersion){
     	GWT.log("FormListController : forwardToDataCapture");
         Dispatcher dispatcher = Dispatcher.get();
         AppEvent event = new AppEvent(DataCaptureController.DATACAPTURE);
-        event.setData("formDef", formDef);
+        event.setData("formVersion", formVersion);
     	dispatcher.dispatch(event);
     }
         
@@ -79,29 +79,22 @@ public class FormListController extends Controller {
     	dispatcher.dispatch(event);
     }
     
-    public void forwardToEditStudyFormController(FormDef formDef){
+    public void forwardToEditStudyFormController(FormSummary formSummary){
     	
        	GWT.log("FormListController : forwardToEditStudyFormController");
         Dispatcher dispatcher = Dispatcher.get();
         AppEvent event = new AppEvent(EditStudyFormController.EDITSTUDYFORM);
-        event.setData("formDef", formDef);
+        event.setData("formVersion", formSummary.getFormVersion());
         
     	dispatcher.dispatch(event);
     }
     
-    public void forwardToDeleteStudyFormController(FormDef form){
+    public void forwardToDeleteStudyFormController(FormSummary formSummary){
     	GWT.log("FormListController : forwardToDeleteStudyFormController");
         Dispatcher dispatcher = Dispatcher.get();
         AppEvent event = new AppEvent(DeleteStudyFormController.DELETESTUDYFORM);
-        event.setData(form);
-    	dispatcher.dispatch(event);
-    }
-
-    public void forwardToFormVersionController(FormDef form){
-    	GWT.log("FormListController : forwardToFormVersionController");
-        Dispatcher dispatcher = Dispatcher.get();
-        AppEvent event = new AppEvent(FormVersionsController.FORMVERSIONLIST);
-        event.setData(form);
+        event.setData("formDef", formSummary.getFormDefinition());
+        event.setData("formVersion", formSummary.getFormVersion());
     	dispatcher.dispatch(event);
     }
     
@@ -121,13 +114,12 @@ public class FormListController extends Controller {
         formService.getFormResponseCount(formDefVersion.getFormDefVersionId(), new EmitAsyncCallback<Integer>() {
             @Override
 			public void onSuccess(Integer result) {
-            	GWT.log("got result="+result+" for formDefVersion="+formDefVersion.getId());
                 if (result > 0) {
                     formListView.setFormStatus(formDefVersion.getFormDef(), true);
                 } else {
                     formListView.setFormStatus(formDefVersion.getFormDef(), false);
                 }
-                formListView.setNumberOfFormResponses(formDefVersion.getFormDef(), result);
+                formListView.setNumberOfFormResponses(formDefVersion, result);
             }
         });
     }

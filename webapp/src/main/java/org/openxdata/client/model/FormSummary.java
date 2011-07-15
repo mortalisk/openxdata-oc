@@ -12,13 +12,18 @@ public class FormSummary extends BaseModel {
 
     private static final long serialVersionUID = 3037791298938446908L;
     
-    private FormDef formDefinition;
+    private FormDef formDef;
+    private FormDefVersion formVersion;
 
     public FormSummary() {
 	}
     
     public FormSummary(FormDef formDef) {
-        setFormDefinition(formDef);
+    	setFormDef(formDef);
+    }
+    
+    public FormSummary(FormDefVersion formDefVersion) {
+        setFormVersion(formDefVersion);
     }
     
     public FormSummary(String id, String form) {
@@ -103,31 +108,65 @@ public class FormSummary extends BaseModel {
 	  public void setVersion(String version) {
 	      set("version", version);
 	  }
+	  
+	  public void setPublished(Boolean published) {
+		  set("published", published);
+	  }
+	  
+	  public Boolean isPublished() {
+		  return get("published");
+	  }
 
     public FormDef getFormDefinition() {
-        return formDefinition;
+        return formDef;
+    }
+    
+    public FormDefVersion getFormVersion() {
+    	return formVersion;
     }
 
-    public void setFormDefinition(FormDef formDefinition) {
-        this.formDefinition = formDefinition;
-        updateFormDefinition(formDefinition);
+    public void setFormVersion(FormDefVersion formVersion) {
+        this.formVersion = formVersion;
+        this.formDef = formVersion.getFormDef();
+        updateFormVersion(formVersion);
+    }
+    
+    public void setFormDef(FormDef formDef) {
+    	this.formDef = formDef;
+    	updateFormDefinition(formDef);
     }
     
     public void updateFormDefinition(FormDef formDef) {
-		setId(String.valueOf(formDef.getFormId()));
+		setId(String.valueOf("d"+formDef.getFormId()));
         setForm(formDef.getName());
         //newly created forms may not have any version
-        if(formDef.getVersions().size() > 0){
-        FormDefVersion formVersion = formDef.getDefaultVersion();
-        setVersion(formVersion.getName());
+        // FIXME: what is this about no versions....
+        if (formDef.getVersions().size() > 0) {
+        	FormDefVersion formVersion = formDef.getDefaultVersion();
+        	setVersion(formVersion.getName());
+        	setPublished(true);
+        } else {
+        	setPublished(false);
         }
         StudyDef study = formDef.getStudy();
         setOrganisation(study.getName());
         setCreator(formDef.getCreator().getName());
         if (formDef.getDateChanged() == null) {
             setChanged(formDef.getDateCreated());
-        } else {
-            setChanged(formDef.getDateChanged());
+        }
+    }
+    
+    public void updateFormVersion(FormDefVersion formVersion) {
+		setId(String.valueOf(formVersion.getFormDefVersionId()));
+		FormDef formDef = formVersion.getFormDef();
+        setForm(formDef.getName());
+        setVersion(formVersion.getName());
+        setPublished(formVersion.getIsDefault());
+        StudyDef study = formDef.getStudy();
+        setOrganisation(study.getName());
+        setCreator(formDef.getCreator().getName());
+        if (formDef.getDateChanged() == null) {
+            setChanged(formDef.getDateCreated());
         }
 	}
 }

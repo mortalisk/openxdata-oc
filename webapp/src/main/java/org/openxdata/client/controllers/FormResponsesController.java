@@ -21,8 +21,12 @@ import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
-import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
+import org.purc.purcforms.client.model.PageDef;
+import org.purc.purcforms.client.model.QuestionDef;
+import org.purc.purcforms.client.xforms.XformParser;
+import org.purc.purcforms.client.xforms.XformUtil;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -37,10 +41,6 @@ import com.extjs.gxt.ui.client.widget.form.Time;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.purc.purcforms.client.model.PageDef;
-import org.purc.purcforms.client.model.QuestionDef;
-import org.purc.purcforms.client.xforms.XformParser;
-import org.purc.purcforms.client.xforms.XformUtil;
 
 public class FormResponsesController  extends Controller {
     AppMessages appMessages = GWT.create(AppMessages.class); 
@@ -77,16 +77,17 @@ public class FormResponsesController  extends Controller {
         }
     }
     
-    public void forwardToDataCapture(FormDef formDef, FormData formData) {
+    public void forwardToDataCapture(FormDefVersion formVersion, FormData formData) {
     	GWT.log("FormResponsesController : forwardToDataCapture");
         Dispatcher dispatcher = Dispatcher.get();
         AppEvent event = new AppEvent(DataCaptureController.DATACAPTURE);
-        event.setData("formDef", formDef);
+        event.setData("formVersion", formVersion);
         event.setData("formData", formData);
     	dispatcher.dispatch(event);
     }
     
-    public FormDataBinding getFormDataColumnModel(final FormDef formDef) {
+    @SuppressWarnings("unchecked")
+    public FormDataBinding getFormDataColumnModel(final FormDefVersion formVersion) {
     	
     	GWT.log("FormResponsesController : getFormDataColumnModel");
 
@@ -95,7 +96,7 @@ public class FormResponsesController  extends Controller {
         List<String> formColumnDataKey = new ArrayList<String>();
         
         // convert the FormData using purcForms
-        org.purc.purcforms.client.model.FormDef purcFormDef = XformParser.fromXform2FormDef(formDef.getDefaultVersion().getXform());
+        org.purc.purcforms.client.model.FormDef purcFormDef = XformParser.fromXform2FormDef(formVersion.getXform());
 
         // go through all the pages in this form
         Iterator<PageDef> pageIt = purcFormDef.getPages().iterator();
@@ -125,7 +126,7 @@ public class FormResponsesController  extends Controller {
         //  return new FormDataBinding(purcFormDef.getBinding(), formColumnData, formColumnQuestionDef, formColumnDataKey);
     }
     
-    public void getFormDataSummary(final FormDef formDef, final FormDataBinding formDataBinding, 
+    public void getFormDataSummary(final FormDefVersion formVersion, final FormDataBinding formDataBinding, 
             final PagingLoadConfig pagingLoadConfig, final AsyncCallback<PagingLoadResult<FormDataSummary>> callback) {
     	GWT.log("FormResponsesController : getFormDataSummary");
         ProgressIndicator.showProgressBar();
@@ -146,7 +147,7 @@ public class FormResponsesController  extends Controller {
 			public void onSuccess(ExportedFormDataList result) {
                 List<FormDataSummary> results = new ArrayList<FormDataSummary>();
                 for (ExportedFormData data : result.getExportedFormData()) {
-                	FormDataSummary formDataSummary = new FormDataSummary(formDef, data);
+                	FormDataSummary formDataSummary = new FormDataSummary(formVersion.getFormDef(), data);
                     results.add(formDataSummary);
                 }
                 ProgressIndicator.hideProgressBar();
@@ -168,7 +169,8 @@ public class FormResponsesController  extends Controller {
         });
     }
     
-    public void saveFormDataResponse(final User user, final Record record, final FormDef formDef, org.purc.purcforms.client.model.FormDef purcFormDef) {
+    @SuppressWarnings("unchecked")
+    public void saveFormDataResponse(final User user, final Record record, final FormDefVersion formVersion, org.purc.purcforms.client.model.FormDef purcFormDef) {
         ProgressIndicator.showProgressBar(); 
         // 1: Copy the updated data from the grid model and save in the purc form def
         Iterator<PageDef> pageIt = purcFormDef.getPages().iterator();
@@ -264,7 +266,7 @@ public class FormResponsesController  extends Controller {
         fd.setData(xml);
         
         // 4: Save the form data
-        fd.setFormDefVersionId(formDef.getDefaultVersion().getFormDefVersionId());                          
+        fd.setFormDefVersionId(formVersion.getFormDefVersionId());                          
         fd.setDateChanged(new Date());                          
         fd.setChangedBy(user);
         // submit the data

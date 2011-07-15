@@ -9,9 +9,8 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.DataCaptureView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.FormData;
-import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
-
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
@@ -49,7 +48,7 @@ public class DataCaptureController extends Controller {
         }
     }
 
-    public void submit(final DataCaptureView view, final FormDef formDef, final FormData formData) {
+    public void submit(final DataCaptureView view, final FormDefVersion formVersion, final FormData formData) {
     	GWT.log("DataCaptureController : onSubmit");
     	ProgressIndicator.showProgressBar();
         userService.getLoggedInUser(new EmitAsyncCallback<User>() {

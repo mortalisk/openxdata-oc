@@ -76,7 +76,7 @@ public class FormResponsesView extends View implements Refreshable  {
 	private PagingLoader<PagingLoadResult<ModelData>> loader;
 	private Button exportButton;
 	private Button editButton;
-	private FormDef formDef;
+	private FormDefVersion formVersion;
 	private FormDataBinding formDataBinding;
 	private User user;
 	private Window window;
@@ -99,11 +99,11 @@ public class FormResponsesView extends View implements Refreshable  {
                     @Override
 					public void execute() {
                     	ProgressIndicator.showProgressBar();
-                        FormDefVersion formDefVersion = formDef.getDefaultVersion();
+                    	FormDef formDef = formVersion.getFormDef();
                         String url = GWT.getModuleBaseURL()+ "dataexport?";
                         url += "format=csv";
-                        url += "&formId=" + formDefVersion.getFormDefVersionId();
-                        url += "&filename=" + formDef.getName()+"-"+formDefVersion.getName();
+                        url += "&formId=" + formVersion.getFormDefVersionId();
+                        url += "&filename=" + formDef.getName()+"-"+formVersion.getName();
                         // userId, fromDate, toDate - other params
                         GWT.log("Loading CSV from URL "+url);
                         com.google.gwt.user.client.Window.Location.replace(URL.encode(url));
@@ -190,7 +190,7 @@ public class FormResponsesView extends View implements Refreshable  {
                 		ProgressIndicator.showProgressBar();
                 		FormDataSummary summary = grid.getSelectionModel().getSelectedItem();
                 		((FormResponsesController)FormResponsesView.this.getController())
-                			.forwardToDataCapture(formDef, summary.getExportedFormData().getFormData());
+                			.forwardToDataCapture(formVersion, summary.getExportedFormData().getFormData());
                 		re.stopEditing(false);
                 	}
                 });
@@ -207,7 +207,7 @@ public class FormResponsesView extends View implements Refreshable  {
                         @Override
 						public void execute() {
                             ((FormResponsesController)FormResponsesView.this.getController())
-                                        .saveFormDataResponse(user, be.getRecord(), formDef, formDataBinding.getFormDef());
+                                        .saveFormDataResponse(user, be.getRecord(), formVersion, formDataBinding.getFormDef());
                         }
                     });
                 }
@@ -247,7 +247,7 @@ public class FormResponsesView extends View implements Refreshable  {
                             @Override
 							public void execute() {
                                 final FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController();
-                                controller.getFormDataSummary(formDef, formDataBinding, pagingLoadConfig, callback);
+                                controller.getFormDataSummary(formVersion, formDataBinding, pagingLoadConfig, callback);
                             }
                         });
                     }
@@ -390,7 +390,8 @@ public class FormResponsesView extends View implements Refreshable  {
              ProgressIndicator.showProgressBar();
 
              FormSummary formSummary = event.getData();
-             formDef = formSummary.getFormDefinition();
+             formVersion = formSummary.getFormVersion();
+             final FormDef formDef = formSummary.getFormDefinition();
 
              preInitialise(new ListStore<FormDataSummary>(), new ColumnModel(new ArrayList<ColumnConfig>()));
 
@@ -399,7 +400,7 @@ public class FormResponsesView extends View implements Refreshable  {
 				public void execute() {
                      ProgressIndicator.showProgressBar();
                      FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController();
-                     formDataBinding = controller.getFormDataColumnModel(formDef);
+                     formDataBinding = controller.getFormDataColumnModel(formVersion);
                      initializeColumnModel();
                      initializePagingLoader();
                      initializePagingToolbar();

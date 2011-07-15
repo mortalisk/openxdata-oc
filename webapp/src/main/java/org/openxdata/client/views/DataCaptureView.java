@@ -6,12 +6,12 @@ import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.DataCaptureController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormData;
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.purc.purcforms.client.FormRunnerEntryPoint;
 import org.purc.purcforms.client.controller.SubmitListener;
-import org.purc.purcforms.client.util.FormUtil;
 import org.purc.purcforms.client.locale.LocaleText;
+import org.purc.purcforms.client.util.FormUtil;
+import org.purc.purcforms.client.view.FormRunnerView.Images;
 import org.purc.purcforms.client.widget.FormRunnerWidget;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -28,12 +28,11 @@ import com.extjs.gxt.ui.client.widget.Window;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.purc.purcforms.client.view.FormRunnerView.Images;
 
 public class DataCaptureView extends View implements SubmitListener {
     final AppMessages appMessages = GWT.create(AppMessages.class);    
     
-    private FormDef formDef;
+    private FormDefVersion formVersion;
     private FormData formData;
 	private FormRunnerWidget widget;
 	private boolean displayCloseWarning = true;
@@ -96,17 +95,16 @@ public class DataCaptureView extends View implements SubmitListener {
                  @Override
 				public void execute() {
                 	 ProgressIndicator.showProgressBar();
-                	 formDef = event.getData("formDef");
+                	 formVersion = event.getData("formVersion");
                 	 formData = event.getData("formData");
-                     window.setHeading(appMessages.captureData() + " : " +formDef.getName());
-                     FormDefVersion formDefVersion = formDef.getDefaultVersion();
-		             if (formDefVersion != null && formDefVersion.getXform() != null) {
+                     window.setHeading(appMessages.captureData() + " : " +formVersion.getFormDef().getName());
+		             if (formVersion != null && formVersion.getXform() != null) {
 		            	 if (formData == null) {
 		            		 //widget.loadForm(formDefVersion.getXform(), formDefVersion.getLayout(), "");
-		            		 widget.loadForm(formDefVersion.getFormDefVersionId(),formDefVersion.getXform(),null,formDefVersion.getLayout(),null);
+		            		 widget.loadForm(formVersion.getFormDefVersionId(),formVersion.getXform(),null,formVersion.getLayout(),null);
 		            	 } else {
 		            		 //widget.loadForm(0, formDefVersion.getXform(), formData.getData(), formDefVersion.getLayout(), "");
-		            		 widget.loadForm(formData.getFormDataId(),formDefVersion.getXform(),formData.getData(),formDefVersion.getLayout(),null);
+		            		 widget.loadForm(formData.getFormDataId(),formVersion.getXform(),formData.getData(),formVersion.getLayout(),null);
 		            	 }
 		                  window.show();
 		          	      window.maximize();
@@ -131,7 +129,7 @@ public class DataCaptureView extends View implements SubmitListener {
     	GWT.log("DataCaptureView : submitted");
     	if (formData == null) {
     		formData = new FormData();
-    		formData.setFormDefVersionId(formDef.getDefaultVersion().getFormDefVersionId());
+    		formData.setFormDefVersionId(formVersion.getFormDefVersionId());
     		//formData.setDescription(Utilities.getDescriptionTemplate(xformXml,xml)); // FIXME: figure out what to do about the description
     		formData.setDateCreated(new Date());
     	} else {
@@ -141,7 +139,7 @@ public class DataCaptureView extends View implements SubmitListener {
     	Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
 			public void execute() {
-            	((DataCaptureController)DataCaptureView.this.getController()).submit(DataCaptureView.this, formDef, formData);
+            	((DataCaptureController)DataCaptureView.this.getController()).submit(DataCaptureView.this, formVersion, formData);
             }
     	});
     }

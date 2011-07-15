@@ -178,4 +178,6 @@ public interface AppMessages extends Messages {
 	
 	String studyAccess();
 	
+	String noFormVersion();
+	
 }
