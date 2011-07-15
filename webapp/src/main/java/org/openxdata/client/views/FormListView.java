@@ -498,7 +498,7 @@ public class FormListView extends View implements Refreshable {
 	}
 
 	public void setFormStatus(FormDef formDef, Boolean active) {
-		FormSummary formSummary = getFormSummary(formDef.getFormId());
+		FormSummary formSummary = getFormSummary(formDef.getId());
 		if (formSummary != null) {
 			if (active) {
 				formSummary.setStatus(appMessages.active());
@@ -556,7 +556,7 @@ public class FormListView extends View implements Refreshable {
 			ListStore<FormSummary> store = grid.getStore();
 			for (FormDef form : study.getForms()) {
 				for (FormDefVersion formVersion : form.getVersions()) {
-					FormSummary summary = store.findModel("id",String.valueOf(form.getFormId()));
+					FormSummary summary = store.findModel("id",String.valueOf(form.getId()));
 					if (summary != null) {
 						summary.updateFormVersion(formVersion);
 						store.update(summary);

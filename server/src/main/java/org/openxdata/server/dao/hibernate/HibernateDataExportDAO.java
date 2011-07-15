@@ -152,7 +152,7 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
 
     @Override
 	public FormDef getFormDef(Integer formId) {
-        return (FormDef) getSessionFactory().getCurrentSession().createQuery("from FormDef where formId=" + formId).uniqueResult();
+        return (FormDef) getSessionFactory().getCurrentSession().createQuery("from FormDef where id=" + formId).uniqueResult();
     }
 
     @Override

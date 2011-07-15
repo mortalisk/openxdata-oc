@@ -41,7 +41,7 @@ public class FormDefTest {
 	public void isNew_shouldReturnTrueForFormWithNewFormVersion() {
 
 		FormDef formDef = new FormDef();
-		formDef.setFormId(1);
+		formDef.setId(1);
 		Assert.assertFalse(formDef.isNew());
 
 		formDef.addVersion(new FormDefVersion());
@@ -53,7 +53,7 @@ public class FormDefTest {
 	public void isNew_shouldReturnTrueForFormWithNewFormVersionText() {
 
 		FormDef formDef = new FormDef();
-		formDef.setFormId(1);
+		formDef.setId(1);
 		FormDefVersion formDefVersion = new FormDefVersion();
 		formDefVersion.setFormDefVersionId(1);
 		formDef.addVersion(formDefVersion);

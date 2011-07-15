@@ -556,7 +556,7 @@ public class StudiesTreeViewHelper {
 					Editable editable = (Editable)item.getUserObject();
 					if(editable instanceof FormDef){
 						type = "form";
-						id = ((FormDef)editable).getFormId();
+						id = ((FormDef)editable).getId();
 					}
 					else if(editable instanceof FormDefVersion){
 						type = "version";
@@ -766,7 +766,7 @@ public class StudiesTreeViewHelper {
 			List<UserFormMap> userMappedForms = RolesListUtil.getPermissionResolver().getUserMappedForms(user, mappedForms);
 			for(UserFormMap map : userMappedForms){
 				for(FormDef xForm : Context.getForms()){
-					if(map.getFormId() == xForm.getFormId()){
+					if(map.getFormId() == xForm.getId()){
 						bindMappedFormToTreeView(xForm);
 					}
 				}

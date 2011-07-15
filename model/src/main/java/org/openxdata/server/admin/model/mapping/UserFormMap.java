@@ -45,6 +45,6 @@ public class UserFormMap extends AbstractEditable {
 	 * @param form <code>FormDef</code> to remove.
 	 */
 	public void setForm(FormDef form){
-		setFormId(form.getFormId());
+		setFormId(form.getId());
 	}
 }

@@ -54,10 +54,10 @@ public class UserFormMapPresenter extends ExtendedBaseMapPresenter<UserFormMap, 
     }
 
     @Override
-    protected UserFormMap createNewMap(User user, FormDef systemItem) {
+	protected UserFormMap createNewMap(User user, FormDef form) {
         UserFormMap map = new UserFormMap();
         map.setUserId(user.getId());
-        map.setFormId(systemItem.getFormId());
+        map.setFormId(form.getId());
         return map;
     }
 

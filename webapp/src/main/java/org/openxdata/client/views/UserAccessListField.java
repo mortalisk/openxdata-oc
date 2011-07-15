@@ -327,7 +327,7 @@ public class UserAccessListField extends FieldSet {
         List<User> myUserList = new ArrayList<User>(users); // copy the list because we remove items from it and don't want to affect the original list
         Collections.sort(myUserList, c); // sort the user list to make searching easier + quicker
         for (UserFormMap map : mappedForms) {
-        	if (map.getFormId() == form.getFormId()) {
+        	if (map.getFormId() == form.getId()) {
         		int index = Collections.binarySearch(myUserList, new User(map.getUserId(), null), c);
         		if (index >= 0) {
         			// match found

@@ -261,7 +261,7 @@ public class FormServiceImpl implements FormService {
 		List<FormDef> forms = getForms();
 		
 		for(FormDef x : forms){
-			if(x.getFormId() == formId){
+			if(x.getId() == formId){
 				form = x;
 				break;
 			}

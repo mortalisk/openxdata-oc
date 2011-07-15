@@ -1017,7 +1017,7 @@ public class StudyView extends OpenXDataBaseView implements
 		
 		boolean ret = false;
 		for (UserFormMap x : userMappedPermissions) {
-			if (x.getFormId() == ((FormDef) arg).getFormId()) {
+			if (x.getFormId() == ((FormDef) arg).getId()) {
 				ret = true;
 				break;
 			}

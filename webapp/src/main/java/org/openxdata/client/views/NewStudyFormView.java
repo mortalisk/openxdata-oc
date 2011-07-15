@@ -481,7 +481,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				studyDef.addForm(formDef);
 			} else {
 				formDef = studyDef.getForm(existingFormName.getValue()
-						.getFormDefinition().getFormId());
+						.getFormDefinition().getId());
 				formDef.setDescription(existingFormDescription.getValue());
 			}
 		}

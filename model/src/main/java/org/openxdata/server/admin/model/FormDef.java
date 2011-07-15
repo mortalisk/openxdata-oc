@@ -22,10 +22,7 @@ public class FormDef extends AbstractEditable implements Exportable {
 	
 	/** Description of the form. */
 	private String description;
-	
-	/** The numeric unique identifier of the form definition. */
-	private int formId = 0;
-	
+		
 	/** The study to which the form is attached. */
 	private StudyDef study;
 	
@@ -54,7 +51,7 @@ public class FormDef extends AbstractEditable implements Exportable {
 	 * @param formDef the form definition to copy.
 	 */
 	public FormDef(FormDef formDef) {
-		setFormId(formDef.getFormId());
+		setId(formDef.getId());
 		setName(formDef.getName());
 	}
 	
@@ -79,7 +76,7 @@ public class FormDef extends AbstractEditable implements Exportable {
 	 * @param study the study to which the form belongs. 
 	 */
 	public FormDef(int formId, String name,StudyDef study) {
-		setFormId(formId);
+		setId(formId);
 		setName(name);	
 		setStudy(study);
 	}
@@ -92,7 +89,7 @@ public class FormDef extends AbstractEditable implements Exportable {
 	 * @param versions a list of versions in the form.
 	 */
 	public FormDef(int formId, String name,List<FormDefVersion> versions) {
-		setFormId(formId);
+		setId(formId);
 		setName(name);	
 		setVersions(versions);
 	}
@@ -103,19 +100,6 @@ public class FormDef extends AbstractEditable implements Exportable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getFormId() {
-		return formId;
-	}
-	
-	@Override
-	public int getId() {
-		return formId;
-	}
-
-	public void setFormId(int formId) {
-		this.formId = formId;
 	}
 	
 	@Override
@@ -230,7 +214,7 @@ public class FormDef extends AbstractEditable implements Exportable {
 	
 	@Override
 	public boolean isNew(){
-		if(formId == 0)
+		if(id == 0)
 			return true;
 		
 		if(versions == null)

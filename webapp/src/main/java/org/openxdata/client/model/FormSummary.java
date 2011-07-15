@@ -137,7 +137,7 @@ public class FormSummary extends BaseModel {
     }
     
     public void updateFormDefinition(FormDef formDef) {
-		setId(String.valueOf("d"+formDef.getFormId()));
+		setId(String.valueOf("d"+formDef.getId()));
         setForm(formDef.getName());
         //newly created forms may not have any version
         // FIXME: what is this about no versions....
