@@ -9,9 +9,6 @@ public class FormDataVersion extends AbstractEditable{
 	
     private static final long serialVersionUID = 8346348778133505205L;
 
-    /** Unique identifier for this form data version */
-    private int formDataVersionId = 0;
-
 	/** Form Data object to which this is a backup */
 	private FormData formData;
 	
@@ -28,7 +25,7 @@ public class FormDataVersion extends AbstractEditable{
 	 * @param formDataVersion the form data version instance to copy from.
 	 */
 	public FormDataVersion(FormDataVersion formDataVersion){
-	    this.formDataVersionId = formDataVersion.formDataVersionId;
+	    this.id = formDataVersion.id;
 	    this.formData = formDataVersion.formData;
 		this.data = formDataVersion.data;
 		this.dateCreated = formDataVersion.dateCreated;
@@ -49,19 +46,6 @@ public class FormDataVersion extends AbstractEditable{
         this.data = data;
         this.dateCreated = dateCreated;
         this.creator = creator;
-    }
-
-    public int getFormDataVersionId() {
-        return formDataVersionId;
-    }
-    
-    @Override
-	public int getId() {
-        return formDataVersionId;
-    }    
-
-    public void setFormDataVersionId(int formDataVersionId) {
-        this.formDataVersionId = formDataVersionId;
     }
 
     public FormData getFormData() {
