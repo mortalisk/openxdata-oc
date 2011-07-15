@@ -9,9 +9,6 @@ public class FormData extends AbstractEditable {
 
 	private static final long serialVersionUID = 6183444597939766009L;
 
-	/** The numeric unique identifier of the form data. */
-	private int formDataId = 0;
-
 	/**
 	 * The numeric unique identifier for the version of the form that this data
 	 * belongs to.
@@ -66,19 +63,6 @@ public class FormData extends AbstractEditable {
 
 	public void setData(String data) {
 		this.data = data;
-	}
-
-	public int getFormDataId() {
-		return formDataId;
-	}
-
-	@Override
-	public int getId() {
-		return formDataId;
-	}
-
-	public void setFormDataId(int formDataId) {
-		this.formDataId = formDataId;
 	}
 
 	public Integer getFormDefVersionId() {

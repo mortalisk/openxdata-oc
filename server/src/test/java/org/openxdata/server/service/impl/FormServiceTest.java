@@ -120,7 +120,7 @@ public class FormServiceTest {
 			String object = (String) objects[0];
 			Integer formDataId = Integer.valueOf(object);
 			FormData formData = new FormData();
-			formData.setFormDataId(formDataId);
+			formData.setId(formDataId);
 			expect(formDataDAO.getFormData(formDataId)).andReturn(formData);
 		}
 		

@@ -65,7 +65,7 @@ public class DataCaptureController extends Controller {
                     @Override
 					public void onSuccess(FormData result) {
                     	ProgressIndicator.hideProgressBar();
-                    	MessageBox.alert(appMessages.success(), appMessages.dataSavedSucessfully(""+result.getFormDataId()), null);
+                    	MessageBox.alert(appMessages.success(), appMessages.dataSavedSucessfully(""+result.getId()), null);
                         RefreshablePublisher.get().publish(
                         		new RefreshableEvent(RefreshableEvent.Type.CAPTURE, result));
                         view.close(false);

@@ -116,7 +116,7 @@ public class FormServiceImpl implements FormService {
     @Secured("Perm_Add_Form_Data")
 	public FormData saveFormData(FormData formData) {
         formData.setExported(0); // make sure the exported flag is reset
-        if (formData.getFormDataId() != 0) {
+        if (formData.getId() != 0) {
         	formDataDAO.saveFormDataVersion(formData);
         }
         

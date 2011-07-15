@@ -53,7 +53,6 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	@SuppressWarnings("unchecked")
 	public List<FormDataVersion> getFormDataVersion(Integer formDataId) {
 		return getSession().createCriteria(FormDataVersion.class)
-			.createAlias("formData", "fd").add(Restrictions.eq("fd.formDataId", formDataId))
-			.list();
+			.createAlias("formData", "fd").add(Restrictions.eq("fd.id", formDataId)).list();
 	}
 }

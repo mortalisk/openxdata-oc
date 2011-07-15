@@ -79,7 +79,7 @@ public class DataBuilder {
         if (!update) {
             id = UUID.randomUUID().toString();
             columnValues.put("Id", id);
-            columnValues.put("openxdata_form_data_id", String.valueOf(formData.getFormDataId()));
+            columnValues.put("openxdata_form_data_id", String.valueOf(formData.getId()));
         }
         columnValues.put("openxdata_user_name", formData.getCreator().getName());
         columnValues.put("openxdata_user_id", String.valueOf(formData.getCreator().getId()));
@@ -122,7 +122,7 @@ public class DataBuilder {
         // now create the statement (either update or insert) and insert into the list
         DataQuery stmt = null;
         if (update) {
-            stmt = createUpdateStatement(tableName, formData.getFormDataId(), parentId, columnValues);
+            stmt = createUpdateStatement(tableName, formData.getId(), parentId, columnValues);
         } else {
             stmt = createInsertStatement(tableName, parentId, columnValues);
         }

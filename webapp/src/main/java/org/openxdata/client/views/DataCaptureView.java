@@ -104,7 +104,7 @@ public class DataCaptureView extends View implements SubmitListener {
 		            		 widget.loadForm(formVersion.getId(),formVersion.getXform(),null,formVersion.getLayout(),null);
 		            	 } else {
 		            		 //widget.loadForm(0, formDefVersion.getXform(), formData.getData(), formDefVersion.getLayout(), "");
-		            		 widget.loadForm(formData.getFormDataId(),formVersion.getXform(),formData.getData(),formVersion.getLayout(),null);
+		            		 widget.loadForm(formData.getId(),formVersion.getXform(),formData.getData(),formVersion.getLayout(),null);
 		            	 }
 		                  window.show();
 		          	      window.maximize();

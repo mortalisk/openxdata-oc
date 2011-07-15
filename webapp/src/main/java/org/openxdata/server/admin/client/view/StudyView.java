@@ -445,9 +445,7 @@ public class StudyView extends OpenXDataBaseView implements
 								                        .getDocumentElement());
 							        }
 							        
-							        formRunner.loadForm(
-							                formData.getFormDataId(), xformXml,
-							                formData.getData(), layoutXml, null);
+							        formRunner.loadForm(formData.getId(), xformXml,formData.getData(), layoutXml, null);
 							        
 							        FormUtil.dlg.hide();
 							        formDefVersion = null;

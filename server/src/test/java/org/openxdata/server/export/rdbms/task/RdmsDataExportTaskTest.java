@@ -107,7 +107,7 @@ public class RdmsDataExportTaskTest {
     private FormData getFormData() {
         FormData formData = new FormData();
         formData.setData(XFormsFixture.getSampleFormModelData());
-        formData.setFormDataId(1);
+        formData.setId(1);
         formData.setCreator(new User("dagmar","password"));
         formData.setDateCreated(new Date());
         return formData;

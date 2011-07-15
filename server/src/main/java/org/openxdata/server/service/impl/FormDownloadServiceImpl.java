@@ -251,7 +251,7 @@ public class FormDownloadServiceImpl implements FormDownloadService {
                 } else {
                     dos.writeUTF("form {"+fd.getFormDefVersionId()+"}"); // description can be null
                 }
-                dos.writeInt(fd.getFormDataId());
+                dos.writeInt(fd.getId());
             }
         } catch (IOException ex) {
         	throw new UnexpectedException(ex);

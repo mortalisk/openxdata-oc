@@ -111,8 +111,8 @@ public class RdmsDataExportTask {
                 // note: only check if we didn't just create the table
                 if (!newData) {
                     for (TableQuery table : tables) {
-                        newData = !exporter.dataExists(formData.getFormDataId(), table.getTableName());
-                        log.debug("Is data with id "+formData.getFormDataId()+" in table '"+table.getTableName()+"' new? "+newData);
+                        newData = !exporter.dataExists(formData.getId(), table.getTableName());
+                        log.debug("Is data with id "+formData.getId()+" in table '"+table.getTableName()+"' new? "+newData);
                     }
                 }
                 
@@ -124,7 +124,7 @@ public class RdmsDataExportTask {
             // export successful if we are still here...
             dataExportService.setFormDataExported(formData, ExportConstants.EXPORT_BIT_RDBMS);
         } catch(Exception ex) {
-            log.error("Exception caught while attempting export of form data with id '"+formData.getFormDataId()+"'", ex);
+            log.error("Exception caught while attempting export of form data with id '"+formData.getId()+"'", ex);
         }
 	}
 	

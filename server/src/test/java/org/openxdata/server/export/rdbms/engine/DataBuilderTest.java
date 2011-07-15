@@ -19,7 +19,7 @@ public class DataBuilderTest {
     @Before
     public void setupFormData() {
         formData = new FormData();
-        formData.setFormDataId(1);
+        formData.setId(1);
         formData.setCreator(new User("dagmar","password"));
         formData.setDateCreated(new Date());        
     }
