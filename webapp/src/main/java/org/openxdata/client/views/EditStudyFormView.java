@@ -277,8 +277,12 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.showProgressBar();
 		try {
 			save();
-			((EditStudyFormController)controller).saveUserMappedForms(formDefVersion.getFormDef(), userAccessToForm.getMappedUsers());
-			((EditStudyFormController)controller).saveUserMappedStudies(formDefVersion.getFormDef().getStudy(), userAccessToStudy.getMappedUsers());
+			if (userAccessToForm.isDirty()) {
+				((EditStudyFormController)controller).saveUserMappedForms(formDefVersion.getFormDef(), userAccessToForm.getMappedUsers());
+			}
+			if (userAccessToStudy.isDirty()) {
+				((EditStudyFormController)controller).saveUserMappedStudies(formDefVersion.getFormDef().getStudy(), userAccessToStudy.getMappedUsers());
+			}
 		} finally {
 			ProgressIndicator.hideProgressBar();
 		}

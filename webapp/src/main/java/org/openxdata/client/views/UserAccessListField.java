@@ -60,6 +60,7 @@ public class UserAccessListField extends FieldSet {
     private String category;
     private StudyDef study;
     private FormDef form;
+    private boolean dirty = false;
 
     public UserAccessListField(String category) {
         this.category = category;
@@ -156,6 +157,7 @@ public class UserAccessListField extends FieldSet {
     	List<User> users = new ArrayList<User>();
     	for (UserSummary summary : sel) {
     		if (summary.getUser() != null) { // user would be null for "study access" users
+    			dirty = true;
     			fromField.getStore().add(summary);
     			leftList.add(summary);
     			toField.getStore().remove(summary);
@@ -180,6 +182,7 @@ public class UserAccessListField extends FieldSet {
         List<User> users = new ArrayList<User>();
         for (UserSummary summary : sel) {
         	if (summary.getUser() != null) { // user would be null for "study access" users
+        		dirty = true;
         		toField.getStore().add(summary);
         		rightList.add(summary);
         		fromField.getStore().remove(summary);
@@ -380,6 +383,10 @@ public class UserAccessListField extends FieldSet {
     public StudyDef getStudy() {
     	return study;
     }
+    
+    public boolean isDirty() {
+    	return dirty;
+    }
 
     private void refreshToolbars() {
         leftPagingToolBar.refresh();
@@ -387,6 +394,7 @@ public class UserAccessListField extends FieldSet {
     }
 
     private void updateLists(List<UserSummary> unmapped, List<UserSummary> mapped) {
+    	dirty = false;
     	fromField.getStore().add(unmapped);
         leftList.addAll(unmapped);
         toField.getStore().add(mapped);
@@ -395,6 +403,7 @@ public class UserAccessListField extends FieldSet {
     }
 
     private void clear() {
+    	dirty = false;
         toField.getStore().removeAll();
         fromField.getStore().removeAll();
         leftList.clear();

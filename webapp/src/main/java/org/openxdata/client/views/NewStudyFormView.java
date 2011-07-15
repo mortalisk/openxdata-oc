@@ -387,10 +387,14 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	 */
     public void onSaveStudyComplete() {
         // save any mapped study or form
-    	((NewStudyFormController)controller).saveUserMappedForms(userFormAccessListField.getForm(), 
+    	if (userFormAccessListField.isDirty()) {
+    		((NewStudyFormController)controller).saveUserMappedForms(userFormAccessListField.getForm(), 
     			userFormAccessListField.getMappedUsers());
-    	((NewStudyFormController)controller).saveUserMappedStudies(userStudyAccessListField.getStudy(), 
+    	}
+    	if (userStudyAccessListField.isDirty()) {
+    		((NewStudyFormController)controller).saveUserMappedStudies(userStudyAccessListField.getStudy(), 
     			userStudyAccessListField.getMappedUsers());
+    	}
     }
    
 	@Override
