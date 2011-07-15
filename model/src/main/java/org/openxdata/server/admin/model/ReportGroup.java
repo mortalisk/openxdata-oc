@@ -13,9 +13,6 @@ import java.util.List;
 public class ReportGroup extends AbstractEditable{
 
 	private static final long serialVersionUID = -3107013083813048539L;
-
-	/** The database identifier for a report group. */
-	private int reportGroupId = 0;
 	
 	/** The group which is the parent for this group. */
 	private ReportGroup parentReportGroup;
@@ -32,7 +29,6 @@ public class ReportGroup extends AbstractEditable{
 	/** A list of reports that this group contains. */
 	private List<Report> reports = new ArrayList<Report>();
 	
-	
 	public ReportGroup(){
 		
 	}
@@ -45,20 +41,7 @@ public class ReportGroup extends AbstractEditable{
 	public ReportGroup(String name){
 		this.name = name;
 	}
-	
-	public int getReportGroupId() {
-		return reportGroupId;
-	}
-
-	@Override
-	public int getId() {
-		return reportGroupId;
-	}
-	
-	public void setReportGroupId(int reportGroupId) {
-		this.reportGroupId = reportGroupId;
-	}
-	
+		
 	public ReportGroup getParentReportGroup() {
 		return parentReportGroup;
 	}
@@ -113,7 +96,7 @@ public class ReportGroup extends AbstractEditable{
 
 	@Override
 	public boolean isNew(){
-		if(reportGroupId == 0)
+		if(id == 0)
 			return true;
 		
 		if(reports != null){
@@ -145,8 +128,7 @@ public class ReportGroup extends AbstractEditable{
 	public String toString(){
 		return name;
 	}
-	
-	
+		
 	/**
 	 * Gets a report with a given name from a report groups list.
 	 * 
@@ -167,7 +149,6 @@ public class ReportGroup extends AbstractEditable{
 		return null;
 	}
 
-	
 	/**
 	 * Gets a report with a given name from a report group.
 	 * 
@@ -178,7 +159,6 @@ public class ReportGroup extends AbstractEditable{
 	public static Report getReport(String name, ReportGroup reportGroup){
 		return getReport2(name,reportGroup.getReports());
 	}
-	
 	
 	/**
 	 * Gets a report with a given name from a reports list.

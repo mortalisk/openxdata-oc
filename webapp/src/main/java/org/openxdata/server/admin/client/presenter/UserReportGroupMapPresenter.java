@@ -39,7 +39,7 @@ public class UserReportGroupMapPresenter extends ExtendedBaseMapPresenter<UserRe
         if (user.hasAdministrativePrivileges()) return true;
         List<UserReportGroupMap> userMappedReportGroups = permissionResolver.getUserMappedReportGroups(user, maps);
         for (UserReportGroupMap userReportGroupMap : userMappedReportGroups) {
-            if (userReportGroupMap.getReportGroupId() == reportGroup.getReportGroupId())
+            if (userReportGroupMap.getReportGroupId() == reportGroup.getId())
                 return true;
         }
         return false;

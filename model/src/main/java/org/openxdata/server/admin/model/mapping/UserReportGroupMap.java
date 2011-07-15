@@ -54,7 +54,7 @@ public class UserReportGroupMap extends AbstractEditable {
 	 * @param reportGroup <code>ReportGroup</code> to remove.
 	 */
 	public void addReportGroup(ReportGroup reportGroup) {
-		setReportGroupId(reportGroup.getReportGroupId());
+		setReportGroupId(reportGroup.getId());
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class UserReportGroupMap extends AbstractEditable {
 	 * @param reportGroup <code>ReportGroup</code> to remove.
 	 */
 	public void removeReportGroup(ReportGroup reportGroup) {
-		setReportGroupId(reportGroup.getReportGroupId());
+		setReportGroupId(reportGroup.getId());
 	}
 
 }
