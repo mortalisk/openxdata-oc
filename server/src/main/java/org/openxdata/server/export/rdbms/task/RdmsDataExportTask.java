@@ -62,7 +62,7 @@ public class RdmsDataExportTask {
         FormDefVersion formDefVersion = formDefCache.get(formData.getFormDefVersionId());
         if (formDefVersion == null) {
             formDefVersion = dataExportService.getFormDefVersion(formData.getFormDefVersionId());
-            formDefCache.put(formDefVersion.getFormDefVersionId(), formDefVersion);
+            formDefCache.put(formDefVersion.getId(), formDefVersion);
         }
 
         tpe.execute(new ExportFormDataThread(formData, formDefVersion));

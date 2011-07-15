@@ -341,14 +341,14 @@ public class StudyView extends OpenXDataBaseView implements
 					                .getDocumentElement());
 				}
 			}
-			formDesigner.loadForm(formDefVersion.getFormDefVersionId(), xform,
+			formDesigner.loadForm(formDefVersion.getId(), xform,
 			        layout, "", readOnly);
 		} else {
 			// No xforms xml found, so design it as new.
 			formDesigner.addNewForm(formDefVersion.getFormDef().getName() + "_"
 			        + formDefVersion.getName(),
 			        getDefaultFormBinding(formDefVersion),
-			        formDefVersion.getFormDefVersionId());
+			        formDefVersion.getId());
 		}
 	}
 	
@@ -517,7 +517,7 @@ public class StudyView extends OpenXDataBaseView implements
 						                .getDocumentElement());
 					}
 					
-					formRunner.loadForm(formDefVersion.getFormDefVersionId(),
+					formRunner.loadForm(formDefVersion.getId(),
 					        xformXml, null, layoutXml, null);
 					
 					FormUtil.dlg.hide();
@@ -633,8 +633,7 @@ public class StudyView extends OpenXDataBaseView implements
 					        xformXml, dataXml));
 					data.setCreator(Context.getAuthenticatedUser());
 					data.setDateCreated(new Date());
-					data.setFormDefVersionId(formDefVersion
-					        .getFormDefVersionId());
+					data.setFormDefVersionId(formDefVersion.getId());
 					
 					Context.getFormServiceAsync().saveFormData(data,
 					        new OpenXDataAsyncCallback<FormData>() {

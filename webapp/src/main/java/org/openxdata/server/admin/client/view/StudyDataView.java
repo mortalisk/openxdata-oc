@@ -209,7 +209,7 @@ public class StudyDataView extends Composite implements
 				for (FormDefVersion formDefVersion : formDef.getVersions()) {
 					lbForm.addItem(
 					        formDef.getName() + "-" + formDefVersion.getName(),
-					        String.valueOf(formDefVersion.getFormDefVersionId()));
+					        String.valueOf(formDefVersion.getId()));
 					forms.add(formDefVersion);
 				}
 			}
@@ -232,9 +232,7 @@ public class StudyDataView extends Composite implements
 					for (FormDefVersion formDefVersion : formDef.getVersions()) {
 						lbForm.addItem(
 						        formDef.getName() + "-"
-						                + formDefVersion.getName(), String
-						                .valueOf(formDefVersion
-						                        .getFormDefVersionId()));
+						                + formDefVersion.getName(), String.valueOf(formDefVersion.getId()));
 						forms.add(formDefVersion);
 					}
 				}
@@ -284,7 +282,7 @@ public class StudyDataView extends Composite implements
 	private Integer getSelFormId() {
 		int index = lbForm.getSelectedIndex();
 		if (index > 0)
-			return forms.get(index - 1).getFormDefVersionId();
+			return forms.get(index - 1).getId();
 		return null;
 	}
 	

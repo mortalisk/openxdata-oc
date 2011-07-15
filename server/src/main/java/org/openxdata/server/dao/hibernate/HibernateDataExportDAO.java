@@ -36,7 +36,7 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
     @Override
 	public FormDefVersion getFormDefVersion(Integer formDefVersionId) {
         Session session = getSessionFactory().getCurrentSession();
-        Query query = session.createQuery("from FormDefVersion where formDefVersionId = :formDefVersionId");
+        Query query = session.createQuery("from FormDefVersion where id = :formDefVersionId");
         query.setParameter("formDefVersionId", formDefVersionId);
         return (FormDefVersion) query.uniqueResult();
     }

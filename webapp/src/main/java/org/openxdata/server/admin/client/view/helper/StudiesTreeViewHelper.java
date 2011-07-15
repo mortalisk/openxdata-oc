@@ -560,7 +560,7 @@ public class StudiesTreeViewHelper {
 					}
 					else if(editable instanceof FormDefVersion){
 						type = "version";
-						id = ((FormDefVersion)editable).getFormDefVersionId();
+						id = ((FormDefVersion)editable).getId();
 					}
 					else
 						id = ((StudyDef)editable).getId();

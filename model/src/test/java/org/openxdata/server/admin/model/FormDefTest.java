@@ -55,7 +55,7 @@ public class FormDefTest {
 		FormDef formDef = new FormDef();
 		formDef.setId(1);
 		FormDefVersion formDefVersion = new FormDefVersion();
-		formDefVersion.setFormDefVersionId(1);
+		formDefVersion.setId(1);
 		formDef.addVersion(formDefVersion);
 		Assert.assertFalse(formDef.isNew());
 

@@ -69,7 +69,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	
 	@Test
 	public void saveFormData_editExistingData() throws Exception {
-		int formDefVersionId = formService.getForms().get(0).getVersions().get(0).getFormDefVersionId();
+		int formDefVersionId = formService.getForms().get(0).getVersions().get(0).getId();
 		List<FormDataHeader> data = studyManagerService.getFormData(formDefVersionId, null, null, null);
 		int dataCount = data.size();
 		

@@ -102,7 +102,7 @@ public class FormResponsesView extends View implements Refreshable  {
                     	FormDef formDef = formVersion.getFormDef();
                         String url = GWT.getModuleBaseURL()+ "dataexport?";
                         url += "format=csv";
-                        url += "&formId=" + formVersion.getFormDefVersionId();
+                        url += "&formId=" + formVersion.getId();
                         url += "&filename=" + formDef.getName()+"-"+formVersion.getName();
                         // userId, fromDate, toDate - other params
                         GWT.log("Loading CSV from URL "+url);

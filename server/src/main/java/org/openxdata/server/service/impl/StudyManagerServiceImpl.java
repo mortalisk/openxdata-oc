@@ -113,7 +113,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
         //Now set the xforms id attribute to the value of the saved form version id.
         for (FormDefVersion formDefVersion : newVersions) {
             if (formDefVersion.getXform() != null) {
-                formDefVersion.setXform(XformUtil.addFormId2Xform(formDefVersion.getFormDefVersionId(),
+                formDefVersion.setXform(XformUtil.addFormId2Xform(formDefVersion.getId(),
                         formDefVersion.getXform()));
             }
         }

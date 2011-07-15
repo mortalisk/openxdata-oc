@@ -129,12 +129,12 @@ public class FormDesignerView {
 									.getDocumentElement());
 				}
 			}
-			formDesigner.loadForm(formDefVersion.getFormDefVersionId(), xform,
+			formDesigner.loadForm(formDefVersion.getId(), xform,
 					layout, "", readOnly);
 		} else {
 			formDesigner.addNewForm(formName + "_" + formVersionName,
 					getDefaultFormBinding(formDefVersion),
-					formDefVersion.getFormDefVersionId());
+					formDefVersion.getId());
 		}
 	}
 

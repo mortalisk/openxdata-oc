@@ -157,7 +157,7 @@ public class FormSummary extends BaseModel {
     }
     
     public void updateFormVersion(FormDefVersion formVersion) {
-		setId(String.valueOf(formVersion.getFormDefVersionId()));
+		setId(String.valueOf(formVersion.getId()));
 		FormDef formDef = formVersion.getFormDef();
         setForm(formDef.getName());
         setVersion(formVersion.getName());

@@ -266,7 +266,7 @@ public class FormResponsesController  extends Controller {
         fd.setData(xml);
         
         // 4: Save the form data
-        fd.setFormDefVersionId(formVersion.getFormDefVersionId());                          
+        fd.setFormDefVersionId(formVersion.getId());                          
         fd.setDateChanged(new Date());                          
         fd.setChangedBy(user);
         // submit the data

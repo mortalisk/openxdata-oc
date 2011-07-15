@@ -238,7 +238,7 @@ public class DatasetView extends OpenXDataBaseView implements
 			FormDefVersion formDefVersion = forms.get(lbForms
 			        .getSelectedIndex() - 1);
 			if (formDefVersion.getXform() != null) {
-				dataset.setFormDefVersionId(formDefVersion.getFormDefVersionId());
+				dataset.setFormDefVersionId(formDefVersion.getId());
 				dataset.setDirty(true);
 				queryBuilder.setXform(getXform(formDefVersion));
 			} else {
@@ -367,7 +367,7 @@ public class DatasetView extends OpenXDataBaseView implements
 				for (FormDefVersion formDefVersion : formDef.getVersions()) {
 					lbForm.addItem(
 					        formDef.getName() + "-" + formDefVersion.getName(),
-					        String.valueOf(formDefVersion.getFormDefVersionId()));
+					        String.valueOf(formDefVersion.getId()));
 					forms.add(formDefVersion);
 				}
 			}
@@ -388,7 +388,7 @@ public class DatasetView extends OpenXDataBaseView implements
 			return null;
 		
 		for (FormDefVersion formDefVersion : forms) {
-			if (formDefVersion.getFormDefVersionId() == formDefVersionId)
+			if (formDefVersion.getId() == formDefVersionId)
 				return formDefVersion;
 		}
 		return null;
@@ -443,7 +443,7 @@ public class DatasetView extends OpenXDataBaseView implements
 		
 		for (int index = 0; index < forms.size(); index++) {
 			FormDefVersion formDefVersion = forms.get(index);
-			if (formDefVersion.getFormDefVersionId() == formDefVersionId)
+			if (formDefVersion.getId() == formDefVersionId)
 				return index + 1;
 		}
 		return -1;

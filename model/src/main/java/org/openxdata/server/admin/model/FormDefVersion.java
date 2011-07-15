@@ -16,10 +16,7 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 	
 	/** Description of the form version. */
 	private String description;
-	
-	/** The numeric unique identifier of the form definition version. */
-	private int formDefVersionId = 0;
-	
+		
 	/** The form definition whose version we represent. */
 	private FormDef formDef;
 	
@@ -34,13 +31,13 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 	}
 	
 	public FormDefVersion(int versionId, String name,FormDef formDef){
-		this.formDefVersionId = versionId;
+		this.id = versionId;
 		this.name = name;
 		this.formDef = formDef;
 	}
 	
 	public FormDefVersion(FormDefVersion formDef) {
-		setFormDefVersionId(formDef.getFormDefVersionId());
+		setId(formDef.getId());
 		setName(formDef.getName());
 		setDescription(formDef.getDescription());
 	}
@@ -56,19 +53,6 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getFormDefVersionId() {
-		return formDefVersionId;
-	}
-	
-	@Override
-	public int getId() {
-		return formDefVersionId;
-	}
-
-	public void setFormDefVersionId(int formDefVersionId) {
-		this.formDefVersionId = formDefVersionId;
 	}
 
 	public String getName() {
@@ -114,7 +98,7 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 	@Override
 	public boolean isNew(){
 		
-		if(formDefVersionId == 0)
+		if(id == 0)
 			return true;
 		
 		if(versionText == null)

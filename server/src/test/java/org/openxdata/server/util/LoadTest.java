@@ -113,7 +113,7 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
                 if (version != null && version.getName() != null && 
                         version.getName().startsWith("dagmar-testformversion-")) {
                     if (this.form == null 
-                            || this.form.getFormDefVersionId() < version.getFormDefVersionId()) {
+                            || this.form.getId() < version.getId()) {
                         // first time around, or this version was created later
                         this.form = version;
                     }
@@ -190,7 +190,7 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
         FormData formData = new FormData();
         formData.setCreator(user);
         formData.setDateCreated(new Date());
-        formData.setFormDefVersionId(form.getFormDefVersionId());
+        formData.setFormDefVersionId(form.getId());
         formData.setData(XFormsFixture.getSampleFormModelData());
         formService.saveFormData(formData);
         return formData;
@@ -228,7 +228,7 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
                         //System.out.println("getFormData returned: "+(formData != null ? formData.size() : null)); 
                         break;
                     case 3 : 
-                        Integer count = formService.getFormResponseCount(form.getFormDefVersionId());
+                        Integer count = formService.getFormResponseCount(form.getId());
                         System.out.println("getFormResponseCount returned: "+count);
                         break;
                     case 4 : 

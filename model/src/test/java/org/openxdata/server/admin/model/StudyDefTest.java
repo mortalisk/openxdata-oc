@@ -90,7 +90,7 @@ public class StudyDefTest {
 		formDef.setId(1);
 		studyDef.addForm(formDef);
 		FormDefVersion formDefVersion = new FormDefVersion();
-		formDefVersion.setFormDefVersionId(1);
+		formDefVersion.setId(1);
 		formDef.addVersion(formDefVersion);
 		Assert.assertFalse(studyDef.isNew());
 

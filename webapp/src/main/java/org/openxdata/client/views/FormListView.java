@@ -493,7 +493,7 @@ public class FormListView extends View implements Refreshable {
 	}
 
 	public void setNumberOfFormResponses(FormDefVersion formDefVersion, Integer numberOfResponses) {
-		FormSummary formSummary = getFormSummary(formDefVersion.getFormDefVersionId());
+		FormSummary formSummary = getFormSummary(formDefVersion.getId());
 		if (formSummary != null) {
 			formSummary.setResponses(String.valueOf(numberOfResponses));
 		}
@@ -542,13 +542,12 @@ public class FormListView extends View implements Refreshable {
 			for (final FormSummary summary : store.getModels()) {
 				FormDefVersion formDefVer = summary.getFormVersion();
 				if (data.getFormDefVersionId().equals(
-						formDefVer.getFormDefVersionId())) {
+						formDefVer.getId())) {
 					Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 						@Override
 						public void execute() {
 							((FormListController) FormListView.this
-									.getController()).hasFormData(summary
-									.getFormVersion());
+									.getController()).hasFormData(summary.getFormVersion());
 						}
 					});
 					break;

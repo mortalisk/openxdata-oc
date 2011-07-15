@@ -26,7 +26,7 @@ public class FormDefVersionTest {
 	public void isNew_shouldReturnTrueForFormWithNewFormVersionText() {
 
 		FormDefVersion formDefVersion = new FormDefVersion();
-		formDefVersion.setFormDefVersionId(1);
+		formDefVersion.setId(1);
 		Assert.assertFalse(formDefVersion.isNew());
 
 		formDefVersion.addVersionText(new FormDefVersionText());

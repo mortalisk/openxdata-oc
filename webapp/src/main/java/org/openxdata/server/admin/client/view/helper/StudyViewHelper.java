@@ -62,7 +62,7 @@ public class StudyViewHelper {
 		for(StudyDef studyDef : studies){
 			for(FormDef formDef : studyDef.getForms()){
 				for(FormDefVersion formDefVersion : formDef.getVersions()){
-					if(formDefVersion.getFormDefVersionId() == formDefVersionId)
+					if(formDefVersion.getId() == formDefVersionId)
 						return formDefVersion;
 				}
 			}

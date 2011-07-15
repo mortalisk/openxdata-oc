@@ -111,7 +111,7 @@ public class FormListController extends Controller {
     
     public void hasFormData(final FormDefVersion formDefVersion) {
     	GWT.log("FormListController : hasFormData");
-        formService.getFormResponseCount(formDefVersion.getFormDefVersionId(), new EmitAsyncCallback<Integer>() {
+        formService.getFormResponseCount(formDefVersion.getId(), new EmitAsyncCallback<Integer>() {
             @Override
 			public void onSuccess(Integer result) {
                 if (result > 0) {

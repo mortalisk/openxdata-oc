@@ -100,7 +100,7 @@ public class HibernateFormDownloadDAO extends BaseDAOImpl<Editable> implements F
 		} else {
 			// new query
 			Query query = session.createQuery(
-					"select distinct fdv.formDefVersionId, fdv.xform, fdv.formDef.name from FormDefVersion as fdv, User u" +
+					"select distinct fdv.id, fdv.xform, fdv.formDef.name from FormDefVersion as fdv, User u" +
 				    " where u.name = :name" +
 					(defaultForms ? " and fdv.isDefault = :default" : "") +
 					(studyId != null ? " and fdv.formDef.study.id = :studyId" : "") +

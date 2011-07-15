@@ -93,7 +93,7 @@ public class FormVersionSummary extends BaseModel {
     }
 
     public void updateFormVersion(FormDefVersion version) {
-        setId(String.valueOf(version.getFormDefVersionId()));
+        setId(String.valueOf(version.getId()));
         setForm(version.getFormDef().getName());
         setCreator(version.getCreator().getName());
         if (version.getDateChanged() == null) {
