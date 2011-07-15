@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class TaskDef extends AbstractEditable{
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = -4121837688631289120L;
 
 	/** The database identifier for the task definition. */
@@ -47,11 +44,8 @@ public class TaskDef extends AbstractEditable{
 	/** A list of the task parameters. */
 	private List<TaskParam> parameters;
 	
-	/**
-	 * Constructs a new task definition object.
-	 */
 	public TaskDef(){
-		startOnStartup = true;								// as we have a default date populated
+		startOnStartup = true;
 	}
 	
 	/**

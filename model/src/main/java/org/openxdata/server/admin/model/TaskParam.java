@@ -5,9 +5,6 @@ package org.openxdata.server.admin.model;
  */
 public class TaskParam  extends AbstractEditable{
 	
-	/**
-	 * Serialization ID
-	 */
 	private static final long serialVersionUID = 5620957823593973227L;
 
 	/** The database identifier for the parameter. */
@@ -22,9 +19,6 @@ public class TaskParam  extends AbstractEditable{
 	/** The value of the parameter. */
 	private String value;
 	
-	/**
-	 * Constructs a new task parameter object.
-	 */
 	public TaskParam(){
 		
 	}

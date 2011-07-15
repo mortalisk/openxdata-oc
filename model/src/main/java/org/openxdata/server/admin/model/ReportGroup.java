@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class ReportGroup extends AbstractEditable{
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = -3107013083813048539L;
 
 	/** The database identifier for a report group. */
@@ -36,9 +33,6 @@ public class ReportGroup extends AbstractEditable{
 	private List<Report> reports = new ArrayList<Report>();
 	
 	
-	/**
-	 * Creates a new report group object.
-	 */
 	public ReportGroup(){
 		
 	}

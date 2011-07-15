@@ -5,9 +5,6 @@ import java.util.List;
 
 public class SettingGroup extends AbstractEditable{
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = 1181738467655537369L;
 	private int settingGroupId = 0;
 	private SettingGroup parentSettingGroup;
@@ -16,7 +13,7 @@ public class SettingGroup extends AbstractEditable{
 	private List<SettingGroup> groups = new ArrayList<SettingGroup>();
 	private List<Setting> settings = new ArrayList<Setting>();
 
-	
+
 	public SettingGroup(){
 		
 	}
@@ -124,7 +121,6 @@ public class SettingGroup extends AbstractEditable{
 	public String toString(){
 		return name;
 	}
-	
 	
 	/**
 	 * Gets the value of a setting with a given name from a given list of setting groups.

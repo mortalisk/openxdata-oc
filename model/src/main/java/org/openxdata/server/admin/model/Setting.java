@@ -2,11 +2,7 @@ package org.openxdata.server.admin.model;
 
 public class Setting extends AbstractEditable{
 
-	/**
-	 * Serialization ID
-	 */
 	private static final long serialVersionUID = -9195376892324311798L;
-	//TODO Ensure that this is a value the persistence layer will not assign.
 	private int id = 0;
 	private String name;
 	private String description;
@@ -31,60 +27,36 @@ public class Setting extends AbstractEditable{
 		this.value = value;
 	}
 
-	/**
-	 * @return the description
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * @param description the description to set
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * @return the id
-	 */
 	@Override
 	public int getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the value
-	 */
 	@Override
 	public String getValue() {
 		return value;
 	}
 
-	/**
-	 * @param value the value to set
-	 */
 	public void setValue(String value) {
 		this.value = value;
 	}

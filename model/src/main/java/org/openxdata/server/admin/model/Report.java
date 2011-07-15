@@ -5,9 +5,6 @@ package org.openxdata.server.admin.model;
  */
 public class Report extends AbstractEditable{
 
-	/**
-	 * Serialization ID
-	 */
 	private static final long serialVersionUID = 6089598959091826602L;
 
 	/** The database unique identifier of the report. */
@@ -38,9 +35,6 @@ public class Report extends AbstractEditable{
 	private ReportGroup reportGroup;
 	
 	
-	/**
-	 * Creates a new report object. 
-	 */
 	public Report(){
 		
 	}
