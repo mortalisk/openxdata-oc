@@ -120,6 +120,8 @@ public class FormListView extends View implements Refreshable {
 
             }
         };
+		store.addFilter(showAllFormVersionsFilter);
+		store.applyFilters(null);
 
 		grid.addListener(Events.CellDoubleClick,
 				new Listener<GridEvent<FormSummary>>() {
@@ -238,10 +240,6 @@ public class FormListView extends View implements Refreshable {
 				newButton.show();
 				allVersions.show();
 				allForms.show();
-				if (store.getFilters() != null && !store.getFilters().contains(showAllFormVersionsFilter)) {
-					store.addFilter(showAllFormVersionsFilter);
-					store.applyFilters(null);
-				}
 				showPublishedColumn(cm, false);
 				//allStudies.show();
 				export.show();
@@ -252,10 +250,6 @@ public class FormListView extends View implements Refreshable {
 				edit.show();
 				allVersions.show();
 				allForms.show();
-				if (store.getFilters() != null && !store.getFilters().contains(showAllFormVersionsFilter)) {
-					store.addFilter(showAllFormVersionsFilter);
-					store.applyFilters(null);
-				}
 				showPublishedColumn(cm, false);
 				//allStudies.show();
 				export.show();
@@ -266,10 +260,6 @@ public class FormListView extends View implements Refreshable {
 				delete.show();
 				allVersions.show();
 				allForms.show();
-				if (store.getFilters() != null && !store.getFilters().contains(showAllFormVersionsFilter)) {
-					store.addFilter(showAllFormVersionsFilter);
-					store.applyFilters(null);
-				}
 				showPublishedColumn(cm, false);
 				//allStudies.show();
 				export.show();
@@ -569,13 +559,10 @@ public class FormListView extends View implements Refreshable {
 			ListStore<FormSummary> store = grid.getStore();
 			for (FormDef form : study.getForms()) {
 				for (FormDefVersion formVersion : form.getVersions()) {
-					FormSummary summary = store.findModel("id",String.valueOf(form.getId()));
+					FormSummary summary = getFormSummary(form.getId());
 					if (summary != null) {
 						summary.updateFormVersion(formVersion);
 						store.update(summary);
-					} else {
-						GWT.log("Could not find match for updated form "
-								+ form.getName() + " using ID=" + form.getId());
 					}
 				}
 			}
