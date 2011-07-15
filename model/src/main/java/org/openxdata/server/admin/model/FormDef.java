@@ -15,9 +15,6 @@ import java.util.Vector;
  */
 public class FormDef extends AbstractEditable implements Exportable {
 
-	/**
-	 * Serialisation ID
-	 */
 	private static final long serialVersionUID = -2422751217356938584L;
 
 	/** The display name of the form. */
@@ -47,7 +44,6 @@ public class FormDef extends AbstractEditable implements Exportable {
 	private List<FormDefText> text;
 	
 	
-	/** Constructs a form definition object. */
 	public FormDef() {
 
 	}
@@ -127,16 +123,10 @@ public class FormDef extends AbstractEditable implements Exportable {
 		return getName();
 	}
 	
-	/**
-	 * @return the description
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * @param description the description to set
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -149,16 +139,10 @@ public class FormDef extends AbstractEditable implements Exportable {
 		this.study = study;
 	}
 
-	/**
-	 * @return the versions
-	 */
 	public List<FormDefVersion> getVersions() {
 		return versions;
 	}
 
-	/**
-	 * @param versions the versions to set
-	 */
 	public void setVersions(List<FormDefVersion> versions) {
 		this.versions = versions;
 	}

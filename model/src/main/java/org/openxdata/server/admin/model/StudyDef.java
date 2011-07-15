@@ -29,7 +29,7 @@ public class StudyDef extends AbstractEditable implements Exportable {
 	/** A list of the study text for different locales. */
 	private List<StudyDefText> text;
 	
-	/** A list of users who have permission to work on this study */
+	/** A list of users who have permission to this study */
 	private List<User> users;
 		
 	public StudyDef() {
@@ -147,8 +147,8 @@ public class StudyDef extends AbstractEditable implements Exportable {
 	/**
 	 * Gets a form definition with a given numeric identifier.
 	 * 
-	 * @param formId - the numeric identifier.
-	 * @return - the form definition.
+	 * @param formId the numeric identifier.
+	 * @return the form definition.
 	 */
 	public FormDef getForm(Integer formId){
 		for(byte i=0; i<forms.size(); i++){
