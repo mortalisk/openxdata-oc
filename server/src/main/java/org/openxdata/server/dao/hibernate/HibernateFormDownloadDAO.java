@@ -126,14 +126,21 @@ public class HibernateFormDownloadDAO extends BaseDAOImpl<Editable> implements F
 	}
 
 	@Override
-	public String getXformLocaleText(Integer formId, String locale){
+	public String getXformLocaleText(Integer formId, String locale) {
 		Session session = getSessionFactory().getCurrentSession();
-		
-		SQLQuery query = session.createSQLQuery("select xform_text from form_definition_version_text where locale_key='"+ locale + "' and form_definition_version_id="+formId);
+
+		SQLQuery query = session
+				.createSQLQuery("select xform_text from form_definition_version_text"
+						+ " where locale_key=:locale and form_definition_version_id=:formId"
+						+ " and form_definition_version_text_id="
+						+ "(select max(form_definition_version_text_id)"
+						+ " from form_definition_version_text where form_definition_version_id=:formId)");
+		query.setParameter("locale", locale);
+		query.setParameter("formId", formId);
 		query.addScalar("xform_text", Hibernate.STRING);
-		
-		String text = (String)query.uniqueResult();
-		
+
+		String text = (String) query.uniqueResult();
+
 		return text;
 	}
 
