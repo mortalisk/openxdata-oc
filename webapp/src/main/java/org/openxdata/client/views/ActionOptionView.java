@@ -9,6 +9,7 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
+import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.widget.Dialog;
@@ -42,6 +43,23 @@ abstract class ActionOptionView extends View {
 	}
 	
 	protected abstract void action();
+	
+	@Override
+	protected void handleEvent(AppEvent event) {
+        window.setAutoHeight(true);
+        window.setWidth(425);
+        window.setPlain(true);
+        window.setHeading(getHeading());
+        window.add(formPanel);
+        window.setDraggable(true);
+        window.setResizable(true);
+
+        window.addButton(execButton);
+        window.addButton(cancelButton);
+
+        window.show();
+        ProgressIndicator.hideProgressBar();
+	}
 	
 	@Override
 	protected void initialize() {
