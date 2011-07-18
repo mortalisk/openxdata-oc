@@ -1,9 +1,13 @@
 package org.openxdata.client.controllers;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
+import org.openxdata.client.service.StudyServiceAsync;
 import org.openxdata.client.views.DeleteStudyFormView;
+import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
@@ -12,21 +16,14 @@ import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.google.gwt.core.client.GWT;
-import org.openxdata.client.EmitAsyncCallback;
-import org.openxdata.client.service.StudyServiceAsync;
-import org.openxdata.server.admin.client.service.FormServiceAsync;
-import org.openxdata.server.admin.model.Editable;
 
-/**
- *
- */
 public class DeleteStudyFormController extends Controller {
 	
 	AppMessages appMessages = GWT.create(AppMessages.class);
-	
+
 	private DeleteStudyFormView deleteStudyFormView;
-        private StudyServiceAsync studyService;
-        private FormServiceAsync formService;
+	private StudyServiceAsync studyService;
+	private FormServiceAsync formService;
 	
 	public static final EventType DELETESTUDYFORM = new EventType();
 	
@@ -48,50 +45,42 @@ public class DeleteStudyFormController extends Controller {
 		
 	}
 	
-	public void delete(final StudyDef study) {
-    	       GWT.log("DeleteStudyFormController : delete study");
-            studyService.deleteStudy(study, new EmitAsyncCallback<Void>() {
+	public void delete(final Editable editable) {
+		if (editable instanceof StudyDef) {
+			
+			GWT.log("DeleteStudyFormController : delete study");
+			studyService.deleteStudy((StudyDef) editable,
+					new EmitAsyncCallback<Void>() {
 
                 @Override
                 public void onSuccess(Void result) {
-                    RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
+                    RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, editable));
                     deleteStudyFormView.closeWindow();
                 }
             });
+		}
+		
+		if(editable instanceof FormDef){
+			FormDef form = (FormDef) editable;
+			form.getStudy().removeForm(form);
+			saveStudy(form.getStudy(), form);
+		}
+		
+		if(editable instanceof FormDefVersion){
+			FormDefVersion formDefVersion = (FormDefVersion) editable;
+			formDefVersion.getFormDef().removeVersion(formDefVersion);
+			saveStudy(formDefVersion.getFormDef().getStudy(), formDefVersion);
+		}
 	}
 	
-	public void delete(final FormDef form) {
-		GWT.log("DeleteStudyFormController : delete form");
-		StudyDef study = form.getStudy();
-		study.removeForm(form);
-
+	private void saveStudy(StudyDef study, final Editable editable) {
 		studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
 				RefreshablePublisher.get().publish(
-						new RefreshableEvent(
-								RefreshableEvent.Type.CREATE_STUDY, form));
+						new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, editable));
 				deleteStudyFormView.closeWindow();
-			}
-		});
-	}
-
-	public void delete(final FormDefVersion formVersion) {
-		GWT.log("DeleteStudyFormController : delete form version");
-		FormDef form = formVersion.getFormDef();
-		form.removeVersion(formVersion);
-
-		studyService.saveStudy(form.getStudy(), new EmitAsyncCallback<Void>() {
-
-			@Override
-			public void onSuccess(Void result) {
-				deleteStudyFormView.closeWindow();
-				RefreshablePublisher.get()
-						.publish(
-								new RefreshableEvent(
-										RefreshableEvent.Type.CREATE_STUDY,
-										formVersion));
 			}
 		});
 	}
