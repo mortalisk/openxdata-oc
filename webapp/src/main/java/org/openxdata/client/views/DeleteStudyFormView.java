@@ -1,126 +1,29 @@
 package org.openxdata.client.views;
 
-import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.DeleteStudyFormController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 
-import com.extjs.gxt.ui.client.Style.Orientation;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
-import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.extjs.gxt.ui.client.widget.Window;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.form.Radio;
-import com.extjs.gxt.ui.client.widget.form.RadioGroup;
-import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version.
  */
-public class DeleteStudyFormView extends View {
-	
-	final AppMessages appMessages = GWT.create(AppMessages.class);
-	
-	private FormPanel formPanel;
-	private Window window = new Window();
-	
-	private Radio deleteStudy;
-	private Radio deleteForm;
-	private Radio deleteFormVersion;
-	
-	private Button deleteButton;
-	private Button cancelButton;
+public class DeleteStudyFormView extends ActionOptionView {
 	
 	private FormDef form;
 	private FormDefVersion formVersion;
     
 	public DeleteStudyFormView(Controller controller) {
 		super(controller);
-	}
-	
-	@Override
-	protected void initialize() {
-		GWT.log("DeleteStudyFormController : initialize");
-		formPanel = new FormPanel();
-		formPanel.setFrame(false);
-		formPanel.setBorders(false);
-		formPanel.setBodyBorder(false);
-		formPanel.setHeaderVisible(false);
-		FormLayout layout = new FormLayout();
-		layout.setLabelWidth(0);
-		formPanel.setLayout(layout);
-		
-		final RadioGroup radioGroup = new RadioGroup("RadioGroup");
-		radioGroup.setLabelSeparator("");
-		radioGroup.setFieldLabel("");
-		radioGroup.setOrientation(Orientation.VERTICAL);
-		
-		deleteStudy = new Radio();
-		deleteStudy.setHideLabel(true);
-		deleteStudy.setBoxLabel("Delete Study");
-		radioGroup.add(deleteStudy);
-		
-		deleteForm = new Radio();
-		deleteForm.setBoxLabel("Delete Form");
-		deleteForm.setHideLabel(true);
-		radioGroup.add(deleteForm);
-		
-		deleteFormVersion = new Radio();
-		deleteFormVersion.setHideLabel(true);
-		deleteFormVersion.setBoxLabel("Delete Form Version");
-		radioGroup.add(deleteFormVersion);
-		
-		formPanel.add(radioGroup);
-		
-		deleteButton = new Button(appMessages.delete());
-		deleteButton.addListener(Events.Select, new Listener<ButtonEvent>() {
-			@Override
-			public void handleEvent(ButtonEvent be) {
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-					@Override
-					public void execute() {
-						if (deleteStudy.getValue()) {
-							checkItemHasData(form.getStudy());
-						} else if (deleteForm.getValue()) {
-							checkItemHasData(form);
-						} else if (deleteFormVersion.getValue()) {
-							checkItemHasData(formVersion);
-						}
-					}
-				});
-			}
-		});
-		
-		cancelButton = new Button(appMessages.cancel());
-		cancelButton.addListener(Events.Select, new Listener<ButtonEvent>() {
-			@Override
-			public void handleEvent(ButtonEvent be) {
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					@Override
-					public void execute() {
-						cancel();
-					}
-				});
-			}
-		});
-		
-		window.addListener(Events.BeforeHide, windowListener);
-		window.setModal(true);
 	}
 	
 	private void delete() {
@@ -132,11 +35,11 @@ public class DeleteStudyFormView extends View {
                 public void handleEvent(MessageBoxEvent be) {
                     if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
                         ProgressIndicator.showProgressBar();
-                        if (deleteStudy.getValue()) {
+                        if (firstRadio.getValue()) {
                             controller1.delete(form.getStudy());
-                        } else if (deleteForm.getValue()) {
+                        } else if (secondRadio.getValue()) {
                             controller1.delete(form);
-                        } else if (deleteFormVersion.getValue()) {
+                        } else if (thirdRadio.getValue()) {
                             controller1.delete(formVersion);
                         }
                     }
@@ -145,54 +48,8 @@ public class DeleteStudyFormView extends View {
 
 	}
 	
-	final Listener<ComponentEvent> windowListener = new WindowListener();
-	
-	class WindowListener implements Listener<ComponentEvent> {
-		@Override
-		public void handleEvent(ComponentEvent be) {
-			be.setCancelled(true);
-			be.stopEvent();
-			MessageBox.confirm(appMessages.cancel(), appMessages.areYouSure(),
-			        new Listener<MessageBoxEvent>() {
-				        @Override
-				        public void handleEvent(MessageBoxEvent be) {
-					        if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-						        window.removeListener(Events.BeforeHide,
-						                windowListener);
-						        closeWindow();
-						        window.addListener(Events.BeforeHide,
-						                windowListener);
-					        }
-				        }
-			        });
-		}
-	};
-	
-	public void cancel() {
-		MessageBox.confirm(appMessages.cancel(), appMessages.areYouSure(),
-		        new Listener<MessageBoxEvent>() {
-			        @Override
-			        public void handleEvent(MessageBoxEvent be) {
-				        if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-					        closeWindow();
-				        }
-			        }
-		        });
-	}
-	
-	/**
-	 * Closes the Window and conceals it from the User.
-	 */
-	public void closeWindow() {
-		window.removeListener(Events.BeforeHide, windowListener);
-		window.hide();
-		ProgressIndicator.hideProgressBar();
-		window.addListener(Events.BeforeHide, windowListener);
-		
-	}
-	
-	   @Override
-    protected void handleEvent(AppEvent event) {
+	@Override
+	protected void handleEvent(AppEvent event) {
         GWT.log("DeleteStudyFormView : handleEvent");
         if (event.getType() == DeleteStudyFormController.DELETESTUDYFORM) {
             GWT.log("DeleteStudyFormView : DeleteStudyFormController.DELETESTUDYFORM: Delete");
@@ -201,13 +58,13 @@ public class DeleteStudyFormView extends View {
             form = event.getData("formDef");
 
             // Initialize Window
-            deleteStudy.setBoxLabel(deleteStudy.getBoxLabel()+" - "+form.getStudy().getName());
-            deleteForm.setBoxLabel(deleteForm.getBoxLabel()+" - "+form.getName());
+            firstRadio.setBoxLabel(firstRadio.getBoxLabel()+" - "+form.getStudy().getName());
+            secondRadio.setBoxLabel(secondRadio.getBoxLabel()+" - "+form.getName());
             if (formVersion != null) {
-            	deleteFormVersion.setBoxLabel(deleteFormVersion.getBoxLabel()+" - "+formVersion.getName());
-            	deleteFormVersion.show();
+            	thirdRadio.setBoxLabel(thirdRadio.getBoxLabel()+" - "+formVersion.getName());
+            	thirdRadio.show();
             } else {
-            	deleteFormVersion.hide();
+            	thirdRadio.hide();
             }
             window.setAutoHeight(true);
             window.setWidth(425);
@@ -217,7 +74,7 @@ public class DeleteStudyFormView extends View {
             window.setDraggable(true);
             window.setResizable(true);
 
-            window.addButton(deleteButton);
+            window.addButton(execButton);
             window.addButton(cancelButton);
 
             window.show();
@@ -237,4 +94,30 @@ public class DeleteStudyFormView extends View {
             MessageBox.alert(appMessages.viewResponses(),appMessages.unableToDeleteFormWithData(), null);
         }
     }
+
+	@Override
+	protected void action() {
+		if (firstRadio.getValue()) {
+			checkItemHasData(form.getStudy());
+		} else if (secondRadio.getValue()) {
+			checkItemHasData(form);
+		} else if (thirdRadio.getValue()) {
+			checkItemHasData(formVersion);
+		}
+	}
+
+	@Override
+	String getThirdRadioLabel() {
+		return appMessages.deleteFormVersion();
+	}
+
+	@Override
+	String getSecondRadioLabel() {
+		return appMessages.deleteForm();
+	}
+
+	@Override
+	String getFirstRadioLabel() {
+		return appMessages.deleteStudy();
+	}
 }
