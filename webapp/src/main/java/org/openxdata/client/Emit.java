@@ -8,6 +8,7 @@ import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.controllers.FormListController;
 import org.openxdata.client.controllers.FormPrintController;
 import org.openxdata.client.controllers.FormResponsesController;
+import org.openxdata.client.controllers.ItemExportController;
 import org.openxdata.client.controllers.LoginController;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.controllers.UserProfileController;
@@ -164,6 +165,7 @@ public class Emit implements EntryPoint, Refreshable {
         dispatcher.addController(new NewStudyFormController(formService,studyService,userService));
         dispatcher.addController(new EditStudyFormController(studyService,formService,userService));
         dispatcher.addController(new DeleteStudyFormController(studyService, formService));
+        dispatcher.addController(new ItemExportController());
         
         RefreshablePublisher publisher = RefreshablePublisher.get();
         publisher.subscribe(RefreshableEvent.Type.NAME_CHANGE, this);

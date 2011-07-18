@@ -2,10 +2,12 @@ package org.openxdata.client.controllers;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.util.ProgressIndicator;
-import org.openxdata.server.admin.client.listeners.GetFileNameDialogEventListener;
-import org.openxdata.server.admin.client.view.widget.GetFileNameDialog;
+import org.openxdata.client.views.ItemExportView;
 import org.openxdata.server.admin.model.Exportable;
 
+import com.extjs.gxt.ui.client.event.EventType;
+import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -13,40 +15,26 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 
-/**
- * Controller for views that export Items.
- * 
- */
-public class ItemExportController implements
-		GetFileNameDialogEventListener {
+public class ItemExportController extends Controller {
 
-	private Exportable exportable;
+	ItemExportView view;
 	AppMessages appMessages = GWT.create(AppMessages.class);
-
-	GetFileNameDialog getFileNameDialog;
+	
+	public static final EventType EXPORTITEM = new EventType();
 
 	public ItemExportController() {
 		super();
-
-	}
-
-	public void loadExportDialog(Exportable exportable) {
-		this.exportable = exportable;
-		String defaultName = exportable.getName();
-		
-		defaultName.replace(" ", "");
-		getFileNameDialog = new GetFileNameDialog(this,
-				appMessages.exportAs(), appMessages.exportA(), defaultName);
-		getFileNameDialog.center();
-		
-		ProgressIndicator.hideProgressBar();
+		registerEventTypes(EXPORTITEM);
 	}
 
 	@Override
-	public void onSetFileName(String fileName) {
-		if (fileName != null && fileName.trim().length() > 0)
-			exportEditable(exportable, fileName);
-
+	public void handleEvent(AppEvent event) {
+		
+		GWT.log("ItemExportController : handleEvent");
+        if (event.getType() == ItemExportController.EXPORTITEM) {
+        	view = new ItemExportView(this);
+        	forwardToView(view, event);
+        }
 	}
 	
 	public void exportEditable(final Exportable exportable, final String fileName){
@@ -56,12 +44,10 @@ public class ItemExportController implements
 			@Override
 			public void execute() {
 				try{
-					Integer id = exportable.getId();
-					String type = exportable.getType();
 
 					String url = "studyexport?";
-					url += "type=" + type;
-					url += "&id=" + id;
+					url += "type=" + exportable.getType();
+					url += "&id=" + exportable.getId();
 					url += "&filename=" + fileName;
 
 					Window.Location.replace(URL.encode(url));

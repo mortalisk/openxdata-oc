@@ -298,11 +298,11 @@ public class FormListView extends View implements Refreshable {
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 				@Override
 				public void execute() {
-					StudyDef study = grid.getSelectionModel()
-							.getSelectedItem().getFormDefinition().getStudy();
-					FormListController controller = (FormListController) getController();
+					FormDef editable = grid.getSelectionModel()
+							.getSelectedItem().getFormDefinition();
 					
-					controller.forwardToItemExportController(study);
+					FormListController controller = (FormListController) getController();
+					controller.forwardToItemExportController(editable);
 				}
 			});
 		} else {
