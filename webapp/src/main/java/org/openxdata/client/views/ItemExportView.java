@@ -99,14 +99,7 @@ public class ItemExportView extends ActionOptionView {
         if (event.getType() == ItemExportController.EXPORTITEM) {
         	this.exportable = event.getData("exportable");
         	
-        	firstRadio.setBoxLabel(firstRadio.getBoxLabel() +" - "+((FormDef)exportable).getStudy().getName());
-			secondRadio.setBoxLabel(secondRadio.getBoxLabel() +" - "+exportable.getName());
-			if (((FormDef)exportable).getDefaultVersion() != null) {
-				thirdRadio.setBoxLabel(thirdRadio.getBoxLabel() +" - "+((FormDef)exportable).getDefaultVersion().getName());
-				thirdRadio.show();
-			} else {
-				thirdRadio.hide();
-			}
+        	setRadioBoxLabels((FormDef) exportable);
         }
 	}
 	

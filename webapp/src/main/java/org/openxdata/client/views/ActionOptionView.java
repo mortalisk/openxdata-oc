@@ -2,6 +2,7 @@ package org.openxdata.client.views;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.model.FormDef;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -182,5 +183,18 @@ abstract class ActionOptionView extends View {
 		ProgressIndicator.hideProgressBar();
 		window.addListener(Events.BeforeHide, windowListener);
 		
+	}
+	
+	protected void setRadioBoxLabels(FormDef form){
+		
+		// Initialize Window
+		firstRadio.setBoxLabel(firstRadio.getBoxLabel()+" - "+form.getStudy().getName());
+		secondRadio.setBoxLabel(secondRadio.getBoxLabel()+" - "+form.getName());
+		if (form.getDefaultVersion() != null) {
+			thirdRadio.setBoxLabel(thirdRadio.getBoxLabel()+" - "+form.getDefaultVersion().getName());
+			thirdRadio.show();
+		} else {
+			thirdRadio.hide();
+		}
 	}
 }

@@ -35,15 +35,7 @@ public class DeleteStudyFormView extends ActionOptionView {
 			formVersion = event.getData("formVersion");
 			form = event.getData("formDef");
 			
-			// Initialize Window
-			firstRadio.setBoxLabel(firstRadio.getBoxLabel()+" - "+form.getStudy().getName());
-			secondRadio.setBoxLabel(secondRadio.getBoxLabel()+" - "+form.getName());
-			if (formVersion != null) {
-				thirdRadio.setBoxLabel(thirdRadio.getBoxLabel()+" - "+formVersion.getName());
-				thirdRadio.show();
-			} else {
-				thirdRadio.hide();
-			}
+			setRadioBoxLabels(form);
 		}
 		
 	}
