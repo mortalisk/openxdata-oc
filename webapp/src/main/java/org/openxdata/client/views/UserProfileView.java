@@ -216,7 +216,7 @@ public class UserProfileView extends View {
 			initializeWindow();
 			disableUserBioControls();
 			pwFieldSet.setExpanded(true);
-			MessageBox.alert(appMessages.adminUserDefaultPasswordChange(), appMessages.securityAdminChangePassInfo(), null);
+			MessageBox.alert(appMessages.securityWarning(), appMessages.securityAdminChangePassInfo(), null);
 			adminDefaultPasswordChange = true;
 		}
 	}
@@ -247,7 +247,7 @@ public class UserProfileView extends View {
 	public void cancel() {
 		if(adminDefaultPasswordChange){
 			closeWindow();
-			MessageBox.info(appMessages.adminUserDefaultPasswordChange(), appMessages.adminDefaultPasswordChangeCancel(), null);
+			MessageBox.info(appMessages.securityWarning(), appMessages.adminDefaultPasswordChangeCancel(), null);
 			adminDefaultPasswordChange = false;
 			return;
 		}
