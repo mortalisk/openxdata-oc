@@ -186,4 +186,16 @@ public interface AppMessages extends Messages {
 	
 	String deleteFormVersion();
 	
+	String exportForm();
+	
+	String exportFormVersion();
+	
+	String exportStudy();
+	
+	String securityWarning();
+	
+	String successfulExportAs();
+	
+	String exportEditable();
+	
 }
