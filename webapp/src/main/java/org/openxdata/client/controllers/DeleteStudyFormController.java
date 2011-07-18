@@ -27,10 +27,11 @@ public class DeleteStudyFormController extends Controller {
 	
 	public static final EventType DELETESTUDYFORM = new EventType();
 	
-	public DeleteStudyFormController(StudyServiceAsync studyService,FormServiceAsync formService){
+	public DeleteStudyFormController(StudyServiceAsync studyService,
+			FormServiceAsync formService) {
 		super();
 		this.studyService = studyService;
-                this.formService = formService;
+		this.formService = formService;
 		registerEventTypes(DELETESTUDYFORM);
 	}
 

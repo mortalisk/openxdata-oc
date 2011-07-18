@@ -23,10 +23,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
-/**
- * 
- *
- */
 abstract class ActionOptionView extends View {
 	
 	protected Radio firstRadio;

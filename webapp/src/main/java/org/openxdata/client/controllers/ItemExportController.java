@@ -49,13 +49,7 @@ public class ItemExportController implements
 
 	}
 	
-	/**
-	 * Exports the given Editable. Right now we only export studies.
-	 * 
-	 * @param editable Editable to export.
-	 * @param fileName File Name for the item to export.
-	 */
-	void exportEditable(final Exportable exportable, final String fileName){
+	public void exportEditable(final Exportable exportable, final String fileName){
 
 		ProgressIndicator.showProgressBar();
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
