@@ -162,9 +162,7 @@ public interface AppMessages extends Messages {
 	String conflictingLogins();
 	
 	String anotherLoggedInUser();
-	
-	String adminUserDefaultPasswordChange();
-	
+		
 	String securityAdminChangePassInfo();
 	
 	String adminDefaultPasswordChangeCancel();
