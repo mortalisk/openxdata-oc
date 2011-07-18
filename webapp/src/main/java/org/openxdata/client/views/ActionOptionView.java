@@ -63,7 +63,7 @@ abstract class ActionOptionView extends View {
 	
 	@Override
 	protected void initialize() {
-		
+		createButtons();
 		formPanel = new FormPanel();
 		formPanel.setFrame(false);
 		formPanel.setBorders(false);
@@ -95,7 +95,12 @@ abstract class ActionOptionView extends View {
 		
 		formPanel.add(radioGroup);
 		
-		execButton = new Button(appMessages.delete());
+		window.addListener(Events.BeforeHide, windowListener);
+		window.setModal(true);
+	}
+	
+	protected void createButtons(){
+		execButton = new Button(getExecuteButtonLable());
 		execButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -121,16 +126,17 @@ abstract class ActionOptionView extends View {
 				});
 			}
 		});
-		
-		window.addListener(Events.BeforeHide, windowListener);
-		window.setModal(true);
 	}
+	
+	abstract String getHeading();
 	
 	abstract String getThirdRadioLabel();
 
 	abstract String getSecondRadioLabel();
 
 	abstract String getFirstRadioLabel();
+	
+	abstract String getExecuteButtonLable();
 
 	final Listener<ComponentEvent> windowListener = new WindowListener();
 	

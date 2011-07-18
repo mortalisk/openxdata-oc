@@ -120,4 +120,14 @@ public class DeleteStudyFormView extends ActionOptionView {
 	String getFirstRadioLabel() {
 		return appMessages.deleteStudy();
 	}
+
+	@Override
+	String getExecuteButtonLable() {
+		return appMessages.delete();
+	}
+
+	@Override
+	String getHeading() {
+		return appMessages.deleteStudyOrForm();
+	}
 }
