@@ -135,8 +135,7 @@ public class FormListView extends View implements Refreshable {
 			@Override
 			public void execute() {
 				ProgressIndicator.showProgressBar();
-				((FormListController) FormListView.this.getController())
-						.getForms();
+				((FormListController) FormListView.this.getController()).getForms();
 			}
 		});
 

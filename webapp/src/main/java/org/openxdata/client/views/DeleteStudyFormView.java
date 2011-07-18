@@ -30,8 +30,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version.
- * 
- * 
  */
 public class DeleteStudyFormView extends View {
 	
@@ -50,9 +48,6 @@ public class DeleteStudyFormView extends View {
 	private FormDef form;
 	private FormDefVersion formVersion;
     
-	/**
-	 * @param controller
-	 */
 	public DeleteStudyFormView(Controller controller) {
 		super(controller);
 	}
@@ -97,15 +92,15 @@ public class DeleteStudyFormView extends View {
 			public void handleEvent(ButtonEvent be) {
 				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
-                                @Override
-                                public void execute() {
-                                    if (deleteStudy.getValue()) {
-                                        checkItemHasData(form.getStudy());
-                                    } else if (deleteForm.getValue()) {
-                                        checkItemHasData(form);
-                                    } else if (deleteFormVersion.getValue()) {
-                                        checkItemHasData(formVersion);
-                                    }
+					@Override
+					public void execute() {
+						if (deleteStudy.getValue()) {
+							checkItemHasData(form.getStudy());
+						} else if (deleteForm.getValue()) {
+							checkItemHasData(form);
+						} else if (deleteFormVersion.getValue()) {
+							checkItemHasData(formVersion);
+						}
 					}
 				});
 			}
