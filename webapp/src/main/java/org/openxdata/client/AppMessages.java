@@ -180,4 +180,10 @@ public interface AppMessages extends Messages {
 	
 	String noFormVersion();
 	
+	String deleteStudy();
+	
+	String deleteForm();
+	
+	String deleteFormVersion();
+	
 }
