@@ -54,7 +54,7 @@ public class DeleteStudyFormController extends Controller {
 
                 @Override
                 public void onSuccess(Void result) {
-                    RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, editable));
+                    RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.DELETE, editable));
                     deleteStudyFormView.closeWindow();
                 }
             });
@@ -79,7 +79,7 @@ public class DeleteStudyFormController extends Controller {
 			@Override
 			public void onSuccess(Void result) {
 				RefreshablePublisher.get().publish(
-						new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, editable));
+						new RefreshableEvent(RefreshableEvent.Type.DELETE, editable));
 				deleteStudyFormView.closeWindow();
 			}
 		});
