@@ -26,6 +26,28 @@ public class DeleteStudyFormView extends ActionOptionView {
 		super(controller);
 	}
 	
+	@Override
+	protected void handleEvent(AppEvent event) {
+		GWT.log("DeleteStudyFormView : handleEvent");
+		super.handleEvent(event);
+		if (event.getType() == DeleteStudyFormController.DELETESTUDYFORM) {
+			
+			formVersion = event.getData("formVersion");
+			form = event.getData("formDef");
+			
+			// Initialize Window
+			firstRadio.setBoxLabel(firstRadio.getBoxLabel()+" - "+form.getStudy().getName());
+			secondRadio.setBoxLabel(secondRadio.getBoxLabel()+" - "+form.getName());
+			if (formVersion != null) {
+				thirdRadio.setBoxLabel(thirdRadio.getBoxLabel()+" - "+formVersion.getName());
+				thirdRadio.show();
+			} else {
+				thirdRadio.hide();
+			}
+		}
+		
+	}
+
 	private void delete() {
             final DeleteStudyFormController controller1 = (DeleteStudyFormController) this.getController();
             
@@ -48,41 +70,6 @@ public class DeleteStudyFormView extends ActionOptionView {
 
 	}
 	
-	@Override
-	protected void handleEvent(AppEvent event) {
-        GWT.log("DeleteStudyFormView : handleEvent");
-        if (event.getType() == DeleteStudyFormController.DELETESTUDYFORM) {
-            GWT.log("DeleteStudyFormView : DeleteStudyFormController.DELETESTUDYFORM: Delete");
-
-            formVersion = event.getData("formVersion");
-            form = event.getData("formDef");
-
-            // Initialize Window
-            firstRadio.setBoxLabel(firstRadio.getBoxLabel()+" - "+form.getStudy().getName());
-            secondRadio.setBoxLabel(secondRadio.getBoxLabel()+" - "+form.getName());
-            if (formVersion != null) {
-            	thirdRadio.setBoxLabel(thirdRadio.getBoxLabel()+" - "+formVersion.getName());
-            	thirdRadio.show();
-            } else {
-            	thirdRadio.hide();
-            }
-            window.setAutoHeight(true);
-            window.setWidth(425);
-            window.setPlain(true);
-            window.setHeading(appMessages.deleteStudyOrForm());
-            window.add(formPanel);
-            window.setDraggable(true);
-            window.setResizable(true);
-
-            window.addButton(execButton);
-            window.addButton(cancelButton);
-
-            window.show();
-            ProgressIndicator.hideProgressBar();
-        }
-
-    }
-	   
     public void checkItemHasData(Editable item){
         ((DeleteStudyFormController) this.getController()).itemHasData(item);
     }
