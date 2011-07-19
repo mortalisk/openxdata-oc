@@ -104,13 +104,13 @@ public class CSVDataExport implements DataExport {
                 continue;
             }
 
-            String name = node.getNodeName();
+            String name = node.getLocalName();
             String value = node.getTextContent();
 
             // we do not export multimedia field
             if (multimediaFields.contains(name)) {
                 continue;
-            } else if (gpsFields.contains(node.getNodeName())) {
+            } else if (gpsFields.contains(name)) {
                 addGPSField(dataLine, name, value);
             } else if (multiSelFields.keySet().contains(name)) {
                 addMultiSelectField(dataLine, multiSelFields, name, value);
