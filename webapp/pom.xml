@@ -247,7 +247,6 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-        <testSourceDirectory>${basedir}/test</testSourceDirectory>
         <outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
         <plugins>
             <plugin>

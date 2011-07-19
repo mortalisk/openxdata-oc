@@ -15,6 +15,8 @@ import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -25,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class UserServiceTest extends BaseContextSensitiveTest {
 
+	private static Logger log = LoggerFactory.getLogger(UserServiceTest.class);
+	
 	@Autowired
 	protected UserService userService;
 	
@@ -170,7 +174,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		System.out.println(errorString);
+		log.debug(errorString);
 		errorString = errorString.trim().replaceAll("\\n*\\r*", "");
 
 		Assert.assertEquals(expectedErrorString, errorString);

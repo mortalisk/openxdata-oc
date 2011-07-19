@@ -1,9 +1,14 @@
 package org.openxdata.server.security;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.openxdata.server.admin.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.concurrent.SessionInformation;
 
 /**
@@ -12,6 +17,8 @@ import org.springframework.security.concurrent.SessionInformation;
  */
 public class OpenXDataSessionRegistryTest {
 
+	private static Logger log = LoggerFactory.getLogger(OpenXDataSessionRegistryTest.class);
+	
     private OpenXDataSessionRegistryImpl registry = new OpenXDataSessionRegistryImpl();
     //-- Constants    ---//
     private String ADMIN_USERNANE = "admin";
@@ -35,23 +42,30 @@ public class OpenXDataSessionRegistryTest {
         registry.registerNewSession(DISABLED_USERSESSION_ID1, DISABLED_USERNAME);
         registry.registerNewSession(DISABLED_USERSESSION_ID2, DISABLED_USERNAME);
 
-        System.out.println("Principals:" + registry.getAllPrincipals());
+        log.debug("Principals:" + registry.getAllPrincipals());
         printSessions(ADMIN_USERNANE);
         printSessions(DISABLED_USERNAME);
     }
 
-    private void printSessions(String user) {
-        System.out.print("Sessions: " + user + " : ");
-        SessionInformation[] allSessions = registry.getAllSessions(user, true);
-        for (SessionInformation sessionInformation : allSessions) {
-            System.out.print(sessionInformation.getSessionId() + " ");
-        }
-        System.out.println();
-    }
+	private void printSessions(String user) {
+		if (log.isDebugEnabled()) {
+			StringBuilder buf = new StringBuilder();
+			SessionInformation[] allSessions = registry.getAllSessions(user,
+					true);
+			buf.append("Sessions: ");
+			buf.append(user);
+			buf.append(" : ");
+			for (SessionInformation sessionInformation : allSessions) {
+				buf.append(sessionInformation.getSessionId());
+				buf.append(' ');
+			}
+			log.debug("Sessions: ");
+		}
+	}
 
     @Test
     public void testAddDisableUser() {
-        System.out.println("addDisableUser");
+        log.debug("addDisableUser");
         registry.addDisableUser(DISABLED_USR_OBJ);
         assertTrue(registry.containsDisabledUserName(DISABLED_USERNAME));
         assertTrue(registry.containsDisabledUser(DISABLED_USR_OBJ));
@@ -60,7 +74,7 @@ public class OpenXDataSessionRegistryTest {
 
     @Test
     public void testRemoveDisabledUser() {
-        System.out.println("removeDisabledUser");
+        log.debug("removeDisabledUser");
         registry.addDisableUser(ADMIN_USR_OBJ);
         assertTrue(registry.containsDisabledUser(ADMIN_USR_OBJ));
         registry.removeDisabledUser(ADMIN_USR_OBJ);
@@ -69,7 +83,7 @@ public class OpenXDataSessionRegistryTest {
 
     @Test
     public void testContainsDisabledUser_User() {
-        System.out.println("containsDisabledUser");
+        log.debug("containsDisabledUser");
         assertFalse(registry.containsDisabledUser(ADMIN_USR_OBJ));
         registry.addDisableUser(ADMIN_USR_OBJ);
         assertTrue(registry.containsDisabledUser(ADMIN_USR_OBJ));

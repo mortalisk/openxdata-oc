@@ -3,7 +3,8 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+	<appender name="FILE" class="org.apache.log4j.FileAppender">
+		<param name="File" value="target/test.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
 				value="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
@@ -17,7 +18,7 @@
 	<!-- Hide unnecessary errors logged by Hibernate during unit testing -->
 	<logger name="org.hibernate.tool.hbm2ddl.SchemaExport">
 		<level value="FATAL" />
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
 	</logger>
 	
 	<logger name="org.hibernate">
@@ -59,7 +60,7 @@
 	
 	<root>
 		<level value="ERROR" />
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
 	</root>
 
 </log4j:configuration>
