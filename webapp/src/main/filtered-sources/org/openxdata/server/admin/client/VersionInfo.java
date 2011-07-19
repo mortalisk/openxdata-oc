@@ -7,5 +7,5 @@ package org.openxdata.server.admin.client;
  */
 public class VersionInfo {
 
-    public static String VERSION = "@Version@";
+    public static String VERSION = "${published.version}";
 }

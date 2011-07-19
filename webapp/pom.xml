@@ -20,6 +20,8 @@
         <brandKey>openxdata</brandKey>
         <logo>images/emit/openxdata-logo.png</logo>
         <logoUrl>http://www.openxdata.org/</logoUrl>
+        <filtered.sourceDir>${project.build.directory}/generated-sources/filtered</filtered.sourceDir>
+        <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
     </properties>
 
@@ -238,10 +240,10 @@
         <finalName>openxdata-${project.version}</finalName>
         <resources>
             <resource>
-                <directory>${basedir}/src/main/java</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
+                <directory>src/main/java</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
                 <filtering>false</filtering>
             </resource>
         </resources>
@@ -249,45 +251,73 @@
         <outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
         <plugins>
             <plugin>
-               <artifactId>maven-resources-plugin</artifactId>
-               <version>2.4.2</version>
-               <executions>
-                   <execution>
-                        <id>copy-message-properties</id>
-                        <phase>validate</phase>
-                        <goals><goal>copy-resources</goal></goals>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>filter-sources</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
                         <configuration>
-                            <encoding>UTF-8</encoding>
-                            <overwrite>true</overwrite>
-                            <outputDirectory>${basedir}/src/main/java/org/openxdata/client</outputDirectory>
+                            <outputDirectory>${filtered.sourceDir}</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/src/main/resources</directory>
-                                    <includes>
-                                        <include>AppMessages*.properties</include>
-                                        <include>PurcformsText*.properties</include>
-                                    </includes>
+                                        <directory>src/main/filtered-sources</directory>
+                                        <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>filter-properties</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>src/main/java</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-favicon</id>
-                        <phase>validate</phase>
-                        <goals><goal>copy-resources</goal></goals>
+                        <id>filter-webapp</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
                         <configuration>
-                            <encoding>UTF-8</encoding>
-                            <overwrite>true</overwrite>
-                            <outputDirectory>${basedir}/war</outputDirectory>
+                            <outputDirectory>war</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/src/main/resources/${brandKey}</directory>
-                                    <includes>
-                                        <include>favicon.ico</include>
-                                    </includes>
+                                      <directory>src/main/filtered-webapp</directory>
+                                      <filtering>true</filtering>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>add-filtered-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${filtered.sourceDir}</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>
@@ -297,6 +327,12 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
                 <configuration>
+                    <webResources>
+                        <resource>
+                              <directory>src/main/icons/${brandKey}</directory>
+                              <filtering>false</filtering>
+                        </resource>
+                    </webResources>
                     <manifest>
                         <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                     </manifest>
@@ -308,8 +344,8 @@
                             <Published-Version>${published.version}</Published-Version>
                         </manifestEntries>
                     </archive>
-                    <warSourceDirectory>${basedir}/war</warSourceDirectory>
-                    <webXml>${basedir}/target/temp/web-tagged.xml</webXml>
+                    <warSourceDirectory>war</warSourceDirectory>
+                    <webXml>war/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
             <plugin>
@@ -324,7 +360,7 @@
                     <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
                     <runTarget>Emit.html</runTarget>
                     <port>8889</port>
-                    <hostedWebapp>${basedir}/war/</hostedWebapp>
+                    <hostedWebapp>war</hostedWebapp>
                 </configuration>
                 <executions>
                     <execution>
@@ -338,51 +374,32 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <id>tag-version</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <property name="version" value="${published.version}" />
-                                <ant antfile="${basedir}/src/build/build-version.xml" />
-                            </tasks>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>cleanup-after-gwt-run</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <delete dir="${basedir}/war/WEB-INF/lib" />
-                                <delete dir="${basedir}/war/WEB-INF/classes" />
-                                <delete dir="${basedir}/war/emit" />
-                                <delete dir="${basedir}/war/OpenXDataServerAdmin" />
-                                <delete dir="${basedir}/war/META-INF" />
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.ant</groupId>
-                        <artifactId>ant</artifactId>
-                        <version>1.8.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>ant-contrib</groupId>
-                        <artifactId>ant-contrib</artifactId>
-                        <version>1.0b3</version>
-                    </dependency>
-                </dependencies>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                      <fileset>
+                          <directory>war</directory>
+                          <includes>
+                              <include>WEB-INF/lib</include>
+                              <include>WEB-INF/classes</include>
+                              <include>WEB-INF/web.xml</include>
+                              <include>WEB-INF/protocol-jars/*.jar</include>
+                              <include>emit</include>
+                              <include>OpenXDataServerAdmin</include>
+                              <include>META-INF</include>
+                          </includes>
+                          <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                          <directory>src/main/java</directory>
+                          <includes>
+                              <include>**/AppMessages*.properties</include>
+                              <include>**/PurcformsText*.properties</include>
+                          </includes>
+                          <followSymlinks>false</followSymlinks>
+                        </fileset>
+                   </filesets>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -393,42 +410,37 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${protocol.jarDir}</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>mforms-proto</artifactId>
                                     <version>1.4-SNAPSHOT</version>
-                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/protocol-jars</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>mforms-proto</artifactId>
                                     <version>1.3.1</version>
-                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/protocol-jars</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>mforms-proto</artifactId>
                                     <version>1.2.3</version>
-                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/protocol-jars</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>mforms-proto</artifactId>
                                     <version>1.1</version>
-                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/protocol-jars</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>mforms-proto</artifactId>
                                     <version>1.0</version>
-                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/protocol-jars</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>openxdata-v1.7-proto</artifactId>
                                     <version>1.0</version>
-                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/protocol-jars</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
