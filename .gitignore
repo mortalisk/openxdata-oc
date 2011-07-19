@@ -37,3 +37,5 @@ webapp/war/WEB-INF/lib/
 webapp/war/emit/
 webapp/openxdata.log*
 .DS_Store
+webapp/war/WEB-INF/protocol-jars/*.jar
+webapp/war/WEB-INF/web.xml
