@@ -12,6 +12,7 @@ import java.util.List;
 public interface UserService extends RemoteService {
     User authenticate(String username, String password) throws OpenXDataSecurityException;
     void saveUser(User user) throws OpenXDataSecurityException;
+    void saveMyUser(User user) throws OpenXDataSecurityException;
     User getUser(String username) throws OpenXDataSecurityException, UserNotFoundException;
     boolean validatePassword(User user) throws OpenXDataSecurityException;
     User getLoggedInUser() throws OpenXDataSecurityException;

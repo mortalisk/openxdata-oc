@@ -22,7 +22,12 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements UserS
 	@Override
 	public void saveUser(User user) {
 		getUserService().saveUser(user);
-	}    
+	}
+	
+	@Override
+	public void saveMyUser(User user) {
+		getUserService().saveMyUser(user);
+	}
     
     @Override
 	public User getLoggedInUser() {

@@ -119,4 +119,112 @@
 		</comment>
 		<dropColumn tableName="users" columnName="online" />
 	</changeSet>
+    
+    <changeSet author="dagmar@cell-life.org" id="add_perm_edit_my_user">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                SELECT count(*) FROM permission where name='Perm_Edit_My_User';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Adding permission to enable to editing of users
+        </comment>  
+            <insert tableName="permission">
+                <column name="name" value="Perm_Edit_My_User"/>
+                <column name="description" value="Ability to edit own user in the system"/>
+            </insert>
+    </changeSet>
+    
+    <changeSet author="dagmar@cell-life.org" id="add_role_data_collector_perm_edit_my_user">
+     <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="0">
+        <![CDATA[
+        SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Data_Collector'
+        and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Edit_My_User';
+        ]]>
+        </sqlCheck>
+    </preConditions>
+    <comment>
+        Adding Perm_Edit_My_User permissions to role Data Collector in role_permission table
+    </comment>
+    <sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Data_Collector'),
+         (select permission_id from permission where name='Perm_Edit_My_User'));
+    </sql>
+    </changeSet>
+    <changeSet author="dagmar@cell-life.org" id="add_role_data_manager_perm_edit_my_user">
+     <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="0">
+        <![CDATA[
+        SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Data_Manager'
+        and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Edit_My_User';
+        ]]>
+        </sqlCheck>
+    </preConditions>
+    <comment>
+        Adding Perm_Edit_My_User permissions to role Data Manager in role_permission table
+    </comment>
+    <sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Data_Manager'),
+         (select permission_id from permission where name='Perm_Edit_My_User'));
+    </sql>
+    </changeSet>
+    <changeSet author="dagmar@cell-life.org" id="add_role_study_manager_perm_edit_my_user">
+     <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="0">
+        <![CDATA[
+        SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Study_Manager'
+        and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Edit_My_User';
+        ]]>
+        </sqlCheck>
+    </preConditions>
+    <comment>
+        Adding Perm_Edit_My_User permissions to role Study Manager in role_permission table
+    </comment>
+    <sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Study_Manager'),
+         (select permission_id from permission where name='Perm_Edit_My_User'));
+    </sql>
+    </changeSet>
+    <changeSet author="dagmar@cell-life.org" id="add_role_report_user_perm_edit_my_user">
+     <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="0">
+        <![CDATA[
+        SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Report_User'
+        and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Edit_My_User';
+        ]]>
+        </sqlCheck>
+    </preConditions>
+    <comment>
+        Adding Perm_Edit_My_User permissions to role Report User in role_permission table
+    </comment>
+    <sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_User'),
+         (select permission_id from permission where name='Perm_Edit_My_User'));
+    </sql>
+    </changeSet>
+    <changeSet author="dagmar@cell-life.org" id="add_role_report_manager_perm_edit_my_user">
+     <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="0">
+        <![CDATA[
+        SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Report_Manager'
+        and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_Edit_My_User';
+        ]]>
+        </sqlCheck>
+    </preConditions>
+    <comment>
+        Adding Perm_Edit_My_User permissions to role Report Manager in role_permission table
+    </comment>
+    <sql> 
+         insert into role_permission (role_id, permission_id) 
+         values ((select role_id from role where name='Role_Report_Manager'),
+         (select permission_id from permission where name='Perm_Edit_My_User'));
+    </sql>
+    </changeSet>
 </databaseChangeLog>

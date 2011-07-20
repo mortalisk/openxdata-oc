@@ -45,6 +45,11 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements org.o
 	public void saveUser(User user) {
 		userService.saveUser(user);
 	}
+	
+	@Override
+	public void saveMyUser(User user) {
+		userService.saveMyUser(user);
+	}
 
 	@Override
 	public User getUser(String username) throws UserNotFoundException {

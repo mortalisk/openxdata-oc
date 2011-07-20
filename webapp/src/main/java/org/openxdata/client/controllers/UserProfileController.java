@@ -80,7 +80,7 @@ public class UserProfileController extends Controller {
     
     public void saveUserProfile(final User user) {
     	GWT.log("UserProfileController : saveUserProfile , user : " + user.getFullName());
-        userService.saveUser(user, new EmitAsyncCallback<Void>() {
+        userService.saveMyUser(user, new EmitAsyncCallback<Void>() {
                 @Override
 				public void onSuccess(Void result) {
                     MessageBox.alert(appMessages.success(), appMessages.user() + " " + user.getName() + " " + appMessages.profileSaved(), null);

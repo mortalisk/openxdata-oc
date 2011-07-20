@@ -12,12 +12,14 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.dao.RoleDAO;
 import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.UserDAO;
+import org.openxdata.server.security.OpenXDataSessionRegistry;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.MailService;
 import org.openxdata.server.service.UserService;
@@ -34,7 +36,6 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import au.com.bytecode.opencsv.bean.HeaderColumnNameMappingStrategy;
-import org.openxdata.server.security.OpenXDataSessionRegistry;
 
 /**
  * Default implementation for <code>UserService interface</code>.
@@ -128,6 +129,19 @@ public class UserServiceImpl implements UserService {
 		sessionRegistry.updateUserEntries(user);
 
 		sendEmailToNewUser(user);
+    }
+    
+    @Override
+    @Secured({"Perm_Edit_My_User", "Perm_Add_Users"})
+    public void saveMyUser(User user) {
+    	String loggedInUserName = OpenXDataSecurityUtil.getLoggedInUser().getName();
+    	if (loggedInUserName.equals(user.getName())) {
+	    	checkAndSetUserLoginProperties(user);
+			userDAO.saveUser(user);
+			sessionRegistry.updateUserEntries(user);
+    	} else {
+    		throw new OpenXDataSecurityException("User "+user.getName()+" is not currently logged in user ("+loggedInUserName+")");
+    	}
     }
 
 	private void checkAndSetUserLoginProperties(User user) {

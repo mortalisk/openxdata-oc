@@ -42,6 +42,13 @@ public interface UserService {
 	 */
 	void saveUser(User user);
 	
+	/**
+	 * Saves modified user (must be currently logged in user) to the database.
+	 * 
+	 * @param user the user to save.
+	 */
+	void saveMyUser(User user);
+	
     /**
      * Resets the user's password and saves the user
      *

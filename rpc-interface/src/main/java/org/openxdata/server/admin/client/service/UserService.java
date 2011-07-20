@@ -31,6 +31,15 @@ public interface UserService extends RemoteService {
 	void saveUser(User user) throws OpenXDataSecurityException;
 	
 	/**
+	 * Saves a modified user to the database.
+	 * Must be the user of the currently logged in user
+	 * 
+	 * @param user the user to save.
+	 * @throws OpenXDataSecurityException For any <tt>security related</tt> that occurs on the <tt>service layer.</tt>
+	 */
+	void saveMyUser(User user) throws OpenXDataSecurityException;
+	
+	/**
 	 * Persists a given list of Users to the database.
 	 * 
 	 * @param users List of Users to persist.
