@@ -57,7 +57,7 @@ public class FormServiceImpl implements FormService {
     private EditableDAO editableDAO;
     
     @Override
-    @Secured("Perm_View_Form_Data")
+    @Secured("Perm_View_Forms")
 	public Integer getFormResponseCount(int formDefVersionId) {
         return studyDAO.getFormDataCount(formDefVersionId);
     }
