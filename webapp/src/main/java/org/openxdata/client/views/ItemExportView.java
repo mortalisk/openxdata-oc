@@ -75,7 +75,7 @@ public class ItemExportView extends ActionOptionView {
 	
 	private void setFormNameValues(FormDefVersion formVersion){
 		firstRadio.setBoxLabel(getFirstRadioLabel()+" ("+getStudyName()+")");
-		secondRadio.setBoxLabel(getSecondRadioLabel()+"("+getFormName()+")");
+		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName()+")");
 		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");
 	}
 	
