@@ -5,9 +5,6 @@ import org.openxdata.server.admin.model.Exportable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -26,39 +23,9 @@ public class ItemExportView extends ActionOptionView {
 	protected void initialize(){
 		super.initialize();
 		
-		execButton.setEnabled(false);
-		
 		firstRadio.setToolTip(appMessages.exportStudyTooltip());
-		firstRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
-
-			@Override
-			public void handleEvent(FieldEvent be) {
-				fileName.setValue(getStudyName());
-				execButton.setEnabled(true);
-			}
-			
-		});
-		
 		secondRadio.setToolTip(appMessages.exportFormTooltip());
-		secondRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
-
-			@Override
-			public void handleEvent(FieldEvent be) {
-				fileName.setValue(getFormName());
-				execButton.setEnabled(true);
-			}
-			
-		});
-		
 		thirdRadio.setToolTip(appMessages.exportFormVersionTooltip());
-		thirdRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
-			@Override
-			public void handleEvent(FieldEvent be) {
-				fileName.setValue(getFormVersionName());
-				execButton.setEnabled(true);
-			}
-			
-		});
 		
 		fileName = new TextField<String>();
 		fileName.setFieldLabel(appMessages.filename());
@@ -153,7 +120,7 @@ public class ItemExportView extends ActionOptionView {
 	}
 
 	@Override
-	String getExecuteButtonLable() {
+	String getExecuteButtonLabel() {
 		return appMessages.exportA();
 	}
 
@@ -161,4 +128,24 @@ public class ItemExportView extends ActionOptionView {
 	String getHeading() {
 		return appMessages.exportEditable();
 	}
+
+	@Override
+    protected void onFirstRadioSelected() {
+	    super.onFirstRadioSelected();
+	    fileName.setValue(getStudyName());
+    }
+
+	@Override
+    protected void onSecondRadioSelected() {
+	    super.onSecondRadioSelected();
+	    fileName.setValue(getFormName());
+    }
+
+	@Override
+    protected void onThirdRadioSelected() {
+	    super.onThirdRadioSelected();
+	    fileName.setValue(getFormVersionName());
+    }
+	
+	
 }

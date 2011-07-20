@@ -113,7 +113,7 @@ public class DeleteStudyFormView extends ActionOptionView {
 	}
 
 	@Override
-	String getExecuteButtonLable() {
+	String getExecuteButtonLabel() {
 		return appMessages.delete();
 	}
 

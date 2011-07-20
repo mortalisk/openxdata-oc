@@ -6,6 +6,7 @@ import org.openxdata.client.util.ProgressIndicator;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
@@ -76,16 +77,34 @@ abstract class ActionOptionView extends View {
 		firstRadio.setHideLabel(true);
 		firstRadio.setBoxLabel(getFirstRadioLabel());
 		radioGroup.add(firstRadio);
+		firstRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
+			@Override
+			public void handleEvent(FieldEvent be) {
+				onFirstRadioSelected();
+			}
+		});
 		
 		secondRadio = new Radio();
 		secondRadio.setBoxLabel(getSecondRadioLabel());
 		secondRadio.setHideLabel(true);
 		radioGroup.add(secondRadio);
+		secondRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
+			@Override
+			public void handleEvent(FieldEvent be) {
+				onSecondRadioSelected();
+			}
+		});
 		
 		thirdRadio = new Radio();
 		thirdRadio.setHideLabel(true);
 		thirdRadio.setBoxLabel(getThirdRadioLabel());
 		radioGroup.add(thirdRadio);
+		thirdRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
+			@Override
+			public void handleEvent(FieldEvent be) {
+				onThirdRadioSelected();
+			}
+		});
 		
 		LayoutContainer radioGroupContainer = new LayoutContainer();
 		FormLayout formLayout = new FormLayout();
@@ -99,7 +118,8 @@ abstract class ActionOptionView extends View {
 	}
 	
 	protected void createButtons(){
-		execButton = new Button(getExecuteButtonLable());
+		execButton = new Button(getExecuteButtonLabel());
+		execButton.setEnabled(false);
 		execButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -135,7 +155,28 @@ abstract class ActionOptionView extends View {
 
 	abstract String getFirstRadioLabel();
 	
-	abstract String getExecuteButtonLable();
+	abstract String getExecuteButtonLabel();
+	
+	/**
+	 * Called when the radio button is selected (implemented via Listener)
+	 */
+	protected void onFirstRadioSelected() {
+		execButton.setEnabled(true);
+	}
+	
+	/**
+	 * Called when the radio button is selected (implemented via Listener)
+	 */
+	protected void onSecondRadioSelected() {
+		execButton.setEnabled(true);
+	}
+	
+	/**
+	 * Called when the radio button is selected (implemented via Listener)
+	 */
+	protected void onThirdRadioSelected() {
+		execButton.setEnabled(true);
+	}
 
 	
 	/**
