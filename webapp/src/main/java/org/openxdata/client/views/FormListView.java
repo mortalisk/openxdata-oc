@@ -80,27 +80,25 @@ public class FormListView extends View implements Refreshable {
 		
 		GridCellRenderer<FormSummary> nameCellRender = new GridCellRenderer<FormSummary>() {  
 		      public String render(FormSummary summary, String property, ColumnData config, int rowIndex, int colIndex,  
-		          ListStore<FormSummary> store, Grid<FormSummary> grid) {  
-		        String name = summary.getForm() + "   (" + summary.getVersion() + ")";
-		        String style = "";
-		        if (!summary.isPublished()) {
-		        	//style = "font-style: italic; color: grey";
-		        	style = "color: grey";
-		        } else {
-		        	style = "font-style: normal; color: black";
-		        }
-		        return "<span qtitle='" + cm.getColumnById(property).getHeader() + "' qtip='" + name  
-	            + "' style='" + style + "'>" + name + "</span>";
+		          ListStore<FormSummary> store, Grid<FormSummary> grid) {
+		    	  String name = summary.getForm();
+		    	  if (summary.getFormVersion() != null) {
+		    		  name = summary.getForm() + "   (" + summary.getVersion() + ")";
+		    	  }
+		    	  
+		    	  String style = "color: black";
+		    	  if (!summary.isPublished()) {
+		    		  style = "color: grey";
+		    	  }
+		    	  
+		    	  return "<span qtitle='" + cm.getColumnById(property).getHeader() + "' qtip='" + name 
+		    	  + "' style='" + style + "'>" + name + "</span>";
 		      }  
 		 };
 		
 		ColumnConfig nameColConfig = new ColumnConfig("form", appMessages.form(), 570);
 		nameColConfig.setRenderer(nameCellRender);
 		configs.add(nameColConfig);
-		//ColumnConfig ver = new ColumnConfig("version", appMessages.version(), 50);
-		//ver.setAlignment(HorizontalAlignment.CENTER);
-		//configs.add(ver);
-		//configs.add(new CheckColumnConfig("published", "Published", 60));
 		ColumnConfig responsesColConfig = new ColumnConfig("responses",
 				appMessages.responses(), 70);
 		responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
@@ -108,7 +106,6 @@ public class FormListView extends View implements Refreshable {
 
 		cm = new ColumnModel(configs);
 		cm.setHidden(0, true); // hide ID column
-		showPublishedColumn(cm, true);
 
 		GroupingView view = new GroupingView();
 		view.setShowGroupedColumn(false);
@@ -199,8 +196,7 @@ public class FormListView extends View implements Refreshable {
 		});
 		allVersions.hide();
 		allForms = new CheckBox();
-		// FIXME: change text below
-		allForms.setBoxLabel("All Forms");
+		allForms.setBoxLabel(appMessages.showAllForms());
 		allForms.addListener(Events.OnClick, new Listener<BaseEvent>() {
 			@Override
 			public void handleEvent(BaseEvent be) {
@@ -246,7 +242,6 @@ public class FormListView extends View implements Refreshable {
 				newButton.show();
 				allVersions.show();
 				allForms.show();
-				showPublishedColumn(cm, false);
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_EDIT_STUDIES,
@@ -255,7 +250,6 @@ public class FormListView extends View implements Refreshable {
 				edit.show();
 				allVersions.show();
 				allForms.show();
-				showPublishedColumn(cm, false);
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_DELETE_STUDIES,
@@ -264,7 +258,6 @@ public class FormListView extends View implements Refreshable {
 				delete.show();
 				allVersions.show();
 				allForms.show();
-				showPublishedColumn(cm, false);
 				export.show();
 			}
 			if (loggedInUser.hasPermission(Permission.PERM_ADD_FORM_DATA)) {
@@ -307,10 +300,6 @@ public class FormListView extends View implements Refreshable {
 		portlet.setBottomComponent(buttonBar);
 		portlet.setTopComponent(filterBar);
 	}
-
-	private void showPublishedColumn(ColumnModel cm, boolean hide) {
-	    //cm.setHidden(4, hide);
-    }
 
 	protected void export() {
 		if (grid.getSelectionModel().getSelectedItem() != null) {

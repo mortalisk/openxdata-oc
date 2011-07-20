@@ -56,6 +56,7 @@ public interface AppMessages extends Messages {
 	String browseResponses();
 	String editResponse();
 	String showAllVersions();
+	String showAllForms();
 	String showPublishedVersions();
 	
 	String dataSavedSucessfully(String sessionReference);
