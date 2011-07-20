@@ -9,10 +9,13 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>model</artifactId>
-    <packaging>jar</packaging>
     <name>OpenXdata Model</name>
-    <url>http://openxdata.org</url>
+
     <dependencies>
+        <dependency>
+            <artifactId>junit</artifactId>
+            <groupId>junit</groupId>
+        </dependency>
         <dependency>
             <groupId>net.sf.gilead</groupId>
             <artifactId>gilead4gwt</artifactId>

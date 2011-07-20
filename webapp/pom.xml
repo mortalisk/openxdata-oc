@@ -11,7 +11,6 @@
     <artifactId>webapp</artifactId>
     <packaging>war</packaging>
     <name>OpenXdata Webapp</name>
-    <url>http://openxdata.org</url>
 
     <properties>
         <emit.gwt.module>org.openxdata.EmitFirefox</emit.gwt.module>
@@ -75,59 +74,43 @@
         <dependency>
             <groupId>org.openxdata</groupId>
             <artifactId>model</artifactId>
-            <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.openxdata</groupId>
-            <artifactId>server</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openxdata</groupId>
-            <artifactId>rpc-interface</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- Source code for the GWT compiler -->
         <dependency>
             <groupId>org.openxdata</groupId>
             <artifactId>model</artifactId>
-            <version>${project.version}</version>
             <classifier>sources</classifier>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.openxdata</groupId>
             <artifactId>server</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openxdata</groupId>
+            <artifactId>server</artifactId>
             <classifier>sources</classifier>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.openxdata</groupId>
             <artifactId>rpc-interface</artifactId>
-            <version>${project.version}</version>
-            <classifier>sources</classifier>
-            <scope>provided</scope>
         </dependency>
-        
+        <dependency>
+            <groupId>org.openxdata</groupId>
+            <artifactId>rpc-interface</artifactId>
+            <classifier>sources</classifier>
+        </dependency>
+
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
-            <version>${gwt.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${gwt.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -140,37 +123,24 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.12</version>
-            <scope>runtime</scope>
         </dependency>
+
         <dependency>
             <groupId>org.zenika</groupId>
             <artifactId>gwt-datepicker</artifactId>
@@ -196,7 +166,6 @@
             <classifier>gwt22</classifier>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>taglibs</groupId>
             <artifactId>standard</artifactId>
@@ -207,7 +176,6 @@
             <artifactId>jstl</artifactId>
             <version>1.1.2</version>
         </dependency>
-
         <dependency>
             <groupId>com.google.gwt.inject</groupId>
             <artifactId>gin</artifactId>
@@ -226,7 +194,7 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-        <outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
+        <outputDirectory>war/WEB-INF/classes</outputDirectory>
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -329,7 +297,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwt-maven.version}</version>
                 <configuration>
                     <modules>
                         <module>${emit.gwt.module}</module>
@@ -340,15 +307,6 @@
                     <port>8889</port>
                     <hostedWebapp>war</hostedWebapp>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>gwt-compile</id>
-                        <goals>
-                            <goal>generateAsync</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
