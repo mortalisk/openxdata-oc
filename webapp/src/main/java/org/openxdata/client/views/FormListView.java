@@ -32,7 +32,6 @@ import com.extjs.gxt.ui.client.store.GroupingStore;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.StoreFilter;
-import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
@@ -42,15 +41,15 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.custom.Portal;
 import com.extjs.gxt.ui.client.widget.custom.Portlet;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
-import com.extjs.gxt.ui.client.widget.grid.CheckColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GroupingView;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
-import com.extjs.gxt.ui.client.widget.treegrid.TreeGrid;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -60,6 +59,7 @@ public class FormListView extends View implements Refreshable {
 
 	private Portlet portlet;
 	private Grid<FormSummary> grid;
+	private ColumnModel cm;
 
 	private CheckBox allVersions;
 	private CheckBox allForms;
@@ -77,17 +77,36 @@ public class FormListView extends View implements Refreshable {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 		configs.add(new ColumnConfig("id", appMessages.id(), 20));
 		configs.add(new ColumnConfig("organisation", appMessages.study(), 290));
-		configs.add(new ColumnConfig("form", appMessages.form(), 570));
-		ColumnConfig ver = new ColumnConfig("version", appMessages.version(), 50);
-		ver.setAlignment(HorizontalAlignment.CENTER);
-		configs.add(ver);
-		configs.add(new CheckColumnConfig("published", "Published", 60));
+		
+		GridCellRenderer<FormSummary> nameCellRender = new GridCellRenderer<FormSummary>() {  
+		      public String render(FormSummary summary, String property, ColumnData config, int rowIndex, int colIndex,  
+		          ListStore<FormSummary> store, Grid<FormSummary> grid) {  
+		        String name = summary.getForm() + "   (" + summary.getVersion() + ")";
+		        String style = "";
+		        if (!summary.isPublished()) {
+		        	//style = "font-style: italic; color: grey";
+		        	style = "color: grey";
+		        } else {
+		        	style = "font-style: normal; color: black";
+		        }
+		        return "<span qtitle='" + cm.getColumnById(property).getHeader() + "' qtip='" + name  
+	            + "' style='" + style + "'>" + name + "</span>";
+		      }  
+		 };
+		
+		ColumnConfig nameColConfig = new ColumnConfig("form", appMessages.form(), 570);
+		nameColConfig.setRenderer(nameCellRender);
+		configs.add(nameColConfig);
+		//ColumnConfig ver = new ColumnConfig("version", appMessages.version(), 50);
+		//ver.setAlignment(HorizontalAlignment.CENTER);
+		//configs.add(ver);
+		//configs.add(new CheckColumnConfig("published", "Published", 60));
 		ColumnConfig responsesColConfig = new ColumnConfig("responses",
 				appMessages.responses(), 70);
 		responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
 		configs.add(responsesColConfig);
 
-		ColumnModel cm = new ColumnModel(configs);
+		cm = new ColumnModel(configs);
 		cm.setHidden(0, true); // hide ID column
 		showPublishedColumn(cm, true);
 
@@ -123,9 +142,10 @@ public class FormListView extends View implements Refreshable {
 				new Listener<GridEvent<FormSummary>>() {
 					@Override
 					public void handleEvent(GridEvent<FormSummary> be) {
-						if (be.getColIndex() == 2) {
+						ColumnConfig col = grid.getColumnModel().getColumn(be.getColIndex());
+						if (col.getId().equals("form")) {
 							captureData();
-						} else if (be.getColIndex() == 5) {
+						} else if (col.getId().equals("responses")) {
 							browseResponses();
 						}
 					}
@@ -289,7 +309,7 @@ public class FormListView extends View implements Refreshable {
 	}
 
 	private void showPublishedColumn(ColumnModel cm, boolean hide) {
-	    cm.setHidden(4, hide);
+	    //cm.setHidden(4, hide);
     }
 
 	protected void export() {
@@ -575,31 +595,5 @@ public class FormListView extends View implements Refreshable {
 		Portal p = (Portal) portlet.getParent().getParent();
 		int height = p.getHeight() - 20;
 		portlet.setHeight(height);
-	}
-
-	public TreeGrid<FormSummary> formTreeGrid() {
-		TreeStore<FormSummary> store = new TreeStore<FormSummary>();
-
-		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-		configs.add(new ColumnConfig("id", appMessages.id(), 20));
-		configs.add(new ColumnConfig("organisation", appMessages.study(), 290));
-		configs.add(new ColumnConfig("form", appMessages.form(), 580));
-		ColumnConfig ver = new ColumnConfig("version", appMessages.version(),
-				50);
-		ver.setAlignment(HorizontalAlignment.CENTER);
-		configs.add(ver);
-		ColumnConfig responsesColConfig = new ColumnConfig("responses",
-				appMessages.responses(), 70);
-		responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
-		configs.add(responsesColConfig);
-
-		ColumnModel cm = new ColumnModel(configs);
-		cm.setHidden(0, true);
-
-		TreeGrid<FormSummary> tree = new TreeGrid<FormSummary>(store, cm);
-		tree.setBorders(true);
-		tree.setAutoExpandColumn("form");
-
-		return tree;
 	}
 }
