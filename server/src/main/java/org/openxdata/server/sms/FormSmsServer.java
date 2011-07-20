@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
 import org.fcitmuk.communication.sms.SMSServer;
 import org.fcitmuk.communication.sms.SmsProcessMessageResponse;
 import org.openxdata.server.FormsServer;
@@ -14,6 +13,8 @@ import org.openxdata.server.admin.model.FormSmsArchive;
 import org.openxdata.server.admin.model.FormSmsError;
 import org.openxdata.server.service.FormDownloadService;
 import org.openxdata.server.service.SettingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smslib.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class FormSmsServer implements org.fcitmuk.communication.sms.SMSServerLis
 	@Autowired
 	private FormDownloadService formDownloadService;
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(FormSmsServer.class);
 	
 	/** The sms engine. */
 	private org.fcitmuk.communication.sms.SMSServer smsServer;

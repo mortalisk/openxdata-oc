@@ -14,8 +14,9 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.exception.LiquibaseException;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -26,7 +27,7 @@ public class SpringLiquibaseUpdater implements ResourceLoaderAware {
     private String changeLog;
     private DataSource dataSource;
     private ResourceLoader resourceLoader;
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(SpringLiquibaseUpdater.class);
 
     public void init() throws Exception {
         SpringFileOpener fileOpener = new SpringFileOpener(changeLog, getResourceLoader());

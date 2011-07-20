@@ -12,11 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
 import org.openxdata.server.OpenXDataConstants;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.util.XmlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +36,7 @@ public class MultimediaServlet extends HttpServlet {
 
 	private StudyManagerService studyManagerService;
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(MultimediaServlet.class);
 	private static final long serialVersionUID = 1239820102030344L;
 	
 	private final String KEY_MULTIMEDIA_POST_DATA = "MultidemiaPostData";

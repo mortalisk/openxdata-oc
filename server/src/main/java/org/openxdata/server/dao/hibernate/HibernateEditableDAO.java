@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.openxdata.server.admin.model.Editable;
@@ -13,6 +12,8 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.dao.EditableDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -28,7 +29,7 @@ import org.springframework.util.StringUtils;
 public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements EditableDAO {
 	
 	/** The logger*/
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(HibernateEditableDAO.class);
 
 	@Override
 	@SuppressWarnings("unchecked")

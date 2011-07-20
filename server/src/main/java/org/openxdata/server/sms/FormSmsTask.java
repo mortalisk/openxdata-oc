@@ -1,11 +1,12 @@
 package org.openxdata.server.sms;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.Task;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.service.SchedulerService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is the sms task for processing sms connections to OpenXdata.
@@ -19,7 +20,7 @@ public class FormSmsTask extends OpenXDataAbstractJob implements Task{
 	private TaskDef taskDef;
 
 	/** The logger for exceptions, warnings, or informational messages. */
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(FormSmsTask.class);
 	
 	/** Flag to tell whether this task is running. */
 	private boolean running = false;

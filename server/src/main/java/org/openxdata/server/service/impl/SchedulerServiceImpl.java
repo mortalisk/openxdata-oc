@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.Task;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
@@ -16,6 +15,8 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -31,7 +32,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public class SchedulerServiceImpl implements SchedulerService {
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(SchedulerServiceImpl.class);
 	
 	/** The quart scheduler. */
 	private Scheduler scheduler;

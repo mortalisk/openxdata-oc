@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.security.OpenXDataUserDetails;
@@ -20,6 +19,8 @@ import org.openxdata.server.service.AuthenticationService;
 import org.openxdata.server.service.FormDownloadService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.server.validation.PersonIdentificationValidations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -40,7 +41,7 @@ public class DataImportServlet extends HttpServlet {
 
     private AuthenticationService authenticationService;
     
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(DataImportServlet.class);
     
     private static final long serialVersionUID = 5669577564787538190L;
     

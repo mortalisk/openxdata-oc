@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang.Validate;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.Validate;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Setting;
@@ -19,6 +18,8 @@ import org.openxdata.server.export.rdbms.engine.DataQuery;
 import org.openxdata.server.export.rdbms.engine.RdmsEngine;
 import org.openxdata.server.export.rdbms.engine.TableQuery;
 import org.openxdata.server.service.DataExportService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class RdmsDataExportTask {
 	@Autowired
 	private DataExportService dataExportService;
 	
-    private static Logger log = Logger.getLogger(RdmsDataExportTask.class);
+    private static Logger log = LoggerFactory.getLogger(RdmsDataExportTask.class);
     
     private String serverName= "";
     private String portNumber = "";

@@ -3,7 +3,8 @@ package org.openxdata.server.sms;
 import java.net.URL;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smslib.OutboundWapSIMessage;
 import org.smslib.Service;
 import org.smslib.WapSISignals;
@@ -18,7 +19,7 @@ import org.smslib.modem.SerialModemGateway;
  */
 public class WapPushSms {
 
-	private static Logger log = Logger.getLogger(WapPushSms.class);
+	private static Logger log = LoggerFactory.getLogger(WapPushSms.class);
 	
 	/**
 	 * Sends WAP PUSH sms to a list of mobile phone numbers.

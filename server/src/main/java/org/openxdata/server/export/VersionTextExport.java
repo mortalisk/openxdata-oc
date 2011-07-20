@@ -1,8 +1,9 @@
 package org.openxdata.server.export;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.util.XmlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -15,7 +16,7 @@ import org.w3c.dom.Element;
 public class VersionTextExport {
 
 	/** The logger. */
-	private static final Logger log = Logger.getLogger(VersionTextExport.class);
+	private static final Logger log = LoggerFactory.getLogger(VersionTextExport.class);
 
 	/**
 	 * Exports a form version text and all its contents to xml and then adds them as a child of

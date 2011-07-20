@@ -1,12 +1,13 @@
 package org.openxdata.server.security;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataDisabledUserException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.Authentication;
@@ -27,7 +28,7 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
         private OpenXDataSessionRegistry sessionRegistry;
 	
     /** The logger. */
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(OpenXDataAccessDecisionManager.class);
 
 	@Override
 	public void decide(Authentication auth, Object obj,

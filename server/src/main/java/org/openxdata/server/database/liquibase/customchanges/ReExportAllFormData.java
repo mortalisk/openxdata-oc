@@ -19,12 +19,14 @@ import liquibase.exception.InvalidChangeDefinitionException;
 import liquibase.exception.SetupException;
 import liquibase.exception.UnsupportedChangeException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 public class ReExportAllFormData implements CustomSqlChange {
     
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(ReExportAllFormData.class);
     Map<Integer, String> formBindingCache = new HashMap<Integer, String>();
 
     @Override

@@ -3,11 +3,11 @@ package org.openxdata.server.liquibase.liquibasetest;
 import java.io.IOException;
 import java.sql.*;
 import liquibase.Liquibase;
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tests liquibase files against target
@@ -19,11 +19,10 @@ public class TestLiquibase {
     public DriverManagerDataSource dsource;
     public SpringLiquibaseUpdater liquibase;
     public Main app;
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(TestLiquibase.class);
 
     public TestLiquibase() throws IOException {
-        DOMConfigurator.configure("src/main/resources/log4j.xml");
-        ApplicationContext context = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         app = (Main) context.getBean("database");
         dsource = (DriverManagerDataSource) context.getBean("dataSource");
         liquibase = (SpringLiquibaseUpdater) context.getBean("liquibase");

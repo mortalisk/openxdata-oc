@@ -1,12 +1,13 @@
 package org.openxdata.server.bluetooth;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.Task;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.service.SchedulerService;
 import org.openxdata.server.sms.OpenXDataAbstractJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -18,7 +19,7 @@ import org.quartz.JobExecutionException;
 public class FormsBluetoothTask extends OpenXDataAbstractJob implements Task{
 
 	/** The logger. */
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	/** The task definition. */
 	private TaskDef taskDef;

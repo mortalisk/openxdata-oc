@@ -3,12 +3,13 @@ package org.openxdata.server.security;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.dao.UserDAO;
 import org.openxdata.server.service.RoleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.GrantedAuthority;
@@ -38,7 +39,7 @@ public class OpenXDataUserDetailsServiceImpl implements OpenXdataUserDetailsServ
 	private RoleService roleService;
 
 	/** Logger for this class.*/
-	private Logger log = Logger.getLogger(this.getClass());    
+	private Logger log = LoggerFactory.getLogger(OpenXDataUserDetailsServiceImpl.class);    
 	
 	/**
 	 * Constructs a <tt>User</tt> with appropriate security context details given a name.

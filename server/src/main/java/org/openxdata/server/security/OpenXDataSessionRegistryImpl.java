@@ -2,8 +2,10 @@ package org.openxdata.server.security;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.apache.log4j.Logger;
+
 import org.openxdata.server.admin.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.concurrent.SessionInformation;
 import org.springframework.security.concurrent.SessionRegistryImpl;
 
@@ -16,7 +18,7 @@ public class OpenXDataSessionRegistryImpl extends SessionRegistryImpl implements
 
     //Should this be a fully synchronized hashmap or a faster Concurrent hashmap
     private final Map<String, User> disabledUsers = new ConcurrentHashMap<String, User>();
-    private static Logger log = Logger.getLogger(OpenXDataSessionRegistryImpl.class);
+    private static Logger log = LoggerFactory.getLogger(OpenXDataSessionRegistryImpl.class);
 
     @Override
     public void addDisableUser(User user) {

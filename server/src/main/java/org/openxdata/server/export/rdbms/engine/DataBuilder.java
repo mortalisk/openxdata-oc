@@ -1,5 +1,15 @@
 package org.openxdata.server.export.rdbms.engine;
 
+import static org.openxdata.server.export.rdbms.engine.Constants.ESCAPE_CHAR;
+import static org.openxdata.server.export.rdbms.engine.Constants.SQL_UPDATE;
+import static org.openxdata.server.export.rdbms.engine.Constants.TYPE_BINARY;
+import static org.openxdata.server.export.rdbms.engine.Constants.TYPE_BOOLEAN;
+import static org.openxdata.server.export.rdbms.engine.Constants.TYPE_DATE;
+import static org.openxdata.server.export.rdbms.engine.Constants.TYPE_DATETIME;
+import static org.openxdata.server.export.rdbms.engine.Constants.TYPE_DECIMAL;
+import static org.openxdata.server.export.rdbms.engine.Constants.TYPE_INTEGER;
+import static org.openxdata.server.export.rdbms.engine.Constants.TYPE_TIME;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -14,15 +24,14 @@ import java.util.UUID;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.export.rdbms.task.RdmsDataExportTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import static org.openxdata.server.export.rdbms.engine.Constants.*;
 
 /**
  * Class responsible for building SQL insert statements for inserting data in the RDBMS tables
@@ -32,7 +41,7 @@ import static org.openxdata.server.export.rdbms.engine.Constants.*;
  */
 public class DataBuilder {
 
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(DataBuilder.class);
     private static final String SQL_INSERT_INTO = "INSERT INTO %s (%s) VALUES (%s);";
     private final Document schemaDocument;
     private final Document dataDocument;

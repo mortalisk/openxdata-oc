@@ -19,12 +19,13 @@ import liquibase.exception.SetupException;
 import liquibase.exception.UnsupportedChangeException;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class FixBinaryColumnsExportedData implements CustomSqlChange {
     
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(FixBinaryColumnsExportedData.class);
 
     @Override
 	public SqlStatement[] generateStatements(Database db) throws UnsupportedChangeException, CustomChangeException {

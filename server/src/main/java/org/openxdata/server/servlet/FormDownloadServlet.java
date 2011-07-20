@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.openxdata.server.FormsServer;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.serializer.XformSerializer;
@@ -44,6 +43,8 @@ import org.openxdata.server.service.SerializationService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.server.validation.OpenxdataValidations;
 import org.openxdata.server.validation.PersonIdentificationValidations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -63,7 +64,7 @@ public class FormDownloadServlet extends HttpServlet{
 	private SerializationService serializationService;
 	private AuthenticationService authenticationService;
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(FormDownloadServlet.class);
 
 	public static final long serialVersionUID = 111111111111111L;
 

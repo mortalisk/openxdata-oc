@@ -18,7 +18,6 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.openxdata.server.Task;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.TaskDef;
@@ -28,6 +27,8 @@ import org.openxdata.server.service.SchedulerService;
 import org.openxdata.server.sms.OpenXDataAbstractJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +47,7 @@ public class DhisExportTask extends OpenXDataAbstractJob implements Task {
 	@Autowired
 	private DataExportService dataExportService;
 
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(DhisExportTask.class);
 
 	public static final String PARAM_URL = "url";
 	public static final String PARAM_USERNAME = "username";

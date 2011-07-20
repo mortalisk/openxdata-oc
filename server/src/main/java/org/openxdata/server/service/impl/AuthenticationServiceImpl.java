@@ -1,6 +1,5 @@
 package org.openxdata.server.service.impl;
 
-import org.apache.log4j.Logger;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -11,6 +10,8 @@ import org.openxdata.server.security.OpenXDataUserDetails;
 import org.openxdata.server.security.OpenXdataUserDetailsService;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.AuthenticationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         @Autowired OpenXDataSessionRegistryImpl sessionRegistry;
 
-      private Logger log = Logger.getLogger(this.getClass());
+      private Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 	
 	@Override
 	// no security - used for login

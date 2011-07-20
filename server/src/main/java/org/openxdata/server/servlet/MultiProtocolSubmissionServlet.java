@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.openxdata.proto.ProtocolHandler;
 import org.openxdata.proto.ProtocolLoader;
 import org.openxdata.proto.SubmissionContext;
@@ -27,6 +26,8 @@ import org.openxdata.server.service.AuthenticationService;
 import org.openxdata.server.service.FormDownloadService;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -43,7 +44,7 @@ import com.jcraft.jzlib.ZOutputStream;
 public class MultiProtocolSubmissionServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -8555135998272736140L;
-	private static final Logger log = Logger
+	private static final Logger log = LoggerFactory
 			.getLogger(MultiProtocolSubmissionServlet.class);
 
 	private byte ACTION_NONE = -1;

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.OpenXDataConstants;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormSmsArchive;
@@ -32,6 +31,8 @@ import org.openxdata.server.service.UserService;
 import org.openxdata.server.util.LanguageUtil;
 import org.openxdata.server.util.XformUtil;
 import org.openxdata.server.util.XmlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ import org.w3c.dom.NodeList;
 @Service("formDownloadService")
 public class FormDownloadServiceImpl implements FormDownloadService {
 
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(FormDownloadServiceImpl.class);
 
 	@Autowired
 	private FormDownloadDAO formDownloadDAO;

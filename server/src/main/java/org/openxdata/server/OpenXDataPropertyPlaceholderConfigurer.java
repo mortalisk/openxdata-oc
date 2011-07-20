@@ -6,7 +6,8 @@ import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.context.ServletContextAware;
@@ -21,7 +22,7 @@ import org.springframework.web.context.support.ServletContextResource;
 public class OpenXDataPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer implements
 		ServletContextAware {
 
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(OpenXDataPropertyPlaceholderConfigurer.class);
 
 	static final String SETTINGS_SUFFIX = "_SETTINGS";
 	private static final String DEFAULT_CONTEXT_PATH = "/OPENXDATA";

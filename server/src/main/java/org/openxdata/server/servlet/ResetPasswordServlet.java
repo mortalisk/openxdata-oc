@@ -13,13 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.openxdata.server.OpenXDataPropertyPlaceholderConfigurer;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.security.OpenXDataUserDetails;
 import org.openxdata.server.service.UserService;
 import org.openxdata.server.validation.PersonIdentificationValidations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -38,7 +39,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class ResetPasswordServlet extends HttpServlet {
 
     private static final long serialVersionUID = 2310768931768394086L;
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(ResetPasswordServlet.class);
     private MailSender mailSender;
     private UserService userService;
     private UserDetailsService userDetailsService;

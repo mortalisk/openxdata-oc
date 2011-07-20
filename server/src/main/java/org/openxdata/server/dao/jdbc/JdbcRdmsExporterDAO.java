@@ -7,12 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import org.apache.commons.lang.Validate;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.Validate;
 import org.openxdata.server.admin.model.exception.OpenXdataDataAccessException;
 import org.openxdata.server.dao.RdmsExporterDAO;
 import org.openxdata.server.export.rdbms.engine.DataQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Exporter providing all the functionality to the ServerTask responsible 
@@ -28,7 +29,7 @@ import org.openxdata.server.export.rdbms.engine.DataQuery;
  */
 public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
 
-    private Logger log = Logger.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(JdbcRdmsExporterDAO.class);
     private final String connectionUrl;
     
 	/**

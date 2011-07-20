@@ -4,10 +4,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-import org.openxdata.communication.bluetooth.BluetoothServer; 
-import org.openxdata.communication.bluetooth.BluetoothServerListener; 
+import org.openxdata.communication.bluetooth.BluetoothServer;
+import org.openxdata.communication.bluetooth.BluetoothServerListener;
 import org.openxdata.server.FormsServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The bluetooth server for openxdata. It servers forms, studies, users, locales,
@@ -21,7 +22,7 @@ public class FormsBluetoothServer implements BluetoothServerListener  {
 	
 	/** The logger. */
 	//private Log log = LogFactory.getLog(this.getClass());
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(FormsBluetoothServer.class);
 
 	/** The bluetooth server. */
 	private BluetoothServer btServer;
@@ -63,11 +64,11 @@ public class FormsBluetoothServer implements BluetoothServerListener  {
 		try{
 			formsServer.processConnection(dis, dos);
 		}catch(Exception e){
-			log.error(e.getMessage(),e);
+			log.error("Failed while processing connection",e);
 			try{
 				dos.writeByte(FormsServer.STATUS_FAILURE);
 			}catch(IOException ex){
-				log.error(ex);
+				log.error("Failed to write failure response",ex);
 			}
 		}
 	}

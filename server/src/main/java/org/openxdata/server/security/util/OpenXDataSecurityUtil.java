@@ -4,11 +4,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.security.OpenXDataUserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.concurrent.SessionRegistryUtils;
 import org.springframework.security.context.SecurityContext;
@@ -27,7 +28,7 @@ import org.springframework.security.providers.UsernamePasswordAuthenticationToke
 public class OpenXDataSecurityUtil {
 
 	 /** The logger. */
-    private static Logger log = Logger.getLogger(OpenXDataSecurityUtil.class);
+    private static Logger log = LoggerFactory.getLogger(OpenXDataSecurityUtil.class);
 
 
 	/**

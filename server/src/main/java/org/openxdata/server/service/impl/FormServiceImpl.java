@@ -6,7 +6,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.exception.SQLGrammarException;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
@@ -23,6 +22,8 @@ import org.openxdata.server.dao.UserFormMapDAO;
 import org.openxdata.server.export.rdbms.task.RdmsDataExportTask;
 import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("formService")
 public class FormServiceImpl implements FormService {
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
 
     @Autowired
     private FormDAO formDAO;

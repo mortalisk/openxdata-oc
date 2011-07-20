@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -14,6 +13,8 @@ import org.openxdata.server.admin.model.FormSmsArchive;
 import org.openxdata.server.admin.model.FormSmsError;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.dao.FormDownloadDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 
@@ -26,7 +27,7 @@ import org.springframework.stereotype.Repository;
 @Repository("formDownloadDAO")
 public class HibernateFormDownloadDAO extends BaseDAOImpl<Editable> implements FormDownloadDAO {
 
-	private Logger log = Logger.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(HibernateFormDownloadDAO.class);
 
 	@Override
 	@SuppressWarnings("unchecked")

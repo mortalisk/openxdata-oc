@@ -2,10 +2,11 @@ package org.openxdata.server.util;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.OpenXDataConstants;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -16,7 +17,7 @@ import org.openxdata.server.admin.model.exception.UnexpectedException;
  */
 public class OpenXDataUtil {
 
-	private static Logger log = Logger.getLogger(OpenXDataUtil.class);
+	private static Logger log = LoggerFactory.getLogger(OpenXDataUtil.class);
 
     public static String getHomeFolder() {
         return System.getProperty("user.home") ;
