@@ -2,8 +2,6 @@ package org.openxdata.client.views;
 
 import org.openxdata.client.controllers.ItemExportController;
 import org.openxdata.server.admin.model.Exportable;
-import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.FormDefVersion;
 
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
@@ -13,13 +11,12 @@ import com.google.gwt.core.client.GWT;
 public class ItemExportView extends ActionOptionView {
 
 	private TextField<String> fileName;
-
-	private Exportable exportable;
 	
 	public ItemExportView(Controller controller) {
 		super(controller);
 	}
 	
+	@Override
 	protected void initialize(){
 		super.initialize();
 		
@@ -33,50 +30,18 @@ public class ItemExportView extends ActionOptionView {
 		formPanel.add(fileName);
 	}
 	
-	private String getFormVersionName() {
-		FormDefVersion formVersion = (FormDefVersion)exportable;
-		FormDef form = formVersion.getFormDef();
-		StringBuilder formVersionName = new StringBuilder();
-		formVersionName.append(form.getStudy().getName());
-		formVersionName.append(" ");
-		formVersionName.append(form.getName());
-		formVersionName.append(" ");
-		formVersionName.append(formVersion.getName());
-		return formVersionName.toString();
-	}
-	
-	private String getFormName() {
-		FormDefVersion formVersion = (FormDefVersion)exportable;
-		FormDef form = formVersion.getFormDef();
-		StringBuilder formName = new StringBuilder();
-		formName.append(form.getStudy().getName());
-		formName.append(" ");
-		formName.append(form.getName());
-		return formName.toString();
-	}
-	
-	private String getStudyName() {
-		FormDefVersion formVersion = (FormDefVersion)exportable;
-		FormDef form = formVersion.getFormDef();
-		StringBuilder studyName = new StringBuilder();
-		studyName.append(form.getStudy().getName());
-		return studyName.toString();
-	}
-
 	@Override
 	protected void handleEvent(AppEvent event) {
-        GWT.log("ItemExportView : handleEvent");
-        super.handleEvent(event);
-        if (event.getType() == ItemExportController.EXPORTITEM) {
-        	this.exportable = event.getData("exportable");
-        	setFormNameValues((FormDefVersion) exportable);
+		super.handleEvent(event);
+		GWT.log("ItemExportView : handleEvent");
+		if (event.getType() == ItemExportController.EXPORTITEM) {
+        	formVersion = event.getData("formVersion");
+        	form = event.getData("formDef");
+        	if (form == null && formVersion != null) {
+        		form = formVersion.getFormDef();
+        	}
         }
-	}
-	
-	private void setFormNameValues(FormDefVersion formVersion){
-		firstRadio.setBoxLabel(getFirstRadioLabel()+" ("+getStudyName()+")");
-		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName()+")");
-		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");
+		updateRadioButtons();
 	}
 	
 	@Override
@@ -85,13 +50,13 @@ public class ItemExportView extends ActionOptionView {
 
 		Exportable itemToExport = null;
 		if (firstRadio.getValue()) {
-			itemToExport = ((FormDefVersion)exportable).getFormDef().getStudy();
+			itemToExport = form.getStudy();
 		}
 		if (secondRadio.getValue()) {
-			itemToExport = ((FormDefVersion)exportable).getFormDef();
+			itemToExport = form;
 		}
 		if (thirdRadio.getValue()) {
-			itemToExport = exportable;
+			itemToExport = formVersion;
 		}
 		
 		if (name != null && itemToExport != null) {

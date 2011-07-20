@@ -3,8 +3,6 @@ package org.openxdata.client.views;
 import org.openxdata.client.controllers.DeleteStudyFormController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.FormDefVersion;
 
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
@@ -18,9 +16,6 @@ import com.google.gwt.core.client.GWT;
  * Encapsulates UI functionality for Editing a given Study/Form/Form version.
  */
 public class DeleteStudyFormView extends ActionOptionView {
-	
-	private FormDef form;
-	private FormDefVersion formVersion;
     
 	public DeleteStudyFormView(Controller controller) {
 		super(controller);
@@ -28,28 +23,13 @@ public class DeleteStudyFormView extends ActionOptionView {
 	
 	@Override
 	protected void handleEvent(AppEvent event) {
-		GWT.log("DeleteStudyFormView : handleEvent");
 		super.handleEvent(event);
+		GWT.log("DeleteStudyFormView : handleEvent");
 		if (event.getType() == DeleteStudyFormController.DELETESTUDYFORM) {
-			
 			formVersion = event.getData("formVersion");
 			form = event.getData("formDef");
-			
-			setRadioBoxLabels(form, formVersion);
 		}
-	}
-	
-	private void setRadioBoxLabels(FormDef form, FormDefVersion formVersion){
-		
-		// Initialize Window
-		firstRadio.setBoxLabel(firstRadio.getBoxLabel()+" - "+form.getStudy().getName());
-		secondRadio.setBoxLabel(secondRadio.getBoxLabel()+" - "+form.getName());
-		if (formVersion != null) {
-			thirdRadio.setBoxLabel(thirdRadio.getBoxLabel()+" - "+formVersion.getName());
-			thirdRadio.show();
-		} else {
-			thirdRadio.hide();
-		}
+		updateRadioButtons();
 	}
 
 	private void delete() {

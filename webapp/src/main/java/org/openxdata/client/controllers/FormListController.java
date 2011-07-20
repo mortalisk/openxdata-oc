@@ -123,11 +123,12 @@ public class FormListController extends Controller {
         });
     }
 
-	public void forwardToItemExportController(Editable editable) {
+	public void forwardToItemExportController(FormSummary formSummary) {
 		GWT.log("FormListController : forwardToItemExportController");
         Dispatcher dispatcher = Dispatcher.get();
         AppEvent event = new AppEvent(ItemExportController.EXPORTITEM);
-        event.setData("exportable", editable);
+        event.setData("formDef", formSummary.getFormDefinition());
+        event.setData("formVersion", formSummary.getFormVersion());
     	dispatcher.dispatch(event);
 	}
 }

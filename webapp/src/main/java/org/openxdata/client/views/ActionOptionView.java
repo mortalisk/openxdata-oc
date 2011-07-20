@@ -1,7 +1,10 @@
 package org.openxdata.client.views;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.controllers.ItemExportController;
 import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -35,6 +38,9 @@ abstract class ActionOptionView extends View {
 	protected Window window = new Window();
 
 	protected AppMessages appMessages = GWT.create(AppMessages.class);
+	
+	protected FormDef form;
+	protected FormDefVersion formVersion;
 	
 	protected ActionOptionView(Controller controller){
 		super(controller);
@@ -75,7 +81,7 @@ abstract class ActionOptionView extends View {
 		
 		firstRadio = new Radio();
 		firstRadio.setHideLabel(true);
-		firstRadio.setBoxLabel(getFirstRadioLabel());
+		firstRadio.setBoxLabel(getFirstRadioLabel()+" ("+getStudyName()+")");
 		radioGroup.add(firstRadio);
 		firstRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
 			@Override
@@ -85,7 +91,7 @@ abstract class ActionOptionView extends View {
 		});
 		
 		secondRadio = new Radio();
-		secondRadio.setBoxLabel(getSecondRadioLabel());
+		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName()+")");
 		secondRadio.setHideLabel(true);
 		radioGroup.add(secondRadio);
 		secondRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
@@ -97,7 +103,7 @@ abstract class ActionOptionView extends View {
 		
 		thirdRadio = new Radio();
 		thirdRadio.setHideLabel(true);
-		thirdRadio.setBoxLabel(getThirdRadioLabel());
+		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");
 		radioGroup.add(thirdRadio);
 		thirdRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
 			@Override
@@ -145,6 +151,49 @@ abstract class ActionOptionView extends View {
 				});
 			}
 		});
+	}
+	
+	public void updateRadioButtons() {
+		firstRadio.setBoxLabel(getFirstRadioLabel()+" ("+getStudyName()+")");
+		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName()+")");
+		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");
+		if (formVersion == null) {
+			thirdRadio.hide();
+		}
+	}
+	
+	protected String getFormVersionName() {
+		if (formVersion != null) {
+			FormDef form = formVersion.getFormDef();
+			StringBuilder formVersionName = new StringBuilder();
+			formVersionName.append(form.getStudy().getName());
+			formVersionName.append(" ");
+			formVersionName.append(form.getName());
+			formVersionName.append(" ");
+			formVersionName.append(formVersion.getName());
+			return formVersionName.toString();
+		}
+		return "";
+	}
+	
+	protected String getFormName() {
+		if (form != null) {
+			StringBuilder formName = new StringBuilder();
+			formName.append(form.getStudy().getName());
+			formName.append(" ");
+			formName.append(form.getName());
+			return formName.toString();
+		}
+		return "";
+	}
+	
+	protected String getStudyName() {
+		if (form != null) {
+			StringBuilder studyName = new StringBuilder();
+			studyName.append(form.getStudy().getName());
+			return studyName.toString();
+		}
+		return "";
 	}
 	
 	abstract String getHeading();

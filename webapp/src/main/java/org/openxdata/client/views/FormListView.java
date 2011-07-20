@@ -310,7 +310,7 @@ public class FormListView extends View implements Refreshable {
 					FormSummary summary = grid.getSelectionModel().getSelectedItem();
 					if (summary.getFormVersion() != null) {
 						FormListController controller = (FormListController) getController();
-						controller.forwardToItemExportController(summary.getFormVersion());
+						controller.forwardToItemExportController(summary);
 					} else {
 						MessageBox.alert(appMessages.listOfForms(), appMessages.noFormVersion(), null);
 						ProgressIndicator.hideProgressBar();
