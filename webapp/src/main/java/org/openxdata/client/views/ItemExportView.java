@@ -3,6 +3,7 @@ package org.openxdata.client.views;
 import org.openxdata.client.controllers.ItemExportController;
 import org.openxdata.server.admin.model.Exportable;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
@@ -98,9 +99,15 @@ public class ItemExportView extends ActionOptionView {
         super.handleEvent(event);
         if (event.getType() == ItemExportController.EXPORTITEM) {
         	this.exportable = event.getData("exportable");
-        	
-        	setRadioBoxLabels((FormDef) exportable);
+        	setFormNameValues((FormDefVersion) exportable);
         }
+	}
+	
+	private void setFormNameValues(FormDefVersion formVersion){
+		FormDef form = formVersion.getFormDef();
+		studyName.setValue(form.getStudy().getName());
+		formName.setValue(form.getName());
+		formVersionName.setValue(formVersion.getName());
 	}
 	
 	@Override
@@ -108,16 +115,17 @@ public class ItemExportView extends ActionOptionView {
 		String name = null;
 		
 		// Handle to passed exportable item.
-		Exportable itemToExport = exportable;
-		if(firstRadio.getValue()){
+		Exportable itemToExport = null;
+		if (firstRadio.getValue()) {
+			itemToExport = ((FormDefVersion)exportable).getFormDef().getStudy();
 			name = studyName.getValue();
-			itemToExport = ((FormDef)exportable).getStudy();
 		}
-		if(secondRadio.getValue()){
+		if (secondRadio.getValue()) {
+			itemToExport = ((FormDefVersion)exportable).getFormDef();
 			name = formName.getValue();
 		}
-		if(thirdRadio.getValue()){
-			itemToExport = ((FormDef)exportable).getDefaultVersion();
+		if (thirdRadio.getValue()) {
+			itemToExport = exportable;
 			name = formVersionName.getValue();
 		}
 		
@@ -126,15 +134,7 @@ public class ItemExportView extends ActionOptionView {
 		controller.exportEditable(itemToExport, name);
 		
 		formPanel.clear();
-		
-		MessageBox.info(appMessages.export(), itemToExport.getType() + " " + itemToExport.getName() + " " +
-				appMessages.successfulExportAs() + " " + name + ".", new Listener<MessageBoxEvent>() {
-			@Override
-			public void handleEvent(MessageBoxEvent be) {
-			}
-		});
-
-		itemToExport = exportable;
+		closeWindow();
 	}
 
 	@Override

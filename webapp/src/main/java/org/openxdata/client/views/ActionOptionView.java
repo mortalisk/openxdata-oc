@@ -184,17 +184,4 @@ abstract class ActionOptionView extends View {
 		window.addListener(Events.BeforeHide, windowListener);
 		
 	}
-	
-	protected void setRadioBoxLabels(FormDef form){
-		
-		// Initialize Window
-		firstRadio.setBoxLabel(firstRadio.getBoxLabel()+" - "+form.getStudy().getName());
-		secondRadio.setBoxLabel(secondRadio.getBoxLabel()+" - "+form.getName());
-		if (form.getDefaultVersion() != null) {
-			thirdRadio.setBoxLabel(thirdRadio.getBoxLabel()+" - "+form.getDefaultVersion().getName());
-			thirdRadio.show();
-		} else {
-			thirdRadio.hide();
-		}
-	}
 }
