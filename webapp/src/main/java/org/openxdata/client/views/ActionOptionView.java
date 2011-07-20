@@ -2,19 +2,14 @@ package org.openxdata.client.views;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.util.ProgressIndicator;
-import org.openxdata.server.admin.model.FormDef;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
-import com.extjs.gxt.ui.client.widget.Dialog;
-import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -96,7 +91,6 @@ abstract class ActionOptionView extends View {
 		
 		formPanel.add(radioGroup);
 		
-		window.addListener(Events.BeforeHide, windowListener);
 		window.setModal(true);
 	}
 	
@@ -122,7 +116,7 @@ abstract class ActionOptionView extends View {
 				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 					@Override
 					public void execute() {
-						cancel();
+						closeWindow();
 					}
 				});
 			}
@@ -139,49 +133,13 @@ abstract class ActionOptionView extends View {
 	
 	abstract String getExecuteButtonLable();
 
-	final Listener<ComponentEvent> windowListener = new WindowListener();
-	
-	class WindowListener implements Listener<ComponentEvent> {
-		@Override
-		public void handleEvent(ComponentEvent be) {
-			be.setCancelled(true);
-			be.stopEvent();
-			MessageBox.confirm(appMessages.cancel(), appMessages.areYouSure(),
-			        new Listener<MessageBoxEvent>() {
-				        @Override
-				        public void handleEvent(MessageBoxEvent be) {
-					        if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-						        window.removeListener(Events.BeforeHide,
-						                windowListener);
-						        closeWindow();
-						        window.addListener(Events.BeforeHide,
-						                windowListener);
-					        }
-				        }
-			        });
-		}
-	};
-	
-	public void cancel() {
-		MessageBox.confirm(appMessages.cancel(), appMessages.areYouSure(),
-		        new Listener<MessageBoxEvent>() {
-			        @Override
-			        public void handleEvent(MessageBoxEvent be) {
-				        if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-					        closeWindow();
-				        }
-			        }
-		        });
-	}
 	
 	/**
 	 * Conceals the window from the User.
 	 */
 	public void closeWindow() {
-		window.removeListener(Events.BeforeHide, windowListener);
 		window.hide();
 		ProgressIndicator.hideProgressBar();
-		window.addListener(Events.BeforeHide, windowListener);
 		
 	}
 }
