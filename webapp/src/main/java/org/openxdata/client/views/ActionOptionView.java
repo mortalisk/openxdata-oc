@@ -10,6 +10,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -65,9 +66,6 @@ abstract class ActionOptionView extends View {
 		formPanel.setBorders(false);
 		formPanel.setBodyBorder(false);
 		formPanel.setHeaderVisible(false);
-		FormLayout layout = new FormLayout();
-		layout.setLabelWidth(0);
-		formPanel.setLayout(layout);
 		
 		final RadioGroup radioGroup = new RadioGroup("RadioGroup");
 		radioGroup.setLabelSeparator("");
@@ -89,7 +87,13 @@ abstract class ActionOptionView extends View {
 		thirdRadio.setBoxLabel(getThirdRadioLabel());
 		radioGroup.add(thirdRadio);
 		
-		formPanel.add(radioGroup);
+		LayoutContainer radioGroupContainer = new LayoutContainer();
+		FormLayout formLayout = new FormLayout();
+		formLayout.setLabelSeparator("");
+		formLayout.setLabelWidth(0);
+		radioGroupContainer.setLayout(formLayout);
+		radioGroupContainer.add(radioGroup);
+		formPanel.add(radioGroupContainer);
 		
 		window.setModal(true);
 	}

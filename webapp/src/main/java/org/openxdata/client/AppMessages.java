@@ -196,4 +196,10 @@ public interface AppMessages extends Messages {
 	
 	String exportEditable();
 	
+	String exportStudyTooltip();
+	String exportFormTooltip();
+	String exportFormVersionTooltip();
+	
+	String filename();
+	
 }

@@ -15,11 +15,7 @@ import com.google.gwt.core.client.GWT;
 
 public class ItemExportView extends ActionOptionView {
 
-	private RadioFieldSet exportFS;
-	
-	private TextField<String> studyName;
-	private TextField<String> formName;
-	private TextField<String> formVersionName;
+	private TextField<String> fileName;
 
 	private Exportable exportable;
 	
@@ -29,66 +25,75 @@ public class ItemExportView extends ActionOptionView {
 	
 	protected void initialize(){
 		super.initialize();
-
-		formPanel.removeAll();
-		exportFS = new RadioFieldSet();
-		formPanel.add(exportFS);
 		
-		studyName = new TextField<String>();
-		studyName.setFieldLabel(appMessages.studyName());
-		studyName.setAllowBlank(false);
+		execButton.setEnabled(false);
 		
-		firstRadio = exportFS.addRadio("study", appMessages.exportStudy(), studyName);
+		firstRadio.setToolTip(appMessages.exportStudyTooltip());
 		firstRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
 
 			@Override
 			public void handleEvent(FieldEvent be) {
-				studyName.enable();
-				
-				formName.disable();
-				formVersionName.disable();
+				fileName.setValue(getStudyName());
+				execButton.setEnabled(true);
 			}
 			
 		});
 		
-		formName = new TextField<String>();
-		formName.setFieldLabel(appMessages.formName());
-		formName.setAllowBlank(false);
-		
-		secondRadio = exportFS.addRadio("form", appMessages.exportForm(), formName);
+		secondRadio.setToolTip(appMessages.exportFormTooltip());
 		secondRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
 
 			@Override
 			public void handleEvent(FieldEvent be) {
-				formName.enable();
-
-				studyName.disable();
-				formVersionName.disable();
+				fileName.setValue(getFormName());
+				execButton.setEnabled(true);
 			}
 			
 		});
 		
-		formVersionName = new TextField<String>();
-		formVersionName.setFieldLabel(appMessages.formVersionName());
-		formVersionName.setAllowBlank(false);
-		
-		thirdRadio = exportFS.addRadio("form", appMessages.exportFormVersion(), formVersionName);
+		thirdRadio.setToolTip(appMessages.exportFormVersionTooltip());
 		thirdRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
-
 			@Override
 			public void handleEvent(FieldEvent be) {
-				formVersionName.enable();
-
-				formName.disable();
-				studyName.disable();
+				fileName.setValue(getFormVersionName());
+				execButton.setEnabled(true);
 			}
 			
 		});
 		
-		studyName.disable();
-		formName.disable();
-		formVersionName.disable();
-		
+		fileName = new TextField<String>();
+		fileName.setFieldLabel(appMessages.filename());
+		fileName.setAllowBlank(false);
+		formPanel.add(fileName);
+	}
+	
+	private String getFormVersionName() {
+		FormDefVersion formVersion = (FormDefVersion)exportable;
+		FormDef form = formVersion.getFormDef();
+		StringBuilder formVersionName = new StringBuilder();
+		formVersionName.append(form.getStudy().getName());
+		formVersionName.append(" ");
+		formVersionName.append(form.getName());
+		formVersionName.append(" ");
+		formVersionName.append(formVersion.getName());
+		return formVersionName.toString();
+	}
+	
+	private String getFormName() {
+		FormDefVersion formVersion = (FormDefVersion)exportable;
+		FormDef form = formVersion.getFormDef();
+		StringBuilder formName = new StringBuilder();
+		formName.append(form.getStudy().getName());
+		formName.append(" ");
+		formName.append(form.getName());
+		return formName.toString();
+	}
+	
+	private String getStudyName() {
+		FormDefVersion formVersion = (FormDefVersion)exportable;
+		FormDef form = formVersion.getFormDef();
+		StringBuilder studyName = new StringBuilder();
+		studyName.append(form.getStudy().getName());
+		return studyName.toString();
 	}
 
 	@Override
@@ -102,37 +107,34 @@ public class ItemExportView extends ActionOptionView {
 	}
 	
 	private void setFormNameValues(FormDefVersion formVersion){
-		FormDef form = formVersion.getFormDef();
-		studyName.setValue(form.getStudy().getName());
-		formName.setValue(form.getName());
-		formVersionName.setValue(formVersion.getName());
+		firstRadio.setBoxLabel(getFirstRadioLabel()+" ("+getStudyName()+")");
+		secondRadio.setBoxLabel(getSecondRadioLabel()+"("+getFormName()+")");
+		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");
 	}
 	
 	@Override
 	protected void action() {
-		String name = null;
-		
-		// Handle to passed exportable item.
+		String name = fileName.getValue();
+
 		Exportable itemToExport = null;
 		if (firstRadio.getValue()) {
 			itemToExport = ((FormDefVersion)exportable).getFormDef().getStudy();
-			name = studyName.getValue();
 		}
 		if (secondRadio.getValue()) {
 			itemToExport = ((FormDefVersion)exportable).getFormDef();
-			name = formName.getValue();
 		}
 		if (thirdRadio.getValue()) {
 			itemToExport = exportable;
-			name = formVersionName.getValue();
 		}
 		
-		name = name.replace(" ", "");
-		ItemExportController controller = (ItemExportController) this.getController();
-		controller.exportEditable(itemToExport, name);
-		
-		formPanel.clear();
-		closeWindow();
+		if (name != null && itemToExport != null) {
+			name = name.replace(" ", "");
+			ItemExportController controller = (ItemExportController) this.getController();
+			controller.exportEditable(itemToExport, name);
+			
+			formPanel.clear();
+			closeWindow();
+		}
 	}
 
 	@Override
