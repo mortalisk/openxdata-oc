@@ -212,7 +212,7 @@ public class UserProfileView extends View {
 		}
 		else if(event.getType() == UserProfileController.PASSWORDCHANGE){
 			user = event.getData();
-			GWT.log("UserProfileView : UserProfileController.PASSWORDCHANGE : Change Admin User Password");
+			GWT.log("UserProfileView : Change Admin User Password");
 			initializeWindow();
 			disableUserBioControls();
 			pwFieldSet.setExpanded(true);
