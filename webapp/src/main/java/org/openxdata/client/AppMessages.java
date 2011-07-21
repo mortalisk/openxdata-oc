@@ -202,5 +202,26 @@ public interface AppMessages extends Messages {
 	String exportFormVersionTooltip();
 	
 	String filename();
+	String importX();
+	
+	String importEditable();
+	
+	String importFormVersion();
+	
+	String importForm();
+	
+	String importStudy();
+	
+	String importParseError();
+	
+	String importSuccess();
+	
+	String importError();
+	
+	String importStudyTooltip();
+	
+	String importFormTooltip();
+	
+	String importFormVersionTooltip();
 	
 }
