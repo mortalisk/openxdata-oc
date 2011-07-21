@@ -261,6 +261,7 @@ public class FormListView extends View implements Refreshable {
 		buttonBar.add(edit, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(delete, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(export, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
+		buttonBar.add(importButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		HBoxLayoutData flex = new HBoxLayoutData(new Margins(5, 5, 0, 0));
 		flex.setFlex(1);
 		buttonBar.add(new Text(), flex);
@@ -348,6 +349,24 @@ public class FormListView extends View implements Refreshable {
 		} else {
 			MessageBox.alert(appMessages.listOfForms(),
 					appMessages.formMustBeSelected(), null);
+		}
+	}
+	
+	protected void importItem() {
+		ProgressIndicator.showProgressBar();
+		FormListController controller = (FormListController) getController();
+		if (grid.getSelectionModel().getSelectedItem() != null) {
+			FormSummary summary = grid.getSelectionModel().getSelectedItem();
+			if(summary.getFormVersion() != null){
+				controller.forwardToItemImportController(summary.getFormVersion());				
+			}
+			else{
+				MessageBox.alert(appMessages.listOfForms(), appMessages.noFormVersion(), null);
+				ProgressIndicator.hideProgressBar();
+			}
+		}
+		else{
+			controller.forwardToItemImportController(null);
 		}
 	}
 

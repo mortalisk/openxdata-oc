@@ -131,4 +131,12 @@ public class FormListController extends Controller {
         event.setData("formVersion", formSummary.getFormVersion());
     	dispatcher.dispatch(event);
 	}
+
+	public void forwardToItemImportController(Editable editable) {
+		GWT.log("FormListController : forwardToItemImportController");
+        Dispatcher dispatcher = Dispatcher.get();
+        AppEvent event = new AppEvent(ItemImportController.IMPORTITEM);
+        event.setData("editable", editable);
+    	dispatcher.dispatch(event);
+	}
 }

@@ -73,6 +73,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   </servlet>
   <servlet-mapping>
     <servlet-name>formopenservlet</servlet-name>
+    <url-pattern>/emit/formopen</url-pattern>
     <url-pattern>/OpenXDataServerAdmin/formopen</url-pattern>
     <url-pattern>/formopen</url-pattern>
   </servlet-mapping>
