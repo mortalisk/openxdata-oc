@@ -285,6 +285,49 @@ public class FormListView extends View implements Refreshable {
 		portlet.setBottomComponent(buttonBar);
 		portlet.setTopComponent(filterBar);
 	}
+	
+	private void checkLoggedInUserPermissions(ColumnModel cm, User loggedInUser) {
+		if (loggedInUser.hasPermission(Permission.PERM_ADD_STUDIES, Permission.PERM_ADD_FORMS,
+				Permission.PERM_ADD_FORM_VERSIONS)) {
+			
+			newButton.show();
+			allVersions.show();
+			allForms.show();
+			showPublishedColumn(cm, false);
+		}
+		if (loggedInUser.hasPermission(Permission.PERM_EDIT_STUDIES, Permission.PERM_EDIT_FORMS,
+				Permission.PERM_EDIT_FORM_VERSIONS)) {
+			
+			edit.show();
+			allVersions.show();
+			allForms.show();
+			showPublishedColumn(cm, false);
+		}
+		if (loggedInUser.hasPermission(Permission.PERM_DELETE_STUDIES, Permission.PERM_DELETE_FORMS,
+				Permission.PERM_DELETE_FORM_VERSIONS)) {
+			
+			delete.show();
+			allVersions.show();
+			allForms.show();
+			showPublishedColumn(cm, false);
+		}
+		
+		if(loggedInUser.hasPermission(Permission.PERM_EXPORT_STUDIES, Permission.PERM_IMPORT_STUDIES)){
+			export.show();
+			importButton.show();
+		}
+		if (loggedInUser.hasPermission(Permission.PERM_ADD_FORM_DATA)) {
+			capture.show();
+		}
+		if (loggedInUser.hasPermission(Permission.PERM_VIEW_FORM_DATA)) {
+			browseResponses.show();
+		}
+	}
+
+	private void showPublishedColumn(ColumnModel cm, boolean hide) {
+		cm.setHidden(4, hide);
+	}
+
 
 	protected void export() {
 		if (grid.getSelectionModel().getSelectedItem() != null) {
