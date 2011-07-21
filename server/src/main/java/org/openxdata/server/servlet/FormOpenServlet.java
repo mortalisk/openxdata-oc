@@ -40,12 +40,12 @@ public class FormOpenServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			CommonsMultipartResolver multipartResover = new CommonsMultipartResolver(/*this.getServletContext()*/);
+			CommonsMultipartResolver multipartResover = new CommonsMultipartResolver();
 			if(multipartResover.isMultipart(request)){
 				MultipartHttpServletRequest multipartRequest = multipartResover.resolveMultipart(request);
 				MultipartFile uploadedFile = multipartRequest.getFile("filecontents");
 				if (uploadedFile != null && !uploadedFile.isEmpty()) 
-					request.getSession().setAttribute(KEY_FILE_CONTENTS,IOUtils.toString(uploadedFile.getInputStream(),"UTF-8"));
+					request.getSession().setAttribute(KEY_FILE_CONTENTS, IOUtils.toString(uploadedFile.getInputStream(),"UTF-8"));
 			}
 		}
 		catch(Exception ex){

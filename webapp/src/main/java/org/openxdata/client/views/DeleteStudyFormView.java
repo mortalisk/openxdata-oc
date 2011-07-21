@@ -12,9 +12,6 @@ import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 
-/**
- * Encapsulates UI functionality for Editing a given Study/Form/Form version.
- */
 public class DeleteStudyFormView extends ActionOptionView {
     
 	public DeleteStudyFormView(Controller controller) {

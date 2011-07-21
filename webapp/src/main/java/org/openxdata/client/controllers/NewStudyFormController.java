@@ -64,6 +64,7 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
+    
     public void getForms(){
         GWT.log("FormListController : getStudies");
         formService.getFormsForCurrentUser(new EmitAsyncCallback<List<FormDef>>() {
@@ -74,6 +75,7 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
+    
     public void saveStudy(final StudyDef study){
         GWT.log("NewStudyFormController : saveStudies");
         studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
@@ -86,6 +88,7 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
+    
     public void saveUserMappedStudies(StudyDef study, List<User> users) {
         GWT.log("NewStudyFormController : saveUsermappedStudies");
         studyService.setUserMappingForStudy(study, users,new EmitAsyncCallback<Void>() {
@@ -95,6 +98,7 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
+    
     public void saveUserMappedForms(FormDef form, List<User> users) {
         GWT.log("NewStudyFormController : saveUsermappedForms");
         studyService.setUserMappingForForm(form, users, new EmitAsyncCallback<Void>() {
@@ -104,6 +108,7 @@ public class NewStudyFormController extends Controller {
             }
         });
     }
+    
     public void getUserMappedStudies() {
         GWT.log("NewStudyFormController : saveUsermappedStudies");
         studyService.getUserMappedStudies(new EmitAsyncCallback<List<UserStudyMap>>() {

@@ -2,7 +2,6 @@ package org.openxdata.client.views;
 
 import org.openxdata.client.controllers.ItemExportController;
 import org.openxdata.server.admin.model.Exportable;
-
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -111,6 +110,4 @@ public class ItemExportView extends ActionOptionView {
 	    super.onThirdRadioSelected();
 	    fileName.setValue(getFormVersionName());
     }
-	
-	
 }

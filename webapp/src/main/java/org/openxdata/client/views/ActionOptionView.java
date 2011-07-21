@@ -1,7 +1,6 @@
 package org.openxdata.client.views;
 
 import org.openxdata.client.AppMessages;
-import org.openxdata.client.controllers.ItemExportController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -227,7 +226,6 @@ abstract class ActionOptionView extends View {
 		execButton.setEnabled(true);
 	}
 
-	
 	/**
 	 * Conceals the window from the User.
 	 */
