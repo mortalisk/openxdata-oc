@@ -57,6 +57,9 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 public class FormListView extends View implements Refreshable {
 	final AppMessages appMessages = GWT.create(AppMessages.class);
 
+	Button export, importButton, newButton, edit, delete, capture,
+			browseResponses;
+	
 	private Portlet portlet;
 	private Grid<FormSummary> grid;
 	private ColumnModel cm;
@@ -157,7 +160,7 @@ public class FormListView extends View implements Refreshable {
 		});
 
 		// new
-		Button newButton = new Button(appMessages.newStudyOrForm());
+		newButton = new Button(appMessages.newStudyOrForm());
 		newButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -167,7 +170,7 @@ public class FormListView extends View implements Refreshable {
 		newButton.hide();
 
 		// edit
-		Button edit = new Button(appMessages.edit());
+		edit = new Button(appMessages.edit());
 		edit.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -177,7 +180,7 @@ public class FormListView extends View implements Refreshable {
 		edit.hide();
 
 		// delete
-		Button delete = new Button(appMessages.delete());
+		delete = new Button(appMessages.delete());
 		delete.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -205,7 +208,7 @@ public class FormListView extends View implements Refreshable {
 		});
 		allForms.hide();
 
-		Button export = new Button(appMessages.exportA());
+		export = new Button(appMessages.exportA());
 		export.addListener(Events.Select, new Listener<ButtonEvent>() {
 
 			@Override
@@ -216,7 +219,18 @@ public class FormListView extends View implements Refreshable {
 		});
 		export.hide();
 		
-		Button capture = new Button(appMessages.captureData());
+		importButton = new Button(appMessages.importX());
+		importButton.addListener(Events.Select, new Listener<ButtonEvent>(){
+
+			@Override
+			public void handleEvent(ButtonEvent be) {
+				importItem();
+			}
+			
+		});
+		importButton.hide();
+		
+		capture = new Button(appMessages.captureData());
 		capture.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -225,7 +239,7 @@ public class FormListView extends View implements Refreshable {
 		});
 		capture.hide();
 
-		Button browseResponses = new Button(appMessages.viewResponses());
+		browseResponses = new Button(appMessages.viewResponses());
 		browseResponses.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -236,36 +250,7 @@ public class FormListView extends View implements Refreshable {
 
 		User loggedInUser = Registry.get(Emit.LOGGED_IN_USER_NAME);
 		if (loggedInUser != null) {
-			if (loggedInUser.hasPermission(Permission.PERM_ADD_STUDIES,
-					Permission.PERM_ADD_FORMS,
-					Permission.PERM_ADD_FORM_VERSIONS)) {
-				newButton.show();
-				allVersions.show();
-				allForms.show();
-				export.show();
-			}
-			if (loggedInUser.hasPermission(Permission.PERM_EDIT_STUDIES,
-					Permission.PERM_EDIT_FORMS,
-					Permission.PERM_EDIT_FORM_VERSIONS)) {
-				edit.show();
-				allVersions.show();
-				allForms.show();
-				export.show();
-			}
-			if (loggedInUser.hasPermission(Permission.PERM_DELETE_STUDIES,
-					Permission.PERM_DELETE_FORMS,
-					Permission.PERM_DELETE_FORM_VERSIONS)) {
-				delete.show();
-				allVersions.show();
-				allForms.show();
-				export.show();
-			}
-			if (loggedInUser.hasPermission(Permission.PERM_ADD_FORM_DATA)) {
-				capture.show();
-			}
-			if (loggedInUser.hasPermission(Permission.PERM_VIEW_FORM_DATA)) {
-				browseResponses.show();
-			}
+			checkLoggedInUserPermissions(cm, loggedInUser);
 		} else {
 			GWT.log("Could not find logged in user, so could not determine permissions");
 		}
