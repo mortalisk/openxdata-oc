@@ -14,6 +14,7 @@ import com.google.gwt.core.client.GWT;
 
 public class DeleteStudyFormView extends ActionOptionView {
     
+	final DeleteStudyFormController controller = (DeleteStudyFormController) this.getController();
 	public DeleteStudyFormView(Controller controller) {
 		super(controller);
 	}
@@ -30,8 +31,7 @@ public class DeleteStudyFormView extends ActionOptionView {
 	}
 
 	private void delete() {
-            final DeleteStudyFormController controller1 = (DeleteStudyFormController) this.getController();
-            
+
             MessageBox.confirm(appMessages.delete(), appMessages.areYouSureDelete(), new Listener<MessageBoxEvent>() {
 
                 @Override
@@ -39,11 +39,11 @@ public class DeleteStudyFormView extends ActionOptionView {
                     if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
                         ProgressIndicator.showProgressBar();
                         if (firstRadio.getValue()) {
-                            controller1.delete(form.getStudy());
+                        	controller.delete(form.getStudy());
                         } else if (secondRadio.getValue()) {
-                            controller1.delete(form);
+                        	controller.delete(form);
                         } else if (thirdRadio.getValue()) {
-                            controller1.delete(formVersion);
+                        	controller.delete(formVersion);
                         }
                     }
                 }
@@ -52,7 +52,7 @@ public class DeleteStudyFormView extends ActionOptionView {
 	}
 	
     public void checkItemHasData(Editable item){
-        ((DeleteStudyFormController) this.getController()).itemHasData(item);
+    	controller.itemHasData(item);
     }
     
     public void onItemDataCheckComplete(Boolean hasData) {
