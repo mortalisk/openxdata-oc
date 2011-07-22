@@ -185,32 +185,27 @@ public class ItemImportView extends ActionOptionView {
 	private void processImportedItem() {
 		
 		GWT.log("ItemImportView : Processing imported Item for Saving.");
-		try{
-			if(firstRadio.getValue()){
-				controller.importStudy();
-			}
-			
-			else if(editable != null){
-				if (secondRadio.getValue()) {
-					StudyDef study = ((FormDefVersion) editable).getFormDef().getStudy();
-					controller.addFormToStudy(study);
-					
-				}
-				if(thirdRadio.getValue()){
-					FormDef form = ((FormDefVersion)editable).getFormDef();
-					controller.addFormVersionToForm(form);			
-				}					
-			}
-			else{
-				MessageBox.alert(appMessages.listOfForms(),
-						appMessages.formMustBeSelected(), null);
-			}
-			
-			MessageBox.info(appMessages.success(), appMessages.importSuccess(), null);
-		} catch (Exception ex) {
-			MessageBox.info(appMessages.error(), appMessages.importError(), null);
+		if(firstRadio.getValue()){
+			controller.importStudy();
 		}
 		
+		else if(editable != null){
+			if (secondRadio.getValue()) {
+				StudyDef study = ((FormDefVersion) editable).getFormDef().getStudy();
+				controller.addFormToStudy(study);
+				
+			}
+			if(thirdRadio.getValue()){
+				FormDef form = ((FormDefVersion)editable).getFormDef();
+				controller.addFormVersionToForm(form);			
+			}					
+		}
+		else{
+			MessageBox.alert(appMessages.listOfForms(),
+					appMessages.formMustBeSelected(), null);
+		}
+		
+		MessageBox.info(appMessages.success(), appMessages.importSuccess(), null);
 		formPanel.clear();
 		closeWindow();
 	}
