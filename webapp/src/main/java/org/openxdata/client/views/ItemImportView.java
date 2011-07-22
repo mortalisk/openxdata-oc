@@ -176,7 +176,8 @@ public class ItemImportView extends ActionOptionView {
 		}
 		catch(RequestException ex){
 			ProgressIndicator.hideProgressBar();
-			MessageBox.alert(appMessages.error(), ex.getLocalizedMessage(), null);
+			GWT.log(ex.getLocalizedMessage());
+			MessageBox.alert(appMessages.error(), appMessages.importError(), null);
 			
 		}
 	}
