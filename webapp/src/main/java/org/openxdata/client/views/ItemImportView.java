@@ -83,6 +83,7 @@ public class ItemImportView extends ActionOptionView {
         	firstRadio.setBoxLabel(getFirstRadioLabel());
         	secondRadio.hide();
         	thirdRadio.hide();
+        	window.center();
         }
 	}
 

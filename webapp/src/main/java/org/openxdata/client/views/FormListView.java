@@ -329,7 +329,6 @@ public class FormListView extends View implements Refreshable {
 		cm.setHidden(4, hide);
 	}
 
-
 	protected void export() {
 		if (grid.getSelectionModel().getSelectedItem() != null) {
 			ProgressIndicator.showProgressBar();
