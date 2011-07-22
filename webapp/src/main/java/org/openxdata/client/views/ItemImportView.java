@@ -28,9 +28,9 @@ import com.google.gwt.http.client.Response;
 
 public class ItemImportView extends ActionOptionView {
 
-	FileUploadField uploadFile;
-	final String ACTION_URL = GWT.getModuleBaseURL() + "formopen";
 	private Editable editable;
+	private FileUploadField uploadFile;
+	final String ACTION_URL = GWT.getModuleBaseURL() + "formopen";
 	final ItemImportController controller = (ItemImportController) this.getController();
 	
 	public ItemImportView(Controller controller) {
@@ -67,6 +67,7 @@ public class ItemImportView extends ActionOptionView {
 		
 	@Override
 	protected void handleEvent(AppEvent event) {
+		
         GWT.log("ItemImportView : handleEvent");
         super.handleEvent(event);
         this.editable = event.getData("editable");
@@ -80,9 +81,12 @@ public class ItemImportView extends ActionOptionView {
 			firstRadio.setBoxLabel(getFirstRadioLabel());
         }
         else{
+        	
         	firstRadio.setBoxLabel(getFirstRadioLabel());
         	secondRadio.hide();
         	thirdRadio.hide();
+        	
+        	// Workaround for removing trailing opaque background.
         	window.center();
         }
 	}
@@ -100,6 +104,11 @@ public class ItemImportView extends ActionOptionView {
 		formPanel.submit();
 	}
 
+	@Override
+	String getExecuteButtonLabel() {
+		return appMessages.importX();
+	}
+	
 	@Override
 	String getHeading() {
 		return appMessages.importEditable();
@@ -152,6 +161,7 @@ public class ItemImportView extends ActionOptionView {
 							// Process the item. It is out of the try/catch because it has it's own error messages to display
 							// the user.
 							processImportedItem();
+							ProgressIndicator.hideProgressBar();
 						}
 						
 					}); 
@@ -196,16 +206,11 @@ public class ItemImportView extends ActionOptionView {
 			}
 			
 			MessageBox.info(appMessages.success(), appMessages.importSuccess(), null);
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			MessageBox.info(appMessages.error(), appMessages.importError(), null);
 		}
 		
 		formPanel.clear();
 		closeWindow();
-	}
-
-	@Override
-	String getExecuteButtonLabel() {
-		return appMessages.importX();
 	}
 }
