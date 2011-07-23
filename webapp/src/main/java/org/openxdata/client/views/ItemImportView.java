@@ -82,10 +82,16 @@ public class ItemImportView extends ActionOptionView {
         }
         else{
         	
+        	// Change heading to reflect we only importing a study.
         	window.setHeading(appMessages.importStudy());
+        	
+        	// Radios not needed.
         	firstRadio.hide();
         	secondRadio.hide();
         	thirdRadio.hide();
+        	
+        	// Enable the import button here.
+        	execButton.enable();
         	
         	// Workaround for removing trailing opaque background.
         	window.center();
