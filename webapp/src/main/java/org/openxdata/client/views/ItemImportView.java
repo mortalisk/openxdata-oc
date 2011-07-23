@@ -165,21 +165,19 @@ public class ItemImportView extends ActionOptionView {
 								
 								Editable editable = StudyImport.importStudyItem(resp.getText());
 								controller.setEditable(editable);
+								processImportedItem();
 								ProgressIndicator.hideProgressBar();
+								MessageBox.info(appMessages.success(), appMessages.importSuccess(), null);
 							}
 							catch(Exception ex){
 								ProgressIndicator.hideProgressBar();
 								MessageBox.alert(appMessages.error(), appMessages.importParseError(), null);
 								
-							}	
-							
-							// Process the item. It is out of the try/catch because it has it's own error messages to display
-							// the user.
-							processImportedItem();
-							ProgressIndicator.hideProgressBar();
+							}
+
 						}
-						
-					}); 
+
+					});
 				}
 				
 				@Override
@@ -220,7 +218,6 @@ public class ItemImportView extends ActionOptionView {
 					appMessages.formMustBeSelected(), null);
 		}
 		
-		MessageBox.info(appMessages.success(), appMessages.importSuccess(), null);
 		formPanel.clear();
 		closeWindow();
 	}
