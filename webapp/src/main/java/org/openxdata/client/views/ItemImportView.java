@@ -32,6 +32,7 @@ public class ItemImportView extends ActionOptionView {
 	private FileUploadField uploadFile;
 	final String ACTION_URL = GWT.getModuleBaseURL() + "formopen";
 	final ItemImportController controller = (ItemImportController) this.getController();
+	private boolean importingStudyOnly;
 	
 	public ItemImportView(Controller controller) {
 		super(controller);
@@ -84,6 +85,7 @@ public class ItemImportView extends ActionOptionView {
         	
         	// Change heading to reflect we only importing a study.
         	window.setHeading(appMessages.importStudy());
+        	this.importingStudyOnly = true;
         	
         	// Radios not needed.
         	firstRadio.hide();
@@ -198,7 +200,7 @@ public class ItemImportView extends ActionOptionView {
 	private void processImportedItem() {
 		
 		GWT.log("ItemImportView : Processing imported Item for Saving.");
-		if(firstRadio.getValue()){
+		if(firstRadio.getValue() || importingStudyOnly){
 			controller.importStudy();
 		}
 		
