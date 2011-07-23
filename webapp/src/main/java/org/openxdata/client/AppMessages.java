@@ -224,4 +224,7 @@ public interface AppMessages extends Messages {
 	
 	String importFormVersionTooltip();
 	
+	String intoStudy();
+	
+	String intoForm();
 }

@@ -152,7 +152,7 @@ abstract class ActionOptionView extends View {
 		});
 	}
 	
-	public void updateRadioButtons() {
+	protected void updateRadioButtons() {
 		firstRadio.setBoxLabel(getFirstRadioLabel()+" ("+getStudyName()+")");
 		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName()+")");
 		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");

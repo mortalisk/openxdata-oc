@@ -82,13 +82,20 @@ public class ItemImportView extends ActionOptionView {
         }
         else{
         	
-        	firstRadio.setBoxLabel(getFirstRadioLabel());
+        	window.setHeading(appMessages.importStudy());
+        	firstRadio.hide();
         	secondRadio.hide();
         	thirdRadio.hide();
         	
         	// Workaround for removing trailing opaque background.
         	window.center();
         }
+	}
+	
+	protected void updateRadioButtons(){
+		firstRadio.setBoxLabel(getFirstRadioLabel());
+		secondRadio.setBoxLabel(getSecondRadioLabel()+" (" + appMessages.intoStudy()+ " " +getStudyName()+")");
+		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+ appMessages.intoForm()+ " " + getFormName()+")");
 	}
 
 	@Override
