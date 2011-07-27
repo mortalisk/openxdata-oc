@@ -199,7 +199,7 @@ public class ItemImportView extends ActionOptionView {
 		
 		GWT.log("ItemImportView : Processing imported Item for Saving.");
 		if(firstRadio.getValue() || importingStudyOnly){
-			controller.importStudy();
+			controller.createStudy();
 		}
 		
 		else if(editable != null){

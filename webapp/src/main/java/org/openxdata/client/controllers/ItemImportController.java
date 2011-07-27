@@ -49,7 +49,7 @@ public class ItemImportController extends Controller {
 		this.editable = editable;
 	}
 	
-	public void importStudy(){
+	public void createStudy(){
 		StudyDef study = (StudyDef)editable;
 		study.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 		study.setDateCreated(new Date());
@@ -58,7 +58,7 @@ public class ItemImportController extends Controller {
 		List<FormDef> forms = study.getForms();
 		if(forms != null){
 			for(FormDef x : forms){
-				importForm(x, study);
+				createForm(x, study);
 			}
 		}
 		
@@ -67,7 +67,7 @@ public class ItemImportController extends Controller {
 	}
 	
 	public void addFormToStudy(StudyDef study){
-		FormDef form = importForm((FormDef)editable, study);
+		FormDef form = createForm((FormDef)editable, study);
 		study.addForm(form);
 		
 		// Save Study
@@ -75,7 +75,7 @@ public class ItemImportController extends Controller {
 	}
 	
 	public void addFormVersionToForm(FormDef form){
-		FormDefVersion version = importVersion((FormDefVersion)editable, form);
+		FormDefVersion version = createFormVersion((FormDefVersion)editable, form);
 		form.addVersion(version);
 		
 		// Save Form
@@ -83,7 +83,7 @@ public class ItemImportController extends Controller {
 		
 	}
 	
-	private FormDef importForm(FormDef form, StudyDef study){
+	private FormDef createForm(FormDef form, StudyDef study){
 		form.setStudy(study);
 		form.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 		form.setDateCreated(new Date());
@@ -92,13 +92,13 @@ public class ItemImportController extends Controller {
 		List<FormDefVersion> versions = form.getVersions();
 		if(versions != null){
 			for(FormDefVersion x : versions){
-				importVersion(x, form);
+				createFormVersion(x, form);
 			}
 		}
 		return form;
 	}
 
-	private FormDefVersion importVersion(FormDefVersion version, FormDef form) {
+	private FormDefVersion createFormVersion(FormDefVersion version, FormDef form) {
 		version.setFormDef(form);
 		version.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 		version.setDateCreated(new Date());
