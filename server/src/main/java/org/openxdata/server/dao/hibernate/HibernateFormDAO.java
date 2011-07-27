@@ -1,8 +1,12 @@
 package org.openxdata.server.dao.hibernate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.Query;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.dao.FormDAO;
 import org.springframework.stereotype.Repository;
 
@@ -28,5 +32,25 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	@Override
 	public List<FormDef> getForms() {
 		return findAll();
+	}
+	
+	@Override
+	public List<FormDef> getForms(Integer studyId) {
+		StudyDef value = new StudyDef();
+		value.setId(studyId);
+		return this.searchByPropertyEqual("study", value);
+	}
+	
+	@SuppressWarnings("unchecked")
+    @Override
+	public Map<Integer, String> getFormNames(Integer studyId) {
+		Query query = getSession().createQuery("select id, name from FormDef where study.id =:studyId");
+		query.setInteger("studyId", studyId);
+		Map<Integer, String> formNames = new HashMap<Integer, String>();
+        List<Object[]> result = query.list();
+		for (Object[] obj : result) {
+			formNames.put((Integer)obj[0], (String)obj[1]);
+		}
+		return formNames;
 	}
 }

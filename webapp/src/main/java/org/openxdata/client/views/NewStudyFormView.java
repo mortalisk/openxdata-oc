@@ -3,6 +3,7 @@ package org.openxdata.client.views;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.NewStudyFormController;
@@ -71,9 +72,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	private StudyDef studyDef;
 	private FormDef formDef;
 	private FormDefVersion formDefVersion;
-	private List<StudyDef> studies;
-	private List<FormDef> forms;
-	private List<User> users;
+	private Map<Integer, String> studyNames;
+	private Map<Integer, String> formNames;
+	private List<User> users; // FIXME: use paging!
 	private List<UserFormMap> usersMappedToForms;
 	private List<UserStudyMap> usersMappedToStudies;
 	ListStore<StudySummary> store;
@@ -95,9 +96,16 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
-		nextButton.setEnabled(false);
 		currentPage = activePage;
-		if (activePage == 1) {
+		if (activePage == 0) {
+			userStudyAccessListField.setExpanded(false);
+			if (createStudyFS.getSelectedRadio() == null) {
+				nextButton.setEnabled(false);
+			}
+		} else if (activePage == 1) {
+			if (createFormFS.getSelectedRadio() == null) {
+				nextButton.setEnabled(false);
+			}
 			// check what was selected in the page before
 			if (createStudyFS.getSelectedRadio().equals(appMessages.addNewStudy())) {
 				// remove select existing form from page 2 if the user has selected to create a new study on page 1
@@ -107,24 +115,21 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newForm.setValue(true);
 				existingForm.hide();
 				userFormAccessListField.hide();
-			} else if (!newForm.isVisible()) {
+			} else if (createStudyFS.getSelectedRadio().equals(appMessages.existingStudy())) {
 				// make sure all radio buttons are showing (if they were previous hidden by the code above)
 				existingFormName.show();
 				existingFormDescription.show();
 				newForm.show();
-				newForm.setValue(false);
 				setStudyForms();
 				existingForm.show();
 				userFormAccessListField.show();
-				userFormAccessListField.setEnabled(false);
 			}
-			userStudyAccessListField.setExpanded(false);
 			userFormAccessListField.setExpanded(false);
 		} else if (activePage == 2) {
 			if (createFormFS.getSelectedRadio().equals(appMessages.addNewForm())) {
 				formDefinitionVersionName.setValue("v1");
 			} else  if (createFormFS.getSelectedRadio().equals(appMessages.existingForm())) {
-				int versions = existingFormName.getValue().getFormDefinition().getVersions().size();
+				int versions = formDef.getVersions().size();
 				formDefinitionVersionName.setValue("v" + (versions + 1));
 				formVersionEditMode = true;
 			}
@@ -132,12 +137,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	}
 
 	protected void setStudyForms() {
-		String studyName = existingStudyName.getValue().getStudy();
 		formStore.removeAll();
-		for (FormDef form : forms) {
-			if (form.getStudy().getName().equals(studyName)) {
-				formStore.add(new FormSummary(form));
-			}
+		List<FormDef> studyForms = studyDef.getForms();
+		for (FormDef form : studyForms) {
+			formStore.add(new FormSummary(String.valueOf(form.getId()), form.getName()));
 		}
 	}
 
@@ -155,7 +158,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		createStudyPanel.setLayout(new FitLayout());
 		createStudyPanel.setStyleAttribute("padding", "10px");
 
-		createStudyFS = new RadioFieldSet();
+		createStudyFS = new RadioFieldSet(300);
 		createStudyPanel.add(createStudyFS);
 
 		newStudyName = new TextField<String>();
@@ -167,7 +170,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			public String validate(Field<?> field, String value) {
 				if (value != null) {
 					// check that new study is unique
-					if (checkStudyExistance(value, studies)) {
+					if (checkStudyExistance(value, studyNames)) {
 						return appMessages.studyNameUnique();
 					}
 					nextButton.setEnabled(true);
@@ -204,9 +207,16 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		existingStudyName.addSelectionChangedListener(new SelectionChangedListener<StudySummary>() {
 					@Override
 					public void selectionChanged(SelectionChangedEvent<StudySummary> se) {
-						existingStudyDescription.setValue(se.getSelectedItem().getDescription());
-						userStudyAccessListField.setUserStudyMap(se.getSelectedItem().getStudyDefinition(), users, usersMappedToStudies);
-						nextButton.setEnabled(true);
+						ProgressIndicator.showProgressBar();
+						Integer studyId = new Integer(se.getSelectedItem().getId());
+						nextButton.setEnabled(false);
+						userStudyAccessListField.mask();
+						studyDef = null; formDef = null; usersMappedToStudies = null; usersMappedToForms = null;
+						existingFormName.clearSelections();
+						NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
+						controller.getStudyDef(studyId);
+						controller.getUsersMappedToStudy(studyId);
+						controller.getForms(studyId);
 					}
 				});
 		existingStudyDescription = new TextField<String>();
@@ -235,7 +245,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		createFormPanel.setLayout(new FitLayout());
 		createFormPanel.setStyleAttribute("padding", "10px");
 
-		createFormFS = new RadioFieldSet();
+		createFormFS = new RadioFieldSet(300);
 		createFormPanel.add(createFormFS);
 
 		newFormName = new TextField<String>();
@@ -245,9 +255,11 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public String validate(Field<?> field, String value) {
 				if (value != null) {
-					// check that new form is unique
-					if (checkFormExistance(value, forms)) {
-						return appMessages.formNameUnique();
+					if (createStudyFS.getSelectedRadio().equals(appMessages.existingStudy())) {
+						// check that new form is unique within the selected study
+						if (checkFormExistance(value, formNames)) {
+							return appMessages.formNameUnique();
+						}
 					}
 					nextButton.setEnabled(true);
 				}
@@ -283,9 +295,14 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		existingFormName.addSelectionChangedListener(new SelectionChangedListener<FormSummary>() {
 					@Override
 					public void selectionChanged(SelectionChangedEvent<FormSummary> se) {
-						existingFormDescription.setValue(se.getSelectedItem().getFormDefinition().getDescription());
-						userFormAccessListField.setUserFormMap(se.getSelectedItem().getFormDefinition(), users, usersMappedToForms, usersMappedToStudies);
-						nextButton.setEnabled(true);
+						ProgressIndicator.showProgressBar();
+						Integer formId = new Integer(se.getSelectedItem().getId());
+						nextButton.setEnabled(false);
+						userFormAccessListField.mask();
+						formDef = null; usersMappedToForms = null;
+						NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
+						controller.getFormDef(formId);
+						controller.getUsersMappedToForm(formId);
 					}
 				});
 		existingFormDescription = new TextField<String>();
@@ -351,10 +368,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					ProgressIndicator.showProgressBar();
 					NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 					controller.getStudies();
-					controller.getForms();
-					controller.getUsers();
-					controller.getUserMappedStudies();
-					controller.getUserMappedForms();
+					controller.getUsers(); // FIXME: users need to be paged
 					ProgressIndicator.hideProgressBar();
 				}
 			});
@@ -469,8 +483,12 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			studyDef.setDateCreated(new Date());
 			studyDef.setDirty(true);
 		} else {
-			studyDef = existingStudyName.getValue().getStudyDefinition();
-			studyDef.setDescription(existingStudyDescription.getValue());
+			if (studyDef == null) {
+				GWT.log("ERROR - studyDef is null!");
+				// studyDef = existingStudyName.getValue().getStudyDefinition();
+			} else {
+				studyDef.setDescription(existingStudyDescription.getValue());
+			}
 		}
 		// page 2
 		if (currentPage > 0) {
@@ -482,11 +500,16 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 						.get(Emit.LOGGED_IN_USER_NAME));
 				formDef.setDateCreated(new Date());
 				formDef.setDirty(true);
+				formDef.setVersions(new ArrayList<FormDefVersion>());
 				studyDef.addForm(formDef);
 			} else {
-				formDef = studyDef.getForm(existingFormName.getValue()
-						.getFormDefinition().getId());
-				formDef.setDescription(existingFormDescription.getValue());
+				if (formDef == null) {
+					GWT.log("ERROR - formDef is null!");
+					//formDef = studyDef.getForm(existingFormName.getValue()
+					//	.getFormDefinition().getId());
+				} else {
+					formDef.setDescription(existingFormDescription.getValue());
+				}
 			}
 		}
 		// page 3
@@ -516,25 +539,58 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	}
 
-	public void setStudies(List<StudyDef> studies) {
-		this.studies = studies;
-		for (StudyDef study : studies) {
-			store.add(new StudySummary(study));
+	public void setStudyNames(Map<Integer, String> studyNames) {
+		this.studyNames = studyNames;
+		for (Integer studyId : studyNames.keySet()) {
+			store.add(new StudySummary(studyId.toString(), studyNames.get(studyId)));
 		}
 	}
 
 	public void setUserMappedStudies(List<UserStudyMap> mappedStudies) {
 		usersMappedToStudies = mappedStudies;
+		updateUserStudyMapping();
+	}
+	
+	public void setStudyDef(StudyDef studyDef) {
+		this.studyDef = studyDef;
+		existingStudyDescription.setValue(studyDef.getDescription());
+		updateUserStudyMapping();
+	}
+	
+	private void updateUserStudyMapping() {
+		if (studyDef != null && usersMappedToStudies != null) {
+			userStudyAccessListField.setUserStudyMap(studyDef, users, usersMappedToStudies);
+			userStudyAccessListField.unmask();
+			nextButton.setEnabled(true);
+			ProgressIndicator.hideProgressBar();
+		}
 	}
 
 	public void setUserMappedForms(List<UserFormMap> mappedForms) {
 		usersMappedToForms = mappedForms;
+		updateUserFormMapping();
+	}
+	
+	public void setFormDef(FormDef formDef) {
+		this.formDef = formDef;
+		existingFormDescription.setValue(formDef.getDescription());
+		updateUserFormMapping();
+	}
+	
+	private void updateUserFormMapping() {
+		if (formDef != null && usersMappedToForms != null) {
+			// FIXME: use actually currently mappedStudies (not default loaded one)
+			userFormAccessListField.setUserFormMap(formDef, users, usersMappedToForms, usersMappedToStudies);
+			userFormAccessListField.unmask();
+			nextButton.setEnabled(true);
+			ProgressIndicator.hideProgressBar();
+		}
 	}
 
-	public void setForms(List<FormDef> forms) {
-		this.forms = forms;
-		for (FormDef form : this.forms) {
-			formStore.add(new FormSummary(form));
+	public void setFormNames(Map<Integer, String> formNames) {
+		this.formNames = formNames;
+		for (Integer formId : formNames.keySet()) {
+			formStore.add(new FormSummary(formId.toString(), formNames.get(formId)));
 		}
 	}
 
@@ -542,10 +598,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		this.users = users;
 	}
 
-	private boolean checkStudyExistance(String name, List<StudyDef> items) {
+	private boolean checkStudyExistance(String name, Map<Integer, String> items) {
 		boolean isFound = false;
-		for (StudyDef x : items) {
-			if (x.getName().equalsIgnoreCase(name)) {
+		for (String x : items.values()) {
+			if (x.equalsIgnoreCase(name)) {
 				isFound = true;
 				break;
 			}
@@ -553,10 +609,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		return isFound;
 	}
 
-	private boolean checkFormExistance(String name, List<FormDef> items) {
+	private boolean checkFormExistance(String name, Map<Integer, String> items) {
 		boolean isFound = false;
-		for (FormDef x : items) {
-			if (x.getName().equalsIgnoreCase(name)) {
+		for (String x : items.values()) {
+			if (x.equalsIgnoreCase(name)) {
 				isFound = true;
 				break;
 			}

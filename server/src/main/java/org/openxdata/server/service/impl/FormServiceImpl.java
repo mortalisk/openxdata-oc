@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.exception.SQLGrammarException;
 import org.openxdata.server.admin.model.Editable;
@@ -47,7 +48,6 @@ public class FormServiceImpl implements FormService {
     @Autowired
     private EditableDAO studyDAO;
     
-    // FIXME: should rather use DAOS
     @Autowired
     private UserService userService;
     
@@ -77,6 +77,13 @@ public class FormServiceImpl implements FormService {
         List<FormDef> forms = userFormMapDAO.getFormsForUser(userService.getLoggedInUser());
         return forms;
     }
+    
+    @Override
+	@Transactional(readOnly=true)
+	@Secured("Perm_View_Forms")
+    public Map<Integer, String> getFormNamesForCurrentUser(Integer studyId) {
+	    return userFormMapDAO.getFormNamesForUser(userService.getLoggedInUser(), studyId);
+    }
 
     @Override
 	@Transactional(readOnly=true)
@@ -84,7 +91,15 @@ public class FormServiceImpl implements FormService {
     public List<UserFormMap> getUserMappedForms() {
         return userFormMapDAO.getUserMappedForms();
     }
-        @Override
+    
+    @Override
+	@Transactional(readOnly=true)
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+    public List<UserFormMap> getUserMappedForms(Integer formId) {
+    	return userFormMapDAO.getUserMappedForms(formId);
+    }
+    
+    @Override
 	@Secured({"Perm_Add_Forms", "Perm_Add_Users"})
 	public void saveUserMappedForm(UserFormMap map) {
 		userFormMapDAO.saveUserMappedForm(map);
@@ -270,5 +285,4 @@ public class FormServiceImpl implements FormService {
 		
 		return form;
 	}
-
 }

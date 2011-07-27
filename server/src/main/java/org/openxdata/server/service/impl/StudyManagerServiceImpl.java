@@ -3,6 +3,7 @@ package org.openxdata.server.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormData;
@@ -22,6 +23,7 @@ import org.openxdata.server.dao.UserFormMapDAO;
 import org.openxdata.server.dao.UserStudyMapDAO;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.StudyManagerService;
+import org.openxdata.server.service.UserService;
 import org.openxdata.server.util.XformUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
@@ -55,6 +57,9 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 
 	@Autowired
 	private EditableDAO editableDAO;
+	
+	@Autowired
+	private UserService userService;
     
 	@Override
 	@Secured("Perm_Delete_Forms")
@@ -80,6 +85,20 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Secured("Perm_View_Studies")
 	public List<StudyDef> getStudies() {		
 		return studyDao.getStudies();
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	@Secured("Perm_View_Studies")
+	public Map<Integer, String> getStudyNamesForCurrentUser() {		
+		return userStudyMapDAO.getStudyNamesForUser(userService.getLoggedInUser());
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	@Secured("Perm_View_Studies")
+	public StudyDef getStudy(Integer id) {		
+		return studyDao.getStudy(id);
 	}
 
 	@Override
@@ -163,6 +182,12 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Secured({"Perm_View_Studies", "Perm_View_Users"})
 	public List<UserStudyMap> getUserMappedStudies() {
 		return userStudyMapDAO.getUserMappedStudies();
+	}
+	
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+	public List<UserStudyMap> getUserMappedStudies(Integer studyId) {
+		return userStudyMapDAO.getUserMappedStudies(studyId);
 	}
 
 	@Override

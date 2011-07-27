@@ -10,10 +10,6 @@ import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- * @author Jonny Heggheim
- */
 public class HibernateEditableDAOTest extends BaseContextSensitiveTest {
 
     @Autowired
@@ -51,4 +47,5 @@ public class HibernateEditableDAOTest extends BaseContextSensitiveTest {
     public void getFormDataWithNonEmptyInput() {
         dao.getFormData(12, 12, new Date(), new Date());
     }
+
 }

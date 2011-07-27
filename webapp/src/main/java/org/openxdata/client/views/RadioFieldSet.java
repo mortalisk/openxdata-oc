@@ -26,12 +26,17 @@ import com.google.gwt.user.client.Element;
  */
 public class RadioFieldSet extends LayoutContainer {
 	
+	int fieldWidth = 210;
 	RadioGroup radioGroup = new RadioGroup();
 	Map<Radio, Component> radioSet = new HashMap<Radio, Component>();
 	
 	public RadioFieldSet() {
 		baseStyle = "x-radiofieldset";
 		enableLayout = true;
+	}
+	
+	public RadioFieldSet(Integer fieldWidth) {
+		this.fieldWidth = fieldWidth;
 	}
 	
 	public void addRadio(final Radio radio, Component component) {
@@ -86,6 +91,7 @@ public class RadioFieldSet extends LayoutContainer {
 		componentContainer.setBodyBorder(false);
 		componentContainer.setLabelSeparator("");
 		componentContainer.setLabelWidth(125);
+		componentContainer.setFieldWidth(fieldWidth);
 		for (Component c : component) {
 			componentContainer.add(c);
 			c.setEnabled(false);
@@ -122,6 +128,9 @@ public class RadioFieldSet extends LayoutContainer {
 	}
 	
 	public String getSelectedRadio() {
-		return this.radioGroup.getValue().getBoxLabel();
+		if (radioGroup != null && radioGroup.getValue() != null) {
+			return radioGroup.getValue().getBoxLabel();
+		}
+		return null;
 	}
 }

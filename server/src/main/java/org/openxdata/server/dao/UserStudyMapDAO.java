@@ -1,7 +1,9 @@
 package org.openxdata.server.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 /**
@@ -17,6 +19,13 @@ public interface UserStudyMapDAO extends BaseDAO<UserStudyMap> {
 	List<UserStudyMap> getUserMappedStudies();
 	
 	/**
+	 * Gets a list of the UserStudyMap for a specified Study
+	 * @param studyId
+	 * @return
+	 */
+	List<UserStudyMap> getUserMappedStudies(Integer studyId);
+	
+	/**
 	 * Deletes a StudyUserMap definition from the database
 	 * 
 	 * @param map map to delete
@@ -29,5 +38,13 @@ public interface UserStudyMapDAO extends BaseDAO<UserStudyMap> {
 	 * @param map map to save
 	 */
 	void saveUserMappedStudy(UserStudyMap map);
+	
+    /**
+     * Gets a list of study names mapped to study ids
+     *
+     * @param user User with permissions
+     * @return the study list
+     */
+    Map<Integer, String> getStudyNamesForUser(User user);
 	
 }

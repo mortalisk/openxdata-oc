@@ -24,6 +24,11 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
     public List<StudyDef> getStudies() {
         return findAll();
     }
+    
+    @Override
+    public StudyDef getStudy(Integer id) {
+    	return super.find(id);
+    }
 
     @Override
     public boolean save(StudyDef entity) {

@@ -16,6 +16,13 @@ public interface StudyDAO extends BaseDAO<StudyDef>{
      * @return the study list
      */
     List<StudyDef> getStudies();
+    
+    /**
+     * Gets a study given an id
+     * @param id
+     * @return
+     */
+    StudyDef getStudy(Integer id);
 
     /**
      * Saves a study to the database.

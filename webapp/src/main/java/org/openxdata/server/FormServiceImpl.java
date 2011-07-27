@@ -1,6 +1,7 @@
 package org.openxdata.server;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openxdata.server.admin.client.service.FormService;
 import org.openxdata.server.admin.model.Editable;
@@ -8,6 +9,7 @@ import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
@@ -42,10 +44,21 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements FormS
 	public List<FormDef> getFormsForCurrentUser() {
         return getFormService().getFormsForCurrentUser();
     }
+    
+    @Override
+    public Map<Integer, String> getFormNamesForCurrentUser(Integer studyId) {
+    	return getFormService().getFormNamesForCurrentUser(studyId);
+    }
 
     @Override
     public List<UserFormMap> getUserMappedForms() {
         return getFormService().getUserMappedForms();
+    }
+
+	@Override
+    public List<UserFormMap> getUserMappedForms(Integer formId)
+            throws OpenXDataSecurityException {
+	    return getFormService().getUserMappedForms(formId);
     }
 
     @Override
@@ -77,8 +90,4 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements FormS
         }
         return formService;
     }
-
-
-
-
 }

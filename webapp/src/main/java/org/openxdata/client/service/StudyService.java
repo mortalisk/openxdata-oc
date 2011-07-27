@@ -1,6 +1,7 @@
 package org.openxdata.client.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
@@ -15,12 +16,18 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface StudyService extends RemoteService {
 
     List<StudyDef> getStudies() throws OpenXDataSecurityException;
+    
+    StudyDef getStudy(Integer studyId) throws OpenXDataSecurityException;
+    
+    public Map<Integer, String> getStudyNamesForCurrentUser() throws OpenXDataSecurityException;
 
     void saveStudy(StudyDef studyDef) throws OpenXDataSecurityException;
 
     void deleteStudy(StudyDef studyDef) throws OpenXDataSecurityException;
 
     List<UserStudyMap> getUserMappedStudies() throws OpenXDataSecurityException;
+    
+    List<UserStudyMap> getUserMappedStudies(Integer studyId) throws OpenXDataSecurityException;
 
     void saveUserMappedStudy(UserStudyMap userMappedStudy) throws OpenXDataSecurityException;
 

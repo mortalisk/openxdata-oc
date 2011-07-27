@@ -1,6 +1,7 @@
 package org.openxdata.server;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openxdata.client.service.StudyService;
 import org.openxdata.server.admin.model.FormDef;
@@ -22,6 +23,11 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
     public List<StudyDef> getStudies() {
         return getStudyManagerService().getStudies();
     }
+    
+    @Override
+    public Map<Integer, String> getStudyNamesForCurrentUser() {
+    	return getStudyManagerService().getStudyNamesForCurrentUser();
+    }
 
     @Override
     public void saveStudy(StudyDef studyDef) {
@@ -36,6 +42,11 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
     @Override
     public List<UserStudyMap> getUserMappedStudies() {
         return getStudyManagerService().getUserMappedStudies();
+    }
+    
+    @Override
+    public List<UserStudyMap> getUserMappedStudies(Integer studyId) {
+    	return getStudyManagerService().getUserMappedStudies(studyId);
     }
 
     @Override
@@ -70,4 +81,9 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
 		
 		getStudyManagerService().setUserMappingForStudy(study, users);
 	}
+
+	@Override
+    public StudyDef getStudy(Integer studyId) throws OpenXDataSecurityException {
+	    return getStudyManagerService().getStudy(studyId);
+    }
 }

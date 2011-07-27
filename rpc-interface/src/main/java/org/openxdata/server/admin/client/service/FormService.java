@@ -1,6 +1,7 @@
 package org.openxdata.server.admin.client.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
@@ -48,6 +49,14 @@ public interface FormService extends RemoteService {
     List<FormDef> getFormsForCurrentUser() throws OpenXDataSecurityException;
     
     /**
+     * Retrieves all the names of the forms that are available for the currently logged in user
+     * and are under the specified study
+     * @param studyId identifier of the study
+     * @return
+     */
+    Map<Integer, String> getFormNamesForCurrentUser(Integer studyId) throws OpenXDataSecurityException;
+    
+    /**
      * Calculates the number of responses captured for a specified formDefVersion.
      * 
      * @param formId int identifier for a form definition version
@@ -78,6 +87,9 @@ public interface FormService extends RemoteService {
     ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws OpenXDataSecurityException,ExportedDataNotFoundException;
 
     List<UserFormMap> getUserMappedForms() throws OpenXDataSecurityException;
+    
+    List<UserFormMap> getUserMappedForms(Integer formId) throws OpenXDataSecurityException;
+    
       /**
      * saves a usermapped form
      * @param map usermappedform

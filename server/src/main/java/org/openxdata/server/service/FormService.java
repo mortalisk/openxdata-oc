@@ -1,8 +1,9 @@
 package org.openxdata.server.service;
 
 import java.util.List;
-import org.openxdata.server.admin.model.Editable;
+import java.util.Map;
 
+import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
@@ -67,11 +68,27 @@ public interface FormService {
      * @return List of FormDef
      */
     List<FormDef> getFormsForCurrentUser();
+    
+    /**
+     * Retrieves all the names of the forms that are available for the currently logged in user
+     * and are under the specified study
+     * @param studyId identifier of the study
+     * @return
+     */
+    Map<Integer, String> getFormNamesForCurrentUser(Integer studyId);
+
     /**
      * Retrives all usermapped forms from the database
      * @return List of userFormMaps
      */
     List<UserFormMap> getUserMappedForms();
+    
+    /**
+     * Retrieves all the User Mapped Forms for a particular Form
+     * @param formId Integer id of the specified form
+     * @return List of UserFormMap
+     */
+    List<UserFormMap> getUserMappedForms(Integer formId);
 
       /**
      * saves a usermapped form

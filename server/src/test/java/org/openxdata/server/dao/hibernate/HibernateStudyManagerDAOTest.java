@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
@@ -30,6 +31,18 @@ public class HibernateStudyManagerDAOTest extends BaseContextSensitiveTest {
 		List<FormDef> forms = studyManagerService.getFormsForUser(user);
 		Assert.assertNotNull(forms);
 		Assert.assertEquals("There are 5 forms", 5, forms.size());
+	}
+	
+	@Test
+	public void testGetStudy() throws Exception {
+		StudyDef study = studyManagerService.getStudy(1);
+		Assert.assertNotNull(study);
+		Assert.assertEquals("Sample Study", study.getName());
+	}
+	
+	@Test
+	public void testGetForm() throws Exception {
+		
 	}
 	
 	@Test

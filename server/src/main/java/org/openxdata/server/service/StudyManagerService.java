@@ -2,6 +2,7 @@ package org.openxdata.server.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormData;
@@ -29,6 +30,20 @@ public interface StudyManagerService {
 	 * @return the study list
 	 */
 	List<StudyDef> getStudies();
+	
+	/**
+	 * Gets a list of study names mapped to study ids - for the logged in user
+	 * 
+	 * @return the study list
+	 */
+	Map<Integer, String> getStudyNamesForCurrentUser();
+	
+	/**
+	 * Returns a StudyDef given an id
+	 * @param id
+	 * @return
+	 */
+	StudyDef getStudy(Integer id);
 	
 	/**
 	 * Saves a study to the database.
@@ -107,6 +122,13 @@ public interface StudyManagerService {
 	 * @return list of mapped objects
 	 */
 	List<UserStudyMap> getUserMappedStudies();
+	
+	/**
+	 * Gets a list of UserStudyMap objects for a specified Study
+	 * @param studyId
+	 * @return
+	 */
+	List<UserStudyMap> getUserMappedStudies(Integer studyId);
 	
 	/**
 	 * Saves a StudyUserMap object
