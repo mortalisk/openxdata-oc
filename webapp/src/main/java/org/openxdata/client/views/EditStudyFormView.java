@@ -60,11 +60,11 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private List<User> users; // FIXME: users need to be actually paginated and not all loaded in memory
 	private List<UserStudyMap> mappedStudies;
 	
-	private final EditStudyFormController studyFormController;
+	FormDesignerView editFormFormDesignerView = new FormDesignerView(this);
+	private final EditStudyFormController controller = (EditStudyFormController) this.getController();
 
 	public EditStudyFormView(EditStudyFormController controller) {
 		super(controller);
-		studyFormController = controller;
 	}
 
 	@Override
@@ -188,14 +188,12 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			FormDef form = formDefVersion.getFormDef();
 			StudyDef study = form.getStudy();
 			
-			GWT.log("EditStudyFormView : EditStudyFormController.EDITSTUDYFORM : Edit");
-
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 				@Override
 				public void execute() {
 					ProgressIndicator.showProgressBar();
 					try {
-						studyFormController.getUsers();
+						controller.getUsers();
 					} finally {
 						ProgressIndicator.hideProgressBar();
 					}
@@ -248,7 +246,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
-				studyFormController.saveForm(form);
+				controller.saveForm(form);
 			}
 		});
 	}
@@ -323,7 +321,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 				try {
 					// note: calling these methods now to ensure that the users are populated before the mapping, 
 					// otherwise we might get an intermittent bug if they happen in the wrong order. 
-					studyFormController.getUserMappedStudies(formDefVersion.getFormDef().getStudy().getId());
+					controller.getUserMappedStudies(formDefVersion.getFormDef().getStudy().getId());
 				} finally {
 					ProgressIndicator.hideProgressBar();
 				}
@@ -340,7 +338,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 				try {
 					// note: calling these methods now to ensure that the users are populated before the mapping, 
 					// otherwise we might get an intermittent bug if they happen in the wrong order. 
-					studyFormController.getUserMappedForms(formDefVersion.getFormDef().getId());
+					controller.getUserMappedForms(formDefVersion.getFormDef().getId());
 				} finally {
 					ProgressIndicator.hideProgressBar();
 				}
@@ -380,7 +378,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 					@Override
 					public void handleEvent(ButtonEvent be) {
-						studyFormController.formHasData(formDefVersion);
+						controller.formHasData(formDefVersion);
 					}
 				});
 		return designFormButton;
