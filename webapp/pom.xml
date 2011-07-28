@@ -302,7 +302,7 @@
                         <module>${emit.gwt.module}</module>
                         <module>${openxdata.gwt.module}</module>
                     </modules>
-                    <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                    <extraJvmArgs>-Xmx512M -Xss1024k -XX:MaxPermSize=256m</extraJvmArgs>
                     <runTarget>Emit.html</runTarget>
                     <port>8889</port>
                     <hostedWebapp>war</hostedWebapp>
