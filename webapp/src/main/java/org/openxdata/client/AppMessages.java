@@ -227,4 +227,8 @@ public interface AppMessages extends Messages {
 	String intoStudy();
 	
 	String intoForm();
+	
+	String createNewVersion();
+	
+	String openReadOnly();
 }
