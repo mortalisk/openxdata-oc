@@ -84,10 +84,9 @@ public class EditStudyFormController extends Controller {
 		});
 	}
 
-	public void getUserMappedStudies() {
+	public void getUserMappedStudies(Integer studyId) {
 		GWT.log("EditStudyFormController : saveUsermappedStudies");
-		studyService
-				.getUserMappedStudies(new EmitAsyncCallback<List<UserStudyMap>>() {
+		studyService.getUserMappedStudies(studyId, new EmitAsyncCallback<List<UserStudyMap>>() {
 
 					@Override
 					public void onSuccess(List<UserStudyMap> result) {
@@ -96,10 +95,9 @@ public class EditStudyFormController extends Controller {
 				});
 	}
 
-	public void getUserMappedForms() {
+	public void getUserMappedForms(Integer formId) {
 		GWT.log("EditStudyFormController : getUserMappedForms");
-		formService
-				.getUserMappedForms(new EmitAsyncCallback<List<UserFormMap>>() {
+		formService.getUserMappedForms(formId, new EmitAsyncCallback<List<UserFormMap>>() {
 
 					@Override
 					public void onSuccess(List<UserFormMap> result) {

@@ -42,19 +42,24 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	private FormDefVersion formDefVersion;
 
-	private CheckBox published;
 	private final TextField<String> studyName = new TextField<String>();
 	private final TextField<String> studyDescription = new TextField<String>();
+	private UserAccessListField userAccessToStudy;
+	private Button designFormButton1;
 
 	private final TextField<String> formName = new TextField<String>();
 	private final TextField<String> formDescription = new TextField<String>();
+	private UserAccessListField userAccessToForm;
+	private Button designFormButton2;
 
 	private final TextField<String> formVersion = new TextField<String>();
 	private final TextField<String> formVersionDescription = new TextField<String>();
-	private UserAccessListField userAccessToStudy;
-	private UserAccessListField userAccessToForm;
-	private List<User> users;
+	private CheckBox published;
+	private Button designFormButton3;
+	
+	private List<User> users; // FIXME: users need to be actually paginated and not all loaded in memory
 	private List<UserStudyMap> mappedStudies;
+	
 	private final EditStudyFormController studyFormController;
 
 	public EditStudyFormView(EditStudyFormController controller) {
@@ -78,10 +83,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void display(int activePage, List<LayoutContainer> pages) {
-		if (activePage == 1) {
-			userAccessToStudy.setExpanded(false);
-			userAccessToForm.setExpanded(false);
-		}
+		// nothing special to do here
 	}
 
 	@Override
@@ -96,16 +98,20 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		editStudyPanel.setStyleAttribute("padding", "10px");
 		FormPanel formPanel = getWizardFormPanel();
 		studyName.setFieldLabel(appMessages.studyName());
+		studyName.setWidth(300);
 		studyName.setAllowBlank(false);
 		formPanel.add(studyName);
 
 		studyDescription.setFieldLabel(appMessages.studyDescription());
+		studyDescription.setWidth(300);
 		formPanel.add(studyDescription);
-		userAccessToStudy = new UserAccessListField(
-				appMessages.usersWithAccessToStudy());
+		userAccessToStudy = new UserAccessListField(appMessages.usersWithAccessToStudy());
+		userAccessToStudy.mask();
+		userAccessToStudy.setExpanded(false);
 		formPanel.add(userAccessToStudy);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
-		formPanel.add(getDesignFormButton(appMessages.designForm()));
+		designFormButton1 = getDesignFormButton(appMessages.designForm());
+		formPanel.add(designFormButton1);
 		editStudyPanel.add(formPanel);
 
 		return editStudyPanel;
@@ -118,15 +124,19 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		FormPanel formPanel = getWizardFormPanel();
 		formName.setFieldLabel(appMessages.formName());
 		formName.setAllowBlank(false);
+		formName.setWidth(300);
 		formPanel.add(formName);
 
 		formDescription.setFieldLabel(appMessages.formDescription());
+		formDescription.setWidth(300);
 		formPanel.add(formDescription);
-		userAccessToForm = new UserAccessListField(
-				appMessages.usersWithAccessToForm());
+		userAccessToForm = new UserAccessListField(appMessages.usersWithAccessToForm());
+		userAccessToForm.mask();
+		userAccessToForm.setExpanded(false);
 		formPanel.add(userAccessToForm);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
-		formPanel.add(getDesignFormButton(appMessages.designForm()));
+		designFormButton2 = getDesignFormButton(appMessages.designForm());
+		formPanel.add(designFormButton2);
 		editFormPanel.add(formPanel);
 
 		return editFormPanel;
@@ -142,8 +152,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		formVersion.setEnabled(false);
 		formPanel.add(formVersion);
 
-		formVersionDescription.setFieldLabel(appMessages
-				.formVersionDescription());
+		formVersionDescription.setFieldLabel(appMessages.formVersionDescription());
 		formPanel.add(formVersionDescription);
 
 		published = new CheckBox();
@@ -151,7 +160,8 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		published.setLabelSeparator("");
 		published.setFieldLabel(appMessages.formVersionDefault());
 		formPanel.add(published);
-		formPanel.add(getDesignFormButton(appMessages.designForm()));
+		designFormButton3 = getDesignFormButton(appMessages.designForm());
+		formPanel.add(designFormButton3);
 		editVersionPage.add(formPanel);
 
 		return editVersionPage;
@@ -200,6 +210,9 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			formVersion.setValue(formDefVersion.getName());
 			formVersionDescription.setValue(formDefVersion.getDescription());
 			published.setEnabled(formDefVersion.getIsDefault());
+
+			designFormButton1.setText(appMessages.designForm() + " (" + form.getName() + " " + formDefVersion.getName() + ")");
+			designFormButton2.setText(appMessages.designForm() + " (" + formDefVersion.getName() + ")");
 		}
 		showWindow(appMessages.editStudyOrForm(), 555, 400);
 	}
@@ -310,7 +323,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 				try {
 					// note: calling these methods now to ensure that the users are populated before the mapping, 
 					// otherwise we might get an intermittent bug if they happen in the wrong order. 
-					studyFormController.getUserMappedStudies();
+					studyFormController.getUserMappedStudies(formDefVersion.getFormDef().getStudy().getId());
 				} finally {
 					ProgressIndicator.hideProgressBar();
 				}
@@ -327,17 +340,20 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 				try {
 					// note: calling these methods now to ensure that the users are populated before the mapping, 
 					// otherwise we might get an intermittent bug if they happen in the wrong order. 
-					studyFormController.getUserMappedForms();
+					studyFormController.getUserMappedForms(formDefVersion.getFormDef().getId());
 				} finally {
 					ProgressIndicator.hideProgressBar();
 				}
 			}
 		});
 		userAccessToStudy.setUserStudyMap(formDefVersion.getFormDef().getStudy(), users, mappedStudies);
+		userAccessToStudy.unmask();
 	}
 
 	public void setUserMappedForms(List<UserFormMap> mappedForms) {
+		// FIXME: mappedStudies should be the actually currently mapped users to studies (which could have changed in step 1)
 		userAccessToForm.setUserFormMap(formDefVersion.getFormDef(), users, mappedForms, mappedStudies);
+		userAccessToForm.unmask();
 	}
 
 	public void onFormDataCheckComplete(Boolean hasData) {
