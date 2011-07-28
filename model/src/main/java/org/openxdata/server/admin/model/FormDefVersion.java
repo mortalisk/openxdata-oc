@@ -36,12 +36,6 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 		this.formDef = formDef;
 	}
 	
-	public FormDefVersion(FormDefVersion formDef) {
-		setId(formDef.getId());
-		setName(formDef.getName());
-		setDescription(formDef.getDescription());
-	}
-	
 	public FormDefVersion(int versionId, String name, String description,FormDef formDef) {
 		this(versionId,name,formDef);
 		setDescription(description);
