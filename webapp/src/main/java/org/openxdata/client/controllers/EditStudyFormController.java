@@ -37,7 +37,9 @@ public class EditStudyFormController extends Controller {
 
 	private EditStudyFormView editStudyFormView;
 
+	public final static EventType OPENREADONLY = new EventType();
 	public final static EventType EDITSTUDYFORM = new EventType();
+	public final static EventType CREATENEWVERSION = new EventType();
 
 	public EditStudyFormController(StudyServiceAsync studyService,
 			FormServiceAsync formService, UserServiceAsync userService) {
@@ -46,18 +48,24 @@ public class EditStudyFormController extends Controller {
 		this.studyService = studyService;
 		this.userService = userService;
 		this.formService = formService;
-		registerEventTypes(EDITSTUDYFORM);
+		registerEventTypes(OPENREADONLY, EDITSTUDYFORM, CREATENEWVERSION);
 	}
 
 	@Override
 	public void handleEvent(AppEvent event) {
 		GWT.log("EditStudyFormController : handleEvent");
 		EventType type = event.getType();
+		
+		if(type == OPENREADONLY){
+			editStudyFormView.launchDesigner(true);
+		}
 		if (type == EDITSTUDYFORM) {
 			editStudyFormView = new EditStudyFormView(this);
 			forwardToView(editStudyFormView, event);
 		}
-
+		if(type == CREATENEWVERSION){
+			editStudyFormView.createNewVersionForFormWithData();
+		}
 	}
 
 	public void saveForm(final FormDef form) {

@@ -21,7 +21,6 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
-import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -215,12 +214,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		showWindow(appMessages.editStudyOrForm(), 555, 400);
 	}
 
-	private void launchDesigner(boolean readOnly) {
-
-		FormDesignerView editFormFormDesignerView = new FormDesignerView(this);
-		editFormFormDesignerView.openFormForEditing(formDefVersion, readOnly);
-	}
-
 	private void save() {
 
 		if (formDefVersion == null) {
@@ -356,19 +349,28 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 
 	public void onFormDataCheckComplete(Boolean hasData) {
 		if (hasData) {
-			MessageBox.confirm(appMessages.existingDataTitle(), appMessages.existingDataMessage(), new Listener<MessageBoxEvent>() {
-				
-				@Override
-				public void handleEvent(MessageBoxEvent be) {
-					if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-						formDefVersion.setState(EditableState.HASDATA);
-						launchDesigner(true);
-					}
-				}
-			});
+			new StudyFormHasDataChoiceView().show();
 		} else {
 			launchDesigner(false);
 		}
+	}
+	
+	public void createNewVersionForFormWithData(){
+		
+		int versionSize = formDefVersion.getFormDef().getVersions().size();
+		FormDefVersion version = new FormDefVersion();
+		
+		version.setFormDef(formDefVersion.getFormDef());
+		version.setLayout(formDefVersion.getLayout());
+		version.setXform(formDefVersion.getXform());
+		version.setName("v" + (versionSize + 1));
+		
+		// 
+		editFormFormDesignerView.openFormForEditing(version, false);
+	}
+	
+	public void launchDesigner(boolean readOnly) {
+		editFormFormDesignerView.openFormForEditing(formDefVersion, readOnly);
 	}
 
 	public Button getDesignFormButton(String label) {

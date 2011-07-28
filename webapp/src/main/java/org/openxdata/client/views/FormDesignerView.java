@@ -116,21 +116,17 @@ public class FormDesignerView {
 			if (text != null) {
 
 				xform = LanguageUtil.translate(XMLParser.parse(xform),
-						XMLParser.parse(text.getXformText())
-								.getDocumentElement());
+						XMLParser.parse(text.getXformText()).getDocumentElement());
 
 				if (layout != null && layout.trim().length() > 0) {
 					layout = LanguageUtil.translate(XMLParser.parse(layout),
-							XMLParser.parse(text.getLayoutText())
-									.getDocumentElement());
+							XMLParser.parse(text.getLayoutText()).getDocumentElement());
 				}
 			}
-			formDesigner.loadForm(formDefVersion.getId(), xform,
-					layout, "", readOnly);
+			formDesigner.loadForm(formDefVersion.getId(), xform, layout, "", readOnly);
 		} else {
 			formDesigner.addNewForm(formName + "_" + formVersionName,
-					getDefaultFormBinding(formDefVersion),
-					formDefVersion.getId());
+					getDefaultFormBinding(formDefVersion), formDefVersion.getId());
 		}
 	}
 
