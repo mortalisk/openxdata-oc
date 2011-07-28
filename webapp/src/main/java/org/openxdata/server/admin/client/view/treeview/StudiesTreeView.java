@@ -283,11 +283,11 @@ public class StudiesTreeView extends OpenXDataBaseTreeView implements
 	 * Designs the selected form version.
 	 */
 	private void designItem() {
-                // TODO Should do this through an interface
-                deleteData = false;
-                dataCheck.itemHasFormData((Editable) tree.getSelectedItem().getUserObject());
+		// TODO Should do this through an interface
+		deleteData = false;
+		dataCheck.itemHasFormData((Editable) tree.getSelectedItem().getUserObject());
 
-        }
+	}
 	
 	/**
 	 * Deletes the selected question.
@@ -408,36 +408,30 @@ public class StudiesTreeView extends OpenXDataBaseTreeView implements
 	@Override
         public void onDataCheckComplete(boolean hasData, String currentItem) {
 
-                FormUtil.dlg.hide();
+		FormUtil.dlg.hide();
 
-                /*
-                 * Dialog to determine that option to take in regard to Editable with
-                 * data.
-                 */
-                FormVersionOpenDialog versionOpenDialog = new FormVersionOpenDialog(
-                        this);
+		FormVersionOpenDialog versionOpenDialog = new FormVersionOpenDialog(
+				this);
 
-                if (!deleteData) {
-                        if (hasData) {
-                                versionOpenDialog.setTitle(constants.label_formversionedittitle());
-                                versionOpenDialog.center();
-                        } else {
-                                Object userObject = tree.getSelectedItem().getUserObject();
-                                if (userObject instanceof FormDefVersion)
-                                        eventBus.fireEvent(new DesignFormEvent((FormDefVersion) userObject));
-                                //((StudyView) itemSelectionListener).designItem(false, userObject);
-                        }
-                } else if (deleteData) {
+		if (!deleteData) {
+			if (hasData) {
+				versionOpenDialog.setTitle(constants.label_formversionedittitle());
+				versionOpenDialog.center();
+			} else {
+				Object userObject = tree.getSelectedItem().getUserObject();
+				if (userObject instanceof FormDefVersion)
+					eventBus.fireEvent(new DesignFormEvent((FormDefVersion) userObject));
+			}
+		} else if (deleteData) {
 
-                        if (hasData) {
-                                versionOpenDialog.hide();
-                                Window.alert("The selected { " + currentItem
-                                        + " } has data and cannot be deleted!");
-                        } else
-                                deleteItem();
-                }
+			if (hasData) {
+				versionOpenDialog.hide();
+				Window.alert("The selected { " + currentItem + " } has data and cannot be deleted!");
+			} else
+				deleteItem();
+		}
 
-        }
+	}
 	
 	@Override
 	UIViewLabels getContextMenuLabels() {
