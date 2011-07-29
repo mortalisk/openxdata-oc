@@ -98,6 +98,7 @@ public class FormsServer {
 	 * @param dis - the stream to read from.
 	 * @param dos - the stream to write to.
 	 */
+	@SuppressWarnings("deprecation")
 	public void processConnection(InputStream disParam, OutputStream dosParam){
 
 		ZOutputStream gzip = new ZOutputStream(dosParam, JZlib.Z_BEST_COMPRESSION);

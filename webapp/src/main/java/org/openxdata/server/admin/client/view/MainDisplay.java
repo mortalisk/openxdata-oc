@@ -29,11 +29,12 @@ import org.openxdata.server.admin.model.FormDefVersion;
  *
  * @author kay
  */
+@SuppressWarnings("deprecation")
 public class MainDisplay implements MainPresenter.Display, StackPanelListener, ResizeHandler {
 
     private OpenXDataStackPanel stackPanel;
     private StackPanelListener stackPanelListener;
-    private HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
+	private HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
     private VerticalPanel verticalPanel = new VerticalPanel();
     private OpenXDataMenuBar menuBar;
     private OpenXDataToolBar toolBar;

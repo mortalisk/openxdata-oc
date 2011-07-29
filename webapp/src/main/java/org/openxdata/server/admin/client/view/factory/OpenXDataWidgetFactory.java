@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * 
  *
  */
+@SuppressWarnings("deprecation")
 public interface OpenXDataWidgetFactory {
 	
 	/**

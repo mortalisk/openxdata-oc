@@ -256,6 +256,7 @@ public class MainViewControllerFacade  {
 		Utilities.displayNotificationMessage("Loading Data... ");
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
+			@SuppressWarnings("deprecation")
 			public void execute() {
 				switch (newIndex) {
 					case OpenXDataStackPanelConstants.INDEX_STUDIES:

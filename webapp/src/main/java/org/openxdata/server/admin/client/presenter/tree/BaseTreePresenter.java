@@ -68,7 +68,7 @@ public abstract class BaseTreePresenter<E extends Editable, D extends IBaseTreeD
         }).forClass(clazz);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private void bindUI() {
         display.getList().addSelectionHandler(new SelectionHandler() {
 
