@@ -36,7 +36,7 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
     /** Vertical Panel to align <tt>Widgets.</tt> */
     private VerticalPanel verticalPanel;
     /** HorizontalSplitPanel to align main widgets. */
-	private HorizontalSplitPanel horizontalSplitClient;
+    private HorizontalSplitPanel horizontalSplitClient;
     /** Widget for Mapping Permissions to Roles */
     private static OpenXDataWidgetGinInjector injector;
 

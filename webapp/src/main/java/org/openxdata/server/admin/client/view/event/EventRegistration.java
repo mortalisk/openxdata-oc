@@ -14,7 +14,7 @@ public class EventRegistration<T, H extends BaseHandler<T>> {
     private static Map<TypeHolder, Type<? extends EventHandler>> TYPES = new HashMap<TypeHolder, Type<? extends EventHandler>>();
     private EventBus eventBus;
     private H handler;
-	private final Class<? extends GwtEvent> gwtEvtClazz;
+    private final Class<? extends GwtEvent> gwtEvtClazz;
 
     public EventRegistration(EventBus eventBus, H handler, Class<? extends GwtEvent> gwtEvtClazz) {
         this.eventBus = eventBus;
