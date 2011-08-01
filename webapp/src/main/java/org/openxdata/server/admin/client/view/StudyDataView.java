@@ -88,7 +88,7 @@ public class StudyDataView extends Composite implements
 	public StudyDataView(EventBus eventBus) {
 		this.eventBus = eventBus;
 		initWidgets();
-                initHandlers();
+		initHandlers();
 	}
 	
 	private void initWidgets() {
@@ -319,13 +319,11 @@ public class StudyDataView extends Composite implements
 			if (description == null || description.trim().length() == 0)
 				description = constants.label_no_description();
 			
-			table.setWidget(index, 0,
-			        new Label(index + ") " + formData.getFormName()));
+			table.setWidget(index, 0, new Label(index + ") " + formData.getFormName()));
 			table.setWidget(index, 1, new Label(formData.getVersionName()));
 			table.setWidget(index, 2, new Label(description));
 			table.setWidget(index, 3, new Label(formData.getCreator()));
-			table.setWidget(index, 4,
-			        new Label(dateFormat.format(formData.getDateCreated())));
+			table.setWidget(index, 4, new Label(dateFormat.format(formData.getDateCreated())));
 			
 			String text = "EMPTY";
 			if (formData.getChangedBy() != null)

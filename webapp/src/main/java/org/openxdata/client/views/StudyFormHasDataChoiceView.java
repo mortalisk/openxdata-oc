@@ -29,6 +29,8 @@ public class StudyFormHasDataChoiceView extends Dialog {
 	
 	@Override
 	protected void createButtons() {
+		
+		// Put here because this method is called before class initialization.
 		AppMessages messages = GWT.create(AppMessages.class);
 		getButtonBar().add(new FillToolItem());
 		final Dispatcher dispatcher = Dispatcher.get();

@@ -90,7 +90,7 @@ public class FormResponsesView extends View implements Refreshable  {
     	Registry.register("FormResponsesView", this);
         GWT.log("FormResponsesView : initialize");
         window = new Window();
-        // can;t do anything here because we don't have the column model
+        // can't do anything here because we don't have the column model
         exportButton = new Button(appMessages.exportToCSV());
         exportButton.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override

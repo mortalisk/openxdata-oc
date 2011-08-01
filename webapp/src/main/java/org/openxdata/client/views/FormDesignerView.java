@@ -143,9 +143,9 @@ public class FormDesignerView {
 	private void createFormDesignerWindow(String formName,
 			Listener<? extends BaseEvent> beforeHide) {
 		Widget emit = RootPanel.get().getWidget(0);
-                RootPanel.get().clear();
-                FormdesignerContainer container = new FormdesignerContainer(formDesigner, formName, emit);
-                RootPanel.get().add(container);
+		RootPanel.get().clear();
+		FormdesignerContainer container = new FormdesignerContainer(formDesigner, formName, emit);
+		RootPanel.get().add(container);
 	}
 
 	final Listener<ComponentEvent> editStudyFormWindowListener = new EditWindowListener();
