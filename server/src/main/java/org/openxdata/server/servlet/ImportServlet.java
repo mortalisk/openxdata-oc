@@ -21,13 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-
-/**
- * Servlet that handles opening of files.
- * 
- * @author daniel
- *
- */
 public class ImportServlet extends HttpServlet{
 
 	private UserService userService;
@@ -65,7 +58,7 @@ public class ImportServlet extends HttpServlet{
 			if (filecontents != null){
 				log.info("Starting import of type: " + importType);
 				
-				if (importType.equals("user")){
+				if (importType != null && importType.equals("user")){
 					errorFileName = userService.importUsers(filecontents);
 				}else {
 					log.warn("Unknown import type: " + importType);
@@ -98,15 +91,13 @@ public class ImportServlet extends HttpServlet{
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				return;
 			}
-			writeErrorsToResponse(
-					IOUtils.toString(new FileInputStream(filename), "UTF-8"),
-					response);
+			writeErrorsToResponse(filename,	response);
 		} else {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		}
 	}
 
-	private void writeErrorsToResponse(String errors, HttpServletResponse response) throws IOException {
+	private void writeErrorsToResponse(String filename, HttpServletResponse response) throws IOException {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
 		response.setDateHeader("Expires", -1);
@@ -115,6 +106,6 @@ public class ImportServlet extends HttpServlet{
 		response.setHeader("Content-Type", "text/csv;charset=UTF-8");
 		response.setHeader("Content-Disposition", "attachment; filename=importErrros.csv");	
 
-		response.getWriter().write(errors);
+		IOUtils.copy(new FileInputStream(filename), response.getWriter(), "UTF-8");
 	}
 }
