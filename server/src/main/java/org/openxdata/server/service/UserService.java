@@ -96,6 +96,8 @@ public interface UserService {
 	 *   <li>phoneNo</li>
 	 *   <li>email</li>
 	 *   <li>roles (compulsory, comma separated list of role names)</li>
+	 *   <li>formPermissions (comma separated list of form names to give the user access to)</li>
+	 *   <li>studyPermissions (comma separated list of study names to give the user access to)</li>
 	 * </ul>
 	 * Column headings must match exactly.
 	 * The order of columns is not important and non-compulsory columns

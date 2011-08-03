@@ -23,7 +23,6 @@ import org.openxdata.server.dao.UserFormMapDAO;
 import org.openxdata.server.dao.UserStudyMapDAO;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.StudyManagerService;
-import org.openxdata.server.service.UserService;
 import org.openxdata.server.util.XformUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
@@ -58,9 +57,6 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Autowired
 	private EditableDAO editableDAO;
 	
-	@Autowired
-	private UserService userService;
-    
 	@Override
 	@Secured("Perm_Delete_Forms")
 	public void deleteForm(FormDef formDef) {
@@ -91,7 +87,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Studies")
 	public Map<Integer, String> getStudyNamesForCurrentUser() {		
-		return userStudyMapDAO.getStudyNamesForUser(userService.getLoggedInUser());
+		return userStudyMapDAO.getStudyNamesForUser(OpenXDataSecurityUtil.getLoggedInUser());
 	}
 	
 	@Override
@@ -287,5 +283,15 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 			
 			saveUserMappedStudy(map);
 		}
+	}
+	
+	@Override
+	public List<StudyDef> getStudyByName(String studyName) {
+		return studyDao.searchByPropertyEqual("name", studyName);
+	}
+
+	@Override
+	public List<FormDef> getFormByName(String formName) {
+		return formDAO.searchByPropertyEqual("name", formName);
 	}
 }

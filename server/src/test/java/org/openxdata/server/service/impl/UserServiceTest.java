@@ -1,6 +1,7 @@
 package org.openxdata.server.service.impl;
 
 import java.io.File;
+import java.io.FileReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,10 +10,15 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.slf4j.Logger;
@@ -31,6 +37,9 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired
 	protected UserService userService;
+	
+	@Autowired
+	private StudyManagerService studyService;
 	
 	List<User> dummyUsers;
 	final String userName = "User Name";
@@ -168,13 +177,14 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		String expectedErrorString = FileUtils.readFileToString(new File(resource.toURI()), "UTF-8");
 		expectedErrorString = expectedErrorString.trim().replaceAll("\\n*\\r*", "");
 
-		String errorString = null;
+		String errorfile = null;
 		try {
-			errorString = userService.importUsers(importString);
+			errorfile = userService.importUsers(importString);
 		} catch (Throwable e) {
 			e.printStackTrace();
-		}
-		log.debug(errorString);
+ 		}
+		System.out.println(errorfile);
+		String errorString = IOUtils.toString(new FileReader(errorfile));
 		errorString = errorString.trim().replaceAll("\\n*\\r*", "");
 
 		Assert.assertEquals(expectedErrorString, errorString);
@@ -188,6 +198,26 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Assert.assertEquals("email1", user.getEmail());
 		Assert.assertTrue(user.getRoles()!=null);
 		Assert.assertTrue(user.getRoles().size() == 2);
+		
+		User user2 = userService.findUserByUsername("name7");
+		List<FormDef> forms = studyService.getFormByName("Sample Form");
+		List<UserFormMap> formMaps = studyService.getUserMappedForms();
+		int count = 0;
+		for (UserFormMap map : formMaps) {
+			if (map.getUserId() == user2.getId()) {
+				count++;
+				Assert.assertEquals(forms.get(0).getId(), map.getFormId());
+			}
+		}
+		Assert.assertEquals(1, count);
+		List<UserStudyMap> studyMaps = studyService.getUserMappedStudies();
+		count = 0;
+		for (UserStudyMap map : studyMaps) {
+			if (map.getUserId() == user2.getId()) {
+				count++;
+			}
+		}
+		Assert.assertEquals(2, count);		
 	}
 	
 	

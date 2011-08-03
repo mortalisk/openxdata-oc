@@ -1,26 +1,34 @@
 package org.openxdata.server.service.impl;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.Role;
+import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.dao.RoleDAO;
 import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.UserDAO;
 import org.openxdata.server.security.OpenXDataSessionRegistry;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.MailService;
+import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.server.util.OpenXDataUtil;
 import org.slf4j.Logger;
@@ -65,6 +73,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private OpenXDataSessionRegistry sessionRegistry;
+    
+    @Autowired
+    private StudyManagerService studyService;
 
     private Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -201,73 +212,170 @@ public class UserServiceImpl implements UserService {
     @Override
     @Secured("Perm_Add_Users")
 	public String importUsers(String filecontents) {
-        CSVReader reader = new CSVReader(new StringReader(filecontents));
-        UserWrapper.setRoleDAO(roleDAO);
-        HeaderColumnNameMappingStrategy<UserWrapper> strat = new HeaderColumnNameMappingStrategy<UserWrapper>();
-        strat.setType(UserWrapper.class);
-
-        CsvToBean<UserWrapper> csv = new CsvToBean<UserWrapper>();
-        List<UserWrapper> list = csv.parse(strat, reader);
-
-        User loggedInUser = getLoggedInUser();
-        List<UserWrapper> errors = saveUserList(list, loggedInUser);
-
-
-        String errorCSV = getErrorCSV(errors);
-        return errorCSV;
+    	List<UserImportBean> list = getUsersToImport(filecontents);
+    	 
+        log.info("String import of " + list.size() + " users");
+        File errorFile;
+        CSVWriter csvWriter;
+        try {
+			errorFile = File.createTempFile("openxdata-","-userimporterrors.csv");
+			FileWriter fileWriter = new FileWriter(errorFile);
+			csvWriter = new CSVWriter(fileWriter, ',');
+			csvWriter.writeNext(UserImportBean.getColumnHeaders());
+		} catch (Exception e) {
+			 throw new UnexpectedException("Error writing user import errors.", e);
+		}
+		
+		User loggedInUser = getLoggedInUser();
+		boolean hasErrors = false;
+		for (int i = 0; i < list.size(); i++) {
+			UserImportBean userImportBean = list.get(i);
+			User user = userImportBean.getUser();
+			List<String> errors = setRoles(user, userImportBean.getRoles());
+			List<UserFormMap> userFormMaps = getUserFormMaps(userImportBean.getFormPermissions(), errors);
+			List<UserStudyMap> userStudyMaps = getUserStudyMaps(userImportBean.getStudyPermissions(), errors);
+			if (validate(user, errors)){
+				 user.setCreator(loggedInUser);
+	             user.setDateCreated(new Date());
+	             saveUser(user);
+	             for (UserStudyMap userStudyMap : userStudyMaps) {
+	            	 userStudyMap.setUserId(user.getId());
+	            	 studyService.saveUserMappedStudy(userStudyMap);
+	             }
+	             for (UserFormMap userFormMap : userFormMaps) {
+	            	 userFormMap.setUserId(user.getId());
+	            	 studyService.saveUserMappedForm(userFormMap);
+	             }
+			} else {
+				hasErrors = true;
+				userImportBean.setErrors(errors);
+				csvWriter.writeNext(userImportBean.toStringArray());
+			}
+			log.debug("Processed " + i + " users for import");
+		}
+		
+        try {
+			csvWriter.close();
+		} catch (IOException e) {
+			 throw new UnexpectedException("Error writing user import errors.", e);
+		}
+		
+		if (hasErrors){
+			return errorFile.getAbsolutePath();
+		} else {
+			return null;
+		}
     }
+    
+	private List<UserStudyMap> getUserStudyMaps(String studyPermissions,
+			List<String> errors) {
+		if (studyPermissions.trim().isEmpty()) {
+			log.debug("No study permissions");
+			return Collections.emptyList();
+		}
 
-    private String getErrorCSV(List<UserWrapper> errors) {
-        if (!errors.isEmpty()) {
-            try {
-                StringWriter stringWriter = new StringWriter();
-                CSVWriter writer = new CSVWriter(stringWriter, ',');
-                String[] headers = getColumns();
-                writer.writeNext(headers);
-                for (UserWrapper user : errors) {
-                    writer.writeNext(userToCSV(user));
-                }
-                writer.close();
-                return stringWriter.toString();
-            } catch (IOException e) {
-                throw new UnexpectedException("Error writing user import errors.");
-            }
-        }
-        return null;
-    }
+		List<UserStudyMap> userStudyMaps = new ArrayList<UserStudyMap>();
+		String[] studyArr = studyPermissions.split(",");
+		for (String studyName : studyArr) {
+			List<StudyDef> list = studyService.getStudyByName(studyName);
+			if (list.size() == 1) {
+				UserStudyMap map = new UserStudyMap();
+				map.setStudyId(list.get(0).getId());
+				userStudyMaps.add(map);
+			} else if (list.size() > 1) {
+				errors.add("More than one study matched study name: "
+						+ studyName);
+			} else if (list.isEmpty()) {
+				errors.add("No study matched study name: " + studyName);
+			}
+		}
+		return userStudyMaps;
+	}
 
-    private List<UserWrapper> saveUserList(List<UserWrapper> list, User loggedInUser) {
-        List<UserWrapper> uersWithErrors = new ArrayList<UserWrapper>();
+	private List<UserFormMap> getUserFormMaps(String formPermissions,
+			List<String> errors) {
+		if (formPermissions.trim().isEmpty()) {
+			log.debug("No form permissions");
+			return Collections.emptyList();
+		}
 
-        for (UserWrapper user : list) {
-            if (user.hasErrors()) {
-                uersWithErrors.add(user);
-            } else {
-                user.setCreator(loggedInUser);
-                user.setDateCreated(new Date());
-                try {
-                    findUserByUsername(user.getName());
-                    user.getErrors().add("User with same username already exists");
-                    uersWithErrors.add(user);
-                } catch (UserNotFoundException userShouldNotExist) {
-                    saveUser(user.getUser());
-                }
-            }
-        }
-        return uersWithErrors;
-    }
+		List<UserFormMap> maps = new ArrayList<UserFormMap>();
+		String[] formArr = formPermissions.split(",");
+		for (String formName : formArr) {
+			List<FormDef> list = studyService.getFormByName(formName);
+			if (list.size() == 1) {
+				UserFormMap map = new UserFormMap();
+				map.setFormId(list.get(0).getId());
+				maps.add(map);
+			} else if (list.size() > 1) {
+				errors.add("More than one form matched form name: " + formName);
+			} else if (list.isEmpty()) {
+				errors.add("No form matched form name: " + formName);
+			}
+		}
+		return maps;
+	}
+	
+	private List<UserImportBean> getUsersToImport(String filecontents) {
+		CSVReader reader = new CSVReader(new StringReader(filecontents));
+		HeaderColumnNameMappingStrategy<UserImportBean> strat = new HeaderColumnNameMappingStrategy<UserImportBean>();
+		strat.setType(UserImportBean.class);
 
-    private String[] getColumns() {
-        return new String[]{"name", "firstName", "middleName", "lastName", "phoneNo", "email",
-                    "clearTextPassword", "roles", "error messages"};
-    }
+		CsvToBean<UserImportBean> csv = new CsvToBean<UserImportBean>();
+		List<UserImportBean> list = csv.parse(strat, reader);
+		return list;
+	}
+	
+	/**
+	 * Takes a comma separated list of role names and converts it into a list of
+	 * roles by doing a database lookup of the name.
+	 * 
+	 * @param user
+	 *            The user to add the roles to
+	 * @param roles
+	 *            A comma separated list of role names
+	 * @return a list error messages
+	 **/
+	private List<String> setRoles(User user, String roles) {
+		List<String> errors = new ArrayList<String>();
+		if (roles.trim().isEmpty()) {
+			log.debug("No roles for import user: " + user.getName());
+			errors.add("No roles specified");
+			return errors;
+		}
 
-    private String[] userToCSV(UserWrapper user) {
-        String errorString = user.getErrorString();
-        return new String[]{user.getName(), user.getFirstName(), user.getMiddleName(),
-                    user.getLastName(), user.getPhoneNo(), user.getEmail(),
-                    user.getClearTextPassword(), user.getRoles(), errorString};
-    }
+		String[] roleArr = roles.split(",");
+		for (String roleName : roleArr) {
+			List<Role> dbRoles = roleDAO.getRolesByName(roleName.trim());
+			if (dbRoles.size() == 1) {
+				user.addRole(dbRoles.get(0));
+			} else if (dbRoles.size() > 1) {
+				errors.add("More than one role matched role name: " + roleName);
+			} else if (dbRoles.isEmpty()) {
+				errors.add("No role matched role name: " + roleName);
+			}
+		}
+		return errors;
+	}
+	    
+	private boolean validate(User user, List<String> errors) {
+		if (user.getName().isEmpty()) {
+			errors.add("name is empty");
+		}
+
+		if (user.getClearTextPassword().isEmpty()) {
+			errors.add("clearTextPassword is empty");
+		}
+
+		try {
+			findUserByUsername(user.getName());
+			errors.add("User with same username already exists");
+		} catch (UserNotFoundException userShouldNotExist) {
+			// ignore
+		}
+
+		return errors.isEmpty();
+	}
 
     @Override
     // note: no security required for logout

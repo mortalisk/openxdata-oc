@@ -210,4 +210,20 @@ public interface StudyManagerService {
      * @throws OpenXDataSecurityException If User does not have permission to map objects.
      */
 	void setUserMappingForStudy(StudyDef study, List<User> users);
+	
+	/**
+	 * Get a list of studies with the specified name
+	 * 
+	 * @param studyName
+	 * @return a list of StudyDef objects
+	 */
+	List<StudyDef> getStudyByName(String studyName);
+	
+	/**
+	 * Get a list of forms with the specified name
+	 * 
+	 * @param formName
+	 * @return a list of FormDef objects
+	 */
+	List<FormDef> getFormByName(String formName);
 }

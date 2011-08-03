@@ -1,5 +1,7 @@
 package org.openxdata.server.servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -44,6 +46,9 @@ public class ImportServlet extends HttpServlet{
     
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String errorFileName = "no file";
+		response.setHeader("Content-Type", "text/html;charset=UTF-8");
+		
 		try{
 			String importType = request.getParameter("type");
 			String filecontents = null;
@@ -61,18 +66,43 @@ public class ImportServlet extends HttpServlet{
 				log.info("Starting import of type: " + importType);
 				
 				if (importType.equals("user")){
-					String errors = userService.importUsers(filecontents);
-					if (errors != null){
-						writeErrorsToResponse(errors,response);
-					}
+					errorFileName = userService.importUsers(filecontents);
 				}else {
 					log.warn("Unknown import type: " + importType);
 				}
 			}
+			response.setStatus(HttpServletResponse.SC_OK);
+			if (errorFileName != null){
+				response.getOutputStream().print(errorFileName);
+			}
 		}
 		catch(Exception ex){
+			log.error("Error during import", ex);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getOutputStream().print(ex.getMessage());
+			response.getOutputStream().print("Error: " + ex.getMessage());
+		}
+		response.getOutputStream().flush();
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String filename = request.getParameter("filename");
+		if (filename == null || filename.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_OK);
+			return;
+		}
+		File file = new File(filename);
+		if (file.getName().startsWith("openxdata-")) {
+			if (!file.exists()) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+			writeErrorsToResponse(
+					IOUtils.toString(new FileInputStream(filename), "UTF-8"),
+					response);
+		} else {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		}
 	}
 
