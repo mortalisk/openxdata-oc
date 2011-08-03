@@ -6,6 +6,8 @@ import org.openxdata.server.admin.model.User;
 import org.openxdata.server.dao.UserDAO;
 import org.springframework.stereotype.Repository;
 
+import com.googlecode.genericdao.search.Search;
+
 /**
  * Provides a hibernate implementation
  * of the <code>UserDAO</code> data access <code> interface.</code>
@@ -38,7 +40,9 @@ public class HibernateUserDAO extends BaseDAOImpl<User> implements UserDAO {
 	
 	@Override
 	public List<User> getUsers() {
-        return findAll();
+		Search s = new Search();
+		s.addSort("name", false);
+        return search(s);
 	}
 
 	@Override
