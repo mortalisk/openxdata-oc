@@ -97,7 +97,17 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/OpenXDataServerAdmin/dataimport</url-pattern>
     <url-pattern>/dataimport</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet>
+	<servlet-name>importServlet</servlet-name>
+	<servlet-class>org.openxdata.server.servlet.ImportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>importServlet</servlet-name>
+	<url-pattern>/OpenXDataServerAdmin/import</url-pattern>
+	<url-pattern>/import</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <servlet-name>studyexport</servlet-name>
     <servlet-class>org.openxdata.server.servlet.StudyExportServlet</servlet-class>
