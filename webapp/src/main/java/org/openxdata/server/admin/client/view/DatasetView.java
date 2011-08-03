@@ -12,6 +12,7 @@ import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -50,7 +51,8 @@ import com.google.inject.Inject;
  */
 public class DatasetView extends OpenXDataBaseView implements
         SelectionHandler<Integer>,
-        OpenXDataExportImportApplicationEventListener {
+        OpenXDataExportImportApplicationEventListener,
+        OpenXDataViewApplicationEventListener {
 	
 	/** The dataset definition object. */
 	private Report dataset;

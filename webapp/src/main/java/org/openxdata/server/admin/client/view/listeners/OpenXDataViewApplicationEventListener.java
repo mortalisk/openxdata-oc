@@ -10,7 +10,7 @@ import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
  * 
  *
  */
-public interface OpenXDataViewApplicationEventListener {
+public interface OpenXDataViewApplicationEventListener extends OpenXDataEventListener {
 	
 	/**
 	 * Saves the new or modified <tt>Editables.</tt> 

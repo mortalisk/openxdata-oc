@@ -12,12 +12,20 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+
 import java.util.List;
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.contextmenu.OpenXDataContextMenu;
+import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
 import org.openxdata.server.admin.client.view.widget.CompositeTreeItem;
+import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 import org.openxdata.server.admin.client.view.widget.TreeItemWidget;
 
 /**
@@ -29,9 +37,16 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
     protected Tree tree;
     protected ScrollPanel scrollPanel = new ScrollPanel();
     protected PopupPanel contextMenu;
+	private OpenXDataWidgetFactory widgetFactory;
 
     public BaseTreeDisplay() {
-        setUpView();
+		setUpView();
+    }
+    
+    @Inject
+    public void setWidgetFactory(OpenXDataWidgetFactory openXDataViewFactory){
+    	this.widgetFactory = openXDataViewFactory;
+    	registerWithEventDispatchers();
     }
 
     private TreeItem getTreeItemForUser(E item) {
@@ -206,6 +221,32 @@ public abstract class BaseTreeDisplay<E extends Editable> implements IBaseTreeDi
         tree.setSelectedItem(childItem);
         tree.ensureSelectedItemVisible();
     }
+    
+    /**
+	 * Registers this class with the relevant <tt>Event Dispatchers.</tt>
+	 * <p>
+	 * <tt>Event Dispatchers can be {@link OpenXDataMenuBar} or {@link OpenXDataToolBar}.
+	 * </p>
+	 */
+	protected void registerWithEventDispatchers() {
+
+		if (this instanceof OpenXDataViewApplicationEventListener) {
+			(widgetFactory.getOpenXDataMenuBar())
+					.registerApplicationEventListener((OpenXDataViewApplicationEventListener) this);
+			(widgetFactory.getOpenXDataToolBar())
+					.registerApplicationEventListener((OpenXDataViewApplicationEventListener) this);
+		} else if (this instanceof OpenXDataViewExtendedApplicationEventListener) {
+			(widgetFactory.getOpenXDataMenuBar())
+					.registerAdvancedApplicationEventListener((OpenXDataViewExtendedApplicationEventListener) this);
+			(widgetFactory.getOpenXDataToolBar())
+					.registerAdvancedApplicationEventListener((OpenXDataViewExtendedApplicationEventListener) this);
+		} else if (this instanceof OpenXDataExportImportApplicationEventListener) {
+			(widgetFactory.getOpenXDataMenuBar())
+					.registerExportImportApplicationEventListener((OpenXDataExportImportApplicationEventListener) this);
+			(widgetFactory.getOpenXDataToolBar())
+					.registerExportImportApplicationEventListener((OpenXDataExportImportApplicationEventListener) this);
+		}
+	}
 
     protected abstract String getTooltip(E item);
 

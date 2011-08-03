@@ -16,6 +16,7 @@ import org.openxdata.server.admin.client.view.helper.StudiesTreeViewHelper;
 import org.openxdata.server.admin.client.view.listeners.FormVersionOpenDialogListener;
 import org.openxdata.server.admin.client.view.listeners.OnDataCheckListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.listeners.ExtendedContextInitMenuListener;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
@@ -51,7 +52,8 @@ import org.purc.purcforms.client.controller.OpenFileDialogEventListener;
 public class StudiesTreeView extends OpenXDataBaseTreeView implements
         OnDataCheckListener, FormVersionOpenDialogListener,
         GetFileNameDialogEventListener, OpenFileDialogEventListener,
-        ExtendedContextInitMenuListener, OpenXDataExportImportApplicationEventListener {
+        ExtendedContextInitMenuListener, OpenXDataExportImportApplicationEventListener, 
+        OpenXDataViewApplicationEventListener {
 	
 	/** The list of studies. */
 	private List<StudyDef> studies;

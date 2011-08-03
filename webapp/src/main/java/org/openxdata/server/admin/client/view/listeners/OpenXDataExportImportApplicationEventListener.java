@@ -8,7 +8,7 @@ package org.openxdata.server.admin.client.view.listeners;
  * 
  *
  */
-public interface OpenXDataExportImportApplicationEventListener extends OpenXDataViewApplicationEventListener {
+public interface OpenXDataExportImportApplicationEventListener extends OpenXDataEventListener {
 
 	/**
 	 * Enables you to import an <tt>Editable.</tt>

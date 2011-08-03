@@ -11,6 +11,7 @@ import org.openxdata.server.admin.client.internationalization.OpenXdataConstants
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.view.event.dispatcher.ExtendedEventDispatcher;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
@@ -66,7 +67,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	private static HorizontalPanel panel;
 	
 	/** List of registered <tt>Event Listeners.</tt>*/
-        private List<OpenXDataViewApplicationEventListener> viewApplicationEventListeners;
+        private List<OpenXDataEventListener> viewApplicationEventListeners;
 
         /** Constructs an instance of this <tt>class.</tt>*/
         public OpenXDataToolBar() {
@@ -86,7 +87,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 		setButtonTitles();
 		
 		//Holds the Application Event Listeners registered on this class.
-		viewApplicationEventListeners = new Vector<OpenXDataViewApplicationEventListener>();
+		viewApplicationEventListeners = new Vector<OpenXDataEventListener>();
 		
 		// Set up event listeners
 		setupClickListeners();
@@ -419,7 +420,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyAlignBottomEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){			
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignBottom();
 			}
@@ -429,7 +430,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyAlignLeftEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignLeft();		
 			}
@@ -439,7 +440,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyAlignRightEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignRight();				
 			}
@@ -449,7 +450,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyAlignTopEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignTop();				
 			}
@@ -459,7 +460,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyCopyItemEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).copyItem();				
@@ -470,7 +471,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyCutItemEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).cutItem();				
 			}
@@ -480,7 +481,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyMakeSameHeightEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).makeSameHeight();				
 				
@@ -493,7 +494,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyMakeSameSizeEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).makeSameSize();				
 			}
@@ -503,7 +504,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyMakeSameWidthEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).makeSameWidth();				
 			}
@@ -513,7 +514,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyMoveItemDownEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).moveItemDown();				
 			}
@@ -523,7 +524,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyMoveItemUpEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).moveItemUp();				
 			}
@@ -533,7 +534,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyOpenFormEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).openForm();				
 			}
@@ -543,7 +544,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	
 	@Override
 	public void notifyPasteItemEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).pasteItem();				
 			}
@@ -553,7 +554,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyOnExportEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).onExport();				
 			}
@@ -562,7 +563,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyOnFormatEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
 				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).format();				
 			}
@@ -571,7 +572,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyOnImportEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener){
 				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).onImport();				
 			}
@@ -580,14 +581,16 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyOnNewItemEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
-			xViewAppEventListener.onNewItem();
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
+			if(xViewAppEventListener instanceof OpenXDataViewApplicationEventListener){
+				((OpenXDataViewApplicationEventListener)xViewAppEventListener).onNewItem();
+			}
 		}
 	}
 
 	@Override
 	public void notifyOnOpenEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener){
 				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).onOpen();
 			}
@@ -597,28 +600,34 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	
 	@Override
 	public void notifyOnRefreshEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
-			xViewAppEventListener.onRefresh();
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
+			if(xViewAppEventListener instanceof OpenXDataViewApplicationEventListener){
+				((OpenXDataViewApplicationEventListener)xViewAppEventListener).onRefresh();
+			}
 		}
 	}
 
 	@Override
 	public void notifyOnSaveEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
-			xViewAppEventListener.onSave();
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
+			if(xViewAppEventListener instanceof OpenXDataViewApplicationEventListener){
+				((OpenXDataViewApplicationEventListener)xViewAppEventListener).onSave();
+			}
 		}
 	}
 
 	@Override
 	public void notifyOnNewChildItemEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
-			xViewAppEventListener.onNewChildItem();
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
+			if(xViewAppEventListener instanceof OpenXDataViewApplicationEventListener){
+				((OpenXDataViewApplicationEventListener)xViewAppEventListener).onNewChildItem();
+			}
 		}
 	}
 
 	@Override
 	public void notifyOnExportAsPdfEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener){
 				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).exportAsPdf();				
 			}
@@ -627,8 +636,10 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 
 	@Override
 	public void notifyOnDeleteItemEventListeners() {
-		for(OpenXDataViewApplicationEventListener xViewAppEventListener : viewApplicationEventListeners){
-			xViewAppEventListener.onDeleteItem();
+		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
+			if(xViewAppEventListener instanceof OpenXDataViewApplicationEventListener){
+				((OpenXDataViewApplicationEventListener)xViewAppEventListener).onDeleteItem();
+			}
 		}
 	}
 

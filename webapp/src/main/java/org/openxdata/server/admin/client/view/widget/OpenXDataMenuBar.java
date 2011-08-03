@@ -9,6 +9,7 @@ import org.openxdata.server.admin.client.view.event.LogOutEvent;
 import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
 import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.event.dispatcher.EventDispatcher;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
@@ -45,7 +46,7 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
      */
     private OpenXDataBaseMenuBar toolsMenu;
     /** List of registered <tt>Event Listeners.</tt>*/
-    private List<OpenXDataViewApplicationEventListener> viewApplicationEventListeners;
+    private List<OpenXDataEventListener> viewApplicationEventListeners;
 
     /**
      * Constructs an instance of this class.
@@ -53,7 +54,7 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
     public OpenXDataMenuBar() {
 
         menuBar = new MenuBar();
-        viewApplicationEventListeners = new ArrayList<OpenXDataViewApplicationEventListener>();
+        viewApplicationEventListeners = new ArrayList<OpenXDataEventListener>();
     }
 
     /**
@@ -264,7 +265,7 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
 
     @Override
     public void notifyOnExportEventListeners() {
-        for (OpenXDataViewApplicationEventListener xViewAppEventListener :
+        for (OpenXDataEventListener xViewAppEventListener :
                 viewApplicationEventListeners) {
             if (xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener) {
                 ((OpenXDataExportImportApplicationEventListener) xViewAppEventListener).
@@ -275,7 +276,7 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
 
     @Override
     public void notifyOnImportEventListeners() {
-        for (OpenXDataViewApplicationEventListener xViewAppEventListener :
+        for (OpenXDataEventListener xViewAppEventListener :
                 viewApplicationEventListeners) {
             if (xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener) {
                 ((OpenXDataExportImportApplicationEventListener) xViewAppEventListener).
@@ -286,7 +287,7 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
 
     @Override
     public void notifyOnOpenEventListeners() {
-        for (OpenXDataViewApplicationEventListener xViewAppEventListener :
+        for (OpenXDataEventListener xViewAppEventListener :
                 viewApplicationEventListeners) {
             if (xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener) {
                 ((OpenXDataExportImportApplicationEventListener) xViewAppEventListener).
@@ -297,15 +298,18 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
 
     @Override
     public void notifyOnSaveEventListeners() {
-        for (OpenXDataViewApplicationEventListener xViewAppEventListener :
+        for (OpenXDataEventListener xViewAppEventListener :
                 viewApplicationEventListeners) {
-            xViewAppEventListener.onSave();
+        	if (xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener) {
+                ((OpenXDataViewApplicationEventListener) xViewAppEventListener).
+                        onSave();
+            }
         }
     }
 
     @Override
     public void notifyOnFormatEventListeners() {
-        for (OpenXDataViewApplicationEventListener xViewAppEventListener :
+        for (OpenXDataEventListener xViewAppEventListener :
                 viewApplicationEventListeners) {
             if (xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener) {
                 ((OpenXDataViewExtendedApplicationEventListener) xViewAppEventListener).
@@ -316,18 +320,24 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
 
     @Override
     public void notifyOnRefreshEventListeners() {
-        for (OpenXDataViewApplicationEventListener xViewAppEventListener :
+        for (OpenXDataEventListener xViewAppEventListener :
                 viewApplicationEventListeners) {
-            xViewAppEventListener.onRefresh();
+        	if (xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener) {
+                ((OpenXDataViewApplicationEventListener) xViewAppEventListener).
+                        onRefresh();
+            }
         }
 
     }
 
     @Override
     public void notifyOnNewItemEventListeners() {
-        for (OpenXDataViewApplicationEventListener xViewAppEventListener :
+        for (OpenXDataEventListener xViewAppEventListener :
                 viewApplicationEventListeners) {
-            xViewAppEventListener.onNewItem();
+        	if (xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener) {
+                ((OpenXDataViewApplicationEventListener) xViewAppEventListener).
+                        onNewItem();
+            }
         }
     }
 
