@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<hct formKey="hct" id="22" name="HCT Demo">
+	<ending_date_of_week>2010-09-06</ending_date_of_week>
+	<test--123>55</test--123>
+	<another--4>66</another--4>
+	<name--567>hello</name--567>
+</hct>

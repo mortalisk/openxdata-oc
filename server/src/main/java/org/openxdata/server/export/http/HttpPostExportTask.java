@@ -28,10 +28,12 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
@@ -65,41 +67,16 @@ import org.springframework.stereotype.Component;
  * <td align="center">X
  * <td>
  * <tr bgcolor="#eeeeff">
- * <td>postFormat
- * <td>The format to post the data in. Options are 'file' or 'text'.
- * <td align="center">
- * <td>file
- * <tr>
- * <td>dataParameterName
- * <td>This task parameter is used as the name for the post parameter that will contain the form data.
- * <td align="center">
- * <td>upload
- * <tr bgcolor="#eeeeff">
  * <td>authenticationProvider
- * <td>The name of the authentication provider to use. Options are:
+ * <td>The name of the authentication provider to use (leave empty for no 
+ * authentication):
  * 		<ul>
  * 		<li><i>form</i> - see {@link FormAuthenticationProvider} for details
  * 		<li><i>basic</i>, <i>digest</i> - see {@link BasicDigestAuthenticationProvider} for details
  * 		</ul> 
  * <td align="center">
- * <td>basic
- * <tr>
- * <td>customPostParameter
- * <td>Any custom post parameters to be included in the post may be defined as task parameters with this name. 
- * The task parameter value must be in the format 'name=value'. Each post parameter must be a separate task parameter.
- * <br>
- * e.g. 
- * 		<table border=1>
- * 		<tr>
- * 		<td>customPostParameter
- * 		<td>source=openxdata
- * 		<tr>
- * 		<td>customPostParameter
- * 		<td>incomingRecords=new_and_updates
- * 		</table>
- * 		<td align="center">
- * 		<td>
- * 		</table>
+ * <td align="center">
+ * </table>
  * 
  * @author simon@cell-life.org
  */
@@ -109,9 +86,6 @@ public class HttpPostExportTask extends AbstractExportTask implements Task {
 	private static final Logger log = Logger.getLogger(HttpPostExportTask.class);
 
 	public static final String PARAM_POST_URL = "postUrl";
-	public static final String PARAM_POST_FORMAT = "postFormat";
-	public static final String PARAM_DATA_PARAM_NAME = "dataParameterName";
-	public static final String PARAM_CUSTOM_POST_PARAMS = "customPostParameter";
 	public static final String PARAM_AUTHENTICATION_PROVIDER = "authenticationProvider";
 
 	private static Map<String,AuthenticationProvider> authProviders;
@@ -129,11 +103,14 @@ public class HttpPostExportTask extends AbstractExportTask implements Task {
 	public void exportFormData(FormData formData, FormDefVersion formDefVersion) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		try {
+			String postData = getData(formData, formDefVersion);
 			authenticate(client);
-			Integer status = postData(formData.getData(), client);
+			Integer status = postData(postData, client);
 			
 			if (status == HttpStatus.SC_OK){
 				dataExportService.setFormDataExported(formData, ExportConstants.EXPORT_BIT_HTTP_POST);
+			}else {
+				log.error("Unable to export data vi HTTP. Response code = " + status);
 			}
 		} catch (Exception e) {
 			log.error("Failed to export data via HTTP post", e);
@@ -142,8 +119,20 @@ public class HttpPostExportTask extends AbstractExportTask implements Task {
 		}
 	}
 
+	/**
+	 * Default implementation of getData returns only the form data.
+	 * Override this method to customise the posted data.
+	 * 
+	 * @param formData
+	 * @param formDefVersion
+	 * @return String data
+	 */
+	protected String getData(FormData formData, FormDefVersion formDefVersion) {
+		return formData.getData();
+	}
+
 	private void authenticate(DefaultHttpClient client) throws Exception {
-		String authProviderClass = DataExportUtil.getParameter(getTaskDef(), PARAM_AUTHENTICATION_PROVIDER, "basic");
+		String authProviderClass = DataExportUtil.getParameter(getTaskDef(), PARAM_AUTHENTICATION_PROVIDER, "none");
 		AuthenticationProvider authProvider = authProviders.get(authProviderClass);
 		if (authProvider != null){
 			authProvider.authenticate(getTaskDef(), client);
@@ -163,22 +152,17 @@ public class HttpPostExportTask extends AbstractExportTask implements Task {
 	Integer postData(String data, DefaultHttpClient client) throws IOException, HttpException {
 		String postUrl = DataExportUtil.getParameter(getTaskDef(), PARAM_POST_URL);
 		HttpPost method = new HttpPost(postUrl);
-
-		MultipartEntity requestEntity = new MultipartEntity();
-		addDataPart(data, requestEntity);
-		addCustomParameterParts(requestEntity);
-
 		
+		HttpEntity entity = new StringEntity(data, /*"text/xml",*/ "UTF-8");
+
 		if (log.isTraceEnabled()){
 			log.trace("========== Export post request start ==========");
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			requestEntity.writeTo(stream);
-			log.trace("\n" + new String(stream.toByteArray()) + "\n");
+			log.trace("\n" + data + "\n");
 			log.trace("========== Export post request end  ==========");
 		}
 		
-		method.setEntity(requestEntity);
-
+		method.setEntity(entity);
+		
 		HttpResponse response = client.execute(method);
 		
 		if (log.isTraceEnabled()){
@@ -186,34 +170,6 @@ public class HttpPostExportTask extends AbstractExportTask implements Task {
 		}
 		
 		return response.getStatusLine().getStatusCode();
-	}
-
-	private void addDataPart(String data, MultipartEntity requestEntity) throws IOException, FileNotFoundException {
-		String postFormat = DataExportUtil.getParameter(getTaskDef(), PARAM_POST_FORMAT, "file");
-		String paramName = DataExportUtil.getParameter(getTaskDef(), PARAM_DATA_PARAM_NAME, "upload");
-		ContentBody dataPart = null;
-		if (postFormat.equalsIgnoreCase("file")){
-			File file = writeFormDataToFile(data);
-			dataPart = new FileBody(file, "text/xml");
-		} else {
-			dataPart = new StringBody(data);
-		}
-		requestEntity.addPart(paramName, dataPart);
-	}
-
-	private void addCustomParameterParts(MultipartEntity requestEntity) {
-		List<String> customParameters = DataExportUtil.getMultiParamValues(getTaskDef(), PARAM_CUSTOM_POST_PARAMS);
-		for (int i = 0; i < customParameters.size(); i++) {
-			String param = customParameters.get(i);
-			String[] splitParam = param.split("=", 2);
-			if (splitParam.length == 2) {
-				try {
-					requestEntity.addPart(splitParam[0], new StringBody(splitParam[1]));
-				} catch (UnsupportedEncodingException e) {
-					log.error("Unable to add custom export parameter: " + splitParam[0], e);
-				}
-			}
-		}
 	}
 
 	/**

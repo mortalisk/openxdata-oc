@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataValueSet period="201022" orgUnit="2" xmlns="http://dhis2.org/schema/dxf/2.0-SNAPSHOT">
+<dataValue dataElement="123" value="55"/>
+<dataValue dataElement="4" value="66"/>
+<dataValue dataElement="567" value="hello"/>
+</dataValueSet>
