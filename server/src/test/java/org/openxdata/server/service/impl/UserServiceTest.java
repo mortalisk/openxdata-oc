@@ -183,7 +183,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		} catch (Throwable e) {
 			e.printStackTrace();
  		}
-		System.out.println(errorfile);
+		log.debug(errorfile);
 		String errorString = IOUtils.toString(new FileReader(errorfile));
 		errorString = errorString.trim().replaceAll("\\n*\\r*", "");
 

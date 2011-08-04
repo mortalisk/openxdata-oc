@@ -10,9 +10,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.apache.log4j.Logger;
 import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.export.DataExportUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Authentication provider for {@link HttpPostExportTask} that performs
@@ -58,7 +59,7 @@ import org.openxdata.server.export.DataExportUtil;
  */
 public class FormAuthenticationProvider implements AuthenticationProvider {
 	
-	private static final Logger log = Logger.getLogger(FormAuthenticationProvider.class);
+	private static final Logger log = LoggerFactory.getLogger(FormAuthenticationProvider.class);
 
 	public static final String PARAM_PASSWORD_FIELD_NAME = "passwordFieldName";
 	public static final String PARAM_USERNAME_FIELD_NAME = "usernameFieldName";

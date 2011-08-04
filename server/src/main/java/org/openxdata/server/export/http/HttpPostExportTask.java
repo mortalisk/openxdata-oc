@@ -18,29 +18,20 @@
 package org.openxdata.server.export.http;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ContentBody;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 import org.openxdata.server.Task;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -48,6 +39,8 @@ import org.openxdata.server.admin.model.TaskDef;
 import org.openxdata.server.export.AbstractExportTask;
 import org.openxdata.server.export.DataExportUtil;
 import org.openxdata.server.export.ExportConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -83,7 +76,7 @@ import org.springframework.stereotype.Component;
 @Component("httpPostExportTask")
 public class HttpPostExportTask extends AbstractExportTask implements Task {
 
-	private static final Logger log = Logger.getLogger(HttpPostExportTask.class);
+	private static final Logger log = LoggerFactory.getLogger(HttpPostExportTask.class);
 
 	public static final String PARAM_POST_URL = "postUrl";
 	public static final String PARAM_AUTHENTICATION_PROVIDER = "authenticationProvider";

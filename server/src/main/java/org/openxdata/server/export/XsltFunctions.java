@@ -4,7 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Custom fuctions for use in XSLT processing
@@ -14,7 +15,7 @@ import org.apache.log4j.Logger;
  */
 public class XsltFunctions {
 	
-	private static final Logger log = Logger.getLogger(XsltFunctions.class);
+	private static final Logger log = LoggerFactory.getLogger(XsltFunctions.class);
 
 	public static String convertDateToWeekOfYear(String dateString){
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");

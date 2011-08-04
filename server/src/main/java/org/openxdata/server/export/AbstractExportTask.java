@@ -6,7 +6,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.openxdata.server.Task;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -16,6 +15,8 @@ import org.openxdata.server.service.SchedulerService;
 import org.openxdata.server.sms.OpenXDataAbstractJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractExportTask extends OpenXDataAbstractJob implements Task {
@@ -37,7 +38,7 @@ public abstract class AbstractExportTask extends OpenXDataAbstractJob implements
         }
 	}
 	
-	private static Logger log = Logger.getLogger(AbstractExportTask.class);
+	private static Logger log = LoggerFactory.getLogger(AbstractExportTask.class);
 	
 	/** thread pool to manage the direct invocation of the task (without quartz) */
 	private static final ThreadPoolExecutor tpe = new ThreadPoolExecutor(5, 10, 3600, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
