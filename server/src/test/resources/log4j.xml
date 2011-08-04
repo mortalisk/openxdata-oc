@@ -10,6 +10,14 @@
 				value="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
 		</layout>
 	</appender>
+	
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
+		</layout>
+	</appender>
 
 	<logger name="org.apache">
 		<level value="WARN" />
@@ -61,6 +69,7 @@
 	<root>
 		<level value="ERROR" />
 		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE" />
 	</root>
 
 </log4j:configuration>
