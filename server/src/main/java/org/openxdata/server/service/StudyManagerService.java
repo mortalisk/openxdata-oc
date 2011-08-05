@@ -226,4 +226,11 @@ public interface StudyManagerService {
 	 * @return a list of FormDef objects
 	 */
 	List<FormDef> getFormByName(String formName);
+
+	/**
+	 * Gets a list of UserFormMap objects for a specified Form
+	 * @param formId
+	 * @return
+	 */
+	List<UserFormMap> getUserMappedForms(Integer formId);
 }

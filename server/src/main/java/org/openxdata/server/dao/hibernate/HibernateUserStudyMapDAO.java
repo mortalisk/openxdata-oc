@@ -59,4 +59,12 @@ public class HibernateUserStudyMapDAO extends BaseDAOImpl<UserStudyMap> implemen
 		}
 		return studyNames;
     }
+
+	@Override
+	public void deleteUserMappedStudies(int studyId) {
+		Session session = getSession();
+		Query query = session.createQuery("delete from UserStudyMap where studyId = :studyId");
+		query.setInteger("studyId", studyId);
+		query.executeUpdate();
+	}
 }

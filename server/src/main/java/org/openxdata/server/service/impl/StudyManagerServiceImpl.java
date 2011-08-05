@@ -60,6 +60,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Override
 	@Secured("Perm_Delete_Forms")
 	public void deleteForm(FormDef formDef) {
+		userFormMapDAO.deleteUserMappedForms(formDef.getId());
 		formDAO.deleteForm(formDef);
 	}
 
@@ -73,6 +74,13 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Override
 	@Secured("Perm_Delete_Studies")
 	public void deleteStudy(StudyDef studyDef) {
+		userStudyMapDAO.deleteUserMappedStudies(studyDef.getId());
+		List<FormDef> forms = studyDef.getForms();
+		if (forms != null) {
+			for (FormDef formDef : forms) {
+				userFormMapDAO.deleteUserMappedForms(formDef.getId());
+			}
+		}
 		studyDao.deleteStudy(studyDef);
 	}
 
@@ -223,6 +231,13 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Secured({"Perm_View_Forms", "Perm_View_Users"})
 	public List<UserFormMap> getUserMappedForms() {
 		return userFormMapDAO.getUserMappedForms();
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+	public List<UserFormMap> getUserMappedForms(Integer formId) {
+		return userFormMapDAO.getUserMappedForms(formId);
 	}
 
 	@Override

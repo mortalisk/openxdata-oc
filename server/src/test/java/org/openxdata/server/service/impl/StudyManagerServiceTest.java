@@ -11,6 +11,7 @@ import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
@@ -19,6 +20,7 @@ import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
+import org.openxdata.test.XFormsFixture;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -131,6 +133,126 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		studies = studyManagerService.getStudies();
 		Assert.assertEquals("Deleted the study so there are 4 studies again", 4, studies.size());
 		Assert.assertNull(getStudy(studyName,studies));
+	}
+	
+	@Test
+	public void deleteStudy_shouldDeleteUserMappings() throws Exception {
+		
+		final String studyName = "Study Name";
+
+		// create study
+		StudyDef study = new StudyDef();
+		study.setName(studyName);
+		study.setCreator(userService.getUsers().get(0));
+		study.setDateCreated(new Date());
+		
+		studyManagerService.saveStudy(study);
+		List<StudyDef> studies = studyManagerService.getStudyByName(studyName);
+		Assert.assertEquals("New study created", 1, studies.size());
+		
+		// create user
+		User user = new User("study delete user");
+		user.setCreator(userService.getLoggedInUser());
+		userService.saveUser(user);
+		
+		// create user study mapping
+		UserStudyMap userStudyMap = new UserStudyMap(user.getId(), study.getId());
+		studyManagerService.saveUserMappedStudy(userStudyMap);
+
+		List<UserStudyMap> userMappedStudies = studyManagerService.getUserMappedStudies(study.getId());
+		Assert.assertEquals("Study has 1 mapped user", 1, userMappedStudies.size());
+		
+		// create form
+		FormDef form = new FormDef();
+        form.setName("deletStudy-testform");
+        form.setCreator(user);
+        form.setDateCreated(new Date());
+        form.setStudy(study);
+        study.addForm(form);
+        // create form version
+        FormDefVersion formV = new FormDefVersion();
+        formV.setName("deletStudy-testformversion");
+        formV.setCreator(user);
+        formV.setDateCreated(new Date());
+        formV.setXform(XFormsFixture.getSampleForm());
+        formV.setIsDefault(true);
+        formV.setFormDef(form);
+        form.addVersion(formV);
+        studyManagerService.saveForm(form);
+        
+		// create user form mapping
+		UserFormMap userFormMap = new UserFormMap(user.getId(), form.getId());
+		studyManagerService.saveUserMappedForm(userFormMap);
+
+		List<UserFormMap> userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		Assert.assertEquals("Form has 1 mapped user", 1, userMappedForms.size());
+		
+		studyManagerService.deleteStudy(study);
+		
+		studies = studyManagerService.getStudyByName(studyName);
+		Assert.assertEquals("Deleted the study", 0, studies.size());
+		
+		userMappedStudies = studyManagerService.getUserMappedStudies(study.getId());
+		Assert.assertEquals("UserStudyMap was deleted", 0, userMappedStudies.size());
+		
+		userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		Assert.assertEquals("UserFormMap was deleted", 0, userMappedForms.size());
+	}
+	
+	@Test
+	public void deleteForm_shouldDeleteUserMappings() throws Exception {
+		
+		final String studyName = "Study Name";
+
+		// create study
+		StudyDef study = new StudyDef();
+		study.setName(studyName);
+		study.setCreator(userService.getUsers().get(0));
+		study.setDateCreated(new Date());
+		
+		studyManagerService.saveStudy(study);
+		List<StudyDef> studies = studyManagerService.getStudyByName(studyName);
+		Assert.assertEquals("New study created", 1, studies.size());
+		
+		// create user
+		User user = new User("study delete user");
+		user.setCreator(userService.getLoggedInUser());
+		userService.saveUser(user);
+		
+		// create form
+		FormDef form = new FormDef();
+        form.setName("deletStudy-testform");
+        form.setCreator(user);
+        form.setDateCreated(new Date());
+        form.setStudy(study);
+        // create form version
+        FormDefVersion formV = new FormDefVersion();
+        formV.setName("deletStudy-testformversion");
+        formV.setCreator(user);
+        formV.setDateCreated(new Date());
+        formV.setXform(XFormsFixture.getSampleForm());
+        formV.setIsDefault(true);
+        formV.setFormDef(form);
+        form.addVersion(formV);
+        studyManagerService.saveForm(form);
+        
+        List<FormDef> forms = studyManagerService.getFormByName(form.getName());
+        Assert.assertEquals("Created the form", 1, forms.size());
+        
+		// create user form mapping
+		UserFormMap userFormMap = new UserFormMap(user.getId(), form.getId());
+		studyManagerService.saveUserMappedForm(userFormMap);
+
+		List<UserFormMap> userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		Assert.assertEquals("Form has 1 mapped user", 1, userMappedForms.size());
+		
+		studyManagerService.deleteForm(form);
+		
+		forms = studyManagerService.getFormByName(form.getName());
+		Assert.assertEquals("Deleted the form", 0, forms.size());
+		
+		userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		Assert.assertEquals("UserFormMap was deleted", 0, userMappedForms.size());
 	}
 	
 	private StudyDef getStudy(String name, List<StudyDef> studies){

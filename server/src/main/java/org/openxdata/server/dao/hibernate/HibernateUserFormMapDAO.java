@@ -108,4 +108,13 @@ public class HibernateUserFormMapDAO extends BaseDAOImpl<UserFormMap> implements
 		}
     	return formNames;
     }
+    
+    @Override
+    public void deleteUserMappedForms(int formId) {
+    	Session session = getSession();
+		Query query = session.createQuery("delete from UserFormMap where formId = :formId");
+		query.setInteger("formId", formId);
+		query.executeUpdate();
+    }
 }
+

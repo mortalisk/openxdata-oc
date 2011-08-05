@@ -61,4 +61,11 @@ public interface UserFormMapDAO extends BaseDAO<UserFormMap> {
 	 * @return Map of Integer form id to String form name
 	 */
 	Map<Integer, String> getFormNamesForUser(User user, Integer studyDefId);
+
+	/**
+	 * Deletes all UserMappedForm entries for the given form.
+	 * 
+	 * @param formId
+	 */
+	void deleteUserMappedForms(int formId);
 }

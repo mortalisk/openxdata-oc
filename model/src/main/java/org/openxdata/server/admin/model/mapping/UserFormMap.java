@@ -16,6 +16,11 @@ public class UserFormMap extends AbstractEditable {
 	
 	public UserFormMap(){}
 
+	public UserFormMap(int userId, int formId) {
+		this.userId = userId;
+		this.formId = formId;
+	}
+
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
