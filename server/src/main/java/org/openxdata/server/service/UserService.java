@@ -5,6 +5,8 @@ import java.util.List;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 /**
  * This service is used for 
@@ -61,6 +63,14 @@ public interface UserService {
      * @return the user list.
      */
 	List<User> getUsers();
+	
+	/**
+	 * Gets a paginated list of users
+	 * 
+	 * @param pagingLoadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getUsers(PagingLoadConfig pagingLoadConfig);
 	
 	/**
 	 * Removes a user from the database.

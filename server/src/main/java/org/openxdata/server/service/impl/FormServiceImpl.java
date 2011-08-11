@@ -10,12 +10,13 @@ import java.util.Map;
 import org.hibernate.exception.SQLGrammarException;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
-import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.FormDataDAO;
@@ -175,7 +176,8 @@ public class FormServiceImpl implements FormService {
     @Override
     @Transactional(readOnly = true)
     @Secured("Perm_View_Form_Data")
-	public ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws ExportedDataNotFoundException {
+	public PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings,
+			PagingLoadConfig pagingLoadConfig) throws ExportedDataNotFoundException {
         // find out the total size
     	BigInteger count = null;
     	try {
@@ -189,21 +191,13 @@ public class FormServiceImpl implements FormService {
     	}
 	    
 	    // create sql statement
-        List<Object[]> data = studyDAO.getResponseData(formBinding, questionBindings, offset, limit, sortField, ascending);
+        List<Object[]> data = studyDAO.getResponseData(formBinding, questionBindings, pagingLoadConfig);
         log.debug("loading exported form data. #items:"+data.size());
         
         // process results
-        ExportedFormDataList dataList = new ExportedFormDataList();
-        if (data != null) {
-            dataList.setFromIndex(offset);
-            int requestedToIndex = offset+limit;
-			dataList.setToIndex(requestedToIndex > data.size() ? data.size() : requestedToIndex);
-            dataList.setTotalSize(count.intValue());
-            List<ExportedFormData> exportedFormData = getExportedFormData(questionBindings, data);
-            dataList.setExportedFormData(exportedFormData);
-        }
-       
-        return dataList;
+        List<ExportedFormData> exportedFormData = getExportedFormData(questionBindings, data);
+        PagingLoadResult<ExportedFormData> result = new PagingLoadResult<ExportedFormData>(exportedFormData, pagingLoadConfig.getOffset(), data.size(), count.intValue());
+        return result;
     }
     
     List<ExportedFormData> getExportedFormData(String[] questionBindings, List<Object[]> data) {
