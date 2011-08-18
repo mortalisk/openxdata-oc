@@ -22,8 +22,6 @@ import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
-import org.openxdata.server.admin.model.paging.PagingLoadConfig;
-import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.RoleDAO;
 import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.UserDAO;
@@ -47,9 +45,6 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import au.com.bytecode.opencsv.bean.HeaderColumnNameMappingStrategy;
-
-import com.googlecode.genericdao.search.Search;
-import com.googlecode.genericdao.search.SearchResult;
 
 /**
  * Default implementation for <code>UserService interface</code>.
@@ -89,15 +84,6 @@ public class UserServiceImpl implements UserService {
 	@Secured("Perm_View_Users")
     public List<User> getUsers() {
         return userDAO.getUsers();
-    }
-    
-	@Override
-	@Transactional(readOnly = true)
-	@Secured("Perm_View_Users")
-    public PagingLoadResult<User> getUsers(PagingLoadConfig pagingLoadConfig) {
-		Search userSearch = userDAO.getSearchFromLoadConfig(User.class, pagingLoadConfig, "name");
-	    SearchResult<User> result = userDAO.searchAndCount(userSearch);
-	    return userDAO.getPagingLoadResult(pagingLoadConfig, result);
     }
 
     @Override

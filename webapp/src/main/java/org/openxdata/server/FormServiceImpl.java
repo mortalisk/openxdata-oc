@@ -5,14 +5,12 @@ import java.util.Map;
 
 import org.openxdata.server.admin.client.service.FormService;
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.ExportedFormData;
+import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.paging.PagingLoadConfig;
-import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -52,6 +50,11 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements FormS
     	return getFormService().getFormNamesForCurrentUser(studyId);
     }
 
+    @Override
+    public List<UserFormMap> getUserMappedForms() {
+        return getFormService().getUserMappedForms();
+    }
+
 	@Override
     public List<UserFormMap> getUserMappedForms(Integer formId)
             throws OpenXDataSecurityException {
@@ -64,9 +67,8 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements FormS
     }
 
     @Override
-	public  PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings,
-			PagingLoadConfig pagingLoadConfig) throws ExportedDataNotFoundException {
-        return getFormService().getFormDataList(formBinding, questionBindings, pagingLoadConfig);
+	public  ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws ExportedDataNotFoundException {
+        return getFormService().getFormDataList(formBinding, questionBindings, offset, limit, sortField, ascending);
     }
 
     @Override

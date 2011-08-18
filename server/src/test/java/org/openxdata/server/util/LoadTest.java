@@ -10,15 +10,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openxdata.server.admin.model.ExportedFormData;
+import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.paging.PagingLoadConfig;
-import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.security.OpenXDataUserDetails;
 import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.RoleService;
@@ -234,10 +232,10 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
                         System.out.println("getFormResponseCount returned: "+count);
                         break;
                     case 4 : 
-                        PagingLoadResult<ExportedFormData> result = formService.getFormDataList("patientreg", 
-                            new String[] { "patientid", "title", "firstname", "lastname", "sex", "birthdate", "weight", "height", "pregnant", "arvs", "continent", "country", "district", "village", "nokids", "starttime", "endtime"},
-                            new PagingLoadConfig(0, 50, "patientid", true));
-                        System.out.println("getFormDataList returned: "+(result != null ? result.getData().size() : null)); 
+                        ExportedFormDataList list = formService.getFormDataList("patientreg", 
+                            new String[] { "patientid", "title", "firstname", "lastname", "sex", "birthdate", "weight", "height", "pregnant", "arvs", "continent", "country", "district", "village", "nokids", "starttime", "endtime"}, 
+                            0, 50, "patientid", true);
+                        System.out.println("getFormDataList returned: "+(list != null ? list.getExportedFormData().size() : null)); 
                         break;
                     case 5 :  
                         createFormData(form, 77);

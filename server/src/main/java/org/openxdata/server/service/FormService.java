@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.ExportedFormData;
+import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.paging.PagingLoadConfig;
-import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 
 public interface FormService {
@@ -128,10 +126,13 @@ public interface FormService {
      * Retrieves a page of the form data (directly from exported tables) for a specified form definition
      * @param formBinding String xform binding (table name)
      * @param formFields String question binding (column names)
-     * @param pagingLoadConfig settings used to control paged result
-     * @return PagingLoadResult containing partial exported form data
+     * @param offset int indicating at which position to start returning FormData objects
+     * @param limit int indicating how many FormData objects to return
+     * @param sortField String containing binding of field to sort
+     * @param ascending boolean true if the sort should be ascending
+     * @return ExportedFormDataList containing ExportedData
      * @throws ExportedDataNotFoundException when the exported table does not exist
      */
-    PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings, 
-    		PagingLoadConfig pagingLoadConfig) throws ExportedDataNotFoundException;
+    ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, 
+    		String sortField, boolean ascending) throws ExportedDataNotFoundException;
 }

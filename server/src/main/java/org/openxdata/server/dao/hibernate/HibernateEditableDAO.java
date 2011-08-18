@@ -11,9 +11,6 @@ import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.paging.FilterComparison;
-import org.openxdata.server.admin.model.paging.FilterConfig;
-import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.dao.EditableDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,78 +98,29 @@ public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements Editab
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object[]> getResponseData(String formBinding, String[] questionBindings, PagingLoadConfig pagingLoadConfig) {
+	public List<Object[]> getResponseData(String formBinding, String[] questionBindings, int offset,
+			int limit, String sortField, boolean ascending) {
 		StringBuilder sql = new StringBuilder();
         sql.append("select openxdata_form_data_id,");
         sql.append(StringUtils.arrayToCommaDelimitedString(questionBindings));
         sql.append(" from ");
         sql.append(formBinding);
-        if (pagingLoadConfig.getSortField() != null && !pagingLoadConfig.getSortField().trim().equals("")) {
+        if (sortField != null && !sortField.trim().equals("")) {
             sql.append(" order by ");
-            sql.append(pagingLoadConfig.getSortField());
-            if (pagingLoadConfig.isSortDescending()) sql.append(" DESC");
+            sql.append(sortField);
+            if (!ascending) sql.append(" DESC");
         }
-        // FIXME... can't filter on date because it hasn't been exported
-        StringBuilder filterSql = new StringBuilder();
-        List<FilterConfig> filters = pagingLoadConfig.getFilters();
-        if (filters != null) {
-        	for (FilterConfig filter : filters) {
-	        	if (filterSql.length() != 0) {
-	        		filterSql.append(" and");
-	        	}
-		        filterSql.append(getFilterSQL(filter));
-        	}
-	        if (filterSql.length() != 0) {
-	        	sql.append("where");
-	        	sql.append(filterSql);
-	        }
-        }
-        log.debug("executing sql: "+sql+" firstResult="+pagingLoadConfig.getOffset()+" maxResults="+pagingLoadConfig.getLimit());
+        log.debug("executing sql: "+sql+" firstResult="+offset+" maxResults="+limit);
         // execute + limit results for page
         SQLQuery query = getSession().createSQLQuery(sql.toString());
-        if (filters != null) {
-        	for (FilterConfig filter : filters) {
-        		query.setParameter(filter.getField(), filter.getValue());
-        		/*if (filter.isTypeBoolean())
-        			query.setBoolean(filter.getField(), (Boolean)filter.getValue());
-        		else if (filter.isTypeDate())
-        			query.setDate(filter.getField(), (Date)filter.getValue());
-        		else if (filter.isTypeNumeric()) {
-        			Number num = (Number)filter.getValue();
-        			if (num instanceof BigDecimal)
-        				query.setBigDecimal(filter.getField(), (BigDecimal)num);
-        			else if (num instanceof BigInteger)
-        				query.setBigInteger(filter.getField(), (BigInteger)filter.getValue());
-        		} else if (filter.isTypeString()) {
-        			query.setDate(filter.getField(), (String)filter.getValue());
-        		}*/
-        	}
-        }
         // FIXME: to support BLOB questions (e.g. IMAGE,VIDEO,SOUND) we will need to add the following code:
         // .addScalar(questionBinding, Hibernate.BLOB)
         // this will require knowing the multimedia types -> error seen: "No Dialect mapping for JDBC type: -4"
-        query.setFirstResult(pagingLoadConfig.getOffset());
-        query.setFetchSize(pagingLoadConfig.getLimit());
-        query.setMaxResults(pagingLoadConfig.getLimit());
+        query.setFirstResult(offset);
+        query.setFetchSize(limit);
+        query.setMaxResults(limit);
         List<Object[]> data = (List<Object[]>)query.list();
 		return data;
-	}
-	
-	public String getFilterSQL(FilterConfig config) {
-		StringBuilder filterSql = new StringBuilder();
-        filterSql.append(config.getField());
-        if (config.getComparison() == null) {
-        	filterSql.append(" like");
-        } else if (config.getComparison() == FilterComparison.EQUAL_TO) {
-        	filterSql.append(" =");
-        } else if (config.getComparison() == FilterComparison.LESS_THAN) {
-        	filterSql.append(" <");
-        } else if (config.getComparison() == FilterComparison.GREATER_THAN) {
-        	filterSql.append(" >");
-        }
-        filterSql.append(" :");
-        filterSql.append(config.getField());
-        return filterSql.toString();
 	}
 
 	@Override

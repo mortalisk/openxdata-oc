@@ -7,8 +7,6 @@ import org.openxdata.client.service.UserService;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
-import org.openxdata.server.admin.model.paging.PagingLoadConfig;
-import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -79,11 +77,6 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements UserS
     @Override
     public List<User> getUsers() {
         return getUserService().getUsers();
-    }
-    
-	@Override
-    public PagingLoadResult<User> getUsers(PagingLoadConfig pagingLoadConfig) {
-	    return getUserService().getUsers(pagingLoadConfig);
     }
 
 	@Override

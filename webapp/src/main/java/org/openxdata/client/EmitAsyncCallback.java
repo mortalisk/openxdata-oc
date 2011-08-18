@@ -1,7 +1,6 @@
 package org.openxdata.client;
 
 import org.openxdata.client.controllers.LoginController;
-import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
 
@@ -46,6 +45,6 @@ public abstract class EmitAsyncCallback<T> implements AsyncCallback<T> {
      * @param throwable
      */
     public void onFailurePostProcessing(Throwable throwable) {
-    	ProgressIndicator.hideProgressBar();
+    	
     }
 }
