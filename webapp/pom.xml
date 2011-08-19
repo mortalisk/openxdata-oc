@@ -181,6 +181,11 @@
             <artifactId>gin</artifactId>
             <version>1.5.0</version>
         </dependency>
+		<dependency>
+			<groupId>org.openxdata</groupId>
+			<artifactId>oc-conversion-tools</artifactId>
+			<version>0.1</version>
+		</dependency>
     </dependencies>
 
     <build>
