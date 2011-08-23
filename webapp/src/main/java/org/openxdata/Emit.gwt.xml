@@ -23,9 +23,10 @@
 	<inherits name='org.purc.purcforms.FormRunner'/>
 	<inherits name='org.purc.purcforms.SharedLib'/>
 
+	<inherits name="com.google.gwt.inject.Inject"/>
 	<inherits name='org.openxdata.server.admin.Model' />
 	<inherits name='org.openxdata.server.admin.RpcInterface'/>
-	<inherits name="com.google.gwt.inject.Inject"/>
+	<inherits name="org.openxdata.oc.oc"/>
 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='org.openxdata.client.Emit' />

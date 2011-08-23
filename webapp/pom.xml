@@ -22,6 +22,7 @@
         <filtered.sourceDir>${project.build.directory}/generated-sources/filtered</filtered.sourceDir>
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
+        <oc.version>0.2</oc.version>
     </properties>
 
     <profiles>
@@ -181,6 +182,17 @@
             <artifactId>gin</artifactId>
             <version>1.5.0</version>
         </dependency>
+				<dependency>
+					<groupId>org.openxdata</groupId>
+					<artifactId>oc-conversion-tools</artifactId>
+					<version>${oc.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.openxdata</groupId>
+					<artifactId>oc-conversion-tools</artifactId>
+					<version>${oc.version}</version>
+					<classifier>sources</classifier>
+				</dependency>
     </dependencies>
 
     <build>
