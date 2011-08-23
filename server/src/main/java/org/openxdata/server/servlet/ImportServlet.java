@@ -46,7 +46,7 @@ public class ImportServlet extends HttpServlet{
 			String importType = request.getParameter("type");
 			String filecontents = null;
 			
-			CommonsMultipartResolver multipartResover = new CommonsMultipartResolver(/*this.getServletContext()*/);
+			CommonsMultipartResolver multipartResover = new CommonsMultipartResolver();
 			if(multipartResover.isMultipart(request)){
 				MultipartHttpServletRequest multipartRequest = multipartResover.resolveMultipart(request);
 				MultipartFile uploadedFile = multipartRequest.getFile("filecontents");
