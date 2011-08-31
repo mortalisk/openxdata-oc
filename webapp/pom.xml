@@ -23,6 +23,7 @@
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
         <oc.version>0.2</oc.version>
+        <purcforms.version>1.0.1-r4552</purcforms.version>
     </properties>
 
     <profiles>
@@ -62,13 +63,13 @@
         <dependency>
             <groupId>org.purc</groupId>
             <artifactId>gwt-purcforms</artifactId>
-            <version>1.0.1-r4552</version>
+            <version>${purcforms.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.purc</groupId>
             <artifactId>gwt-querybuilder</artifactId>
-            <version>1.0.1</version>
+            <version>${purcforms.version}</version>
             <scope>provided</scope>
         </dependency>
 
