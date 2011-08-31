@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 /**
  *
@@ -16,6 +19,13 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * @return the form list.
 	 */
 	List<FormDef> getForms();
+	
+	/**
+	 * Retrieves the Form with the specified identifier
+	 * @param id
+	 * @return
+	 */
+	FormDef getForm(Integer id);
 	
 	/**
 	 * Returns a list of forms that belong to the specified study
@@ -44,4 +54,20 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * @param formDef the form definition to delete.
 	 */
 	void deleteForm(FormDef formDef);
+	
+	/**
+	 * Get a page of Users mapped to a specific form 
+	 * @param formId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig);
+	
+	/**
+	 * Get a page of Users NOT mapped to the specified form
+	 * @param studyId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig);
 }

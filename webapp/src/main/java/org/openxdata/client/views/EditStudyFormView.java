@@ -9,9 +9,6 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.state.EditableState;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 
@@ -55,9 +52,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 	private final TextField<String> formVersionDescription = new TextField<String>();
 	private CheckBox published;
 	private Button designFormButton3;
-	
-	private List<User> users; // FIXME: users need to be actually paginated and not all loaded in memory
-	private List<UserStudyMap> mappedStudies;
 	
 	FormDesignerView editFormFormDesignerView = new FormDesignerView(this);
 	private final EditStudyFormController controller = (EditStudyFormController) this.getController();
@@ -104,7 +98,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		studyDescription.setFieldLabel(appMessages.studyDescription());
 		studyDescription.setWidth(300);
 		formPanel.add(studyDescription);
-		userAccessToStudy = new UserAccessListField(appMessages.usersWithAccessToStudy());
+		userAccessToStudy = new UserAccessListField(UserAccessListField.Category.STUDY, controller);
 		userAccessToStudy.mask();
 		userAccessToStudy.setExpanded(false);
 		formPanel.add(userAccessToStudy);
@@ -129,7 +123,7 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		formDescription.setFieldLabel(appMessages.formDescription());
 		formDescription.setWidth(300);
 		formPanel.add(formDescription);
-		userAccessToForm = new UserAccessListField(appMessages.usersWithAccessToForm());
+		userAccessToForm = new UserAccessListField(UserAccessListField.Category.FORM, controller);
 		userAccessToForm.mask();
 		userAccessToForm.setExpanded(false);
 		formPanel.add(userAccessToForm);
@@ -186,24 +180,21 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 			formDefVersion = event.getData("formVersion");
 			FormDef form = formDefVersion.getFormDef();
 			StudyDef study = form.getStudy();
-			
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					ProgressIndicator.showProgressBar();
-					try {
-						controller.getUsers();
-					} finally {
-						ProgressIndicator.hideProgressBar();
-					}
-				}
-			});
 
 			// Set the values of the form to that of the selected Form
+			// page 1
 			studyName.setValue(study.getName());
 			studyDescription.setValue(study.getDescription());
+			userAccessToStudy.setStudy(formDefVersion.getFormDef().getStudy());
+			userAccessToStudy.unmask();
+			
+			// page 2
 			formName.setValue(form.getName());
 			formDescription.setValue(form.getDescription());
+			userAccessToForm.setForm(formDefVersion.getFormDef());
+			userAccessToForm.unmask();
+			
+			// page 3
 			formVersion.setValue(formDefVersion.getName());
 			formVersionDescription.setValue(formDefVersion.getDescription());
 			published.setEnabled(formDefVersion.getIsDefault());
@@ -249,12 +240,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		ProgressIndicator.showProgressBar();
 		try {
 			save();
-			if (userAccessToForm.isDirty()) {
-				((EditStudyFormController)controller).saveUserMappedForms(formDefVersion.getFormDef(), userAccessToForm.getMappedUsers());
-			}
-			if (userAccessToStudy.isDirty()) {
-				((EditStudyFormController)controller).saveUserMappedStudies(formDefVersion.getFormDef().getStudy(), userAccessToStudy.getMappedUsers());
-			}
 		} finally {
 			ProgressIndicator.hideProgressBar();
 		}
@@ -303,48 +288,6 @@ public class EditStudyFormView extends WizardView implements IFormSaveListener {
 		}
 		formDefVersion.setDirty(true);
 		save();
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				ProgressIndicator.showProgressBar();
-				try {
-					// note: calling these methods now to ensure that the users are populated before the mapping, 
-					// otherwise we might get an intermittent bug if they happen in the wrong order. 
-					controller.getUserMappedStudies(formDefVersion.getFormDef().getStudy().getId());
-				} finally {
-					ProgressIndicator.hideProgressBar();
-				}
-			}
-		});
-	}
-
-	public void setUserMappedStudies(List<UserStudyMap> mappedStudies) {
-		this.mappedStudies = mappedStudies;
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				ProgressIndicator.showProgressBar();
-				try {
-					// note: calling these methods now to ensure that the users are populated before the mapping, 
-					// otherwise we might get an intermittent bug if they happen in the wrong order. 
-					controller.getUserMappedForms(formDefVersion.getFormDef().getId());
-				} finally {
-					ProgressIndicator.hideProgressBar();
-				}
-			}
-		});
-		userAccessToStudy.setUserStudyMap(formDefVersion.getFormDef().getStudy(), users, mappedStudies);
-		userAccessToStudy.unmask();
-	}
-
-	public void setUserMappedForms(List<UserFormMap> mappedForms) {
-		// FIXME: mappedStudies should be the actually currently mapped users to studies (which could have changed in step 1)
-		userAccessToForm.setUserFormMap(formDefVersion.getFormDef(), users, mappedForms, mappedStudies);
-		userAccessToForm.unmask();
 	}
 
 	public void onFormDataCheckComplete(Boolean hasData) {

@@ -10,12 +10,14 @@ import java.util.Map;
 import org.hibernate.exception.SQLGrammarException;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
-import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.FormDataDAO;
@@ -85,30 +87,6 @@ public class FormServiceImpl implements FormService {
 	    return userFormMapDAO.getFormNamesForUser(userService.getLoggedInUser(), studyId);
     }
 
-    @Override
-	@Transactional(readOnly=true)
-	@Secured({"Perm_View_Forms", "Perm_View_Users"})
-    public List<UserFormMap> getUserMappedForms() {
-        return userFormMapDAO.getUserMappedForms();
-    }
-    
-    @Override
-	@Transactional(readOnly=true)
-	@Secured({"Perm_View_Forms", "Perm_View_Users"})
-    public List<UserFormMap> getUserMappedForms(Integer formId) {
-    	return userFormMapDAO.getUserMappedForms(formId);
-    }
-    
-    @Override
-	@Secured({"Perm_Add_Forms", "Perm_Add_Users"})
-	public void saveUserMappedForm(UserFormMap map) {
-		userFormMapDAO.saveUserMappedForm(map);
-	}
-        @Override
-        public void deleteUserMappedForm(UserFormMap map) {
-            userFormMapDAO.deleteUserMappedForm(map);
-        }
-
 	@Override
 	@Secured("Perm_Delete_Forms")
 	public void deleteForm(FormDef formDef) {
@@ -171,11 +149,30 @@ public class FormServiceImpl implements FormService {
         }
         return formData;
     }
+    
+	@Override
+	@Secured("Perm_View_Forms")
+	public FormDef getForm(int formId) {
+		return formDAO.getForm(formId);
+	}
+
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+    public PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) {
+	    return formDAO.getMappedUsers(formId, loadConfig);
+    }
+
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+    public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) {
+	    return formDAO.getUnmappedUsers(formId, loadConfig);
+    }
 
     @Override
     @Transactional(readOnly = true)
     @Secured("Perm_View_Form_Data")
-	public ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws ExportedDataNotFoundException {
+	public PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings,
+			PagingLoadConfig pagingLoadConfig) throws ExportedDataNotFoundException {
         // find out the total size
     	BigInteger count = null;
     	try {
@@ -189,21 +186,13 @@ public class FormServiceImpl implements FormService {
     	}
 	    
 	    // create sql statement
-        List<Object[]> data = studyDAO.getResponseData(formBinding, questionBindings, offset, limit, sortField, ascending);
+        List<Object[]> data = studyDAO.getResponseData(formBinding, questionBindings, pagingLoadConfig);
         log.debug("loading exported form data. #items:"+data.size());
         
         // process results
-        ExportedFormDataList dataList = new ExportedFormDataList();
-        if (data != null) {
-            dataList.setFromIndex(offset);
-            int requestedToIndex = offset+limit;
-			dataList.setToIndex(requestedToIndex > data.size() ? data.size() : requestedToIndex);
-            dataList.setTotalSize(count.intValue());
-            List<ExportedFormData> exportedFormData = getExportedFormData(questionBindings, data);
-            dataList.setExportedFormData(exportedFormData);
-        }
-       
-        return dataList;
+        List<ExportedFormData> exportedFormData = getExportedFormData(questionBindings, data);
+        PagingLoadResult<ExportedFormData> result = new PagingLoadResult<ExportedFormData>(exportedFormData, pagingLoadConfig.getOffset(), data.size(), count.intValue());
+        return result;
     }
     
     List<ExportedFormData> getExportedFormData(String[] questionBindings, List<Object[]> data) {
@@ -272,17 +261,18 @@ public class FormServiceImpl implements FormService {
 	}
 
 	@Override
-	public FormDef getForm(int formId) {
-		FormDef form = null;
-		List<FormDef> forms = getForms();
-		
-		for(FormDef x : forms){
-			if(x.getId() == formId){
-				form = x;
-				break;
+    public void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) {
+		if (usersToAdd != null) {
+			for (User u : usersToAdd) {
+				UserFormMap map = new UserFormMap(u.getId(), formId);
+				userFormMapDAO.saveUserMappedForm(map);
 			}
 		}
-		
-		return form;
-	}
+		if (usersToDelete != null) {
+			for (User u : usersToDelete) {
+				UserFormMap map = userFormMapDAO.getUserMappedForm(u.getId(), formId);
+				userFormMapDAO.deleteUserMappedForm(map);
+			}
+		}
+    }
 }

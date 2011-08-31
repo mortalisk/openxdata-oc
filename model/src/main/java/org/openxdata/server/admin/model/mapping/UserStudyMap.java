@@ -5,7 +5,7 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 
 /**
- * Maps <code>Studies</code> to <code>Users</code>.
+ * Maps a <code>Study</code> to a <code>User</code>.
  */
 public class UserStudyMap extends AbstractEditable {
 

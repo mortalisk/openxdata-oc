@@ -15,6 +15,8 @@ import org.openxdata.server.dao.UserFormMapDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.googlecode.genericdao.search.Search;
+
 /**
  *
  */
@@ -36,6 +38,14 @@ public class HibernateUserFormMapDAO extends BaseDAOImpl<UserFormMap> implements
     
     public List<UserFormMap> getUserMappedForms(Integer formId) {
     	return searchByPropertyEqual("formId", formId);
+    }
+    
+	@Override
+    public UserFormMap getUserMappedForm(Integer userId, Integer formId) {
+		Search search = new Search();
+    	search.addFilterEqual("userId", userId);
+    	search.addFilterEqual("formId", formId);
+    	return searchUnique(search);
     }
 
     @Override

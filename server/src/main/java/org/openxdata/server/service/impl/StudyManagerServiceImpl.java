@@ -15,6 +15,8 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.FormDataDAO;
@@ -59,6 +61,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	
 	@Override
 	@Secured("Perm_Delete_Forms")
+	@Deprecated
 	public void deleteForm(FormDef formDef) {
 		userFormMapDAO.deleteUserMappedForms(formDef.getId());
 		formDAO.deleteForm(formDef);
@@ -66,6 +69,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 
 	@Override
 	@Secured("Perm_Delete_Form_Data")
+	@Deprecated
 	public void deleteFormData(Integer formDataId){
 		formDataDAO.deleteFormData(formDataId);
 		// FIXME: needs to trigger exporter to delete too (and somehow update the history/version table)
@@ -107,6 +111,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 
 	@Override
 	@Secured("Perm_Add_Forms")
+	@Deprecated
 	public void saveForm(FormDef formDef) {
 		formDAO.saveForm(formDef);
 	}
@@ -153,17 +158,19 @@ public class StudyManagerServiceImpl implements StudyManagerService {
             UserStudyMap map = new UserStudyMap();
             map.setStudy(studyDef);
             map.setUser(OpenXDataSecurityUtil.getLoggedInUser());
-            saveUserMappedStudy(map);
+            userStudyMapDAO.saveUserMappedStudy(map);
         }
     }
 
 	@Override
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Form_Data")
+	@Deprecated
 	public List<FormDataHeader> getFormData(Integer formDefId, Integer userId, Date fromDate, Date toDate) {
 		return editableDAO.getFormData(formDefId, userId, fromDate, toDate);
 	}
 
+	@Deprecated
 	public List<FormDataVersion> getFormDataVersion(Integer formDataId) {
 		return formDataDAO.getFormDataVersion(formDataId);
 	}
@@ -171,6 +178,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Override
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Form_Data")
+	@Deprecated
 	public FormData getFormData(Integer formDataId) {
 		return formDataDAO.getFormData(formDataId);
 	}
@@ -193,7 +201,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	public List<UserStudyMap> getUserMappedStudies(Integer studyId) {
 		return userStudyMapDAO.getUserMappedStudies(studyId);
 	}
-
+	
 	@Override
 	@Secured({"Perm_Add_Studies", "Perm_Add_Users"})
 	public void saveUserMappedStudy(UserStudyMap map) {
@@ -207,8 +215,16 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	}
 	
 	@Override
+	@Secured({"Perm_Add_Forms", "Perm_Add_Users"})
+	@Deprecated
+	public void saveUserMappedForm(UserFormMap map) {
+		userFormMapDAO.saveUserMappedForm(map);
+	}
+	
+	@Override
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Forms")
+	@Deprecated
 	public List<FormDef> getFormsForUser(User user) {
 		return userFormMapDAO.getFormsForUser(user);
 	}
@@ -216,10 +232,11 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Override
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Forms")
+	@Deprecated
 	public List<FormDef> getFormsForUser(User user, Integer studyDefId) {
 		return userFormMapDAO.getFormsForUser(user, studyDefId);
 	}
-
+	
 	@Override
 	@Secured({"Perm_Delete_Forms", "Perm_Delete_Users"})
 	public void deleteUserMappedForm(UserFormMap map) {
@@ -231,19 +248,6 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	@Secured({"Perm_View_Forms", "Perm_View_Users"})
 	public List<UserFormMap> getUserMappedForms() {
 		return userFormMapDAO.getUserMappedForms();
-	}
-	
-	@Override
-	@Transactional(readOnly=true)
-	@Secured({"Perm_View_Forms", "Perm_View_Users"})
-	public List<UserFormMap> getUserMappedForms(Integer formId) {
-		return userFormMapDAO.getUserMappedForms(formId);
-	}
-
-	@Override
-	@Secured({"Perm_Add_Forms", "Perm_Add_Users"})
-	public void saveUserMappedForm(UserFormMap map) {
-		userFormMapDAO.saveUserMappedForm(map);
 	}
 	
 	@Override
@@ -263,50 +267,46 @@ public class StudyManagerServiceImpl implements StudyManagerService {
                 name = "UNKNOWN STUDY";
         return name;
 	}
-
 	
 	@Override
-	public void setUserMappingForForm(FormDef form, List<User> users) {
-		
-		List<UserFormMap> currentPermissions = getUserMappedForms();
-		for(UserFormMap map : currentPermissions){
-			deleteUserMappedForm(map);
-		}
-		
-		for(User user : users){
-			UserFormMap map = new UserFormMap();
-			map.setUserId(user.getId());
-			map.setFormId(form.getId());
-			
-			saveUserMappedForm(map);
-		}
-	}
-	
-
-	@Override
-	public void setUserMappingForStudy(StudyDef study, List<User> users) {
-		
-		List<UserStudyMap> currentPermissions = getUserMappedStudies();
-		for(UserStudyMap map : currentPermissions){
-			deleteUserMappedStudy(map);
-		}
-		
-		for(User user : users){
-			UserStudyMap map = new UserStudyMap();
-			map.setUserId(user.getId());
-			map.setStudyId(study.getId());
-			
-			saveUserMappedStudy(map);
-		}
-	}
-	
-	@Override
+	@Secured("Perm_View_Studies")
 	public List<StudyDef> getStudyByName(String studyName) {
 		return studyDao.searchByPropertyEqual("name", studyName);
 	}
 
 	@Override
+	@Secured("Perm_View_Forms")
+	@Deprecated
 	public List<FormDef> getFormByName(String formName) {
 		return formDAO.searchByPropertyEqual("name", formName);
 	}
+
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+    public PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
+	    return studyDao.getMappedUsers(studyId, loadConfig);
+    }
+
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+    public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
+	    return studyDao.getUnmappedUsers(studyId, loadConfig);
+    }
+
+	@Override
+	@Secured({"Perm_Add_Users", "Perm_Add_Studies"})
+    public void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) {
+		if (usersToAdd != null) {
+			for (User u : usersToAdd) {
+				UserStudyMap map = new UserStudyMap(u.getId(), studyId);
+				userStudyMapDAO.saveUserMappedStudy(map);
+			}
+		}
+		if (usersToDelete != null) {
+			for (User u : usersToDelete) {
+				UserStudyMap map = userStudyMapDAO.getUserStudyMap(u.getId(), studyId);
+				userStudyMapDAO.deleteUserMappedStudy(map);
+			}
+		}
+    }
 }

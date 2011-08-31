@@ -3,15 +3,17 @@ package org.openxdata.server.admin.client.service;
 import java.util.List;
 import java.util.Map;
 
-import org.openxdata.server.admin.model.ExportedFormDataList;
+import org.openxdata.server.admin.model.Editable;
+import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 import com.google.gwt.user.client.rpc.RemoteService;
-import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
 
 /**
  * Defines the client side contract for the User Service.
@@ -77,29 +79,13 @@ public interface FormService extends RemoteService {
      * 
      * @param formBinding String xform binding (table name)
      * @param formFields String question binding (column names)
-     * @param offset int indicating at which position to start returning FormData objects
-     * @param limit int indicating how many FormData objects to return
-     * @param sortField String containing binding of field to sort
-     * @param ascending boolean true if the sort should be ascending
-     * @return ExportedFormDataList containing ExportedData
+     * @param pagingLoadConfig config to specify paging related config
+     * @return PagingLoadResult containing a page of exported form data
      * @throws ExportedDataNotFoundException when the exported table does not exist
      */
-    ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws OpenXDataSecurityException,ExportedDataNotFoundException;
+    PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings,
+    		PagingLoadConfig pagingLoadConfig) throws OpenXDataSecurityException, ExportedDataNotFoundException;
 
-    List<UserFormMap> getUserMappedForms() throws OpenXDataSecurityException;
-    
-    List<UserFormMap> getUserMappedForms(Integer formId) throws OpenXDataSecurityException;
-    
-      /**
-     * saves a usermapped form
-     * @param map usermappedform
-     */
-    void saveUserMappedForm(UserFormMap map) throws OpenXDataSecurityException;
-     /**
-     * deletes a usermapped form
-     * @param map usermappedform
-     */
-    void deleteUserMappedForm(UserFormMap map) throws OpenXDataSecurityException;
     /**
      * Checks if a study, form or form version has data collected for it.
      *
@@ -107,4 +93,29 @@ public interface FormService extends RemoteService {
      * @return true if it has, else false.
      */
     Boolean hasEditableData(Editable item) throws OpenXDataSecurityException;
+    
+	/**
+	 * Get a page of Users mapped to a specific form 
+	 * @param formId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Get a page of Users NOT mapped to the specified form
+	 * @param studyId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Updates the users currently mapped to the specified form.
+	 * @param formId Integer id of specified form
+	 * @param usersToAdd List of users to add to the study mapping
+	 * @param usersToDelete List of users to delete from the study mapping
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
 }

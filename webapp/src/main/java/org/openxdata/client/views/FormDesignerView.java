@@ -123,8 +123,10 @@ public class FormDesignerView {
 							XMLParser.parse(text.getLayoutText()).getDocumentElement());
 				}
 			}
+			GWT.log("loading existing form for editing");
 			formDesigner.loadForm(formDefVersion.getId(), xform, layout, "", readOnly);
 		} else {
+			GWT.log("loading new form for creation");
 			formDesigner.addNewForm(formName + "_" + formVersionName,
 					getDefaultFormBinding(formDefVersion), formDefVersion.getId());
 		}

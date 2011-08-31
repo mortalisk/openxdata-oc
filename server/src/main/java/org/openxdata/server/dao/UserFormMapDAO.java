@@ -30,6 +30,14 @@ public interface UserFormMapDAO extends BaseDAO<UserFormMap> {
 	 * @return List of <code>UserFormMap</code> definitions.
 	 */
 	List<UserFormMap> getUserMappedForms(Integer formId);
+	
+	/**
+	 * Retrieves a specific UserFormMap
+	 * @param userId
+	 * @param formId
+	 * @return
+	 */
+	UserFormMap getUserMappedForm(Integer userId, Integer formId);
 
 	/**
 	 * Persists a given <code>UserFormMap</code> to the database.

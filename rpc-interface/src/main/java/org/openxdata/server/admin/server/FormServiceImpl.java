@@ -4,14 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import org.openxdata.server.admin.model.Editable;
 
-import org.openxdata.server.admin.model.ExportedFormDataList;
+import org.openxdata.server.admin.model.Editable;
+import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -48,19 +50,6 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 	}
 
     @Override
-    public List<UserFormMap> getUserMappedForms() {
-        return formService.getUserMappedForms();
-    }
-
-	@Override
-	public void saveUserMappedForm(UserFormMap map) {
-		formService.saveUserMappedForm(map);
-	}
-        @Override
-        public void deleteUserMappedForm(UserFormMap map) {
-            formService.deleteUserMappedForm(map);
-        }
-    @Override
 	public Integer getFormResponseCount(int formDefVersionId) {
 		return formService.getFormResponseCount(formDefVersionId);
 	}
@@ -71,11 +60,10 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 	}
 
     @Override
-	public ExportedFormDataList getFormDataList(String formBinding,
-			String[] questionBindings, int offset, int limit, String sortField,
-			boolean ascending) throws ExportedDataNotFoundException {
+	public PagingLoadResult<ExportedFormData> getFormDataList(String formBinding,
+			String[] questionBindings, PagingLoadConfig  pagingLoadConfig) throws ExportedDataNotFoundException {
 		
-		return formService.getFormDataList(formBinding, questionBindings, offset, limit, sortField, ascending);
+		return formService.getFormDataList(formBinding, questionBindings, pagingLoadConfig);
 	}
 
 	@Override
@@ -95,9 +83,19 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     }
 
 	@Override
-	public List<UserFormMap> getUserMappedForms(Integer formId)
-	        throws OpenXDataSecurityException {
-	    return formService.getUserMappedForms(formId);
-	}
+    public PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getMappedUsers(formId, loadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getUnmappedUsers(formId, loadConfig);
+    }
+
+	@Override
+    public void saveMappedFormUsers(Integer formId, List<User> usersToAdd,
+            List<User> usersToDelete) throws OpenXDataSecurityException {
+	    formService.saveMappedFormUsers(formId, usersToAdd, usersToDelete);
+    }
 
 }

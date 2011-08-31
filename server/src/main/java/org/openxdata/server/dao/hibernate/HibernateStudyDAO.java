@@ -3,6 +3,9 @@ package org.openxdata.server.dao.hibernate;
 import java.util.List;
 
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.StudyDAO;
 import org.springframework.stereotype.Repository;
 
@@ -55,4 +58,14 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
 		search.addField("name");
 		return searchUnique(search);
 	}
+
+	@Override
+    public PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
+		return findAllUsersByPage(loadConfig, true, StudyDef.class, studyId);
+    }
+
+	@Override
+    public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
+		return findAllUsersByPage(loadConfig, false, StudyDef.class, studyId);
+    }
 }

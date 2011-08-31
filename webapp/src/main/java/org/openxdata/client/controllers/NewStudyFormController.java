@@ -1,6 +1,5 @@
 package org.openxdata.client.controllers;
 
-import java.util.List;
 import java.util.Map;
 
 import org.openxdata.client.AppMessages;
@@ -8,35 +7,28 @@ import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.service.StudyServiceAsync;
-import org.openxdata.client.service.UserServiceAsync;
 import org.openxdata.client.views.NewStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
-import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 
-public class NewStudyFormController extends Controller {
+public class NewStudyFormController extends UserAccessController {
     AppMessages appMessages = GWT.create(AppMessages.class);
     private StudyServiceAsync studyService;
     private FormServiceAsync formService;
     private NewStudyFormView newStudyFormView;
-    private UserServiceAsync userService;
 
     public final static EventType NEWSTUDYFORM = new EventType();
 
-    public NewStudyFormController(FormServiceAsync aFormService,StudyServiceAsync aStudyService,UserServiceAsync aUserService) {
+    public NewStudyFormController(FormServiceAsync aFormService,StudyServiceAsync aStudyService) {
         super();
         studyService = aStudyService;
         formService = aFormService;
-        userService = aUserService;
         registerEventTypes(NEWSTUDYFORM);
     }
     
@@ -76,16 +68,6 @@ public class NewStudyFormController extends Controller {
             }
         });    	
     }
-    public void getUsersMappedToStudy(Integer studyId) {
-        GWT.log("FormListController : getStudies");
-        studyService.getUserMappedStudies(studyId, new EmitAsyncCallback<List<UserStudyMap>>() {
-
-            @Override
-            public void onSuccess(List<UserStudyMap> result) {
-                newStudyFormView.setUserMappedStudies(result);
-            }
-        });
-    }
 
     public void getForms(Integer studyId){
         GWT.log("FormListController : getStudies");
@@ -107,58 +89,26 @@ public class NewStudyFormController extends Controller {
             }
         });    	
     }
-    public void getUsersMappedToForm(Integer formId) {
-        GWT.log("FormListController : getStudies");
-        formService.getUserMappedForms(formId, new EmitAsyncCallback<List<UserFormMap>>() {
-
-            @Override
-            public void onSuccess(List<UserFormMap> result) {
-                newStudyFormView.setUserMappedForms(result);
-            }
-        });
-    }
     
     public void saveStudy(final StudyDef study){
         GWT.log("NewStudyFormController : saveStudies");
         studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                newStudyFormView.onSaveStudyComplete();
                 newStudyFormView.closeWindow();
                 RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
                 MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
             }
         });
     }
-    
-    public void saveUserMappedStudies(StudyDef study, List<User> users) {
-        GWT.log("NewStudyFormController : saveUsermappedStudies");
-        studyService.setUserMappingForStudy(study, users,new EmitAsyncCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                GWT.log("Successfully saves mapped study");
-            }
-        });
-    }
-    
-    public void saveUserMappedForms(FormDef form, List<User> users) {
-        GWT.log("NewStudyFormController : saveUsermappedForms");
-        studyService.setUserMappingForForm(form, users, new EmitAsyncCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-               GWT.log("Successfully saves mapped form");
-            }
-        });
+
+	@Override
+    public StudyServiceAsync getStudyService() {
+	    return studyService;
     }
 
-    public void getUsers(){
-    GWT.log("NewStudyFormController : getUsers");
-    userService.getUsers(new EmitAsyncCallback<List<User>>() {
-
-            @Override
-            public void onSuccess(List<User> result) {
-                newStudyFormView.setUsers(result);
-            }
-        });
+	@Override
+    public FormServiceAsync getFormService() {
+	    return formService;
     }
 }

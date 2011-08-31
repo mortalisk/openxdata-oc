@@ -14,24 +14,24 @@ import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.model.FormDataBinding;
 import org.openxdata.client.model.FormDataSummary;
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.service.UserServiceAsync;
+import org.openxdata.client.util.PagingUtil;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.FormResponsesView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.ExportedFormData;
-import org.openxdata.server.admin.model.ExportedFormDataList;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.purc.purcforms.client.model.PageDef;
 import org.purc.purcforms.client.model.QuestionDef;
 import org.purc.purcforms.client.xforms.XformParser;
 import org.purc.purcforms.client.xforms.XformUtil;
 
-import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
@@ -126,35 +126,44 @@ public class FormResponsesController  extends Controller {
     }
     
     public void getFormDataSummary(final FormDefVersion formVersion, final FormDataBinding formDataBinding, 
-            final PagingLoadConfig pagingLoadConfig, final AsyncCallback<PagingLoadResult<FormDataSummary>> callback) {
+            final PagingLoadConfig pagingLoadConfig, 
+            final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<FormDataSummary>> callback) {
     	GWT.log("FormResponsesController : getFormDataSummary");
         ProgressIndicator.showProgressBar();
 
     	Collection<String> questionBindingsList = formDataBinding.getQuestionBindingKeys();
     	String[] questionBindings = questionBindingsList.toArray(new String[questionBindingsList.size()]);
-    	boolean sortAscending = false;
-    	if (pagingLoadConfig.getSortDir() == SortDir.ASC || pagingLoadConfig.getSortDir() == SortDir.NONE) {
-    	    sortAscending = true;
-    	}
+    	
     	formService.getFormDataList(formDataBinding.getFormBinding(), questionBindings, 
-                pagingLoadConfig.getOffset(), 
-                pagingLoadConfig.getLimit(), 
-                pagingLoadConfig.getSortField(),
-                sortAscending,
-    	        new EmitAsyncCallback<ExportedFormDataList>() {
+    			PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+    	        new EmitAsyncCallback<PagingLoadResult<ExportedFormData>>() {
             @Override
-			public void onSuccess(ExportedFormDataList result) {
+			public void onSuccess(PagingLoadResult<ExportedFormData> result) {
                 List<FormDataSummary> results = new ArrayList<FormDataSummary>();
-                for (ExportedFormData data : result.getExportedFormData()) {
-                	FormDataSummary formDataSummary = new FormDataSummary(formVersion.getFormDef(), data);
+                List<ExportedFormData> data = result.getData();
+                for (ExportedFormData d : data) {
+                	FormDataSummary formDataSummary = new FormDataSummary(formVersion.getFormDef(), d);
                     results.add(formDataSummary);
                 }
                 ProgressIndicator.hideProgressBar();
-                callback.onSuccess(new BasePagingLoadResult<FormDataSummary>(results, pagingLoadConfig.getOffset(), result.getTotalSize()));
+                callback.onSuccess(new BasePagingLoadResult<FormDataSummary>(results, result.getOffset(), result.getTotalLength()));
             }
+    	});
+    }
+    
+    public void getUserSummary(final PagingLoadConfig pagingLoadConfig, 
+            final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<UserSummary>> callback) {
+    	
+    	userService.getUsers(PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+    			new EmitAsyncCallback<PagingLoadResult<User>>() {
             @Override
-            public void onFailurePostProcessing(Throwable throwable) {
-            	ProgressIndicator.hideProgressBar();
+			public void onSuccess(PagingLoadResult<User> result) {
+                List<UserSummary> results = new ArrayList<UserSummary>();
+                List<User> data = result.getData();
+                for (User d : data) {
+                    results.add(new UserSummary(d));
+                }
+                callback.onSuccess(new BasePagingLoadResult<UserSummary>(results, result.getOffset(), result.getTotalLength()));
             }
     	});
     }

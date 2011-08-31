@@ -16,6 +16,8 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.dao.UserFormMapDAO;
+import org.openxdata.server.dao.UserStudyMapDAO;
 import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
@@ -39,6 +41,12 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired	
 	protected UserService userService;
+	
+	@Autowired
+	protected UserFormMapDAO userFormMapDAO;
+	
+	@Autowired
+	protected UserStudyMapDAO userStudyMapDAO;
 
     @Test
 	public void getStudies_shouldReturnAllStudies() throws Exception {
@@ -184,7 +192,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		UserFormMap userFormMap = new UserFormMap(user.getId(), form.getId());
 		studyManagerService.saveUserMappedForm(userFormMap);
 
-		List<UserFormMap> userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		List<UserFormMap> userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("Form has 1 mapped user", 1, userMappedForms.size());
 		
 		studyManagerService.deleteStudy(study);
@@ -195,7 +203,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		userMappedStudies = studyManagerService.getUserMappedStudies(study.getId());
 		Assert.assertEquals("UserStudyMap was deleted", 0, userMappedStudies.size());
 		
-		userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("UserFormMap was deleted", 0, userMappedForms.size());
 	}
 	
@@ -243,7 +251,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		UserFormMap userFormMap = new UserFormMap(user.getId(), form.getId());
 		studyManagerService.saveUserMappedForm(userFormMap);
 
-		List<UserFormMap> userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		List<UserFormMap> userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("Form has 1 mapped user", 1, userMappedForms.size());
 		
 		studyManagerService.deleteForm(form);
@@ -251,7 +259,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		forms = studyManagerService.getFormByName(form.getName());
 		Assert.assertEquals("Deleted the form", 0, forms.size());
 		
-		userMappedForms = studyManagerService.getUserMappedForms(form.getId());
+		userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("UserFormMap was deleted", 0, userMappedForms.size());
 	}
 	
@@ -275,13 +283,18 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		StudyDef study = studyManagerService.getStudies().get(0);
 		List<User> users = userService.getUsers();
 		
+		int initialCount = studyManagerService.getUserMappedStudies(study.getId()).size();
+		
 		List<User> dummyPermissions = new ArrayList<User>();
 		dummyPermissions.add(users.get(0));
 		dummyPermissions.add(users.get(1));
 		dummyPermissions.add(users.get(2));
 		
-		studyManagerService.setUserMappingForStudy(study, dummyPermissions);
-		Assert.assertEquals(3, studyManagerService.getUserMappedStudies().size());
+		studyManagerService.saveMappedStudyUsers(study.getId(), dummyPermissions, null);
+		Assert.assertEquals("added user permissions", initialCount+3, studyManagerService.getUserMappedStudies(study.getId()).size());
+		
+		studyManagerService.saveMappedStudyUsers(study.getId(), null, dummyPermissions);
+		Assert.assertEquals("deleted user permissions", initialCount, studyManagerService.getUserMappedStudies(study.getId()).size());
 	}
 	
 	@Test
@@ -296,12 +309,17 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		FormDef form = studyManagerService.getStudies().get(0).getForms().get(0);
 		List<User> users = userService.getUsers();
 		
+		int initialCount = userFormMapDAO.getUserMappedForms(form.getId()).size();
+		
 		List<User> dummyPermissions = new ArrayList<User>();
 		dummyPermissions.add(users.get(0));
 		dummyPermissions.add(users.get(1));
 		dummyPermissions.add(users.get(2));
 		
-		studyManagerService.setUserMappingForForm(form, dummyPermissions);
-		Assert.assertEquals(3, studyManagerService.getUserMappedForms().size());
+		formService.saveMappedFormUsers(form.getId(), dummyPermissions, null);
+		Assert.assertEquals("added user permissions", initialCount+3, userFormMapDAO.getUserMappedForms(form.getId()).size());
+		
+		formService.saveMappedFormUsers(form.getId(), null, dummyPermissions);
+		Assert.assertEquals("deleted user permissions", initialCount, userFormMapDAO.getUserMappedForms(form.getId()).size());
 	}
 }

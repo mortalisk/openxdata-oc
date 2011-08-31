@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.ExportedFormDataList;
+import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 
 public interface FormService {
@@ -78,29 +80,6 @@ public interface FormService {
     Map<Integer, String> getFormNamesForCurrentUser(Integer studyId);
 
     /**
-     * Retrives all usermapped forms from the database
-     * @return List of userFormMaps
-     */
-    List<UserFormMap> getUserMappedForms();
-    
-    /**
-     * Retrieves all the User Mapped Forms for a particular Form
-     * @param formId Integer id of the specified form
-     * @return List of UserFormMap
-     */
-    List<UserFormMap> getUserMappedForms(Integer formId);
-
-      /**
-     * saves a usermapped form
-     * @param map usermappedform
-     */
-    void saveUserMappedForm(UserFormMap map);
-     /**
-     * deletes a usermapped form
-     * @param map usermappedform
-     */
-    void deleteUserMappedForm(UserFormMap map);
-    /**
      * Calculates the number of responses captured for a specified formDefVersion
      * @param formId int identifier for a form definition version
      * @return Integer (positive number, 0 for no responses)
@@ -126,13 +105,34 @@ public interface FormService {
      * Retrieves a page of the form data (directly from exported tables) for a specified form definition
      * @param formBinding String xform binding (table name)
      * @param formFields String question binding (column names)
-     * @param offset int indicating at which position to start returning FormData objects
-     * @param limit int indicating how many FormData objects to return
-     * @param sortField String containing binding of field to sort
-     * @param ascending boolean true if the sort should be ascending
-     * @return ExportedFormDataList containing ExportedData
+     * @param pagingLoadConfig settings used to control paged result
+     * @return PagingLoadResult containing partial exported form data
      * @throws ExportedDataNotFoundException when the exported table does not exist
      */
-    ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, 
-    		String sortField, boolean ascending) throws ExportedDataNotFoundException;
+    PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings, 
+    		PagingLoadConfig pagingLoadConfig) throws ExportedDataNotFoundException;
+    
+	/**
+	 * Get a page of Users mapped to a specific form 
+	 * @param formId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig);
+	
+	/**
+	 * Get a page of Users NOT mapped to the specified form
+	 * @param studyId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig);
+	
+	/**
+	 * Updates the users currently mapped to the specified form.
+	 * @param formId Integer id of specified form
+	 * @param usersToAdd List of users to add to the study mapping
+	 * @param usersToDelete List of users to delete from the study mapping
+	 */
+	void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete);
 }

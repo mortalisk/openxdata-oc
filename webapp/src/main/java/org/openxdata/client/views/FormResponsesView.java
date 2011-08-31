@@ -10,15 +10,18 @@ import org.openxdata.client.controllers.FormResponsesController;
 import org.openxdata.client.model.FormDataBinding;
 import org.openxdata.client.model.FormDataSummary;
 import org.openxdata.client.model.FormSummary;
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
+import org.purc.purcforms.client.model.QuestionDef;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.ListLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
@@ -36,39 +39,49 @@ import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Label;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboValue;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TimeField;
-import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.HeaderGroupConfig;
 import com.extjs.gxt.ui.client.widget.grid.RowEditor;
+import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.TableLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.purc.purcforms.client.model.QuestionDef;
 
 public class FormResponsesView extends View implements Refreshable  {
     final AppMessages appMessages = GWT.create(AppMessages.class);
     public static final int PAGE_SIZE = 10;
+
+    private FieldSet searchPanel;
+    private DateField searchTo;
+    private DateField searchFrom;
+    private ComboBox<UserSummary> searchUser;
+    
 	private Grid<FormDataSummary> grid;
 	private RowEditor<FormDataSummary> rowEditor;
 	private ColumnModel columnModel;
@@ -79,7 +92,6 @@ public class FormResponsesView extends View implements Refreshable  {
 	private FormDefVersion formVersion;
 	private FormDataBinding formDataBinding;
 	private User user;
-	private Window window;
 
     public FormResponsesView(Controller controller) {
         super(controller);
@@ -89,9 +101,49 @@ public class FormResponsesView extends View implements Refreshable  {
     protected void initialize() {
     	Registry.register("FormResponsesView", this);
         GWT.log("FormResponsesView : initialize");
-        window = new Window();
+        
+        // setup search panel
+        searchTo = new DateField();
+        searchTo.setWidth(100);
+        searchFrom = new DateField();
+        searchFrom.setWidth(100);
+        searchUser = new ComboBox<UserSummary>();
+        searchUser.setWidth(200);
+        searchUser.setName("name");
+        searchUser.setForceSelection(true);
+        searchUser.setEmptyText(appMessages.selectADataCapturer());
+        searchUser.setDisplayField("name");
+        searchUser.setPageSize(10);
+        searchUser.setMinChars(2);
+        searchUser.setTriggerAction(TriggerAction.ALL);
+        RpcProxy<PagingLoadResult<UserSummary>> proxy = new RpcProxy<PagingLoadResult<UserSummary>>() {
+			@Override
+			protected void load(Object loadConfig, final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
+				final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig)loadConfig;
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+                    @Override
+					public void execute() {
+                    	pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
+                    	((FormResponsesController)FormResponsesView.this.getController()).getUserSummary(pagingLoadConfig, callback);
+                    }
+				});
+			}
+		};
+
+		ListLoader<PagingLoadResult<UserSummary>> userLoader = new BasePagingLoader<PagingLoadResult<UserSummary>>(proxy);
+		userLoader.setRemoteSort(true);
+		ListStore<UserSummary> store = new ListStore<UserSummary>(userLoader);
+		searchUser.setStore(store);
+        LayoutContainer insideSearchPanel = new LayoutContainer();
+        insideSearchPanel.setLayout(new ColumnLayout());
+        insideSearchPanel.add(createFormContainer(appMessages.from(), searchFrom));
+        insideSearchPanel.add(createFormContainer(appMessages.to(), searchTo));
+        insideSearchPanel.add(createFormContainer(appMessages.capturer(), searchUser));
+        
         // can't do anything here because we don't have the column model
         exportButton = new Button(appMessages.exportToCSV());
+        exportButton.setStyleAttribute("paddingLeft", "10px");
+        exportButton.setStyleAttribute("paddingTop", "10px");
         exportButton.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
 			public void handleEvent(ButtonEvent be) {
@@ -103,8 +155,16 @@ public class FormResponsesView extends View implements Refreshable  {
                         String url = GWT.getModuleBaseURL()+ "dataexport?";
                         url += "format=csv";
                         url += "&formId=" + formVersion.getId();
+                        if (searchFrom.getValue() != null) {
+                        	url += "&fromDate="+searchFrom.getValue().getTime();
+                        }
+                        if (searchTo.getValue() != null) {
+                        	url += "&toDate="+searchTo.getValue().getTime();
+                        }
+                        if (searchUser.getValue() != null) {
+                        	url += "&userId="+((UserSummary)searchUser.getValue()).getId();
+                        }
                         url += "&filename=" + formDef.getName()+"-"+formVersion.getName();
-                        // userId, fromDate, toDate - other params
                         GWT.log("Loading CSV from URL "+url);
                         com.google.gwt.user.client.Window.Location.replace(URL.encode(url));
                         ProgressIndicator.hideProgressBar();
@@ -112,6 +172,19 @@ public class FormResponsesView extends View implements Refreshable  {
                 });
              }
          });
+        
+        insideSearchPanel.add(exportButton);
+        searchPanel = new FieldSet();
+        searchPanel.setHeading(appMessages.exportResponses());
+        searchPanel.add(insideSearchPanel);
+    }
+    
+    private Component createFormContainer(String label, TextField<?> field) {
+    	LayoutContainer panel = new LayoutContainer();
+    	panel.setStyleAttribute("paddingLeft", "10px");
+    	panel.add(new Label(label));
+    	panel.add(field);
+    	return panel;
     }
 
     private void initializeColumnModel() {
@@ -160,10 +233,9 @@ public class FormResponsesView extends View implements Refreshable  {
 			protected void onRender(Element target, int index) {
 				super.onRender(target, index);
 				if (btns != null) {
-					btns.setLayout(new TableLayout(3));
-					editButton.setMinWidth(getMinButtonWidth());;
 					btns.remove(cancelBtn);
 					btns.remove(saveBtn);
+					btns.setLayout(new TableLayout(3));
 					editButton.setMinWidth(getMinButtonWidth());
 					btns.add(editButton);
 					btns.add(saveBtn);
@@ -241,13 +313,15 @@ public class FormResponsesView extends View implements Refreshable  {
                 new RpcProxy<PagingLoadResult<FormDataSummary>>() {
                     @Override
                     public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<FormDataSummary>> callback) {
-                        GWT.log("FormResponsesView RpcProxy:load grid.isViewReady="+grid.isViewReady());
                         final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig)loadConfig;
+                        pagingLoadConfig.setLimit(toolBar.getPageSize()); //we need to manually set page size because we allow it to be altered
+                        GWT.log("FormResponsesView RpcProxy:load loadConfig pageSize="+pagingLoadConfig.getLimit());
                         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
                             @Override
 							public void execute() {
                                 final FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController();
-                                controller.getFormDataSummary(formVersion, formDataBinding, pagingLoadConfig, callback);
+                                controller.getFormDataSummary(formVersion, formDataBinding,
+                                		pagingLoadConfig, callback);
                             }
                         });
                     }
@@ -407,7 +481,7 @@ public class FormResponsesView extends View implements Refreshable  {
 
     private void initializeWindow(String title, Component component, Component bottomComponent) {
     	GWT.log("FormResponsesView : createWindow");
-        window = new Window();
+        Window window = new Window();
         window.setModal(true);
         window.setPlain(true);
         window.setHeading(title);
@@ -423,8 +497,10 @@ public class FormResponsesView extends View implements Refreshable  {
         cp.setBottomComponent(bottomComponent);
         cp.add(component);
         window.add(cp);
-        window.addButton(exportButton);
-        window.setSize(600, 400);
+        LayoutContainer searchComponent = new LayoutContainer();
+        searchComponent.add(searchPanel);
+        window.setBottomComponent(searchComponent);
+        window.setSize(600, 450);
 	    window.show();        
     }
 

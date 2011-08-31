@@ -15,8 +15,6 @@ import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -74,9 +72,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	private FormDefVersion formDefVersion;
 	private Map<Integer, String> studyNames;
 	private Map<Integer, String> formNames;
-	private List<User> users; // FIXME: use paging!
-	private List<UserFormMap> usersMappedToForms;
-	private List<UserStudyMap> usersMappedToStudies;
+
 	ListStore<StudySummary> store;
 	ListStore<FormSummary> formStore;
 
@@ -101,10 +97,14 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			userStudyAccessListField.setExpanded(false);
 			if (createStudyFS.getSelectedRadio() == null) {
 				nextButton.setEnabled(false);
+			} else {
+				nextButton.setEnabled(true);
 			}
 		} else if (activePage == 1) {
 			if (createFormFS.getSelectedRadio() == null) {
 				nextButton.setEnabled(false);
+			} else {
+				nextButton.setEnabled(true);
 			}
 			// check what was selected in the page before
 			if (createStudyFS.getSelectedRadio().equals(appMessages.addNewStudy())) {
@@ -187,8 +187,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-				// cant map a new study
-				userStudyAccessListField.setEnabled(false);
+				userStudyAccessListField.setEnabled(false); // can't map a new study
 				if (existingStudyName.getValue() != null) {
 					existingStudyName.clearSelections();
 					existingStudyDescription.setValue("");
@@ -211,11 +210,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 						Integer studyId = new Integer(se.getSelectedItem().getId());
 						nextButton.setEnabled(false);
 						userStudyAccessListField.mask();
-						studyDef = null; formDef = null; usersMappedToStudies = null; usersMappedToForms = null;
+						studyDef = null; formDef = null;
 						existingFormName.clearSelections();
 						NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 						controller.getStudyDef(studyId);
-						controller.getUsersMappedToStudy(studyId);
 						controller.getForms(studyId);
 					}
 				});
@@ -233,7 +231,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 						newStudyDescription.setValue("");
 					}
 				});
-		userStudyAccessListField = new UserAccessListField(appMessages.usersWithAccessToStudy());
+		userStudyAccessListField = new UserAccessListField(UserAccessListField.Category.STUDY, (NewStudyFormController)controller);
 		userStudyAccessListField.setEnabled(false);
 		createStudyFS.add(userStudyAccessListField);
 
@@ -299,10 +297,9 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 						Integer formId = new Integer(se.getSelectedItem().getId());
 						nextButton.setEnabled(false);
 						userFormAccessListField.mask();
-						formDef = null; usersMappedToForms = null;
+						formDef = null;
 						NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 						controller.getFormDef(formId);
-						controller.getUsersMappedToForm(formId);
 					}
 				});
 		existingFormDescription = new TextField<String>();
@@ -319,7 +316,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 				newFormDescription.setValue("");
 			}
 		});
-		userFormAccessListField = new UserAccessListField(appMessages.usersWithAccessToForm());
+		userFormAccessListField = new UserAccessListField(UserAccessListField.Category.FORM, (NewStudyFormController)controller);
 		userFormAccessListField.setEnabled(false);
 		createFormFS.add(userFormAccessListField);
 
@@ -368,7 +365,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 					ProgressIndicator.showProgressBar();
 					NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 					controller.getStudies();
-					controller.getUsers(); // FIXME: users need to be paged
 					ProgressIndicator.hideProgressBar();
 				}
 			});
@@ -395,21 +391,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 		controller.saveStudy(studyDef);
 	}
-	
-	/**
-	 * Called by the controller when the save is successful (to save the mapped forms and studies)
-	 */
-    public void onSaveStudyComplete() {
-        // save any mapped study or form
-    	if (userFormAccessListField.isDirty()) {
-    		((NewStudyFormController)controller).saveUserMappedForms(userFormAccessListField.getForm(), 
-    			userFormAccessListField.getMappedUsers());
-    	}
-    	if (userStudyAccessListField.isDirty()) {
-    		((NewStudyFormController)controller).saveUserMappedStudies(userStudyAccessListField.getStudy(), 
-    			userStudyAccessListField.getMappedUsers());
-    	}
-    }
    
 	@Override
 	protected void saveAndExit() {
@@ -545,46 +526,25 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			store.add(new StudySummary(studyId.toString(), studyNames.get(studyId)));
 		}
 	}
-
-	public void setUserMappedStudies(List<UserStudyMap> mappedStudies) {
-		usersMappedToStudies = mappedStudies;
-		updateUserStudyMapping();
-	}
 	
 	public void setStudyDef(StudyDef studyDef) {
 		this.studyDef = studyDef;
 		existingStudyDescription.setValue(studyDef.getDescription());
-		updateUserStudyMapping();
-	}
-	
-	private void updateUserStudyMapping() {
-		if (studyDef != null && usersMappedToStudies != null) {
-			userStudyAccessListField.setUserStudyMap(studyDef, users, usersMappedToStudies);
-			userStudyAccessListField.unmask();
-			nextButton.setEnabled(true);
-			ProgressIndicator.hideProgressBar();
-		}
-	}
-
-	public void setUserMappedForms(List<UserFormMap> mappedForms) {
-		usersMappedToForms = mappedForms;
-		updateUserFormMapping();
+		userStudyAccessListField.setStudy(studyDef);
+		userStudyAccessListField.refresh();
+		userStudyAccessListField.unmask();
+		nextButton.setEnabled(true);
+		ProgressIndicator.hideProgressBar();
 	}
 	
 	public void setFormDef(FormDef formDef) {
 		this.formDef = formDef;
 		existingFormDescription.setValue(formDef.getDescription());
-		updateUserFormMapping();
-	}
-	
-	private void updateUserFormMapping() {
-		if (formDef != null && usersMappedToForms != null) {
-			// FIXME: use actually currently mappedStudies (not default loaded one)
-			userFormAccessListField.setUserFormMap(formDef, users, usersMappedToForms, usersMappedToStudies);
-			userFormAccessListField.unmask();
-			nextButton.setEnabled(true);
-			ProgressIndicator.hideProgressBar();
-		}
+		userFormAccessListField.setForm(formDef);
+		userFormAccessListField.refresh();
+		userFormAccessListField.unmask();
+		nextButton.setEnabled(true);
+		ProgressIndicator.hideProgressBar();
 	}
 
 	public void setFormNames(Map<Integer, String> formNames) {
@@ -592,10 +552,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		for (Integer formId : formNames.keySet()) {
 			formStore.add(new FormSummary(formId.toString(), formNames.get(formId)));
 		}
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
 	}
 
 	private boolean checkStudyExistance(String name, Map<Integer, String> items) {

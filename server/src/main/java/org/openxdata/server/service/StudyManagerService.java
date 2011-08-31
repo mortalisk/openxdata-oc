@@ -14,6 +14,8 @@ import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 
 /**
@@ -61,31 +63,35 @@ public interface StudyManagerService {
 	
 	/**
 	 * Saves a form definition to the database.
-	 * 
+	 * Deprecated - use FormService instead
 	 * @param formDef the form definition.
 	 */
+	@Deprecated
 	void saveForm(FormDef formDef);
 	
 	/**
 	 * Deletes a form definition from the database.
-	 * 
+	 * Deprecated - use FormService instead
 	 * @param formDef the form definition to delete.
 	 */
+	@Deprecated
 	void deleteForm(FormDef formDef);
 	
 	/**
 	 * Deletes a row of data from the database.
-	 * 
+	 * Deprecated - use FormService instead
 	 * @param formDataId the identifier for the row of data to delete.
 	 */
+	@Deprecated
 	void deleteFormData(Integer formDataId);
 	
 	/**
 	 * Gets form data as identified by the id.
-	 * 
+	 * Deprecated - use FormService instead
 	 * @param formDataId the form data identifier.
 	 * @return the form data.
 	 */
+	@Deprecated
 	FormData getFormData(Integer formDataId);
 
 	/**
@@ -99,23 +105,25 @@ public interface StudyManagerService {
 	
 	/**
 	 * Gets a list of headers for form data submitted to the database.
-	 * 
+	 * Deprecated - use FormService instead
 	 * @param formDefId
 	 * @param userId the user who submitted the data. If you want all users, pass null.
 	 * @param fromDate the submission date from which to start the search. To include all dates, pass null.
 	 * @param toDate the submission date up to which to do the search. To include all dates, pass null.
 	 * @return the form data header list.
 	 */
+	@Deprecated
 	List<FormDataHeader> getFormData(Integer formDefId, Integer userId, Date fromDate, Date toDate);
 	
     /**
      * Retrieves the history of the specified FormData object
-     * 
+     * Deprecated - use FormService instead
      * @param formDataId Integer FormData identifier
      * @return List of FormDataVersion
      */
+	@Deprecated
     List<FormDataVersion> getFormDataVersion(Integer formDataId);
-
+	
 	/**
 	 * Gets a list of all StudyUserMap objects from the database
 	 * 
@@ -144,19 +152,23 @@ public interface StudyManagerService {
 	
 	/**
 	 * Gets all the forms that are mapped to the specified user
+	 * Deprecated - use FormService instead
 	 * @param user User
 	 * @return List of FormDef
 	 */
+	@Deprecated
 	List<FormDef> getFormsForUser(User user);
 	
 	/**
 	 * Gets all the forms that are mapped to the specified user in a specified study
+	 * Deprecated - use FormService instead
 	 * @param user User
 	 * @param studyDefId Integer
 	 * @return List of FormDef
 	 */
+	@Deprecated
 	List<FormDef> getFormsForUser(User user, Integer studyDefId);
-
+	
 	/**
 	 * Deletes a given <code>UserFormMap.</code>
 	 * @param map map to delete.
@@ -192,24 +204,6 @@ public interface StudyManagerService {
 	 * @return the name of the study or "UNKNOWN STUDY" if not found
 	 */
 	String getStudyName(int studyId);
-
-    /**
-     * Sets the Users who have permissions to access a given form. Note that existing permissions will be overridden.
-     * 
-     * @param form Form to restrict access for.
-     * @param users Definite list of users who will have access to the form.
-     * @throws OpenXDataSecurityException If User does not have permission to map objects.
-     */
-	void setUserMappingForForm(FormDef form, List<User> users);
-
-    /**
-     * Sets the Users who have permissions to access a given Study. Note that existing permissions will be overridden.
-     * 
-     * @param study Study to restrict access for.
-     * @param users Definite list of users who will have access to the form.
-     * @throws OpenXDataSecurityException If User does not have permission to map objects.
-     */
-	void setUserMappingForStudy(StudyDef study, List<User> users);
 	
 	/**
 	 * Get a list of studies with the specified name
@@ -221,16 +215,35 @@ public interface StudyManagerService {
 	
 	/**
 	 * Get a list of forms with the specified name
-	 * 
+	 * Deprecated - use FormService instead
 	 * @param formName
 	 * @return a list of FormDef objects
 	 */
+	@Deprecated
 	List<FormDef> getFormByName(String formName);
-
+	
 	/**
-	 * Gets a list of UserFormMap objects for a specified Form
-	 * @param formId
+	 * Get a page of Users mapped to a specific study 
+	 * @param studyId
+	 * @param loadConfig
 	 * @return
 	 */
-	List<UserFormMap> getUserMappedForms(Integer formId);
+	PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig);
+	
+	/**
+	 * Get a page of Users NOT mapped to the specified study
+	 * @param studyId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig);
+	
+	/**
+	 * Updates the users currently mapped to the specified study.
+	 * @param studyId Integer id of specified study
+	 * @param usersToAdd List of users to add to the study mapping
+	 * @param usersToDelete List of users to delete from the study mapping
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete);
 }

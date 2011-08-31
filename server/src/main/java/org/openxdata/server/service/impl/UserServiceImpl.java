@@ -22,6 +22,8 @@ import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.RoleDAO;
 import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.UserDAO;
@@ -84,6 +86,13 @@ public class UserServiceImpl implements UserService {
 	@Secured("Perm_View_Users")
     public List<User> getUsers() {
         return userDAO.getUsers();
+    }
+    
+	@Override
+	@Transactional(readOnly = true)
+	@Secured("Perm_View_Users")
+    public PagingLoadResult<User> getUsers(PagingLoadConfig pagingLoadConfig) {
+		return userDAO.findAllByPage(pagingLoadConfig, "name");
     }
 
     @Override

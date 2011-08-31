@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.client.service.StudyService;
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -39,16 +40,11 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
         getStudyManagerService().deleteStudy(studyDef);
     }
 
-    @Override
-    public List<UserStudyMap> getUserMappedStudies() {
-        return getStudyManagerService().getUserMappedStudies();
+	@Override
+    public StudyDef getStudy(Integer studyId) throws OpenXDataSecurityException {
+	    return getStudyManagerService().getStudy(studyId);
     }
-    
-    @Override
-    public List<UserStudyMap> getUserMappedStudies(Integer studyId) {
-    	return getStudyManagerService().getUserMappedStudies(studyId);
-    }
-
+	
     @Override
     public void saveUserMappedStudy(UserStudyMap userMappedStudy) {
         getStudyManagerService().saveUserMappedStudy(userMappedStudy);
@@ -59,31 +55,26 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
         getStudyManagerService().deleteUserMappedStudy(userMappedStudy);
     }
 
+	@Override
+    public PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
+	    return getStudyManagerService().getMappedUsers(studyId, loadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
+	    return getStudyManagerService().getUnmappedUsers(studyId, loadConfig);
+    }
+	
+	@Override
+    public void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException {
+		getStudyManagerService().saveMappedStudyUsers(studyId, usersToAdd, usersToDelete);
+    }
+	
     private org.openxdata.server.service.StudyManagerService getStudyManagerService() {
         if (studyService == null) {
             WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext());
             studyService = (org.openxdata.server.service.StudyManagerService) ctx.getBean("studyManagerService");
         }
         return studyService;
-    }
-
-	
-    @Override
-	public void setUserMappingForForm(FormDef form, List<User> users)
-			throws OpenXDataSecurityException {
-    	getStudyManagerService().setUserMappingForForm(form, users);
-	}
-    
-
-	@Override
-	public void setUserMappingForStudy(StudyDef study, List<User> users)
-			throws OpenXDataSecurityException {
-		
-		getStudyManagerService().setUserMappingForStudy(study, users);
-	}
-
-	@Override
-    public StudyDef getStudy(Integer studyId) throws OpenXDataSecurityException {
-	    return getStudyManagerService().getStudy(studyId);
     }
 }

@@ -49,6 +49,10 @@ public interface AppMessages extends Messages {
 	String printForm();
 	String viewResponses();
 	
+	String from();
+	String to();
+	String selectADataCapturer();
+	String exportResponses();
 	String exportToCSV();
 	String dataCapture();
 	String date();

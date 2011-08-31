@@ -3,11 +3,12 @@ package org.openxdata.client.service;
 import java.util.List;
 import java.util.Map;
 
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -24,30 +25,33 @@ public interface StudyService extends RemoteService {
     void saveStudy(StudyDef studyDef) throws OpenXDataSecurityException;
 
     void deleteStudy(StudyDef studyDef) throws OpenXDataSecurityException;
-
-    List<UserStudyMap> getUserMappedStudies() throws OpenXDataSecurityException;
     
-    List<UserStudyMap> getUserMappedStudies(Integer studyId) throws OpenXDataSecurityException;
-
     void saveUserMappedStudy(UserStudyMap userMappedStudy) throws OpenXDataSecurityException;
 
     void deleteUserMappedStudy(UserStudyMap userMappedStudy) throws OpenXDataSecurityException;
     
-    /**
-     * Sets the Users who have permissions to access a given form. Note that existing permissions will be overridden.
-     * 
-     * @param form Form to restrict access for.
-     * @param users Definite list of users who will have access to the form.
-     * @throws OpenXDataSecurityException If User does not have permission to map objects.
-     */
-    void setUserMappingForForm(FormDef form, List<User> users) throws OpenXDataSecurityException;
-    
-    /**
-     * Sets the Users who have permissions to access a given Study. Note that existing permissions will be overridden.
-     * 
-     * @param study Study to restrict access for.
-     * @param users Definite list of users who will have access to the form.
-     * @throws OpenXDataSecurityException If User does not have permission to map objects.
-     */
-    void setUserMappingForStudy(StudyDef study, List<User> users) throws OpenXDataSecurityException;
+	/**
+	 * Get a page of Users mapped to a specific study 
+	 * @param studyId Integer id of specified study
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Get a page of Users NOT mapped to the specified study
+	 * @param studyId Integer id of specified study
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+
+	/**
+	 * Updates the users currently mapped to the specified study.
+	 * @param studyId Integer id of specified study
+	 * @param usersToAdd List of users to add to the study mapping
+	 * @param usersToDelete List of users to delete from the study mapping
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
 }

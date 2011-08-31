@@ -26,6 +26,14 @@ public interface UserStudyMapDAO extends BaseDAO<UserStudyMap> {
 	List<UserStudyMap> getUserMappedStudies(Integer studyId);
 	
 	/**
+	 * Gets a specific user study map
+	 * @param userId
+	 * @param studyId
+	 * @return
+	 */
+	UserStudyMap getUserStudyMap(Integer userId, Integer studyId);
+	
+	/**
 	 * Deletes a StudyUserMap definition from the database
 	 * 
 	 * @param map map to delete

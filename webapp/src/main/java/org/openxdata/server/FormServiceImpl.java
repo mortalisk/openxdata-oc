@@ -5,12 +5,14 @@ import java.util.Map;
 
 import org.openxdata.server.admin.client.service.FormService;
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.ExportedFormDataList;
+import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -51,38 +53,36 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements FormS
     }
 
     @Override
-    public List<UserFormMap> getUserMappedForms() {
-        return getFormService().getUserMappedForms();
+	public  PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings,
+			PagingLoadConfig pagingLoadConfig) throws ExportedDataNotFoundException {
+        return getFormService().getFormDataList(formBinding, questionBindings, pagingLoadConfig);
     }
-
-	@Override
-    public List<UserFormMap> getUserMappedForms(Integer formId)
-            throws OpenXDataSecurityException {
-	    return getFormService().getUserMappedForms(formId);
-    }
-
-    @Override
-    public void saveUserMappedForm(UserFormMap map) {
-        getFormService().saveUserMappedForm(map);
-    }
-
-    @Override
-	public  ExportedFormDataList getFormDataList(String formBinding, String[] questionBindings, int offset, int limit, String sortField, boolean ascending) throws ExportedDataNotFoundException {
-        return getFormService().getFormDataList(formBinding, questionBindings, offset, limit, sortField, ascending);
-    }
-
-    @Override
-    public void deleteUserMappedForm(UserFormMap map) {
-        getFormService().deleteUserMappedForm(map);
-    }
+    
     @Override
     public FormDef getForm(int formId) {
     	return getFormService().getForm(formId);
     }
+    
     @Override
-    public Boolean  hasEditableData(Editable item) {
+    public Boolean hasEditableData(Editable item) {
         return getFormService().hasEditableData(item);
     }
+
+	@Override
+    public PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) {
+	    return getFormService().getMappedUsers(formId, loadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) {
+	    return getFormService().getUnmappedUsers(formId, loadConfig);
+    }
+	
+	@Override
+    public void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException {
+	    getFormService().saveMappedFormUsers(formId, usersToAdd, usersToDelete);
+    }
+	
     private org.openxdata.server.service.FormService getFormService() {
         if (formService == null) {
             WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext());

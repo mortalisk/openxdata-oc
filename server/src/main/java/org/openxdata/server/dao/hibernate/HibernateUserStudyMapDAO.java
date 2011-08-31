@@ -11,6 +11,8 @@ import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.dao.UserStudyMapDAO;
 import org.springframework.stereotype.Repository;
 
+import com.googlecode.genericdao.search.Search;
+
 /**
  *
  */
@@ -25,6 +27,14 @@ public class HibernateUserStudyMapDAO extends BaseDAOImpl<UserStudyMap> implemen
     @Override
     public List<UserStudyMap> getUserMappedStudies(Integer studyId) {
         return searchByPropertyEqual("studyId", studyId);
+    }
+    
+    @Override
+    public UserStudyMap getUserStudyMap(Integer userId, Integer studyId) {
+    	Search search = new Search();
+    	search.addFilterEqual("userId", userId);
+    	search.addFilterEqual("studyId", studyId);
+    	return searchUnique(search);
     }
 
     @Override

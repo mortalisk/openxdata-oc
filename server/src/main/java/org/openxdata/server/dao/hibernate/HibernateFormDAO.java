@@ -7,6 +7,9 @@ import java.util.Map;
 import org.hibernate.Query;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.FormDAO;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +27,11 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	@Override
 	public void saveForm(FormDef formDef) {
 		save(formDef);
+	}
+	
+	@Override
+	public FormDef getForm(Integer id) {
+		return super.find(id);
 	}
 	
 	/* (non-Javadoc)
@@ -53,4 +61,14 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 		}
 		return formNames;
 	}
+
+	@Override
+    public PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) {
+		return findAllUsersByPage(loadConfig, true, FormDef.class, formId);
+    }
+
+	@Override
+    public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) {
+		return findAllUsersByPage(loadConfig, false, FormDef.class, formId);
+    }
 }

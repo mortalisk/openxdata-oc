@@ -1,31 +1,29 @@
 package org.openxdata.client.views;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.controllers.UserAccessController;
 import org.openxdata.client.model.UserSummary;
+import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HorizontalPanel;
 import com.extjs.gxt.ui.client.widget.Label;
@@ -34,9 +32,11 @@ import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.ListField;
-import com.extjs.gxt.ui.client.widget.form.StoreFilterField;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * UserAccessGrid is used to create a DualFieldList, with search and paging functionality.
@@ -44,28 +44,32 @@ import com.google.gwt.core.client.GWT;
  * TODO: If this class is to be re-used elsewhere, it should be made generic (see DualFieldList for inspiration)
  */
 public class UserAccessListField extends FieldSet {
+	
+	private UserAccessController controller;
 
-    private ListField<UserSummary> fromField = new ListField<UserSummary>();;
-    private ListField<UserSummary> toField = new ListField<UserSummary>();;
-    private List<UserSummary> leftList = new ArrayList<UserSummary>();
-    private List<UserSummary> rightList = new ArrayList<UserSummary>();
-    private int pageSize = 5;
-    private PagingToolBar leftPagingToolBar = new SmallPagingToolBar(pageSize);
-    private PagingToolBar rightPagingToolbar = new SmallPagingToolBar(pageSize);
+    private int pageSize = 20;
     protected final AppMessages appMessages = GWT.create(AppMessages.class);
-    private String category;
+    public enum Category { STUDY, FORM };
+    private Category category;
     private StudyDef study;
     private FormDef form;
-    private boolean dirty = false;
+    
+    private UserAccessList fromField;
+    private UserAccessList toField;
 
-    public UserAccessListField(String category) {
+    public UserAccessListField(Category category, UserAccessController controller) {
         this.category = category;
+        this.controller = controller;
         init();
     }
 
     private void init() {
     	setAutoWidth(true);
-        setHeading(category);
+    	if (category == Category.STUDY) {
+    		setHeading(appMessages.setUserAccessToStudy());
+    	} else {
+    		setHeading(appMessages.setUserAccessToForm());
+    	}
         setCollapsible(true);
         setExpanded(false);
 
@@ -76,7 +80,6 @@ public class UserAccessListField extends FieldSet {
             @Override
             public void handleEvent(ButtonEvent be) {
             	onButtonRight(be);
-            	refreshToolbars();
             }
         });
         Button addAllUserBtn = new Button(appMessages.addAllUsers());
@@ -86,7 +89,6 @@ public class UserAccessListField extends FieldSet {
             @Override
             public void handleEvent(ButtonEvent be) {
             	onButtonAllRight(be);
-            	refreshToolbars();
             }
         });
 
@@ -97,7 +99,6 @@ public class UserAccessListField extends FieldSet {
             @Override
             public void handleEvent(ButtonEvent be) {
                 onButtonLeft(be);
-                refreshToolbars();
             }
         });
         Button removeAllUserBtn = new Button(appMessages.removeAllUsers());
@@ -107,7 +108,6 @@ public class UserAccessListField extends FieldSet {
             @Override
             public void handleEvent(ButtonEvent be) {
                 onButtonAllLeft(be);
-                refreshToolbars();
             }
         });
         
@@ -115,7 +115,21 @@ public class UserAccessListField extends FieldSet {
         userTable.setVerticalAlign(VerticalAlignment.MIDDLE);
         userTable.setBorders(false);
         
-        userTable.add(createListPanel(appMessages.availableUsers(), leftList, fromField, leftPagingToolBar));
+        fromField = new UserAccessList(appMessages.availableUsers()) {
+            void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<UserSummary>> callback) {
+        		// unmapped studies + forms
+        		if (category == Category.STUDY) {
+        			if (study != null) {
+        				controller.getUnMappedStudyUsers(study.getId(), pagingLoadConfig, callback);
+        			}
+        		} else {
+        			if (form != null) {
+        				controller.getUnMappedFormUsers(form.getId(), pagingLoadConfig, callback);
+        			}
+        		}
+            }
+        };
+        userTable.add(fromField);
         
         VerticalPanel buttons = new VerticalPanel();
         buttons.setHorizontalAlign(HorizontalAlignment.CENTER);
@@ -127,237 +141,193 @@ public class UserAccessListField extends FieldSet {
         buttons.add(removeAllUserBtn);
         userTable.add(buttons);
         
-        userTable.add(createListPanel(category, rightList, toField, rightPagingToolbar));
+        String heading = appMessages.usersWithAccessToStudy();
+        if (category == Category.FORM) {
+        	heading = appMessages.usersWithAccessToForm();
+        }
+        toField = new UserAccessList(heading) {
+            void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<UserSummary>> callback) {
+        		// mapped studies + forms
+        		if (category == Category.STUDY) {
+        			if (study != null) {
+        				controller.getMappedStudyUsers(study.getId(), pagingLoadConfig, callback);
+        			}
+        		} else {
+        			if (form != null) {
+        				controller.getMappedFormUsers(form.getId(), pagingLoadConfig, callback);
+        			}
+        		}
+            }
+        };
+        userTable.add(toField);
 
         add(userTable);
     }
     
     private void onButtonAllLeft(ButtonEvent be) {
-        buttonLeft(toField.getStore().getModels());
+        buttonLeft(toField.field.getStore().getModels());
     }
 
     private void onButtonLeft(ButtonEvent be) {
-    	buttonLeft(toField.getSelection());
+    	buttonLeft(toField.field.getSelection());
     }
     
     /**
      * delete from right(to), add to left (from)
      */
     private void buttonLeft(List<UserSummary> sel) {
-    	List<User> users = new ArrayList<User>();
+    	final List<User> users = new ArrayList<User>();
     	for (UserSummary summary : sel) {
     		if (summary.getUser() != null) { // user would be null for "study access" users
-    			dirty = true;
-    			fromField.getStore().add(summary);
-    			leftList.add(summary);
-    			toField.getStore().remove(summary);
-    			rightList.remove(summary);
     			users.add(summary.getUser());
     		}
     	}
+    	ProgressIndicator.showProgressBar();
+    	Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+            @Override
+			public void execute() {
+		    	if (category == Category.STUDY) {
+		    		controller.updateStudyMapping(study.getId(), null, users, UserAccessListField.this);
+		    	} else {
+		    		controller.updateFormMapping(form.getId(), null, users, UserAccessListField.this);
+		    	}
+            }
+    	});
     }
 
     private void onButtonAllRight(ButtonEvent be) {
-        buttonRight(fromField.getStore().getModels());
+        buttonRight(fromField.field.getStore().getModels());
     }
     
     private void onButtonRight(ButtonEvent be) {
-        buttonRight(fromField.getSelection());
+        buttonRight(fromField.field.getSelection());
 	}
     
     /**
      * add to right(to), delete from left(from)
      */
     private void buttonRight(List<UserSummary> sel) {
-        List<User> users = new ArrayList<User>();
+        final List<User> users = new ArrayList<User>();
         for (UserSummary summary : sel) {
         	if (summary.getUser() != null) { // user would be null for "study access" users
-        		dirty = true;
-        		toField.getStore().add(summary);
-        		rightList.add(summary);
-        		fromField.getStore().remove(summary);
-        		leftList.remove(summary);
         		users.add(summary.getUser());
         	}
         }
-    }
-
-    private ContentPanel createListPanel(String heading, final List<UserSummary> userList, 
-    		ListField<UserSummary> listField, PagingToolBar pagingToolBar) 
-    {
-        ContentPanel cp = new ContentPanel();
-        cp.setHeading(heading);
-        cp.setBorders(false);
-        
-        // filter to search for users
-        final StoreFilterField<UserSummary> filterField = new StoreFilterField<UserSummary>() {
+        ProgressIndicator.showProgressBar();
+        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
-            protected boolean doSelect(Store<UserSummary> store, UserSummary parent,
-                    UserSummary record, String property, String filter) {
-                String userName = record.getName().toLowerCase();
-                if (userName.startsWith(filter.toLowerCase())) {
-                    return true;
-                }
-                return false;
+			public void execute() {
+		        if (category == Category.STUDY) {
+		    		controller.updateStudyMapping(study.getId(), users, null, UserAccessListField.this);
+		    	} else {
+		    		controller.updateFormMapping(form.getId(), users, null, UserAccessListField.this);
+		    	}
             }
-        };
-        filterField.setEmptyText(appMessages.searchForAUser());
-        filterField.setWidth(185);
-
-        // add paging support for a local collection of models
-        PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(userList);
-        PagingLoader<PagingLoadResult<UserSummary>> loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(proxy);
-        loader.setRemoteSort(true);
-        loader.setSortField("name");
-        loader.setSortDir(SortDir.ASC);
-        ListStore<UserSummary> store = new ListStore<UserSummary>(loader);
-        
-        filterField.bind(store);
-        
-        pagingToolBar.bind(loader);
-        
-        LayoutContainer bottomComponent = new LayoutContainer();
-        bottomComponent.setBorders(false);
-        bottomComponent.add(filterField);
-        bottomComponent.add(pagingToolBar);
-        cp.setBottomComponent(bottomComponent);
-
-        loader.load(0, pageSize);
-
-        listField.setStore(store);
-        listField.setBorders(false);
-        listField.setDisplayField("name");
-        listField.setSize(185, 100);
-        cp.setScrollMode(Scroll.AUTOY);
-        cp.add(listField);
-
-        return cp;
+        });
     }
     
-    // create a comparator to make searching quicker
-    Comparator<User> c = new Comparator<User>() {
-        public int compare(User u1, User u2) {
-          return ((Integer)u1.getId()).compareTo((Integer)u2.getId());
-        }
-      };
+    public void setForm(FormDef form) {
+    	this.form = form;
+    }
 
-    
-    /**
-     * Load study names into left and right list boxes appropriately
-     */
-    public void setUserStudyMap(StudyDef study, List<User> users, List<UserStudyMap> mappedStudies) {
-        clear();
-        this.study = study;
-        List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
-        List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
-        List<User> myUserList = new ArrayList<User>(users); // copy the list because we remove items from it and don't want to affect the original list
-        Collections.sort(myUserList, c); // sort the user list to make searching easier + quicker
-        for (UserStudyMap map : mappedStudies) {
-        	if (map.getStudyId() == study.getId()) { // only look at the current study to make the method quicker
-        		int index = Collections.binarySearch(myUserList, new User(map.getUserId(), null), c);
-        		if (index >= 0) {
-        			// match found
-        			mappedUsers.add(new UserSummary(myUserList.get(index)));
-        			myUserList.remove(index);
-        		}
-        	}
-        }
-        for (User u : myUserList) {
-        	// all of these users are unmapped
-        	unMappedUsers.add(new UserSummary(u));
-        }
-        updateLists(unMappedUsers, mappedUsers);
-    }
-    
-    /**
-     * Load Form Definition names into left and right List Boxes appropriately
-     * FIXME: this needs to also show users with access via the study....
-     */
-    public void setUserFormMap(FormDef form, List<User> users, List<UserFormMap> mappedForms, List<UserStudyMap> mappedStudies) {
-        clear();
-        this.form = form;
-        List<UserSummary> mappedUsers = new ArrayList<UserSummary>();
-        List<UserSummary> unMappedUsers = new ArrayList<UserSummary>();
-        List<User> myUserList = new ArrayList<User>(users); // copy the list because we remove items from it and don't want to affect the original list
-        Collections.sort(myUserList, c); // sort the user list to make searching easier + quicker
-        for (UserFormMap map : mappedForms) {
-        	if (map.getFormId() == form.getId()) {
-        		int index = Collections.binarySearch(myUserList, new User(map.getUserId(), null), c);
-        		if (index >= 0) {
-        			// match found
-        			mappedUsers.add(new UserSummary(myUserList.get(index)));
-        			myUserList.remove(index);
-        		}
-        	}
-        }
-        for (UserStudyMap map : mappedStudies) {
-        	int thisStudyId = form.getStudy().getId();
-        	if (map.getStudyId() == thisStudyId) {
-        		int index = Collections.binarySearch(myUserList, new User(map.getUserId(), null), c);
-        		if (index >= 0) {
-        			// match found
-        			User user = myUserList.get(index);
-        			mappedUsers.add(new UserSummary(null, user.getName()+" ("+appMessages.studyAccess()+")"));
-        			myUserList.remove(index);
-        		}
-        	}
-        }
-        for (User u : myUserList) {
-        	// all of these users are unmapped
-        	unMappedUsers.add(new UserSummary(u));
-        }
-        updateLists(unMappedUsers, mappedUsers);
-    }
-    
-    public List<User> getMappedUsers() {
-    	List<User> users = new ArrayList<User>();
-    	for (UserSummary summary : rightList) {
-    		if (summary.getUser() != null) { // it would be null for "study access" users
-    			users.add(summary.getUser());
-    		}
-    	}
-    	return users;
-    }
-    
-    public List<User> getUnMappedUsers() {
-    	List<User> users = new ArrayList<User>();
-    	for (UserSummary summary : leftList) {
-    		users.add(summary.getUser());
-    	}
-    	return users;
-    }
-    
     public FormDef getForm() {
     	return form;
+    }
+    
+    public void setStudy(StudyDef study) {
+    	this.study = study;
     }
     
     public StudyDef getStudy() {
     	return study;
     }
+
+    public void refresh() {
+        fromField.refresh();
+        toField.refresh();
+        ProgressIndicator.hideProgressBar();
+    }
     
-    public boolean isDirty() {
-    	return dirty;
-    }
+    abstract class UserAccessList extends ContentPanel {
+    	ListField<UserSummary> field = new ListField<UserSummary>();
+        PagingToolBar pagingToolBar = new SmallPagingToolBar(pageSize);
+        String filterValue;
+        
+        UserAccessList(String heading) {
+        	super();
+        	
+            setHeading(heading);
+            setBorders(false);
+            
+            final PagingLoader<PagingLoadResult<UserSummary>> loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(
+                    new RpcProxy<PagingLoadResult<UserSummary>>() {
+                        @Override
+                        public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
+                            GWT.log("UserAccessListField load data");
+                            final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig)loadConfig;
+                            pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, filterValue);
+                    		pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
+                            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+                                @Override
+    							public void execute() {
+                                	loadData(pagingToolBar, pagingLoadConfig, callback);
+                                }
+                            });
+                        }
+                    }
+            );
+            
+            loader.setRemoteSort(true);
+            loader.setSortField("name");
+            loader.setSortDir(SortDir.ASC);
+            
+            pagingToolBar.bind(loader);
+            ListStore<UserSummary> store = new ListStore<UserSummary>(loader);
+            
+            // filter to search for users
+            final RemoteStoreFilterField<UserSummary> filterField = new RemoteStoreFilterField<UserSummary> () {
+               @Override
+               protected void handleOnFilter(String filterValue) {
+            	   // handle filtering - this is a call after each key pressed - it might be improved */
+            	   UserAccessList.this.filterValue = filterValue;
+            	   loader.load(0, pageSize);
+               }
+               
+               @Override
+               protected void handleCancelFilter () {
+            	   UserAccessList.this.filterValue = null;
+            	   loader.load(0, pageSize);
+               }
+            };
+            filterField.setEmptyText(appMessages.searchForAUser());
+            filterField.setWidth(185);
+            filterField.bind(store);
+            
+            LayoutContainer bottomComponent = new LayoutContainer();
+            bottomComponent.setBorders(false);
+            bottomComponent.add(filterField);
+            bottomComponent.add(pagingToolBar);
+            setBottomComponent(bottomComponent);
 
-    private void refreshToolbars() {
-        leftPagingToolBar.refresh();
-        rightPagingToolbar.refresh();
-    }
+            loader.load(0, pageSize);
 
-    private void updateLists(List<UserSummary> unmapped, List<UserSummary> mapped) {
-    	dirty = false;
-    	fromField.getStore().add(unmapped);
-        leftList.addAll(unmapped);
-        toField.getStore().add(mapped);
-        rightList.addAll(mapped);
-        refreshToolbars();
-    }
-
-    private void clear() {
-    	dirty = false;
-        toField.getStore().removeAll();
-        fromField.getStore().removeAll();
-        leftList.clear();
-        rightList.clear();
+            field.setStore(store);
+            field.setBorders(false);
+            field.setDisplayField("name");
+            field.setSize(185, 100);
+            field.getListView().setLoadingText(appMessages.loading());
+            
+            setScrollMode(Scroll.AUTOY);
+            add(field);
+        }
+        
+        void refresh() {
+        	pagingToolBar.enable();
+        	pagingToolBar.unmask();
+        	pagingToolBar.refresh();
+        }
+        
+        abstract void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<UserSummary>> callback);
+        
     }
 }
