@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.model.UserSummary;
-import org.openxdata.client.service.StudyServiceAsync;
 import org.openxdata.client.util.PagingUtil;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.UserAccessListField;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.client.service.StudyServiceAsync;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 

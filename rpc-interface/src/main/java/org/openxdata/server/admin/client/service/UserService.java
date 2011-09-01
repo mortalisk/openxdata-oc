@@ -5,12 +5,16 @@ import java.util.List;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 /**
  * Defines the client side contract for the User Service.
  */
+@RemoteServiceRelativePath("user")
 public interface UserService extends RemoteService {
 	
     /**
@@ -48,11 +52,15 @@ public interface UserService extends RemoteService {
     
 	/**
      * Gets a list of users in the database.
+     * @deprecated Please use the paged list instead
      * 
      * @return the user list.
      * @throws OpenXDataSecurityException For any <tt>exception</tt> that occurs on the <tt>service layer.</tt>
      */
+	@Deprecated
 	List<User> getUsers() throws OpenXDataSecurityException;
+	
+	PagingLoadResult<User> getUsers(PagingLoadConfig pagingLoadConfig) throws OpenXDataSecurityException;
 	
 	/**
 	 * Removes a user from the database.

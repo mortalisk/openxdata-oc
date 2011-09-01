@@ -1,9 +1,9 @@
-package org.openxdata.server;
+package org.openxdata.server.admin.server;
 
 import java.util.List;
 import java.util.Map;
 
-import org.openxdata.client.service.StudyService;
+import org.openxdata.server.admin.client.service.StudyService;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;

@@ -60,14 +60,28 @@ public class RdmsDataExportTask {
 	 */
 	public void exportFormData(FormData formData) {
         Validate.notNull(formData);
-        FormDefVersion formDefVersion = formDefCache.get(formData.getFormDefVersionId());
+        FormDefVersion formDefVersion = getFormDefVersion(formData);
+        tpe.execute(new ExportFormDataThread(formData, formDefVersion));
+	}
+	
+	/**
+	 * Deletes the specified FormData (if it exists)
+	 * @param formData
+	 */
+	public void deleteExportedFormData(FormData formData) {
+		Validate.notNull(formData);
+        FormDefVersion formDefVersion = getFormDefVersion(formData);
+        tpe.execute(new ExportFormDataThread(formData, formDefVersion, true));
+	}
+
+	private FormDefVersion getFormDefVersion(FormData formData) {
+	    FormDefVersion formDefVersion = formDefCache.get(formData.getFormDefVersionId());
         if (formDefVersion == null) {
             formDefVersion = dataExportService.getFormDefVersion(formData.getFormDefVersionId());
             formDefCache.put(formDefVersion.getId(), formDefVersion);
         }
-
-        tpe.execute(new ExportFormDataThread(formData, formDefVersion));
-	}
+	    return formDefVersion;
+    }
 	
 	/**
 	 * Runnable class to handle executing the Task outside of Quartz
@@ -76,14 +90,28 @@ public class RdmsDataExportTask {
 	class ExportFormDataThread implements Runnable {
 	    FormData formData;
 	    FormDefVersion formDefVersion;
+	    boolean delete = false;
 	    public ExportFormDataThread(FormData formData, FormDefVersion formDefVersion) {
 	        this.formData = formData;
 	        this.formDefVersion = formDefVersion;
 	    }
+	    public ExportFormDataThread(FormData formData, FormDefVersion formDefVersion, boolean delete) {
+	        this(formData, formDefVersion);
+	        this.delete = delete;
+	    }
         @Override
 		public void run() {
-            exportFormData(formData, formDefVersion);
+        	if (!delete) {
+        		exportFormData(formData, formDefVersion);
+        	} else {
+        		deleteFormData(formData, formDefVersion);
+        	}
         }
+	}
+	
+	// easy to test method
+	protected void deleteFormData(FormData formData, FormDefVersion formDefVersion) {
+		// FIXME: first check if table(s) exist, then check if data exists, then delete data. if table(s) empty, delete them
 	}
 	
 	// easy to test method

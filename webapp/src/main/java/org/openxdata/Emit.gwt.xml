@@ -32,9 +32,9 @@
 	<entry-point class='org.openxdata.client.Emit' />
 
 	<!-- Services -->
-	<servlet path='/user' class='org.openxdata.server.UserServiceImpl' />
-	<servlet path='/study' class='org.openxdata.server.StudyServiceImpl' />
-	<servlet path='/SettingService' class='org.openxdata.server.SettingServiceImpl'/>
+	<servlet path='/user' class='org.openxdata.server.admin.server.UserServiceImpl' />
+	<servlet path='/study' class='org.openxdata.server.admin.server.StudyServiceImpl' />
+	<servlet path='/SettingService' class='org.openxdata.server.admin.server.SettingServiceImpl'/>
 	<servlet path='/FormService' class='org.openxdata.server.admin.server.FormServiceImpl' />
 
 	<!-- Internationalisation -->

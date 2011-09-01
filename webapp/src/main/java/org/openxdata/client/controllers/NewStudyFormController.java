@@ -6,9 +6,9 @@ import org.openxdata.client.AppMessages;
 import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
-import org.openxdata.client.service.StudyServiceAsync;
 import org.openxdata.client.views.NewStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.client.service.StudyServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 

@@ -1,4 +1,4 @@
-package org.openxdata.client.service;
+package org.openxdata.server.admin.client.service;
 
 import java.util.List;
 import java.util.Map;

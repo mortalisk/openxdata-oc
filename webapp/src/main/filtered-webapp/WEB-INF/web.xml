@@ -121,7 +121,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <!-- RPC services -->
   <servlet>
     <servlet-name>studyService</servlet-name>
-    <servlet-class>org.openxdata.server.StudyServiceImpl</servlet-class>
+    <servlet-class>org.openxdata.server.admin.server.StudyServiceImpl</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>studyService</servlet-name>
@@ -140,7 +140,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   
   <servlet>
     <servlet-name>userService</servlet-name>
-    <servlet-class>org.openxdata.server.UserServiceImpl</servlet-class>
+    <servlet-class>org.openxdata.server.admin.server.UserServiceImpl</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>userService</servlet-name>
@@ -149,7 +149,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 
   <servlet>
     <servlet-name>settingService</servlet-name>
-    <servlet-class>org.openxdata.server.SettingServiceImpl</servlet-class>
+    <servlet-class>org.openxdata.server.admin.server.SettingServiceImpl</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>settingService</servlet-name>

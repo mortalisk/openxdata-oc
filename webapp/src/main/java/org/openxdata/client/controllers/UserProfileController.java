@@ -4,10 +4,9 @@ import org.openxdata.client.AppMessages;
 import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
-import org.openxdata.client.service.UserServiceAsync;
 import org.openxdata.client.views.UserProfileView;
+import org.openxdata.server.admin.client.service.UserServiceAsync;
 import org.openxdata.server.admin.model.User;
-
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;

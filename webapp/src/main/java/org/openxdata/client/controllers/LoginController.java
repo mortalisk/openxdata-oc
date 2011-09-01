@@ -3,10 +3,10 @@ package org.openxdata.client.controllers;
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.Emit;
 import org.openxdata.client.EmitAsyncCallback;
-import org.openxdata.client.service.UserServiceAsync;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.LoginView;
 import org.openxdata.client.views.ReLoginView;
+import org.openxdata.server.admin.client.service.UserServiceAsync;
 import org.openxdata.server.admin.model.User;
 
 import com.extjs.gxt.ui.client.Registry;
