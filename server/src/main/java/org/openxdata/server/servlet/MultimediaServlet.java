@@ -67,7 +67,7 @@ public class MultimediaServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		
 		if("recentbinary".equals(request.getParameter("action"))){
-			byte[] postData = (byte[])getSessionData(request,sFormId,KEY_MULTIMEDIA_POST_DATA+getFieldKey(sFormId,xpath)); //(byte[])session.getAttribute(KEY_MULTIMEDIA_POST_DATA+getFieldKey(sFormId,xpath));
+			byte[] postData = (byte[])getSessionData(request,sFormId,KEY_MULTIMEDIA_POST_DATA+getFieldKey(sFormId,xpath));
 			if(postData != null){				
 				response.setContentType((String)getSessionData(request,sFormId,KEY_MULTIMEDIA_POST_CONTENT_TYPE+getFieldKey(sFormId,xpath)));
 				response.getOutputStream().write(postData);
@@ -137,7 +137,7 @@ public class MultimediaServlet extends HttpServlet {
 		String formId = request.getParameter("formId");
 		String xpath = request.getParameter("xpath");
 
-		CommonsMultipartResolver multipartResover = new CommonsMultipartResolver(/*this.getServletContext()*/);
+		CommonsMultipartResolver multipartResover = new CommonsMultipartResolver();
 		if(multipartResover.isMultipart(request)){
 			MultipartHttpServletRequest multipartRequest = multipartResover.resolveMultipart(request);
 			MultipartFile uploadedFile = multipartRequest.getFile("filecontents");

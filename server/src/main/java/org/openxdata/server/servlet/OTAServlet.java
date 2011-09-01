@@ -53,7 +53,6 @@ public class OTAServlet extends HttpServlet {
 			response.setDateHeader("Expires", -1);
 			response.setHeader("Cache-Control", "no-store");
 
-			//response.setContentType("text/vnd.wap.wml");
 			response.getOutputStream().print(wml);
 			
 			System.out.println(wml);
