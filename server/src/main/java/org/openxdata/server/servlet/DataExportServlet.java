@@ -76,7 +76,7 @@ public class DataExportServlet extends HttpServlet {
         }
         filename=filename.trim();
         if (!FileValidations.validateOutputFilename(filename)) {
-        	ServletUtils.setBadRequest(response, "File name is either too long or contains any special characters");
+        	ServletUtils.setBadRequest(response, "File name is either too long or contains special characters");
             return;        
         }
         response.setContentType("text/csv");
