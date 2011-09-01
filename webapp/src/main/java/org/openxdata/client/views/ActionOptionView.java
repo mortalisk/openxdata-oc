@@ -169,9 +169,7 @@ abstract class ActionOptionView extends View {
 			formVersionName.append(" ");
 			formVersionName.append(form.getName());
 			formVersionName.append(" ");
-			formVersionName.append("'");
 			formVersionName.append(formVersion.getName());
-			formVersionName.append("'");
 			return formVersionName.toString();
 		}
 		return "";
@@ -182,9 +180,7 @@ abstract class ActionOptionView extends View {
 			StringBuilder formName = new StringBuilder();
 			formName.append(form.getStudy().getName());
 			formName.append(" ");
-			formName.append("'");
 			formName.append(form.getName());
-			formName.append("'");
 			return formName.toString();
 		}
 		return "";
@@ -193,9 +189,7 @@ abstract class ActionOptionView extends View {
 	protected String getStudyName() {
 		if (form != null) {
 			StringBuilder studyName = new StringBuilder();
-			studyName.append("'");
 			studyName.append(form.getStudy().getName());
-			studyName.append("'");
 			return studyName.toString();
 		}
 		return "";
