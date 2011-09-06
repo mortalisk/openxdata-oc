@@ -145,6 +145,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <servlet-mapping>
     <servlet-name>userService</servlet-name>
     <url-pattern>/emit/user</url-pattern>
+    <url-pattern>/OpenXDataServerAdmin/user</url-pattern>
   </servlet-mapping>
 
   <servlet>
