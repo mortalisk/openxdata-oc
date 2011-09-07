@@ -4,6 +4,7 @@ import static org.openxdata.server.servlet.Verify.isValidDate;
 import static org.openxdata.server.servlet.Verify.isValidId;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Date;
 
 import javax.servlet.ServletContext;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.openxdata.server.export.DataExport;
@@ -85,7 +87,7 @@ public class DataExportServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
         response.addHeader("Cache-Control", "no-store");
-        response.setHeader("Content-Disposition", "attachment; filename=" + filename + ".csv");
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(filename, "UTF8") + ".csv");
 
         dataExport.export(response.getWriter(), Integer.parseInt(sFormId), fromDate, toDate, userId);
     }
