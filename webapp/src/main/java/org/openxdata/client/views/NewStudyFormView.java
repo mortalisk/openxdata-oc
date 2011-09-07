@@ -92,7 +92,6 @@ public class NewStudyFormView extends WizardView {
 	protected void display(int activePage, List<LayoutContainer> pages) {
 		currentPage = activePage;
 		if (activePage == 0) {
-			userStudyAccessListField.setExpanded(false);
 			if (createStudyFS.getSelectedRadio() == null) {
 				nextButton.setEnabled(false);
 			} else {
@@ -122,7 +121,6 @@ public class NewStudyFormView extends WizardView {
 				existingForm.show();
 				userFormAccessListField.show();
 			}
-			userFormAccessListField.setExpanded(false);
 		} else if (activePage == 2) {
 			if (createFormFS.getSelectedRadio().equals(appMessages.addNewForm())) {
 				formDefinitionVersionName.setValue("v1");
