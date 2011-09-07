@@ -22,6 +22,7 @@ import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldSetEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -160,6 +161,13 @@ public class UserAccessListField extends FieldSet {
             }
         };
         userTable.add(toField);
+        
+		addListener(Events.Expand, new Listener<FieldSetEvent>() {
+			public void handleEvent(FieldSetEvent be) {
+				toField.loadData();
+				fromField.loadData();
+			}
+		});
 
         add(userTable);
     }
@@ -251,7 +259,12 @@ public class UserAccessListField extends FieldSet {
     abstract class UserAccessList extends ContentPanel {
     	ListField<UserSummary> field = new ListField<UserSummary>();
         PagingToolBar pagingToolBar = new SmallPagingToolBar(pageSize);
+        PagingLoader<PagingLoadResult<UserSummary>> loader;
         String filterValue;
+        
+        void loadData() {
+        	loader.load();
+        }
         
         UserAccessList(String heading) {
         	super();
@@ -259,7 +272,7 @@ public class UserAccessListField extends FieldSet {
             setHeading(heading);
             setBorders(false);
             
-            final PagingLoader<PagingLoadResult<UserSummary>> loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(
+            loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(
                     new RpcProxy<PagingLoadResult<UserSummary>>() {
                         @Override
                         public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
@@ -308,8 +321,6 @@ public class UserAccessListField extends FieldSet {
             bottomComponent.add(filterField);
             bottomComponent.add(pagingToolBar);
             setBottomComponent(bottomComponent);
-
-            loader.load(0, pageSize);
 
             field.setStore(store);
             field.setBorders(false);
