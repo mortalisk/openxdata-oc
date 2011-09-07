@@ -8,6 +8,7 @@
 
 	<xsl:template match="/">
 		<dataValueSet xmlns="http://dhis2.org/schema/dxf/2.0-SNAPSHOT"
+			dataSet="{descendant::dataSet}"
 			period="{oxd:convertDateToWeekOfYear(descendant::ending_date_of_week)}"
 			orgUnit="{$orgunitid}">
 			<xsl:for-each select="child::*">

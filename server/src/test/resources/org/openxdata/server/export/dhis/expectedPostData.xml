@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataValueSet period="201022" orgUnit="2" xmlns="http://dhis2.org/schema/dxf/2.0-SNAPSHOT">
-<dataValue dataElement="123" value="55"/>
+<dataValueSet dataSet="E221DBE2-A17D-4FAB-84A3-EC62F737688B" period="201022" orgUnit="270C7C11-832F-4C0C-8CA7-7841D35CDA8C" xmlns="http://dhis2.org/schema/dxf/2.0-SNAPSHOT">
+<dataValue dataElement="0EC9D017-8BC4-4E4D-950E-93FB7655B6DB" value="55"/>
 <dataValue dataElement="4" value="66"/>
 <dataValue dataElement="567" value="hello"/>
 </dataValueSet>

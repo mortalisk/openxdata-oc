@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <hct formKey="hct" id="22" name="HCT Demo">
+	<dataSet>E221DBE2-A17D-4FAB-84A3-EC62F737688B</dataSet>
 	<ending_date_of_week>2010-09-06</ending_date_of_week>
-	<test--123>55</test--123>
+	<test--0EC9D017-8BC4-4E4D-950E-93FB7655B6DB>55</test--0EC9D017-8BC4-4E4D-950E-93FB7655B6DB>
 	<another--4>66</another--4>
 	<name--567>hello</name--567>
 </hct>

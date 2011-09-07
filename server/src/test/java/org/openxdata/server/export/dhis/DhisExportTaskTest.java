@@ -6,6 +6,7 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -17,6 +18,7 @@ import org.apache.http.protocol.HttpRequestHandler;
 import org.apache.http.util.EntityUtils;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.matchers.StringContains;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -31,7 +33,7 @@ import org.openxdata.server.service.DataExportService;
 import org.openxdata.test.BaseHttpTest;
 
 @RunWith(MockitoJUnitRunner.class)
-@Ignore("Temporarily ignore until working (Simon)")
+//@Ignore("Temporarily ignore until working (Simon)")
 public class DhisExportTaskTest extends BaseHttpTest {
 
 	@Ignore
@@ -50,7 +52,9 @@ public class DhisExportTaskTest extends BaseHttpTest {
 			
 			BasicHttpEntity entity = (BasicHttpEntity) ((HttpEntityEnclosingRequest) request).getEntity();
 			String actualData = EntityUtils.toString(entity);
-			Assert.assertEquals(expectedData.trim(), actualData.trim());
+			
+			Assert.assertEquals(StringUtils.deleteWhitespace(expectedData),
+					StringUtils.deleteWhitespace(actualData));
 			response.setStatusCode(HttpStatus.SC_OK);
 		}
 	}
@@ -73,7 +77,7 @@ public class DhisExportTaskTest extends BaseHttpTest {
 		FormData data = new FormData();
 		data.setData(formData);
 		User user = new User();
-		user.setPhoneNo("2");
+		user.setPhoneNo("270C7C11-832F-4C0C-8CA7-7841D35CDA8C");
 		data.setCreator(user);
 		
 		getExportTask(taskDef, data);
