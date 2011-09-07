@@ -22,7 +22,7 @@ public interface StudyService extends RemoteService {
     
     public Map<Integer, String> getStudyNamesForCurrentUser() throws OpenXDataSecurityException;
 
-    void saveStudy(StudyDef studyDef) throws OpenXDataSecurityException;
+    StudyDef saveStudy(StudyDef studyDef) throws OpenXDataSecurityException;
 
     void deleteStudy(StudyDef studyDef) throws OpenXDataSecurityException;
     

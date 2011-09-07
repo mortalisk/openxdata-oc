@@ -38,9 +38,9 @@ public class StudyFormHasDataChoiceView extends Dialog {
 		Button createNewVersion = new Button(messages.createNewVersion());
 		createNewVersion.addSelectionListener(new SelectionListener<ButtonEvent>() {
 					public void componentSelected(ButtonEvent ce) {
-
 						AppEvent event = new AppEvent(EditStudyFormController.CREATENEWVERSION);
 						dispatcher.dispatch(event);
+						StudyFormHasDataChoiceView.this.hide();
 					}
 				});
 
@@ -49,6 +49,7 @@ public class StudyFormHasDataChoiceView extends Dialog {
 			public void componentSelected(ButtonEvent ce) {
 				AppEvent event = new AppEvent(EditStudyFormController.OPENREADONLY);
 				dispatcher.dispatch(event);
+				StudyFormHasDataChoiceView.this.hide();
 			}
 		});
 		

@@ -119,6 +119,22 @@ public class FormDef extends AbstractEditable implements Exportable {
 	public List<FormDefVersion> getVersions() {
 		return versions;
 	}
+	
+	/**
+	 * Returns a version of the Form with the name
+	 * @param name String version name (e.g. v1)
+	 * @return FormDefVersion (or null if none matches)
+	 */
+	public FormDefVersion getVersion(String name) {
+		for (byte i=0; i<versions.size(); i++) {
+			FormDefVersion ver = (FormDefVersion)versions.get(i);
+			if (ver.getName().equals(name)) {
+				return ver;
+			}
+		}
+		
+		return null;
+	}
 
 	public void setVersions(List<FormDefVersion> versions) {
 		this.versions = versions;
@@ -237,5 +253,23 @@ public class FormDef extends AbstractEditable implements Exportable {
 	@Override
 	public String getType() {
 		return "form";
+	}
+	
+	public String getNextVersionName() {
+		int nextVersionNumber = versions.size() + 1;
+		String versionName;
+		boolean duplicate;
+		do {
+			duplicate = false;
+			versionName = "v" + nextVersionNumber;
+			for (FormDefVersion v : versions) {
+				if (v.getName() != null && v.getName().equalsIgnoreCase(versionName)) {
+					duplicate = true;
+					nextVersionNumber++;
+					break;
+				}
+			}
+		} while (duplicate);
+		return versionName;
 	}
 }

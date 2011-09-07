@@ -4,11 +4,13 @@ import org.openxdata.client.AppMessages;
 import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
+import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.EditStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.StudyDef;
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
@@ -43,27 +45,38 @@ public class EditStudyFormController extends UserAccessController {
 	public void handleEvent(AppEvent event) {
 		GWT.log("EditStudyFormController : handleEvent");
 		EventType type = event.getType();
-		
-		if(type == OPENREADONLY){
-			editStudyFormView.launchDesigner(true);
-		}
 		if (type == EDITSTUDYFORM) {
 			editStudyFormView = new EditStudyFormView(this);
 			forwardToView(editStudyFormView, event);
-		}
-		if(type == CREATENEWVERSION){
-			editStudyFormView.createNewVersionForFormWithData();
+		} else if (type == OPENREADONLY) {
+			editStudyFormView.launchDesigner(true);
+		} else if(type == CREATENEWVERSION){
+			ProgressIndicator.showProgressBar();
+			final FormDefVersion version = editStudyFormView.createNewVersionForFormWithData();
+			studyService.saveStudy(version.getFormDef().getStudy(), new EmitAsyncCallback<StudyDef>() {
+				@Override
+				public void onSuccess(StudyDef result) {
+					RefreshablePublisher.get().publish(
+							new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, result));
+					FormDefVersion newVersion = result.getForm(version.getFormDef().getId()).getVersion(version.getName());
+					editStudyFormView.launchDesigner(newVersion, false); // sets the form version with updated ID to avoid saving duplicates
+					ProgressIndicator.hideProgressBar();
+				}
+			});
 		}
 	}
+	
 
-	public void saveForm(final FormDef form) {
+	public void saveForm(final FormDef form, final boolean triggerRefreshEvent) {
 		GWT.log("EditStudyFormController : saveForm");
-		studyService.saveStudy(form.getStudy(), new EmitAsyncCallback<Void>() {
+		studyService.saveStudy(form.getStudy(), new EmitAsyncCallback<StudyDef>() {
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(StudyDef result) {
 				editStudyFormView.closeWindow();
-				RefreshablePublisher.get().publish(
-						new RefreshableEvent(RefreshableEvent.Type.UPDATE_STUDY, form.getStudy()));
+				if (triggerRefreshEvent) {
+					RefreshablePublisher.get().publish(
+						new RefreshableEvent(RefreshableEvent.Type.UPDATE_STUDY, result));
+				}
 				MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 			}
 		});

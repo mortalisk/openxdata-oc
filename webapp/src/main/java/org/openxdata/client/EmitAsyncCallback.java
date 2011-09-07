@@ -26,6 +26,7 @@ public abstract class EmitAsyncCallback<T> implements AsyncCallback<T> {
      */
     @Override
 	final public void onFailure(Throwable throwable) {
+    	ProgressIndicator.hideProgressBar();
         GWT.log("Error caught while performing an action on the server: "+throwable.getMessage(), throwable);
         if (throwable instanceof OpenXDataSessionExpiredException) {
             // allow the user to login again (show a login popup so they can continue where they left off)
@@ -46,6 +47,5 @@ public abstract class EmitAsyncCallback<T> implements AsyncCallback<T> {
      * @param throwable
      */
     public void onFailurePostProcessing(Throwable throwable) {
-    	ProgressIndicator.hideProgressBar();
     }
 }

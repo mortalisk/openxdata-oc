@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.client.Emit;
+import org.openxdata.client.controllers.FormDesignerController;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.model.StudySummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.server.admin.model.FormDefVersionText;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
-import org.purc.purcforms.client.controller.IFormSaveListener;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.event.Events;
@@ -25,9 +24,9 @@ import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
@@ -42,7 +41,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
-public class NewStudyFormView extends WizardView implements IFormSaveListener {
+public class NewStudyFormView extends WizardView {
 
 	// input field for new study page
 	private TextField<String> newStudyName;
@@ -77,7 +76,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 	ListStore<FormSummary> formStore;
 
 	private int currentPage = 0;
-	private FormDesignerView formDesignerView;
 	private boolean formVersionEditMode = false;
 
 	public NewStudyFormView(Controller controller) {
@@ -129,8 +127,7 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			if (createFormFS.getSelectedRadio().equals(appMessages.addNewForm())) {
 				formDefinitionVersionName.setValue("v1");
 			} else  if (createFormFS.getSelectedRadio().equals(appMessages.existingForm())) {
-				int versions = formDef.getVersions().size();
-				formDefinitionVersionName.setValue("v" + (versions + 1));
+				formDefinitionVersionName.setValue(formDef.getNextVersionName());
 				formVersionEditMode = true;
 			}
 		}
@@ -293,13 +290,20 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		existingFormName.addSelectionChangedListener(new SelectionChangedListener<FormSummary>() {
 					@Override
 					public void selectionChanged(SelectionChangedEvent<FormSummary> se) {
-						ProgressIndicator.showProgressBar();
-						Integer formId = new Integer(se.getSelectedItem().getId());
-						nextButton.setEnabled(false);
-						userFormAccessListField.mask();
-						formDef = null;
-						NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
-						controller.getFormDef(formId);
+						formDef = studyDef.getForm(new Integer(se.getSelectedItem().getId()));
+						existingFormDescription.setValue(formDef.getDescription());
+						nextButton.setEnabled(true);
+						Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+							@Override
+							public void execute() {
+								ProgressIndicator.showProgressBar();
+								userFormAccessListField.mask();
+								userFormAccessListField.setForm(formDef);
+								userFormAccessListField.refresh();
+								userFormAccessListField.unmask();
+								ProgressIndicator.hideProgressBar();
+							}
+						});
 					}
 				});
 		existingFormDescription = new TextField<String>();
@@ -375,89 +379,44 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 
 	@Override
 	protected void finish() {
+		ProgressIndicator.showProgressBar();
 		getWizardValues();
-
-		formDesignerView = new FormDesignerView(this);
-
-		formDesignerView.openForNewForm(formDefVersion);
-
-		ProgressIndicator.hideProgressBar();
+		save(true, true);
 	}
 
-	private void save() {
+	private void save(boolean launchFormDesigner, boolean triggerRefreshEvent) {
 		if (studyDef == null) {
 			return;
 		}
 		NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
-		controller.saveStudy(studyDef);
+		controller.saveStudy(studyDef, launchFormDesigner, triggerRefreshEvent);
+	}
+	
+	@Override
+	public void closeWindow() {
+		super.closeWindow();
+		ProgressIndicator.hideProgressBar();
+	}
+	
+	public void launchFormDesigner(StudyDef studyDef) {
+		this.studyDef = studyDef;
+		this.formDef = studyDef.getForm(formDef.getName());
+		this.formDefVersion = formDef.getVersion(formDefVersion.getName());
+        AppEvent event = new AppEvent(FormDesignerController.NEW_FORM);
+        event.setData("formDefVersion", formDefVersion);
+        Dispatcher.get().dispatch(event);
 	}
    
 	@Override
 	protected void saveAndExit() {
 		ProgressIndicator.showProgressBar();
 		getWizardValues();
-		save();
-	}
-
-	@Override
-	public boolean onSaveForm(int formId, String xformsXml, String layoutXml,
-			String javaScriptSrc) {
-		try {
-			if (formDefVersion == null) {
-				MessageBox.alert(appMessages.error(),
-						appMessages.removeFormIdAttribute(), null);
-				return false;
-			}
-
-			formDefVersion.setXform(xformsXml);
-			formDefVersion.setLayout(layoutXml);
-			formDefVersion.setDirty(true);
-
-			return true;
-			// We shall use the onSaveLocaleText() such that we avoid double
-			// saving
-		} catch (Exception ex) {
-			MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(ex.getMessage()), null);
-			return false;
-		}
-	}
-
-	@Override
-	public void onSaveLocaleText(int formId, String xformsLocaleText,
-			String layoutLocaleText) {
-		try {
-			if (formDefVersion == null) {
-				MessageBox.alert(appMessages.error(), appMessages.selectFormVersion(), null);
-				return;
-			}
-
-			FormDefVersionText formDefVersionText = formDefVersion
-					.getFormDefVersionText("en");
-			if (formDefVersionText == null) {
-				formDefVersionText = new FormDefVersionText("en", xformsLocaleText,
-						layoutLocaleText);
-				formDefVersion.addVersionText(formDefVersionText);
-			} else {
-				formDefVersionText.setXformText(xformsLocaleText);
-				formDefVersionText.setLayoutText(layoutLocaleText);
-			}
-			formDefVersion.setDirty(true);
-			save();
-			// if this a new form,then save and close
-			if (formId == 0) {
-                formDesignerView.hide();
-				ProgressIndicator.hideProgressBar();
-				closeWindow();
-			}
-		} catch (Exception ex) {
-			MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(ex.getMessage()), null);
-		}
+		save(false, true);
 	}
 
 	private void getWizardValues() {
 		// page one
-		if (createStudyFS.getSelectedRadio().equalsIgnoreCase(
-				newStudy.getBoxLabel())) {
+		if (createStudyFS.getSelectedRadio().equalsIgnoreCase(newStudy.getBoxLabel())) {
 			studyDef = new StudyDef(0, newStudyName.getValue());
 			studyDef.setDescription(newStudyDescription.getValue());
 			studyDef.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
@@ -473,12 +432,10 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		}
 		// page 2
 		if (currentPage > 0) {
-			if (createFormFS.getSelectedRadio().equalsIgnoreCase(
-					newForm.getBoxLabel())) {
+			if (createFormFS.getSelectedRadio().equalsIgnoreCase(newForm.getBoxLabel())) {
 				formDef = new FormDef(0, newFormName.getValue(), studyDef);
 				formDef.setDescription(newFormDescription.getValue());
-				formDef.setCreator((User) Registry
-						.get(Emit.LOGGED_IN_USER_NAME));
+				formDef.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 				formDef.setDateCreated(new Date());
 				formDef.setDirty(true);
 				formDef.setVersions(new ArrayList<FormDefVersion>());
@@ -494,14 +451,17 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			}
 		}
 		// page 3
+		GWT.log("currentPage="+currentPage+" formVersionEditMode="+formVersionEditMode);
 		if (currentPage > 1) {
-			if(formVersionEditMode){
-				formDefVersion = new FormDefVersion(0,"v"+(formDef.getVersions().size()+1),formDef);
-                                if(formDef.getDefaultVersion()!= null){
-                                    formDefVersion.setXform(formDef.getDefaultVersion().getXform());
-                                }
+			if (formVersionEditMode) {
+				formDefVersion = new FormDefVersion(0,formDefinitionVersionName.getValue(),formDef);
+				FormDefVersion defaultForm = formDef.getDefaultVersion();
+                if (defaultForm != null) {
+                    formDefVersion.setXform(defaultForm.getXform());
+                    formDefVersion.setLayout(defaultForm.getLayout());
+                }
 			}
-			else{
+			else {
 				formDefVersion = new FormDefVersion(0,
 						formDefinitionVersionName.getValue(), formDef);
 			}
@@ -509,15 +469,18 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 			formDefVersion.setDescription(formDefinitionVersionDescription.getValue());
 			formDefVersion.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 			formDefVersion.setDateCreated(new Date());
-			
-			
+
 			if (formVersionDefault.getValue()) {
-				formDefVersion.getFormDef().turnOffOtherDefaults(formDefVersion);
+				GWT.log("turning off other defaults for "+formDefVersion.getName());
+				formDefVersion.setIsDefault(true);
+				formDef.turnOffOtherDefaults(formDefVersion);
+			} else {
+				formDefVersion.setIsDefault(false);
 			}
 			formDefVersion.setDirty(true);
+			formDefVersion.setFormDef(formDef);
 			formDef.addVersion(formDefVersion);
 		}
-
 	}
 
 	public void setStudyNames(Map<Integer, String> studyNames) {
@@ -533,16 +496,6 @@ public class NewStudyFormView extends WizardView implements IFormSaveListener {
 		userStudyAccessListField.setStudy(studyDef);
 		userStudyAccessListField.refresh();
 		userStudyAccessListField.unmask();
-		nextButton.setEnabled(true);
-		ProgressIndicator.hideProgressBar();
-	}
-	
-	public void setFormDef(FormDef formDef) {
-		this.formDef = formDef;
-		existingFormDescription.setValue(formDef.getDescription());
-		userFormAccessListField.setForm(formDef);
-		userFormAccessListField.refresh();
-		userFormAccessListField.unmask();
 		nextButton.setEnabled(true);
 		ProgressIndicator.hideProgressBar();
 	}

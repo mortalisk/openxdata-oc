@@ -31,8 +31,9 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
     }
 
     @Override
-    public void saveStudy(StudyDef studyDef) {
+    public StudyDef saveStudy(StudyDef studyDef) {
         getStudyManagerService().saveStudy(studyDef);
+        return studyDef;
     }
 
     @Override

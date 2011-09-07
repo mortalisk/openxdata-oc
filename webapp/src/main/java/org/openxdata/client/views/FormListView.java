@@ -121,6 +121,7 @@ public class FormListView extends View implements Refreshable {
 		grid.setStripeRows(true);
 		grid.setBorders(true);
 		grid.setView(view);
+		Registry.register(Emit.GRID, grid);
 		
 		final StoreFilter<FormSummary> showAllFormVersionsFilter = new StoreFilter<FormSummary>() {
 			@Override
@@ -375,32 +376,40 @@ public class FormListView extends View implements Refreshable {
 		ListStore<FormSummary> store = grid.getStore();
 		store.removeAll();
 		for (FormDef formDef : formDefs) {
-			if (formDef.getVersions() == null || formDef.getVersions().size() == 0) {
-				FormSummary formSummary = new FormSummary(formDef);
-				formSummary.setResponses("0");
-				store.add(formSummary);
-				allFormSummaries.add(formSummary);
-			} else {
-				for (final FormDefVersion formVersion : formDef.getVersions()) {
-					if (formVersion != null) {
-						FormSummary formSummary = new FormSummary(formVersion);
-						formSummary.setStatus(appMessages.loading());
-						formSummary.setResponses(appMessages.loading());
+			addFormDef(store, formDef);
+		}
+		ProgressIndicator.hideProgressBar();
+	}
+	
+	private void addFormDef(ListStore<FormSummary> store, FormDef formDef) {
+		if (formDef.getVersions() == null || formDef.getVersions().size() == 0) {
+			FormSummary formSummary = new FormSummary(formDef);
+			formSummary.setResponses("0");
+			store.add(formSummary);
+			allFormSummaries.add(formSummary);
+		} else {
+			for (final FormDefVersion formVersion : formDef.getVersions()) {
+				if (formVersion != null) {
+					FormSummary formSummary = getFormSummary(formVersion.getId());
+					if (formSummary == null) {
+						formSummary = new FormSummary(formVersion);
 						store.add(formSummary);
 						allFormSummaries.add(formSummary);
-						// get response data
-						Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-							@Override
-							public void execute() {
-								((FormListController) FormListView.this.getController())
-										.hasFormData(formVersion);
-							}
-						});
 					}
+					formSummary.setStatus(appMessages.loading());
+					formSummary.setResponses(appMessages.loading());
+					store.update(formSummary);
+					// get response data
+					Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+						@Override
+						public void execute() {
+							((FormListController) FormListView.this.getController())
+									.hasFormData(formVersion);
+						}
+					});
 				}
 			}
 		}
-		ProgressIndicator.hideProgressBar();
 	}
 
 	private void newStudyOrForm() {
@@ -587,23 +596,20 @@ public class FormListView extends View implements Refreshable {
 				for (FormDefVersion formVersion : form.getVersions()) {
 					FormSummary summary = getFormSummary(formVersion.getId());
 					if (summary != null) {
-						summary.updateFormVersion(formVersion);
+						summary.setFormVersion(formVersion);
 						store.update(summary);
 					}
 				}
 			}
 
 		} else if (event.getEventType() == RefreshableEvent.Type.CREATE_STUDY) {
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					ProgressIndicator.showProgressBar();
-					((FormListController) FormListView.this.getController())
-							.getForms();
+			StudyDef study = (StudyDef)event.getData();			
+			ListStore<FormSummary> store = grid.getStore();
+			if (study.getForms() != null) {
+				for (FormDef form : study.getForms()) {
+					addFormDef(store, form);
 				}
-			});
-			// Note: because the Study in the event has not been updated, the
-			// ids of new persistent objects are 0, therefore cannot be matched
+			}
 
 		} else if (event.getEventType() == RefreshableEvent.Type.DELETE) {
 			ListStore<FormSummary> store = grid.getStore();

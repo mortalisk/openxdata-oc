@@ -9,7 +9,6 @@ import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.views.NewStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 
 import com.extjs.gxt.ui.client.event.EventType;
@@ -79,25 +78,27 @@ public class NewStudyFormController extends UserAccessController {
             }
         });
     }
-    public void getFormDef(Integer formId) {
-        GWT.log("FormListController : getStudies");
-        formService.getForm(formId, new EmitAsyncCallback<FormDef>() {
-
-            @Override
-            public void onSuccess(FormDef result) {
-                newStudyFormView.setFormDef(result);
-            }
-        });    	
-    }
     
-    public void saveStudy(final StudyDef study){
+    public void saveStudy(final StudyDef study, final boolean launchDesigner, final boolean triggerRefreshEvent) {
         GWT.log("NewStudyFormController : saveStudies");
-        studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
+        studyService.saveStudy(study, new EmitAsyncCallback<StudyDef>() {
             @Override
-            public void onSuccess(Void result) {
-                newStudyFormView.closeWindow();
-                RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
-                MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
+            public void onSuccess(StudyDef result) {
+            	studyService.getStudy(result.getId(), new EmitAsyncCallback<StudyDef>() {
+		            @Override
+		            public void onSuccess(StudyDef result) {
+		            	GWT.log("saved studyDef id="+result.getId()+" name="+result.getName()+" forms="+result.getForms());
+		                newStudyFormView.closeWindow();
+		                if (triggerRefreshEvent) {
+		                	RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, result));
+		                }
+		                if (launchDesigner) {
+		                	newStudyFormView.launchFormDesigner(result);
+		                } else {
+		                	MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
+		                }
+		            }
+            	});
             }
         });
     }

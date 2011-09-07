@@ -1,6 +1,8 @@
 package org.openxdata.client.views;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.Emit;
+import org.openxdata.client.controllers.FormDesignerController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -10,12 +12,13 @@ import org.purc.purcforms.client.controller.IFormSaveListener;
 import org.purc.purcforms.client.util.FormDesignerUtil;
 import org.purc.purcforms.client.util.LanguageUtil;
 
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.View;
+import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.extjs.gxt.ui.client.widget.Viewport;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Attr;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -28,17 +31,18 @@ import com.google.gwt.xml.client.XMLParser;
  * 
  * Encapsulates functionality for Loading the Form Designer.
  */
-public class FormDesignerView {
+public class FormDesignerView extends View implements IFormSaveListener {
 
 	final AppMessages appMessages = GWT.create(AppMessages.class);
 
 	/** The form designer widget. */
 	private FormDesignerWidget formDesigner;
+	
+	private FormDefVersion formDefVersion;
 
-	private final IFormSaveListener saveListener;
-
-	public FormDesignerView(IFormSaveListener saveListener) {
-		this.saveListener = saveListener;
+	public FormDesignerView(FormDesignerController controller, FormDefVersion formDefVersion) {
+		super(controller);
+		this.formDefVersion = formDefVersion;
 	}
 
 	/**
@@ -47,44 +51,43 @@ public class FormDesignerView {
 	private void createFormDesignerWidget() {
 		formDesigner = new FormDesignerWidget(false, true, true);
 		formDesigner.setSplitPos("20%");
-		formDesigner.setFormSaveListener(saveListener);
-		formDesigner.onWindowResized(
-				com.google.gwt.user.client.Window.getClientWidth() - 100,
-				com.google.gwt.user.client.Window.getClientHeight() - 75);
+		formDesigner.setFormSaveListener(this);
+		int width = com.google.gwt.user.client.Window.getClientWidth() - 50;
+		int height = com.google.gwt.user.client.Window.getClientHeight() - 105;
+		String widthSt = String.valueOf(width);
+		String heightSt = String.valueOf(height);
+		formDesigner.setSize(widthSt, heightSt);
+		formDesigner.onWindowResized(width, height);
 	}
 
 	/**
 	 * Launches the designer with intent to create a new Form.
-	 * 
-	 * @param formDef
-	 *            - Form Definition to create.
-	 * @param formDefVersion
-	 *            - Form Definition Version to create.
 	 */
-	public void openForNewForm(FormDefVersion formDefVersion) {
+	public void openForNewForm() {
 		createFormDesignerWidget();
-
 		designForm(formDefVersion, false);
-		createFormDesignerWindow(formDefVersion.getFormDef().getName(),
-				newStudyFrmWindowListener);
+		createFormDesignerWindow(formDefVersion);
 	}
 
 	/**
 	 * Opens the designer with a given Form for editing.
+	 * @param readOnly boolean true if it should be opened in readOnly mode.
+	 */
+	public void openFormForEditing(Boolean readOnly) {
+		createFormDesignerWidget();
+		designForm(formDefVersion, readOnly);
+		createFormDesignerWindow(formDefVersion);
+	}
+	
+	/**
+	 * Updates the local reference to FormDefVersion to the one saved in the database
+	 * and displays a confirmation message
 	 * 
 	 * @param formDefVersion
-	 *            Form Definition to editing.
-	 * @param readOnly
-	 *            If it should be opened in readOnly mode.
 	 */
-	public void openFormForEditing(FormDefVersion formDefVersion,
-			Boolean readOnly) {
-		createFormDesignerWidget();
-
-		designForm(formDefVersion, readOnly);
-
-		createFormDesignerWindow(formDefVersion.getFormDef().getName(),
-				editStudyFormWindowListener);
+	public void savedFormDefVersion(FormDefVersion formDefVersion) {
+		this.formDefVersion = formDefVersion;
+		MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
 	}
 
 	/**
@@ -142,41 +145,12 @@ public class FormDesignerView {
 	 *            Event that is handled by this modal window when window is
 	 *            closing.
 	 */
-	private void createFormDesignerWindow(String formName,
-			Listener<? extends BaseEvent> beforeHide) {
-		Widget emit = RootPanel.get().getWidget(0);
-		RootPanel.get().clear();
-		FormdesignerContainer container = new FormdesignerContainer(formDesigner, formName, emit);
+	private void createFormDesignerWindow(FormDefVersion formDefVersion) {
+		((Viewport)Registry.get(Emit.VIEWPORT)).hide();
+		String fullName = formDefVersion.getFormDef().getStudy().getName() + "-" + formDefVersion.getFormDef().getName() + "-" + formDefVersion.getName();
+		FormdesignerContainer container = new FormdesignerContainer(formDesigner, fullName);
 		RootPanel.get().add(container);
-	}
-
-	final Listener<ComponentEvent> editStudyFormWindowListener = new EditWindowListener();
-
-	class EditWindowListener implements Listener<ComponentEvent> {
-
-		@Override
-		public void handleEvent(ComponentEvent be) {
-			hide();
-			be.setCancelled(true);
-			be.stopEvent();
-			org.purc.purcforms.client.Context.setFormDef(null);
-		}
-	};
-
-	final Listener<ComponentEvent> newStudyFrmWindowListener = new WindowListener();
-
-	class WindowListener implements Listener<ComponentEvent> {
-
-		@Override
-		public void handleEvent(ComponentEvent be) {
-			hide();
-			be.setCancelled(true);
-			be.stopEvent();
-		}
-	};
-
-	public void hide() {
-		ProgressIndicator.hideProgressBar();
+        ProgressIndicator.hideProgressBar();
 	}
 
 	/**
@@ -187,10 +161,11 @@ public class FormDesignerView {
 	 * 
 	 * @return the form binding.
 	 */
-	public String getDefaultFormBinding(FormDefVersion formDefVersion) {
+	private String getDefaultFormBinding(FormDefVersion formDefVersion) {
 		FormDef formDef = formDefVersion.getFormDef();
 		String binding = formDef.getStudy().getName() + "_" + formDef.getName()
 				+ "_" + formDefVersion.getName();
+		// FIXME: check the format using a regex expression for bindings
 		return FormDesignerUtil.getXmlTagName(binding);
 	}
 
@@ -201,7 +176,7 @@ public class FormDesignerView {
 	 * @param formDefVersion
 	 * @return boolean whether xform needs to be changed or not
 	 */
-	public boolean checkMatching(FormDefVersion formDefVersion) {
+	private boolean checkMatching(FormDefVersion formDefVersion) {
 		Document xformDocument = XMLParser.parse(formDefVersion.getXform());
 		NodeList instanceList = xformDocument.getElementsByTagName("instance");
 		Node instanceRoot = instanceList.item(0).getChildNodes().item(1);
@@ -223,7 +198,7 @@ public class FormDesignerView {
 	 *            FormDefVersion that has had its name changed
 	 * @return
 	 */
-	public String changeName(FormDefVersion formDefVersion) {
+	private String changeName(FormDefVersion formDefVersion) {
 		Document xformDocument = XMLParser.parse(formDefVersion.getXform());
 		NodeList instanceList = xformDocument.getElementsByTagName("instance");
 		Node instanceNode = instanceList.item(0);
@@ -305,4 +280,60 @@ public class FormDesignerView {
 		instanceRoot.getParentNode()
 				.replaceChild(newInstanceRoot, instanceRoot);
 	}
+	
+	@Override
+	public boolean onSaveForm(int formId, String xformsXml, String layoutXml, String javaScriptSrc) {
+		try {
+			if (formDefVersion == null) {
+				MessageBox.alert(appMessages.error(), appMessages.removeFormIdAttribute(), null);
+				return false;
+			}
+
+			formDefVersion.setXform(xformsXml);
+			formDefVersion.setLayout(layoutXml);
+			formDefVersion.setDirty(true);
+
+			return true;
+			// ?? We shall use the onSaveLocaleText() such that we avoid double saving
+		} catch (Exception ex) {
+			MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(ex.getMessage()), null);
+			return false;
+		}
+	}
+
+	@Override
+	public void onSaveLocaleText(int formId, String xformsLocaleText, String layoutLocaleText) {
+		try {
+			if (formDefVersion == null) {
+				MessageBox.alert(appMessages.error(), appMessages.selectFormVersion(), null);
+				return;
+			}
+
+			FormDefVersionText formDefVersionText = formDefVersion.getFormDefVersionText("en");
+			if (formDefVersionText == null) {
+				formDefVersionText = new FormDefVersionText("en", xformsLocaleText, layoutLocaleText);
+				formDefVersion.addVersionText(formDefVersionText);
+			} else {
+				formDefVersionText.setXformText(xformsLocaleText);
+				formDefVersionText.setLayoutText(layoutLocaleText);
+			}
+			formDefVersion.setDirty(true);
+			
+			((FormDesignerController)this.getController()).saveForm(formDefVersion);
+		} catch (Exception ex) {
+			MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(ex.getMessage()), null);
+		}
+	}
+
+	@Override
+    protected void handleEvent(AppEvent event) {
+		GWT.log("NewStudyFormView : handleEvent");
+		if (event.getType() == FormDesignerController.NEW_FORM) {
+			openForNewForm();
+		} else if (event.getType() == FormDesignerController.EDIT_FORM) {
+			openFormForEditing(false);
+		} else if (event.getType() == FormDesignerController.READONLY_FORM) {
+			openFormForEditing(true);
+		}
+    }
 }

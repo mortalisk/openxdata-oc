@@ -5,6 +5,7 @@ import java.util.List;
 import org.openxdata.client.controllers.DataCaptureController;
 import org.openxdata.client.controllers.DeleteStudyFormController;
 import org.openxdata.client.controllers.EditStudyFormController;
+import org.openxdata.client.controllers.FormDesignerController;
 import org.openxdata.client.controllers.FormListController;
 import org.openxdata.client.controllers.FormPrintController;
 import org.openxdata.client.controllers.FormResponsesController;
@@ -77,6 +78,7 @@ public class Emit implements EntryPoint, Refreshable {
     public static final String VIEWPORT = "viewport";
     public static final String PORTAL = "portal";
     public static final String LOGGED_IN_USER_NAME = "loggedInUser";
+    public static final String GRID = "grid";
     
     // services
     FormServiceAsync formService;
@@ -168,6 +170,7 @@ public class Emit implements EntryPoint, Refreshable {
         dispatcher.addController(new DeleteStudyFormController(studyService, formService));
         dispatcher.addController(new ItemExportController());
         dispatcher.addController(new ItemImportController(studyService));
+        dispatcher.addController(new FormDesignerController(studyService, formService));
         
         RefreshablePublisher publisher = RefreshablePublisher.get();
         publisher.subscribe(RefreshableEvent.Type.NAME_CHANGE, this);

@@ -75,10 +75,10 @@ public class DeleteStudyFormController extends Controller {
 	}
 	
 	private void saveStudy(StudyDef study, final Editable editable) {
-		studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
+		studyService.saveStudy(study, new EmitAsyncCallback<StudyDef>() {
 
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(StudyDef result) {
 				RefreshablePublisher.get().publish(
 						new RefreshableEvent(RefreshableEvent.Type.DELETE, editable));
 				deleteStudyFormView.closeWindow();
@@ -87,7 +87,7 @@ public class DeleteStudyFormController extends Controller {
 	}
 
 	public void itemHasData(Editable item) {
-		GWT.log("EditStudyFormController : formHasData");
+		GWT.log("DeleteStudyFormController : formHasData");
 		formService.hasEditableData(item, new EmitAsyncCallback<Boolean>() {
 
 			@Override

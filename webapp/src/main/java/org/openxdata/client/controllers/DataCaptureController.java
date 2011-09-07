@@ -43,7 +43,7 @@ public class DataCaptureController extends Controller {
         EventType type = event.getType();
         if (type == DATACAPTURE) {
         	DataCaptureView dataCaptureView = new DataCaptureView(this);
-            forwardToView(dataCaptureView, event);
+	        forwardToView(dataCaptureView, event);
         }
     }
 

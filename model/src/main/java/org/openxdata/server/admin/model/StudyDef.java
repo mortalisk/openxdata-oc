@@ -121,6 +121,22 @@ public class StudyDef extends AbstractEditable implements Exportable {
 		
 		return null;
 	}
+	
+	/**
+	 * Gets a form definition with the given name
+	 * @param formName String name of the form
+	 * @return FormDef (or null if not found)
+	 */
+	public FormDef getForm(String formName) {
+		for (byte i=0; i<forms.size(); i++) {
+			FormDef def = (FormDef)forms.get(i);
+			if (def.getName().equals(formName)) {
+				return def;
+			}
+		}
+		
+		return null;
+	}
 
 	@Override
 	public String toString() {

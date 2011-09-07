@@ -110,11 +110,11 @@ public class ItemImportController extends Controller {
 		
 		GWT.log("ItemImportController : saveImportedStudy");
 		
-		studyService.saveStudy(study, new EmitAsyncCallback<Void>() {
+		studyService.saveStudy(study, new EmitAsyncCallback<StudyDef>() {
 
 			@Override
-			public void onSuccess(Void result) {
-				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
+			public void onSuccess(StudyDef result) {
+				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, result));
 			}
 		});
 	}
