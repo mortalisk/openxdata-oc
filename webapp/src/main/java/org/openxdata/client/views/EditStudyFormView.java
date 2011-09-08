@@ -226,6 +226,7 @@ public class EditStudyFormView extends WizardView {
 		form.setDescription(formDescription.getValue());
 		formDefVersion.setName(formVersion.getValue());
 		formDefVersion.setDescription(formVersionDescription.getValue());
+		formDefVersion.setIsDefault(published.getValue());
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
