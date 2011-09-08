@@ -5,7 +5,6 @@ import org.openxdata.client.Emit;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.purc.purcforms.client.FormDesignerWidget;
-import org.purc.purcforms.client.locale.LocaleText;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -43,16 +42,28 @@ public class FormdesignerContainer extends DialogBox {
             @Override
             public void onClick(ClickEvent event) {
             	// would be nice to have some way to determine if there are unsaved changes in the formDesigner
-            	MessageBox.confirm(appMessages.cancel(), LocaleText.get("cancelFormPrompt"), new Listener<MessageBoxEvent>() {
-	    			@Override
-	    			public void handleEvent(MessageBoxEvent be) {
-	    				if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-			            	RootPanel.get().remove(FormdesignerContainer.this);
+            	MessageBox box = new MessageBox();
+                box.setButtons(MessageBox.YESNOCANCEL);
+                box.setIcon(MessageBox.QUESTION);
+                box.setTitle(appMessages.close());
+                box.setMessage(appMessages.closeFormDesigner()); // Would you like to save your form before exiting the form designer? 
+                box.addCallback(new Listener<MessageBoxEvent>() {
+                	@Override
+                    public void handleEvent(MessageBoxEvent be) {
+	    				if (be.getButtonClicked().getItemId().equals(Dialog.CANCEL)) {
+			            	// do nothing (don't exit)
+	    				} else {
+	    					if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
+	    						widget.saveSelectedForm();
+	    					}
+	    					// now exit
+		    				RootPanel.get().remove(FormdesignerContainer.this);
 			            	((Viewport)Registry.get(Emit.VIEWPORT)).show();
 			            	((Grid<FormSummary>)Registry.get(Emit.GRID)).getView().refresh(true);
 	    				}
-	    			};
-            	});
+                    }
+                });
+                box.show();
             }
         });
         setModal(true);

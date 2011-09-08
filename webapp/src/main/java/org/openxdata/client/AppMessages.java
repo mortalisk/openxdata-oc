@@ -235,4 +235,6 @@ public interface AppMessages extends Messages {
 	String createNewVersion();
 	
 	String openReadOnly();
+	
+	String closeFormDesigner();
 }
