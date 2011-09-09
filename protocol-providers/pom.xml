@@ -36,6 +36,12 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <scm>
+        <connection>scm:svn:https://svn.openxdata.org/Server/trunk/openxdata/protocol-providers</connection>
+        <developerConnection>scm:svn:https://svn.openxdata.org/Server/trunk/openxdata/protocol-providers</developerConnection>
+        <url>https://trac.openxdata.org/browser/Server/trunk/openxdata/protocol-providers</url>
+    </scm>
     
     <distributionManagement>
     	<repository>
