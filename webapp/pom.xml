@@ -373,7 +373,7 @@
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
                                     <artifactId>mforms-proto</artifactId>
-                                    <version>1.4-SNAPSHOT</version>
+                                    <version>1.4</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.openxdata</groupId>
