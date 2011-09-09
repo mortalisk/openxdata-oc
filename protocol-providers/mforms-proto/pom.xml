@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -9,7 +8,7 @@
 	</parent>
 	<groupId>org.openxdata</groupId>
 	<artifactId>mforms-proto</artifactId>
-	<version>1.4-SNAPSHOT</version>
+	<version>1.4</version>
 	<packaging>jar</packaging>
 	<name>OpenXdata Protocols - mForms</name>
 	
@@ -61,4 +60,10 @@
 		</plugins>
 	</build>
 
+
+  <scm>
+    <connection>scm:svn:https://svn.openxdata.org/Server/tags/mforms-proto-1.4</connection>
+    <developerConnection>scm:svn:https://svn.openxdata.org/Server/tags/mforms-proto-1.4</developerConnection>
+    <url>https://trac.openxdata.org/browser/Server/tags/mforms-proto-1.4</url>
+  </scm>
 </project>
