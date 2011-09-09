@@ -410,9 +410,9 @@
     </profiles>
 
     <scm>
-        <connection>scm:svn:https://svn.openxdata.org/Server/trunk/openxdata</connection>
-        <developerConnection>scm:svn:https://svn.openxdata.org/Server/trunk/openxdata</developerConnection>
-        <url>https://trac.openxdata.org/browser/Server/trunk/openxdata</url>
+        <connection>scm:svn:https://svn.openxdata.org/Server/trunk</connection>
+        <developerConnection>scm:svn:https://svn.openxdata.org/Server/trunk</developerConnection>
+        <url>https://trac.openxdata.org/browser/Server/trunk</url>
     </scm>
 
     <distributionManagement>
