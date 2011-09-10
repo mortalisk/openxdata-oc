@@ -4,7 +4,7 @@
     <groupId>org.openxdata</groupId>
     <artifactId>oxd</artifactId>
     <packaging>pom</packaging>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
     <name>OpenXdata</name>
     <url>http://openxdata.org</url>
 
@@ -409,9 +409,9 @@
     </profiles>
 
     <scm>
-        <connection>scm:svn:https://svn.openxdata.org/Server/tags/oxd-1.3</connection>
-        <developerConnection>scm:svn:https://svn.openxdata.org/Server/tags/oxd-1.3</developerConnection>
-        <url>https://trac.openxdata.org/browser/Server/tags/oxd-1.3</url>
+        <connection>scm:svn:https://svn.openxdata.org/Server/trunk</connection>
+        <developerConnection>scm:svn:https://svn.openxdata.org/Server/trunk</developerConnection>
+        <url>https://trac.openxdata.org/browser/Server/trunk</url>
     </scm>
 
     <distributionManagement>
