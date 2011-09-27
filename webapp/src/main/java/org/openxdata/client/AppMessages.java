@@ -237,4 +237,6 @@ public interface AppMessages extends Messages {
 	String openReadOnly();
 	
 	String closeFormDesigner();
+	
+	String openClinica();
 }

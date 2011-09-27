@@ -34,8 +34,8 @@
 	<!-- Services -->
 	<servlet path='/user' class='org.openxdata.server.admin.server.UserServiceImpl' />
 	<servlet path='/study' class='org.openxdata.server.admin.server.StudyServiceImpl' />
-	<servlet path='/SettingService' class='org.openxdata.server.admin.server.SettingServiceImpl'/>
 	<servlet path='/FormService' class='org.openxdata.server.admin.server.FormServiceImpl' />
+	<servlet path='/SettingService' class='org.openxdata.server.admin.server.SettingServiceImpl'/>
 
 	<!-- Internationalisation -->
 	<inherits name="com.google.gwt.i18n.I18N" />
@@ -44,6 +44,6 @@
 	<extend-property name="locale" values="pt" />
 	<extend-property name="locale" values="st" />
 	<extend-property name="locale" values="ny" />
-    <set-property name="locale" value="en,pt,st,ny" />
+	<set-property name="locale" value="en,pt,st,ny" />
 
 </module>

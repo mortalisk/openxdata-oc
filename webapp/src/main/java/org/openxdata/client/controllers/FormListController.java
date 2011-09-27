@@ -139,4 +139,11 @@ public class FormListController extends Controller {
         event.setData("editable", editable);
     	dispatcher.dispatch(event);
 	}
+	
+	public void forwardToOpenClinicaController(){
+		GWT.log("FormListController : forwardToOpenClinicaController");
+        Dispatcher dispatcher = Dispatcher.get();
+        AppEvent event = new AppEvent(OpenClinicaStudyController.LOADOPECLINICASTUDIES);
+    	dispatcher.dispatch(event);
+	}
 }

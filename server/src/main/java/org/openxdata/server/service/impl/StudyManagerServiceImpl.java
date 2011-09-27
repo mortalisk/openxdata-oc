@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.openxdata.oc.transport.OpenClinicaSoapClientImpl;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
@@ -309,4 +311,28 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 			}
 		}
     }
+
+	@Override
+	public List<OpenclinicaStudy> getOpenClinicaStudies() {
+		
+		System.out.println(System.getProperty("java.classpath"));
+		System.out.println("Fire the cigawiz");
+		List<OpenclinicaStudy> returnStudies = new ArrayList<OpenclinicaStudy>();
+		List<org.openxdata.oc.model.OpenclinicaStudy> studies = new ArrayList<org.openxdata.oc.model.OpenclinicaStudy>();
+		OpenClinicaSoapClientImpl client = new OpenClinicaSoapClientImpl("http://localhost:8080/OpenClinica-ws-3.1.1", "study", "bf5818d254668c14f7bd659da69068eb5d91d07c");
+		
+		System.out.println("In the cigawiz");
+		studies = client.listAll();
+		
+		for(org.openxdata.oc.model.OpenclinicaStudy s : studies) {
+			OpenclinicaStudy ocStudy = new OpenclinicaStudy();
+			ocStudy.setName(s.getName());
+			ocStudy.setOID(s.getOID());
+			ocStudy.setIdentifier(s.getIdentifier());
+			returnStudies.add(ocStudy);
+		}
+		
+		System.out.println("Fired the cigawiz");
+		return returnStudies;
+	}
 }

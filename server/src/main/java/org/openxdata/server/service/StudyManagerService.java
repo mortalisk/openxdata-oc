@@ -9,6 +9,7 @@ import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -246,4 +247,6 @@ public interface StudyManagerService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete);
+
+	List<OpenclinicaStudy> getOpenClinicaStudies();
 }

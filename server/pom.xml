@@ -227,6 +227,11 @@
             <artifactId>protocol-api</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+					<groupId>org.openxdata</groupId>
+					<artifactId>oc-conversion-tools</artifactId>
+					<version>0.4-ALPHA.1</version>
+				</dependency>
     </dependencies>
 
     <build>
