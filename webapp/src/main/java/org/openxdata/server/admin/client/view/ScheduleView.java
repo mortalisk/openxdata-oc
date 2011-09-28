@@ -263,8 +263,8 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
     private void enableMonths(boolean enabled) {
         if (!chkRunOnStartup.getValue()) {
             String s = txtMonths.getText();
-
-            if ((!rdMonths.getValue() )&& (s.trim().length() == 0 || Integer.parseInt(s) < 2))
+            if(!rdMonths.getValue())
+            //if ((!rdMonths.getValue() )&& (s.trim().length() == 0 || Integer.parseInt(s) < 2))
                 enabled = true;
             else
                 enabled = false;
@@ -303,6 +303,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 enableWeekDays2();
 
                 txtSeconds.setFocus(true);
+                rdAllMonthWeekDays.setValue(true);
                 updateAutoCronExpression();
             }
         });
@@ -321,6 +322,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 enableWeekDays2();
 
                 txtMinutes.setFocus(true);
+                rdAllMonthWeekDays.setValue(true);
                 updateAutoCronExpression();
             }
         });
@@ -339,6 +341,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 enableWeekDays2();
 
                 txtHours.setFocus(true);
+                rdAllMonthWeekDays.setValue(true);
                 updateAutoCronExpression();
             }
         });
@@ -362,6 +365,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 if (s.trim().length() == 0 || Integer.parseInt(s) < 2)
                     enabled = true;
                 rdWeekDay.setEnabled(enabled);
+                rdAllMonthWeekDays.setValue(true);
                 enableWeekDays(enabled);
             }
         });
@@ -696,11 +700,11 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
             return expression;
 
         if (rdSeconds.getValue()) {
-            expression = "0/" + getEverySeconds() + " 0 0";
+            expression = "0/" + getEverySeconds() + " * *";
             expression += " " + getMonthDayMonthAndWeekDay();
         } else if (rdMinutes.getValue()) {
             expression = getAtSeconds();
-            expression += " 0/" + getEveryMinutes() + " 0";
+            expression += " 0/" + getEveryMinutes() + " *";
             expression += " " + getMonthDayMonthAndWeekDay();
 
         } else if (rdHours.getValue()) {
