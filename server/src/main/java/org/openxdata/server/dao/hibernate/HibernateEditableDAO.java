@@ -133,19 +133,6 @@ public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements Editab
         if (filters != null) {
         	for (FilterConfig filter : filters) {
         		query.setParameter(filter.getField(), filter.getValue());
-        		/*if (filter.isTypeBoolean())
-        			query.setBoolean(filter.getField(), (Boolean)filter.getValue());
-        		else if (filter.isTypeDate())
-        			query.setDate(filter.getField(), (Date)filter.getValue());
-        		else if (filter.isTypeNumeric()) {
-        			Number num = (Number)filter.getValue();
-        			if (num instanceof BigDecimal)
-        				query.setBigDecimal(filter.getField(), (BigDecimal)num);
-        			else if (num instanceof BigInteger)
-        				query.setBigInteger(filter.getField(), (BigInteger)filter.getValue());
-        		} else if (filter.isTypeString()) {
-        			query.setDate(filter.getField(), (String)filter.getValue());
-        		}*/
         	}
         }
         // FIXME: to support BLOB questions (e.g. IMAGE,VIDEO,SOUND) we will need to add the following code:
