@@ -177,6 +177,11 @@ public class Emit implements EntryPoint, Refreshable {
         RefreshablePublisher publisher = RefreshablePublisher.get();
         publisher.subscribe(RefreshableEvent.Type.NAME_CHANGE, this);
         
+        // START OXD-464: Needed because we can load designer before Admin
+        FormUtil.setupUncaughtExceptionHandler();
+        FormUtil.retrieveUserDivParameters();
+        // END OXD-464
+        
         FormUtil.dlg.hide();
     }
     

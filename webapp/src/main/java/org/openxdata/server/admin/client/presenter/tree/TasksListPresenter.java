@@ -43,7 +43,7 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
 
             @Override
             public void execute() {
-                stopTask();
+                startTask();
             }
         }, WidgetDisplay.images.play());
 
@@ -51,12 +51,12 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
 
             @Override
             public void execute() {
-                startTask();
+                stopTask();
             }
         }, WidgetDisplay.images.stop());
     }
 
-    private void startTask() {
+    private void stopTask() {
         if (!Window.confirm("Cofirm Stop?")) {
             return;
         }
@@ -75,11 +75,15 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
         });
     }
 
-    private void stopTask() {
+    private void startTask() {
         if (!Window.confirm("Cofirm Start?")) {
             return;
         }
         final TaskDef selected = display.getSelected();
+        if(selected.isRunning()){
+            Utilities.displayMessage("Task is Already Running!");
+            return;
+        }
         Utilities.showProgress("Starting...");
         taskService.startTask(selected, new OpenXDataAsyncCallback<Boolean>() {
 

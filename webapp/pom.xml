@@ -22,7 +22,7 @@
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
         <oc.version>0.2</oc.version>
-        <purcforms.version>1.0.1-r4949</purcforms.version>
+        <purcforms.version>1.0.1-r5096</purcforms.version>
     </properties>
 
     <profiles>

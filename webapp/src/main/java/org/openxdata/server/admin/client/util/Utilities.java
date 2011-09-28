@@ -95,21 +95,22 @@ public class Utilities {
 			
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				char keyCode = event.getCharCode();
-				Object sender = event.getSource();
-				if ((!Character.isDigit(keyCode))
-				        && (keyCode != (char) KeyCodes.KEY_TAB)
-				        && (keyCode != (char) KeyCodes.KEY_BACKSPACE)
-				        && (keyCode != (char) KeyCodes.KEY_LEFT)
-				        && (keyCode != (char) KeyCodes.KEY_UP)
-				        && (keyCode != (char) KeyCodes.KEY_RIGHT)
-				        && (keyCode != (char) KeyCodes.KEY_DOWN)) {
-					
-					if (keyCode == '.' && allowDecimalPoints
-					        && !((TextBox) sender).getText().contains("."))
-						return;
-					((TextBox) sender).cancelKey();
-				}
+                                char charCode = event.getCharCode();
+                                int keyCode1 = event.getNativeEvent().getKeyCode();
+                                Object sender = event.getSource();
+                                if ((!Character.isDigit(charCode))
+                                        && (keyCode1 != KeyCodes.KEY_TAB)
+                                        && (keyCode1 != KeyCodes.KEY_BACKSPACE)
+                                        && (keyCode1 != KeyCodes.KEY_LEFT)
+                                        && (keyCode1 != KeyCodes.KEY_UP)
+                                        && (keyCode1 != KeyCodes.KEY_RIGHT)
+                                        && (keyCode1 != KeyCodes.KEY_DOWN)) {
+
+                                        if (charCode == '.' && allowDecimalPoints
+                                                && !((TextBox) sender).getText().contains("."))
+                                                return;
+                                        ((TextBox) sender).cancelKey();
+                                }
 			}
 		});
 	}

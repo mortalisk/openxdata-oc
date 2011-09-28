@@ -1,5 +1,7 @@
 package org.openxdata.server.admin.client.view;
 
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import org.openxdata.server.admin.client.util.CronEntity;
 import org.openxdata.server.admin.client.util.CronExpressionParser;
 import org.openxdata.server.admin.client.util.Utilities;
@@ -7,8 +9,10 @@ import org.openxdata.server.admin.model.TaskDef;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -259,8 +263,8 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
     private void enableMonths(boolean enabled) {
         if (!chkRunOnStartup.getValue()) {
             String s = txtMonths.getText();
-
-            if (s.trim().length() == 0 || Integer.parseInt(s) < 2)
+            if(!rdMonths.getValue())
+            //if ((!rdMonths.getValue() )&& (s.trim().length() == 0 || Integer.parseInt(s) < 2))
                 enabled = true;
             else
                 enabled = false;
@@ -299,6 +303,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 enableWeekDays2();
 
                 txtSeconds.setFocus(true);
+                rdAllMonthWeekDays.setValue(true);
                 updateAutoCronExpression();
             }
         });
@@ -317,6 +322,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 enableWeekDays2();
 
                 txtMinutes.setFocus(true);
+                rdAllMonthWeekDays.setValue(true);
                 updateAutoCronExpression();
             }
         });
@@ -335,6 +341,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 enableWeekDays2();
 
                 txtHours.setFocus(true);
+                rdAllMonthWeekDays.setValue(true);
                 updateAutoCronExpression();
             }
         });
@@ -358,6 +365,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 if (s.trim().length() == 0 || Integer.parseInt(s) < 2)
                     enabled = true;
                 rdWeekDay.setEnabled(enabled);
+                rdAllMonthWeekDays.setValue(true);
                 enableWeekDays(enabled);
             }
         });
@@ -371,6 +379,10 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 txtAtSeconds.setEnabled(enabled);
                 txtAtMinutes.setEnabled(enabled);
                 txtAtHours.setEnabled(enabled);
+                
+                rdMonthDay.setValue(true);
+                txtMonthDay.setText("1");
+                txtMonthDay.setEnabled(true);
 
                 enableMonths(!enabled);
                 enabledMonthDay(!rdDays.getValue());
@@ -441,31 +453,27 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
     }
 
     private void setupTextChangeEventListeners() {
-        txtSeconds.addKeyPressHandler(new KeyPressHandler() {
+        txtSeconds.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
+           updateAutoCronExpression();
+            }
+        });
+        txtMinutes.addKeyUpHandler(new KeyUpHandler() {
+
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
             }
         });
-        txtMinutes.addKeyPressHandler(new KeyPressHandler() {
+        txtHours.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
             }
         });
-        txtHours.addKeyPressHandler(new KeyPressHandler() {
+        txtDays.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
-                updateAutoCronExpression();
-            }
-        });
-        txtDays.addKeyPressHandler(new KeyPressHandler() {
-
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
                 enabledMonthDay(false);
 
@@ -477,41 +485,36 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 rdWeekDay.setEnabled(enabled);
             }
         });
-        txtMonths.addKeyPressHandler(new KeyPressHandler() {
+        txtMonths.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
                 enableMonths(false);
             }
         });
 
-        txtAtSeconds.addKeyPressHandler(new KeyPressHandler() {
+        txtAtSeconds.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
             }
         });
-        txtAtMinutes.addKeyPressHandler(new KeyPressHandler() {
+        txtAtMinutes.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
             }
         });
-        txtAtHours.addKeyPressHandler(new KeyPressHandler() {
+        txtAtHours.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
             }
         });
 
-        txtMonthDay.addKeyPressHandler(new KeyPressHandler() {
+        txtMonthDay.addKeyUpHandler(new KeyUpHandler() {
 
-            @Override
-            public void onKeyPress(KeyPressEvent arg0) {
+            public void onKeyUp(KeyUpEvent event) {
                 updateAutoCronExpression();
             }
         });
@@ -825,7 +828,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
     private String getAtSeconds() {
         String atSeconds = txtAtSeconds.getText();
         if (atSeconds.length() == 0)
-            atSeconds = "*";
+            atSeconds = "0";
         // else
         // atSeconds = String.valueOf(Integer.parseInt(atSeconds));
         return atSeconds;
@@ -844,9 +847,11 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
 
         if (rdMonthDay.getValue()) {
             expression = txtMonthDay.getText();
-            if (expression.trim().length() == 0)
-                expression = "*";
-        } else
+            if (expression.trim().length() == 0 )
+                expression = "1";
+        } else if(rdMonths.getValue()){
+             expression = "1";
+            }else
             expression = rdWeekDay.getValue() ? "?" : "*";
 
         return expression;
@@ -862,7 +867,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
     private String getAtMinutes() {
         String atMinutes = txtAtMinutes.getText();
         if (atMinutes.length() == 0)
-            atMinutes = "*";
+            atMinutes = "0";
         // else
         // atMinutes = String.valueOf(Integer.parseInt(atMinutes)-1);
         return atMinutes;
@@ -872,7 +877,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
     private String getAtHours() {
         String atHours = txtAtHours.getText();
         if (atHours.length() == 0)
-            atHours = "*";
+            atHours = "0";
         // else
         // atHours = String.valueOf(Integer.parseInt(atHours)-1);
         return atHours;
@@ -1011,7 +1016,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
         }
 
         if (weekDay.length() == 0)
-            weekDay = "*";
+            weekDay = "1";//wz*
 
         return weekDay;
     }
