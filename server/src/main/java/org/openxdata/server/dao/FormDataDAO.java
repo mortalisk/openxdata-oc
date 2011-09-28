@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataVersion;
+import org.openxdata.server.admin.model.FormDef;
 
 /**
  *
@@ -52,4 +53,6 @@ public interface FormDataDAO extends BaseDAO<FormData> {
      * @return List of FormDataVersion
      */
     List<FormDataVersion> getFormDataVersion(Integer formDataId);
+
+	List<FormData> getFormDataList(FormDef form);
 }

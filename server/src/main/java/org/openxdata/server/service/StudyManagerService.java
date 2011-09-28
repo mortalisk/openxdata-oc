@@ -105,6 +105,13 @@ public interface StudyManagerService {
 	Boolean hasEditableData(Editable item); 
 	
 	/**
+	 * Check if a study has data collected for its forms
+	 * @param studyKey the studyKey for the study
+	 * @return
+	 */
+	Boolean hasStudyData(String studyKey);
+	
+	/**
 	 * Gets a list of headers for form data submitted to the database.
 	 * Deprecated - use FormService instead
 	 * @param formDefId
@@ -249,4 +256,8 @@ public interface StudyManagerService {
 	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete);
 
 	List<OpenclinicaStudy> getOpenClinicaStudies();
+
+	String importOpenClinicaStudy(String identifier);
+
+	void exportOpenClinicaStudyData(String studyKey);
 }

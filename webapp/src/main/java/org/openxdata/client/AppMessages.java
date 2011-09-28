@@ -3,6 +3,7 @@ package org.openxdata.client;
 import com.google.gwt.i18n.client.Messages;
 
 public interface AppMessages extends Messages {
+
 	String title();
 	String logo();
 	String logoUrl();
@@ -239,4 +240,10 @@ public interface AppMessages extends Messages {
 	String closeFormDesigner();
 	
 	String openClinica();
+	
+	String noData();
+	
+	String noDataToExport();
+	
+	String exportSuccess();
 }

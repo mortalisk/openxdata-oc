@@ -9,7 +9,7 @@ public class OpenclinicaStudySummary extends BaseModel {
 
 	public OpenclinicaStudySummary(OpenclinicaStudy model) {
 		set("name", model.getName());
-		set("oid", model.getOID());
+		set("OID", model.getOID());
 		set("identifier", model.getIdentifier());
 	}
 

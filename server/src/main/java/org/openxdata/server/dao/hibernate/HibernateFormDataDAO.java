@@ -7,8 +7,11 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataVersion;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.dao.FormDataDAO;
 import org.springframework.stereotype.Repository;
+
+import com.googlecode.genericdao.search.Search;
 
 /**
  *
@@ -54,5 +57,14 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	public List<FormDataVersion> getFormDataVersion(Integer formDataId) {
 		return getSession().createCriteria(FormDataVersion.class)
 			.createAlias("formData", "fd").add(Restrictions.eq("fd.id", formDataId)).list();
+	}
+
+	@Override
+	public List<FormData> getFormDataList(FormDef form) {
+		int versionId = form.getDefaultVersion().getId();
+		Search search = new Search(FormData.class);
+		search.addFilterEqual("formDefVersionId", versionId);
+		return search(search);
+		
 	}
 }

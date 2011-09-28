@@ -74,4 +74,6 @@ public interface StudyDAO extends BaseDAO<StudyDef>{
 	 * @return
 	 */
 	PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig);
+
+	StudyDef getStudy(String studyKey);
 }

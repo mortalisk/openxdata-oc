@@ -85,4 +85,20 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
 	public List<OpenclinicaStudy> getOpenClinicaStudies() {
 		return getStudyManagerService().getOpenClinicaStudies();
 	}
+
+	@Override
+	public String importOpenClinicaStudy(String identifier) {
+		return getStudyManagerService().importOpenClinicaStudy(identifier);
+	}
+
+	@Override
+	public Boolean hasStudyData(String studyKey) {
+		return getStudyManagerService().hasStudyData(studyKey);
+	}
+
+	@Override
+	public void exportOpenclinicaStudyData(String studyKey) {
+		getStudyManagerService().exportOpenClinicaStudyData(studyKey);
+		
+	}
 }

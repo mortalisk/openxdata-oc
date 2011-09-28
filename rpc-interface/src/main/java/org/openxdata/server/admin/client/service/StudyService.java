@@ -57,4 +57,10 @@ public interface StudyService extends RemoteService {
 	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
 	
 	List<OpenclinicaStudy> getOpenClinicaStudies();
+	
+	String importOpenClinicaStudy(String identifier);
+	
+	Boolean hasStudyData(String studyKey);
+	
+	void exportOpenclinicaStudyData(String studyKey);
 }

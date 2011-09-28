@@ -68,4 +68,12 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
     public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
 		return findAllUsersByPage(loadConfig, false, StudyDef.class, studyId);
     }
+	
+	@Override
+	public StudyDef getStudy(String studyKey) {
+		Search search = new Search(StudyDef.class);
+		search.addFilterEqual("studyKey", studyKey);
+		return searchUnique(search);
+	}
+
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.controllers.OpenClinicaStudyController;
 import org.openxdata.client.model.OpenclinicaStudySummary;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 
@@ -31,9 +32,9 @@ public class OpenClincaStudyView extends View {
 
 	private Window window;
 	private ContentPanel cp;
-	private Button importStudies;
-	private Button cancelButton;
-	
+	private Button importStudies, cancelButton, exportButton;
+
+	private Grid<OpenclinicaStudySummary> grid;
 	private ListStore<OpenclinicaStudySummary> store;
 
 	private ColumnModel cm;
@@ -103,7 +104,6 @@ public class OpenClincaStudyView extends View {
 		column.setRenderer(identifierRenderer);
 
 		store = new ListStore<OpenclinicaStudySummary>();
-		
 
 		cm = new ColumnModel(configs);
 
@@ -115,8 +115,7 @@ public class OpenClincaStudyView extends View {
 		cp.getHeader().setIconAltText("Grid Icon");
 		cp.setSize(600, 300);
 
-		final Grid<OpenclinicaStudySummary> grid = new Grid<OpenclinicaStudySummary>(
-				store, cm);
+		grid = new Grid<OpenclinicaStudySummary>(store, cm);
 		grid.setStyleAttribute("borderTop", "none");
 		grid.setAutoExpandColumn("name");
 		grid.setBorders(false);
@@ -131,7 +130,17 @@ public class OpenClincaStudyView extends View {
 
 			@Override
 			public void handleEvent(ButtonEvent be) {
-				importOpenClinicaStudies();
+				importOpenClinicaStudy();
+			}
+
+		});
+
+		exportButton = new Button(appMessages.export());
+		exportButton.addListener(Events.Select, new Listener<ButtonEvent>() {
+
+			@Override
+			public void handleEvent(ButtonEvent be) {
+				exportOpenClinicaStudyData();
 			}
 
 		});
@@ -146,12 +155,24 @@ public class OpenClincaStudyView extends View {
 
 		});
 		cp.addButton(importStudies);
+		cp.addButton(exportButton);
 		cp.addButton(cancelButton);
 	}
 
-	protected void importOpenClinicaStudies() {
-		// TODO Auto-generated method stub
+	protected void exportOpenClinicaStudyData() {
+		OpenClinicaStudyController controller = (OpenClinicaStudyController) this.controller;
+		OpenclinicaStudySummary studySummary = grid.getSelectionModel()
+				.getSelectedItem();
 
+		controller.exportStudyToOpenclinica(studySummary);
+
+	}
+
+	protected void importOpenClinicaStudy() {
+		OpenclinicaStudySummary studySummary = grid.getSelectionModel()
+				.getSelectedItem();
+		((OpenClinicaStudyController) this.controller)
+				.importOpenClinicaStudy(studySummary.getIdentifier());
 	}
 
 	protected void hide() {
