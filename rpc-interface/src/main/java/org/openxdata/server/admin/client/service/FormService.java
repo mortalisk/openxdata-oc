@@ -118,4 +118,11 @@ public interface FormService extends RemoteService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
+
+	/**
+	 * Deletes a row of data from the database.
+	 * 
+	 * @param formData the form data to be deleted.
+	 */
+	void deleteFormData(FormData formData);
 }

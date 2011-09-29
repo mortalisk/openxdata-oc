@@ -41,9 +41,9 @@ public interface FormService {
 	/**
 	 * Deletes a row of data from the database.
 	 * 
-	 * @param formDataId the identifier for the row of data to delete.
+	 * @param formData the identifier for the row of data to delete.
 	 */
-	void deleteFormData(Integer formDataId);
+	void deleteFormData(FormData formData);
 	
 	/**
 	 * Saves a given Form.

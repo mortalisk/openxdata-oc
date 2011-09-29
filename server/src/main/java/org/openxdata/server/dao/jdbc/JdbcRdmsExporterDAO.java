@@ -31,6 +31,7 @@ public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
 
     private Logger log = LoggerFactory.getLogger(JdbcRdmsExporterDAO.class);
     private final String connectionUrl;
+	private final String databaseName;
     
 	/**
      * prepares for data export (sets the database and connection url)
@@ -38,10 +39,54 @@ public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
      * @param connectionUrl connection url for the database to export data to
      * @see {Constants}
      */
-	public JdbcRdmsExporterDAO(String connectionUrl) {
+	public JdbcRdmsExporterDAO(String connectionUrl, String databaseName) {
         this.connectionUrl = connectionUrl;
+		this.databaseName = databaseName;
         Validate.notEmpty(connectionUrl, "Connection url is not supplied");
 	}
+	
+    @Override
+	public int deleteData(Integer formDataId, String tableName) {
+        String statement = "delete from "+tableName+" where openxdata_form_data_id="+formDataId;
+        Connection connection = getConnection();
+		try {
+            Statement st = connection.createStatement();
+            int rowsAffected = st.executeUpdate(statement);
+            return rowsAffected;
+		} catch (SQLException e) {
+			throw new OpenXdataDataAccessException(e);
+		}
+		finally {
+            closeConnection(connection);
+        }
+    }
+    
+    @Override
+	public boolean deleteTableIfEmtpy(String tableName) {
+    	String countStatement = "select count(*) from " + tableName;
+        String deleteStatement = "drop table " + tableName;
+        
+        Connection connection = getConnection();
+		try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(countStatement);
+            if (rs.next()) {
+                Integer count = rs.getInt(1);
+                if (count == 0) {
+                	log.info("Deleting exported data table: " + tableName);
+                	st.executeUpdate(deleteStatement);
+                	return true;
+                }
+            }
+		} catch (SQLException e) {
+			throw new OpenXdataDataAccessException(e);
+		}
+		finally {
+            closeConnection(connection);
+        }
+		
+		return false;
+    }
 
     @Override
 	public boolean dataExists(Integer formDataId, String tableName) {
@@ -66,12 +111,12 @@ public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
     }
 
 	@Override
-	public boolean tableExists(String database, String tableName) {
+	public boolean tableExists(String tableName) {
     	String sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;";
 		Connection connection = getConnection();
 		try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, database);
+            statement.setString(1, databaseName);
             statement.setString(2, tableName);
             
 			return checkTableExistence(statement);

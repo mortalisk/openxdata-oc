@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormData;
@@ -17,16 +16,12 @@ import org.openxdata.server.export.ExportConstants;
 import org.openxdata.server.export.rdbms.engine.DataQuery;
 import org.openxdata.server.service.DataExportService;
 import org.openxdata.test.XFormsFixture;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class RdmsDataExportTaskTest {
 	
     RdmsDataExportTask st;
     RdmsExporterDAO exporter;
     DataExportService exportService;
-    
-    @Autowired
-    DataExportService oldExportService;
     
     @Before
     public void setup() {
@@ -37,11 +32,6 @@ public class RdmsDataExportTaskTest {
         st.setRdmsExporterDAO(exporter);
     }
     
-    @After
-    public void teardown() {
-    	oldExportService = null;
-    }
-
     @SuppressWarnings("unchecked")
 	@Test
     public void testFirstTimeExport() throws Exception {
@@ -50,8 +40,8 @@ public class RdmsDataExportTaskTest {
         FormDefVersion formDefVersion = getFormDefVersion();
         
         // set up mock
-        EasyMock.expect(exporter.tableExists("", "patientreg")).andReturn(Boolean.FALSE);
-        EasyMock.expect(exporter.tableExists("", "kid")).andReturn(Boolean.FALSE);
+        EasyMock.expect(exporter.tableExists("patientreg")).andReturn(Boolean.FALSE);
+        EasyMock.expect(exporter.tableExists("kid")).andReturn(Boolean.FALSE);
         exporter.executeSql((String)EasyMock.anyObject()); // difficult to specify the create table SQL parameter
         EasyMock.expectLastCall().times(2);
         // NB: because the tables were just created, no data existence check is performed
@@ -70,6 +60,26 @@ public class RdmsDataExportTaskTest {
         EasyMock.verify(exportService);
     }
     
+	@Test
+    public void testDeleteData() throws Exception {
+        // set up test data
+        FormData formData = getFormData();
+        FormDefVersion formDefVersion = getFormDefVersion();
+        
+        // set up mock
+        EasyMock.expect(exporter.deleteData(formData.getId(), "patientreg")).andReturn(1);
+        EasyMock.expect(exporter.deleteData(formData.getId(), "kid")).andReturn(1);
+        EasyMock.expect(exporter.deleteTableIfEmtpy("patientreg")).andReturn(true);
+        EasyMock.expect(exporter.deleteTableIfEmtpy("kid")).andReturn(true);
+        EasyMock.replay(exporter);
+        
+        // run test
+        st.deleteFormData(formData, formDefVersion);
+        
+        // verify mock methods were called + assert test ran correctly
+        EasyMock.verify(exporter);
+    }
+    
     @Test
     public void testSecondTimeExportUpdate() throws Exception {
         // set up test data
@@ -84,8 +94,8 @@ public class RdmsDataExportTaskTest {
         updateSql.add(new DataQuery(sql2, param2));
         
         // set up mock
-        EasyMock.expect(exporter.tableExists("", "patientreg")).andReturn(Boolean.TRUE);
-        EasyMock.expect(exporter.tableExists("", "kid")).andReturn(Boolean.TRUE);
+        EasyMock.expect(exporter.tableExists("patientreg")).andReturn(Boolean.TRUE);
+        EasyMock.expect(exporter.tableExists("kid")).andReturn(Boolean.TRUE);
         // NB: because the tables are already existing, no create table methods, but now we have data existence check
         EasyMock.expect(exporter.dataExists(1, "patientreg")).andReturn(true);
         EasyMock.expect(exporter.dataExists(1, "kid")).andReturn(true);

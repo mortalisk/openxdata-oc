@@ -60,13 +60,57 @@ public class RdmsDataExportTask {
 	 */
 	public void exportFormData(FormData formData) {
         Validate.notNull(formData);
-        FormDefVersion formDefVersion = formDefCache.get(formData.getFormDefVersionId());
+        FormDefVersion formDefVersion = getFormDefVersion(formData);
+
+        tpe.execute(new ExportFormDataThread(formData, formDefVersion));
+	}
+	
+	 /**
+	 * Deletes exported data related to the specified FormData
+	 * @param formData FormData to exports
+	 */
+	public void deleteFormData(FormData formData) {
+        Validate.notNull(formData);
+        FormDefVersion formDefVersion = getFormDefVersion(formData);
+
+        tpe.execute(new DeleteFormDataThread(formData, formDefVersion));
+	}
+
+	/**
+	 * Gets the FormDefVersion for the FormData
+	 * 
+	 * If the FormDefVersion is not in the cache it is loaded and added
+	 * to the cache.
+	 * 
+	 * @param formDefVersion
+	 * @return
+	 */
+	private FormDefVersion getFormDefVersion(FormData formData) {
+		FormDefVersion formDefVersion = formDefCache.get(formData.getFormDefVersionId());
         if (formDefVersion == null) {
             formDefVersion = dataExportService.getFormDefVersion(formData.getFormDefVersionId());
             formDefCache.put(formDefVersion.getId(), formDefVersion);
         }
-
-        tpe.execute(new ExportFormDataThread(formData, formDefVersion));
+		return formDefVersion;
+	}
+	
+	/**
+	 * Gets the TableQuery objects for the formDefVersion.
+	 * 
+	 * If the objects are not in the cache they are created and added
+	 * to the cache.
+	 * 
+	 * @param formDefVersion
+	 * @return
+	 */
+	private List<TableQuery> getTableQeuries(FormDefVersion formDefVersion) {
+		List<TableQuery> tables = tableQueryCache.get(formDefVersion);
+		if (tables == null) {
+		    // if the tables weren't already cached
+		    tables = RdmsEngine.getStructureSql(formDefVersion.getXform());
+		    tableQueryCache.put(formDefVersion, tables);
+		}
+		return tables;
 	}
 	
 	/**
@@ -86,25 +130,37 @@ public class RdmsDataExportTask {
         }
 	}
 	
+	/**
+	 * Runnable class to handle executing the Task outside of Quartz
+	 * @author simon@cell-life.org
+	 */
+	class DeleteFormDataThread implements Runnable {
+	    FormData formData;
+	    FormDefVersion formDefVersion;
+	    public DeleteFormDataThread(FormData formData, FormDefVersion formDefVersion) {
+	        this.formData = formData;
+	        this.formDefVersion = formDefVersion;
+	    }
+        @Override
+		public void run() {
+            deleteFormData(formData, formDefVersion);
+        }
+	}
+	
 	// easy to test method
 	protected void exportFormData(FormData formData, FormDefVersion formDefVersion) {
 	    try {
     	    boolean newData = false;
             if (formDefVersion != null) {
                  //creating the structure
-                List<TableQuery> tables = tableQueryCache.get(formDefVersion);
-                if (tables == null) {
-                    // if the tables weren't already cached
-                    tables = RdmsEngine.getStructureSql(formDefVersion.getXform());
-                    for (TableQuery table : tables) {
-                        if (!exporter.tableExists(this.databaseName,table.getTableName())) {
-                            String sqlStatement = table.getSql();
-                            log.debug("Creating table '"+table+"'. SQL="+sqlStatement);
-                            exporter.executeSql(sqlStatement);
-                            newData = true; // if we just inserted the table, there is no data
-                        }
-                    }
-                    tableQueryCache.put(formDefVersion, tables);
+                List<TableQuery> tables = getTableQeuries(formDefVersion);
+                for (TableQuery table : tables) {
+                	if (!exporter.tableExists(table.getTableName())) {
+                		String sqlStatement = table.getSql();
+                		log.debug("Creating table '"+table+"'. SQL="+sqlStatement);
+                		exporter.executeSql(sqlStatement);
+                		newData = true; // if we just inserted the table, there is no data
+                	}
                 }
                 
                 
@@ -128,7 +184,24 @@ public class RdmsDataExportTask {
             log.error("Exception caught while attempting export of form data with id '"+formData.getId()+"'", ex);
         }
 	}
-	
+
+	protected void deleteFormData(FormData formData, FormDefVersion formDefVersion) {
+		try {
+			if (formDefVersion != null) {
+				List<TableQuery> tables = getTableQeuries(formDefVersion);
+				for (TableQuery table : tables) {
+					int rows = exporter.deleteData(formData.getId(), table.getTableName());
+					log.debug(rows + " deleted from table " + table.getTableName());
+					exporter.deleteTableIfEmtpy(table.getTableName());
+				}
+			}
+		} catch (Exception ex) {
+			log.error(
+					"Exception caught while attempting to delete form data with id '"
+							+ formData.getId() + "'", ex);
+		}
+	}
+
 	protected void setRdmsExporterDAO(RdmsExporterDAO exporter) {
 	    this.exporter = exporter;
 	}
@@ -138,7 +211,7 @@ public class RdmsDataExportTask {
 	}
 	
 	public void init() {
-		exporter = new JdbcRdmsExporterDAO(getConnectionURL());
+		exporter = new JdbcRdmsExporterDAO(getConnectionURL(), databaseName);
 		dateSettingGroup = dataExportService.getDateSettings();
 	}
 	

@@ -34,8 +34,9 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 
 	@Test
 	public void deleteFormData_shouldDeleteFormDataWithGivenId() throws Exception {
-		Assert.assertNotNull("form data does not exist", formService.getFormData(new Integer(1)));
-		formService.deleteFormData(1);
+		FormData formData = formService.getFormData(new Integer(1));
+		Assert.assertNotNull("form data does not exist", formData);
+		formService.deleteFormData(formData);
 		Assert.assertNull("formData still exists", formService.getFormData(new Integer(1)));
 	}
 	

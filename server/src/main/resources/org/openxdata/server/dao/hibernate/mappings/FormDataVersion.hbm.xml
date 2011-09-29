@@ -13,7 +13,7 @@
 			</generator>
 		</id>
 
-		<many-to-one name="formData" class="FormData" column="form_data_id" not-null="true" cascade="none" />
+		<many-to-one name="formData" class="FormData" column="form_data_id" not-null="false" cascade="none" />
 				
 		<property name="data" type="java.lang.String" column="data" not-null="true" />
 

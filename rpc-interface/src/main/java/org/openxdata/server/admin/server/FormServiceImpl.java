@@ -97,5 +97,10 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
             List<User> usersToDelete) throws OpenXDataSecurityException {
 	    formService.saveMappedFormUsers(formId, usersToAdd, usersToDelete);
     }
+	
+	@Override
+	public void deleteFormData(FormData formData){
+		formService.deleteFormData(formData);
+	}
 
 }

@@ -95,9 +95,10 @@ public class FormServiceImpl implements FormService {
 	
 	@Override
 	@Secured("Perm_Delete_Form_Data")
-	public void deleteFormData(Integer formDataId){
-		formDataDAO.deleteFormData(formDataId);
-		// FIXME: needs to trigger exporter to delete too (and somehow update the history/version table)
+	public void deleteFormData(FormData formData){
+		formDataDAO.saveFormDataVersion(formData, true);
+		formDataDAO.deleteFormData(formData.getId());
+		exportTask.deleteFormData(formData);
 	}
 	
 	@Override
