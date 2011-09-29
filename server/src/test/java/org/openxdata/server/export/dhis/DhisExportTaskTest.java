@@ -18,7 +18,6 @@ import org.apache.http.protocol.HttpRequestHandler;
 import org.apache.http.util.EntityUtils;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.matchers.StringContains;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
