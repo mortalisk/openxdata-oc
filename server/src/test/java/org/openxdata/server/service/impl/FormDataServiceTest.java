@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.FormService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 	public void deleteFormData_shouldDeleteFormDataWithGivenId() throws Exception {
 		FormData formData = formService.getFormData(new Integer(1));
 		Assert.assertNotNull("form data does not exist", formData);
+		formData.setChangedBy(OpenXDataSecurityUtil.getLoggedInUser());
+		formData.setDateChanged(new Date());
 		formService.deleteFormData(formData);
 		Assert.assertNull("formData still exists", formService.getFormData(new Integer(1)));
 	}
