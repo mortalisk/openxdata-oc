@@ -1,17 +1,16 @@
 package org.openxdata.server.admin.client.view;
 
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyUpEvent;
+import org.openxdata.server.admin.client.presenter.IPresenter;
+import org.openxdata.server.admin.client.presenter.WidgetDisplay;
 import org.openxdata.server.admin.client.util.CronEntity;
 import org.openxdata.server.admin.client.util.CronExpressionParser;
 import org.openxdata.server.admin.client.util.Utilities;
+import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
 import org.openxdata.server.admin.model.TaskDef;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -23,9 +22,6 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
-import org.openxdata.server.admin.client.presenter.IPresenter;
-import org.openxdata.server.admin.client.presenter.WidgetDisplay;
-import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
 
 /**
  * This widget displays schedules of the selected task and lets you edit them.
@@ -262,9 +258,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
 
     private void enableMonths(boolean enabled) {
         if (!chkRunOnStartup.getValue()) {
-            String s = txtMonths.getText();
             if(!rdMonths.getValue())
-            //if ((!rdMonths.getValue() )&& (s.trim().length() == 0 || Integer.parseInt(s) < 2))
                 enabled = true;
             else
                 enabled = false;

@@ -50,8 +50,7 @@ public class StudyImport {
 		
 		Element root = doc.getDocumentElement();
 		if(root != null){
-			
-			
+
 			String name = root.getAttribute("name");
 			String description = root.getAttribute("description");
 			String studyKey = root.getAttribute("studyKey");
