@@ -288,4 +288,16 @@ public class FormResponsesController  extends Controller {
         ProgressIndicator.hideProgressBar();            
 
     }
+
+	public void deleteFormData(final User user, final FormData formData) {
+		formData.setDateChanged(new Date());
+		formData.setChangedBy(user);
+        formService.deleteFormData(formData, new EmitAsyncCallback<Void>() {
+            @Override
+			public void onSuccess(Void result) {
+                GWT.log("Successful delete of form data");
+                ProgressIndicator.hideProgressBar();
+            }
+        });
+	}
 }

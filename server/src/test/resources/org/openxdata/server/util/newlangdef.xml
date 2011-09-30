@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageText lang="en">
+	<xform id="3">
+		<text xpath="xforms/model/instance[@id='newstudy_simpleform_v1']/newstudy_simpleform_v1[@name]" value="SimpleForm_v1"/>
+		<text xpath="xforms/group[@id='1']/label" value="Page1"/>
+		<text xpath="xforms/group[@id='1']/input[@bind='question1']/label" value="Question1"/>
+	</xform>
+	<Form id="3">
+		<text xpath="Form/Page[@Binding='Page1'][@Text]" value="Page1"/>
+	</Form>
+</LanguageText>

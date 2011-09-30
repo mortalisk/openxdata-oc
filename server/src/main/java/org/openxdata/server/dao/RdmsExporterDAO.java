@@ -21,11 +21,10 @@ public interface RdmsExporterDAO {
 
     /**
      * Checks if a table exists in the database
-     * @param database String name of the database
      * @param tableName String name of the table
      * @return boolean true if the table already exists in the database
      */
-    public boolean tableExists(String database, String tableName) throws OpenXdataDataAccessException;
+    public boolean tableExists(String tableName) throws OpenXdataDataAccessException;
 
     /**
      * Runs the specified SQL statement
@@ -40,4 +39,20 @@ public interface RdmsExporterDAO {
      * @param sql List of DataQuery which contain the sql to execute
      */
     void executeSql(List<DataQuery> statements) throws OpenXdataDataAccessException;
+
+    /**
+     * Deletes any data in the given table that is associated to the formDataId
+     * @param formDataId Integer the id of the deleted form_data
+     * @param tableName String name of the table
+     * @return int the number of rows deleted
+     */
+	int deleteData(Integer formDataId, String tableName);
+
+	/**
+	 * This methods deletes the specified table if the table contains no data.
+	 * 
+	 * @param tableName
+	 * @return true if the table was deleted
+	 */
+	boolean deleteTableIfEmtpy(String tableName);
 }

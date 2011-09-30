@@ -39,6 +39,17 @@ public interface FormDataDAO extends BaseDAO<FormData> {
      */
     void saveFormDataVersion(FormData formData);
     
+    /**
+     * Creates a FormDataVersion given the FormData being backed up.
+     * 
+     * If isDelete then the it is assumed that the FormData will be deleted
+     * and therefore no link to the new FormData is created
+     *  
+     * @param formData FormData to be versioned
+     * @param isDelete boolean indicating if the FormData is going to be deleted
+     */
+    void saveFormDataVersion(FormData formData, boolean isDelete);
+    
 	/**
      * Saves form data version (backup).
      * 

@@ -66,11 +66,12 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
 
             @Override
             public void onSuccess(Boolean result) {
+                FormUtil.dlg.hide();
                 if (!result) {
                     Utilities.displayMessage("Failed to Stop Task");
                 }
-                selected.setRunning(result);
-                FormUtil.dlg.hide();
+                selected.setRunning(!result);
+                
             }
         });
     }
@@ -89,11 +90,12 @@ public class TasksListPresenter extends BaseTreePresenter<TaskDef, TasksListPres
 
             @Override
             public void onSuccess(Boolean result) {
+                FormUtil.dlg.hide();
                 if (!result) {
                     Utilities.displayMessage("Failed To Start Task");
                 }
                 selected.setRunning(result);
-                FormUtil.dlg.hide();
+                
             }
         });
     }

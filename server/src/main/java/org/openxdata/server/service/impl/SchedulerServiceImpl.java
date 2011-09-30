@@ -113,13 +113,16 @@ public class SchedulerServiceImpl implements SchedulerService {
 		Task task = getTask(taskDef);
 		if(task == null){
 			log.warn("Attempted to stop a non registered task");
-			return false;
+			//return false;
 		}
 
+                if(task != null)
 		task.stop();
 
 		try{
-			scheduler.unscheduleJob(taskDef.getName(),"DEFAULT");
+                     Trigger trigger = scheduler.getTrigger(taskDef.getName(), Scheduler.DEFAULT_GROUP);
+                     if(trigger !=null)
+			scheduler.unscheduleJob(taskDef.getName(),Scheduler.DEFAULT_GROUP);
 			return true;
 		}
 		catch(Exception ex){

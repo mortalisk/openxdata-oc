@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xforms xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<model>
+		<instance id="newstudy_simpleform_v1">
+			<newstudy_simpleform_v1 name="Untranslated Form" id="3" formKey="newstudy_simpleform_v1">
+				<question1/>
+			</newstudy_simpleform_v1>
+		</instance>
+		<bind id="question1" nodeset="/newstudy_simpleform_v1/question1" type="xsd:string"/>
+	</model>
+	<group id="1">
+		<label>Untranslated Page</label>
+		<input bind="question1">
+			<label>Untranslated Question</label>
+		</input>
+	</group>
+</xforms>

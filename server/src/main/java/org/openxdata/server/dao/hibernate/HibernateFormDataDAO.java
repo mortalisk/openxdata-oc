@@ -36,6 +36,11 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	
 	@Override
 	public void saveFormDataVersion(FormData formData) {
+		saveFormDataVersion(formData, false);
+	}
+	
+	@Override
+	public void saveFormDataVersion(FormData formData, boolean isDelete) {
 		// note: must use SQL because we have to avoid using the hibernate cache
 		// we want to retrieve the old form data for the backup, not the new one
 		Query query = getSession()
@@ -43,7 +48,9 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 			.addScalar("data", Hibernate.TEXT)
 			.setInteger(0, formData.getId());
 		String oldData = ((String)query.uniqueResult());
-        FormDataVersion backup = new FormDataVersion(formData, oldData, formData.getDateChanged(), formData.getChangedBy());
+		FormDataVersion backup = new FormDataVersion(
+				isDelete ? null : formData, oldData, formData.getDateChanged(),
+				formData.getChangedBy());
         saveFormDataVersion(backup);
 	}
 	

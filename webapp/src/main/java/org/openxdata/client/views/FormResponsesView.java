@@ -14,6 +14,7 @@ import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.User;
 import org.purc.purcforms.client.model.QuestionDef;
 
@@ -30,6 +31,7 @@ import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.event.RowEditorEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
@@ -39,8 +41,10 @@ import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.Label;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
@@ -89,9 +93,11 @@ public class FormResponsesView extends View implements Refreshable  {
 	private PagingLoader<PagingLoadResult<ModelData>> loader;
 	private Button exportButton;
 	private Button editButton;
+	private Button deleteButton;
 	private FormDefVersion formVersion;
 	private FormDataBinding formDataBinding;
 	private User user;
+	private Window window;
 
     public FormResponsesView(Controller controller) {
         super(controller);
@@ -219,14 +225,17 @@ public class FormResponsesView extends View implements Refreshable  {
         columnModel.addHeaderGroup(0, 3, new HeaderGroupConfig(appMessages.responseDataFields(), 1, columnCount));
     }
 
-    private void preInitialise(ListStore<FormDataSummary> store, ColumnModel columnModel) {
+    private void preInitialise(final ListStore<FormDataSummary> store, ColumnModel columnModel) {
         GWT.log("FormResponsesView : preInitialise");
 
         grid = new Grid<FormDataSummary>(store, columnModel);
         grid.setStripeRows(true);
         toolBar = new PagingToolBar(PAGE_SIZE);
         
+        final int numBtns = 4;
         editButton = new Button(appMessages.editResponse());
+        deleteButton = new Button(appMessages.delete());
+        deleteButton.setVisible(false);
         rowEditor = new RowEditor<FormDataSummary>() {
         	// FIXME: nasty code to add a button to the row edit (hopefully there is scope in the future to do it nicely
 			@Override
@@ -235,11 +244,13 @@ public class FormResponsesView extends View implements Refreshable  {
 				if (btns != null) {
 					btns.remove(cancelBtn);
 					btns.remove(saveBtn);
-					btns.setLayout(new TableLayout(3));
+					btns.setLayout(new TableLayout(numBtns));
 					editButton.setMinWidth(getMinButtonWidth());
+					deleteButton.setMinWidth(getMinButtonWidth());
 					btns.add(editButton);
 					btns.add(saveBtn);
 					btns.add(cancelBtn);
+					btns.add(deleteButton);
 					btns.layout(true);
 				}
 			}
@@ -247,7 +258,7 @@ public class FormResponsesView extends View implements Refreshable  {
 			protected void afterRender() {
 				super.afterRender();
 				if (renderButtons) {
-				      btns.setWidth((getMinButtonWidth() * 3) + (5 * 3) + (3 * 4));
+					btns.setWidth((getMinButtonWidth() * numBtns) + (5 * numBtns) + (3 * (numBtns+1)));
 				}
 			}
         };
@@ -268,6 +279,12 @@ public class FormResponsesView extends View implements Refreshable  {
                 });
             }
         });
+        deleteButton.addListener(Events.Select, new Listener<ButtonEvent>() {
+            @Override
+			public void handleEvent(ButtonEvent be) {
+            	deleteFormData(store, re);
+            }
+        });
         rowEditor.setAutoHeight(true);
         grid.addPlugin(rowEditor);
 
@@ -286,6 +303,45 @@ public class FormResponsesView extends View implements Refreshable  {
             }
         );
     }
+    
+    private void deleteFormData(final ListStore<FormDataSummary> store,
+			final RowEditor<FormDataSummary> re) {
+		MessageBox.confirm("Delete data", 
+    			"Are you sure you want to delete this form response?", 
+    			new Listener<MessageBoxEvent>() {
+			@Override
+			public void handleEvent(MessageBoxEvent be) {
+				if (be.getButtonClicked().getItemId().equals(Dialog.YES)){
+					Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+						@Override
+						public void execute() {
+							ProgressIndicator.showProgressBar();
+							int count = grid.getStore().getCount();
+
+							FormDataSummary summary = grid.getSelectionModel().getSelectedItem();
+							((FormResponsesController)FormResponsesView.this.getController())
+							.deleteFormData(user, summary.getExportedFormData().getFormData());
+							re.stopEditing(false);
+							
+							if (count > 1) {
+								refresh(null);
+							} else {
+								MessageBox.info("No more data", 
+										"There are no more responses.", 
+										new Listener<MessageBoxEvent>() {
+											@Override
+											public void handleEvent(
+													MessageBoxEvent be) {
+												window.hide();
+											}
+										});
+							}
+						}
+					});
+				}
+			}
+		});
+	}
 
     private void initializeGrid() {
     	GWT.log("FormResponsesView : initializeGrid");
@@ -481,7 +537,7 @@ public class FormResponsesView extends View implements Refreshable  {
 
     private void initializeWindow(String title, Component component, Component bottomComponent) {
     	GWT.log("FormResponsesView : createWindow");
-        Window window = new Window();
+        window = new Window();
         window.setModal(true);
         window.setPlain(true);
         window.setHeading(title);
@@ -513,9 +569,13 @@ public class FormResponsesView extends View implements Refreshable  {
 	public void setUser(User user) {
 		this.user = user;
 		// now initialise all the components requiring a user to check permissions
-        if (!user.hasPermission("Perm_Data_Edit")) {
+        if (!user.hasPermission(Permission.PERM_DATA_EDIT)) {
         	rowEditor.disable();
         	GWT.log("user does not have permission to edit data, so roweditor was disabled");
+        }
+        
+        if (user.hasPermission(Permission.PERM_DELETE_FORM_DATA)){
+        	deleteButton.setVisible(true);
         }
 	}
 }
