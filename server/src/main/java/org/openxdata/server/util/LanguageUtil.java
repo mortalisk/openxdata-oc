@@ -2,6 +2,11 @@ package org.openxdata.server.util;
 
 import java.util.Vector;
 
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.openxdata.server.xpath.XPathExpression;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,32 +58,44 @@ public class LanguageUtil {
 	 * @param languageXml the parent node of the language document
 	 * @return the new document xml after its text has been replaced with that from the language document.
 	 */
-	private static String translate(Document doc, Node parentLangNode){
-		NodeList nodes = parentLangNode.getChildNodes();
-		for(int index = 0; index < nodes.getLength(); index++){
-			Node node = nodes.item(index);
-			if(node.getNodeType() != Node.ELEMENT_NODE)
-				continue;
+	private static String translate(Document doc, Node parentLangNode) {
 
-			String xpath = ((Element)node).getAttribute(ATTRIBUTE_NAME_XPATH);
-			String value = ((Element)node).getAttribute(ATTRIBUTE_NAME_VALUE);
-			if(xpath == null || value == null)
-				continue;
+		NodeList nodes = null;
 
-			Vector<?> result = new XPathExpression(doc, xpath).getResult();
-			if(result != null){
-				for(int item = 0; item < result.size(); item++){
-					Element targetNode = (Element)result.get(item);
-					int pos = xpath.lastIndexOf('@');
-					if(pos > 0 && xpath.indexOf('=',pos) < 0){
-						String attributeName = xpath.substring(pos + 1, xpath.indexOf(']',pos));
-						targetNode.setAttribute(attributeName, value);
+		XPathFactory xpf = XPathFactory.newInstance();
+		XPath xp = xpf.newXPath();
+		try {
+			javax.xml.xpath.XPathExpression xpe = xp
+					.compile("//xform/text[@xpath][@value]");
+			nodes = (NodeList) xpe.evaluate(parentLangNode,
+					XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// Fall through, nodes is null and skips replacement.
+		}
+
+		if (nodes != null) {
+			for (int index = 0; index < nodes.getLength(); index++) {
+				Element textElem = (Element) nodes.item(index);
+
+				String xpath = textElem.getAttribute(ATTRIBUTE_NAME_XPATH);
+				String value = textElem.getAttribute(ATTRIBUTE_NAME_VALUE);
+
+				Vector<?> result = new XPathExpression(doc, xpath).getResult();
+				if (result != null) {
+					for (int item = 0; item < result.size(); item++) {
+						Element targetNode = (Element) result.get(item);
+						int pos = xpath.lastIndexOf('@');
+						if (pos > 0 && xpath.indexOf('=', pos) < 0) {
+							String attributeName = xpath.substring(pos + 1,
+									xpath.indexOf(']', pos));
+							targetNode.setAttribute(attributeName, value);
+						} else
+							targetNode.setTextContent(value);
 					}
-					else
-						targetNode.setTextContent(value);
 				}
 			}
 		}
+
 		return XmlUtil.doc2String(doc);
 	}
 }
