@@ -95,7 +95,6 @@ public class OpenClinicaStudyController extends Controller {
 		});
 	}
 
-
 	public void exportStudyToOpenclinica(final OpenclinicaStudySummary studySummary) {
 		openclinicaService.hasStudyData(studySummary.getOID(), new EmitAsyncCallback<Boolean>() {
 			@Override
