@@ -1,6 +1,5 @@
 package org.openxdata.server.admin.client.util;
 
-import org.openxdata.oc.client.convert.ODMImport;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -51,9 +50,6 @@ public class StudyImport {
 		
 		Element root = doc.getDocumentElement();
 		if(root != null){
-			
-			if(root.getNodeName().equalsIgnoreCase("ODM"))
-				return ODMImport.importStudyItem(doc);
 			
 			String name = root.getAttribute("name");
 			String description = root.getAttribute("description");

@@ -24,7 +24,6 @@
       <inherits name="com.google.gwt.inject.Inject"/>
       <inherits name='org.openxdata.server.admin.Model'/>
       <inherits name='org.openxdata.server.admin.RpcInterface'/>
-      <inherits name="org.openxdata.oc.oc"/>
 
       <!-- Specify the app entry point class.                         -->
       <entry-point class='org.openxdata.server.admin.client.OpenXDataServerAdmin'/>
