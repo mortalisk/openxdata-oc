@@ -17,7 +17,7 @@ public class RefreshableEvent implements Serializable  {
 	
 	private static final long serialVersionUID = 7549150917841490121L;
 
-	public static enum Type { CAPTURE, NAME_CHANGE, FORM_DATA_UPDATE, UPDATE_STUDY, CREATE_STUDY, DELETE };
+	public static enum Type { CAPTURE, NAME_CHANGE, FORM_DATA_UPDATE, UPDATE_STUDY, CREATE_STUDY, DELETE, CREATE_USER, UPDATE_USER };
 
 	private Type eventType;
 	private Map<String, Object> data = new HashMap<String, Object>();

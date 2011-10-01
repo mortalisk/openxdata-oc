@@ -19,6 +19,7 @@ import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
+import com.extjs.gxt.ui.client.widget.form.FormButtonBinding;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
@@ -101,6 +102,8 @@ public class UserProfileView extends View {
 
 		formPanel.setButtonAlign(HorizontalAlignment.CENTER);
 		Button save = new Button(appMessages.save());
+		FormButtonBinding binding = new FormButtonBinding(formPanel);
+		binding.addButton(save);
 		save.setType("submit");
 		save.addSelectionListener(new SelectionListener<ButtonEvent>() {
 			@Override

@@ -19,7 +19,6 @@ import org.openxdata.server.admin.model.User;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -39,7 +38,6 @@ import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.custom.Portal;
-import com.extjs.gxt.ui.client.widget.custom.Portlet;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -60,7 +58,7 @@ public class FormListView extends View implements Refreshable {
 	Button export, importButton, newButton, edit, delete, capture,
 			browseResponses;
 	
-	private Portlet portlet;
+	private DashboardPortlet portlet;
 	private Grid<FormSummary> grid;
 	private ColumnModel cm;
 
@@ -275,15 +273,13 @@ public class FormListView extends View implements Refreshable {
 		filterBar.add(allVersions);
 		filterBar.add(allForms);
 
-		portlet = new Portlet(new FitLayout());
+		portlet = new DashboardPortlet();
 		portlet.setHeading(appMessages.listOfForms());
 		ContentPanel cp = new ContentPanel();
 		cp.setLayout(new FitLayout());
 		cp.setHeaderVisible(false);
 		cp.add(grid);
 		portlet.add(cp);
-		portlet.setScrollMode(Scroll.AUTOY);
-		portlet.setSize(725, 200);
 		portlet.setBottomComponent(buttonBar);
 		portlet.setTopComponent(filterBar);
 	}
@@ -565,7 +561,7 @@ public class FormListView extends View implements Refreshable {
 		if (event.getType() == FormListController.FORMLIST) {
 			Portal portal = Registry.get(Emit.PORTAL);
 			portal.add(portlet, 0);
-			maximisePortlet(portlet);
+			portlet.maximise();
 		}
 	}
 
@@ -630,11 +626,5 @@ public class FormListView extends View implements Refreshable {
 				}
 			}
 		}
-	}
-	
-	private void maximisePortlet(Portlet portlet) {
-		Portal p = (Portal) portlet.getParent().getParent();
-		int height = p.getHeight() - 20;
-		portlet.setHeight(height);
 	}
 }
