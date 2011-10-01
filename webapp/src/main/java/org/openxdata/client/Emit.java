@@ -19,11 +19,17 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.OpenclinicaService;
 import org.openxdata.server.admin.client.service.OpenclinicaServiceAsync;
+import org.openxdata.client.controllers.UserListController;
+import org.openxdata.client.controllers.UserProfileController;
+import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.client.service.RoleServiceAsync;
 import org.openxdata.server.admin.client.service.SettingServiceAsync;
 import org.openxdata.server.admin.client.service.StudyService;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
 import org.openxdata.server.admin.client.service.UserService;
 import org.openxdata.server.admin.client.service.UserServiceAsync;
+import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Setting;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.User;
@@ -89,6 +95,7 @@ public class Emit implements EntryPoint, Refreshable {
     SettingServiceAsync settingService;
     StudyServiceAsync studyService;
     OpenclinicaServiceAsync openclinicaService;
+    RoleServiceAsync roleService;
     
     // top level UI components
     private Viewport viewport;
@@ -120,6 +127,7 @@ public class Emit implements EntryPoint, Refreshable {
     	userService = (UserServiceAsync) GWT.create(UserService.class);
         studyService = (StudyServiceAsync)GWT.create(StudyService.class);
         openclinicaService = (OpenclinicaServiceAsync)GWT.create(OpenclinicaService.class);
+        roleService = RoleServiceAsync.Util.getInstance();
         
         // determine the logged in user
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -131,7 +139,12 @@ public class Emit implements EntryPoint, Refreshable {
             			Registry.register(LOGGED_IN_USER_NAME, usr);
                     	setUserName(usr);
                     	toggleAdminButton(usr);
+                    	
                     	Dispatcher.get().dispatch(FormListController.FORMLIST);
+
+                    	if (usr.hasPermission(Permission.PERM_EDIT_USERS) || usr.hasPermission(Permission.PERM_ADD_USERS) || usr.hasPermission(Permission.PERM_VIEW_USERS)) {
+                    		Dispatcher.get().dispatch(UserListController.USERLIST);
+                    	}
                     	
                     	// Check if Admin changed default password
                     	Dispatcher.get().dispatch(LoginController.CHECKADMINPASS);
@@ -166,6 +179,7 @@ public class Emit implements EntryPoint, Refreshable {
         
         dispatcher.addController(new LoginController(userService));
         dispatcher.addController(new FormListController(formService));
+        dispatcher.addController(new UserListController(userService));
         dispatcher.addController(new DataCaptureController(userService, formService));
         dispatcher.addController(new UserProfileController(userService));
         dispatcher.addController(new FormPrintController());
