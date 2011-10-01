@@ -86,7 +86,6 @@ public class FormResponsesController  extends Controller {
     	dispatcher.dispatch(event);
     }
     
-    @SuppressWarnings("unchecked")
     public FormDataBinding getFormDataColumnModel(final FormDefVersion formVersion) {
     	
     	GWT.log("FormResponsesController : getFormDataColumnModel");
@@ -177,7 +176,6 @@ public class FormResponsesController  extends Controller {
         });
     }
     
-    @SuppressWarnings("unchecked")
     public void saveFormDataResponse(final User user, final Record record, final FormDefVersion formVersion, org.purc.purcforms.client.model.FormDef purcFormDef) {
         ProgressIndicator.showProgressBar(); 
         // 1: Copy the updated data from the grid model and save in the purc form def
