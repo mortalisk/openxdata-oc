@@ -5,15 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.openxdata.oc.transport.OpenClinicaSoapClientImpl;
-import org.openxdata.oc.transport.factory.ConnectionFactoryIpml;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
-import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
@@ -61,8 +58,6 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 
 	@Autowired
 	private EditableDAO editableDAO;
-	
-	OpenClinicaSoapClientImpl client = new OpenClinicaSoapClientImpl(new ConnectionFactoryIpml(), "study", "bf5818d254668c14f7bd659da69068eb5d91d07c");
 	
 	@Override
 	@Secured("Perm_Delete_Forms")
@@ -196,14 +191,6 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	}
 	
 	@Override
-	@Transactional(readOnly=true)
-	@Secured("Perm_View_Form_Data")
-	public Boolean hasStudyData(String studyKey) {
-		StudyDef study = studyDao.getStudy(studyKey);
-		return editableDAO.hasEditableData(study);
-	}
-	
-	@Override
 	@Secured({"Perm_View_Studies", "Perm_View_Users"})
 	public List<UserStudyMap> getUserMappedStudies() {
 		return userStudyMapDAO.getUserMappedStudies();
@@ -322,44 +309,4 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 			}
 		}
     }
-
-	@Override
-	public List<OpenclinicaStudy> getOpenClinicaStudies() {
-		
-		List<OpenclinicaStudy> returnStudies = new ArrayList<OpenclinicaStudy>();
-		List<org.openxdata.oc.model.OpenclinicaStudy> studies = new ArrayList<org.openxdata.oc.model.OpenclinicaStudy>();
-		
-		studies = client.listAll();
-		
-		for(org.openxdata.oc.model.OpenclinicaStudy s : studies) {
-			OpenclinicaStudy ocStudy = new OpenclinicaStudy();
-			ocStudy.setName(s.getName());
-			ocStudy.setOID(s.getOID());
-			ocStudy.setIdentifier(s.getIdentifier());
-			returnStudies.add(ocStudy);
-		}
-		
-		return returnStudies;
-	}
-
-	@Override
-	public String importOpenClinicaStudy(String identifier) {
-		
-		String xml = client.getOpenxdataForm(identifier);
-		
-		return xml;
-	}
-
-	@Override
-	public void exportOpenClinicaStudyData(String studyKey) {
-		StudyDef study = studyDao.getStudy(studyKey);
-		List<String> allData = new ArrayList<String>(); 
-		for (FormDef form : study.getForms()) {
-			List<FormData> dataList = formDataDAO.getFormDataList(form);
-			for (FormData formData: dataList) {
-				allData.add(formData.getData());
-			}
-		}
-		client.importData(allData);	
-	}
 }

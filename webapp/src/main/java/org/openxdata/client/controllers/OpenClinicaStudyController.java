@@ -10,6 +10,7 @@ import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.model.OpenclinicaStudySummary;
 import org.openxdata.client.views.OpenClincaStudyView;
+import org.openxdata.server.admin.client.service.OpenclinicaServiceAsync;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
 import org.openxdata.server.admin.client.util.StudyImport;
 import org.openxdata.server.admin.model.FormDef;
@@ -30,20 +31,23 @@ public class OpenClinicaStudyController extends Controller {
 	
 	private OpenClincaStudyView view;
 	private List<OpenclinicaStudy> studies;
-	private StudyServiceAsync openclinicaService;
+
+	private StudyServiceAsync studyService;
+	private OpenclinicaServiceAsync openclinicaService;
+
 	public static final EventType LOADOPECLINICASTUDIES = new EventType();
 	
-	
-	public OpenClinicaStudyController(StudyServiceAsync studyService){
+	public OpenClinicaStudyController(StudyServiceAsync studyService, OpenclinicaServiceAsync openclinicaService){
 		view = new OpenClincaStudyView (this);
-		this.openclinicaService = studyService;
+		this.studyService = studyService;
+		this.openclinicaService = openclinicaService;
 		registerEventTypes(LOADOPECLINICASTUDIES);
 	}
 
 	@Override
 	public void handleEvent(AppEvent event) {
 		GWT.log("OpenClinicaStudyController: HandleEvent");
-		getStudies();
+		getOpenclinicaStudies();
 		forwardToView(view, event);
 	}
 	
@@ -73,7 +77,7 @@ public class OpenClinicaStudyController extends Controller {
 	protected void saveTransformedStudy(StudyDef study) {
 		
 		GWT.log("OpenClinicaStudyController : saveTransformedStudy");
-		openclinicaService.saveStudy(study, new EmitAsyncCallback<StudyDef>() {
+		studyService.saveStudy(study, new EmitAsyncCallback<StudyDef>() {
 
 			@Override
 			public void onSuccess(StudyDef study) {
@@ -84,7 +88,7 @@ public class OpenClinicaStudyController extends Controller {
 		
 	}
 
-	void getStudies(){
+	void getOpenclinicaStudies(){
 		openclinicaService.getOpenClinicaStudies(new EmitAsyncCallback<List<OpenclinicaStudy>>() {
 
 			@Override

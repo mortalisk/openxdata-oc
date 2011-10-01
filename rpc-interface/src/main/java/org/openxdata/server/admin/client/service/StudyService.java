@@ -3,7 +3,6 @@ package org.openxdata.server.admin.client.service;
 import java.util.List;
 import java.util.Map;
 
-import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -55,12 +54,4 @@ public interface StudyService extends RemoteService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
-	
-	List<OpenclinicaStudy> getOpenClinicaStudies();
-	
-	String importOpenClinicaStudy(String identifier);
-	
-	Boolean hasStudyData(String studyKey);
-	
-	void exportOpenclinicaStudyData(String studyKey);
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.client.service.StudyService;
-import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -79,26 +78,4 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
         }
         return studyService;
     }
-
-	
-    @Override
-	public List<OpenclinicaStudy> getOpenClinicaStudies() {
-		return getStudyManagerService().getOpenClinicaStudies();
-	}
-
-	@Override
-	public String importOpenClinicaStudy(String identifier) {
-		return getStudyManagerService().importOpenClinicaStudy(identifier);
-	}
-
-	@Override
-	public Boolean hasStudyData(String studyKey) {
-		return getStudyManagerService().hasStudyData(studyKey);
-	}
-
-	@Override
-	public void exportOpenclinicaStudyData(String studyKey) {
-		getStudyManagerService().exportOpenClinicaStudyData(studyKey);
-		
-	}
 }

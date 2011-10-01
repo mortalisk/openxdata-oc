@@ -17,6 +17,8 @@ import org.openxdata.client.controllers.OpenClinicaStudyController;
 import org.openxdata.client.controllers.UserProfileController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.client.service.OpenclinicaService;
+import org.openxdata.server.admin.client.service.OpenclinicaServiceAsync;
 import org.openxdata.server.admin.client.service.SettingServiceAsync;
 import org.openxdata.server.admin.client.service.StudyService;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
@@ -86,6 +88,7 @@ public class Emit implements EntryPoint, Refreshable {
     UserServiceAsync userService;
     SettingServiceAsync settingService;
     StudyServiceAsync studyService;
+    OpenclinicaServiceAsync openclinicaService;
     
     // top level UI components
     private Viewport viewport;
@@ -116,6 +119,7 @@ public class Emit implements EntryPoint, Refreshable {
     	settingService = SettingServiceAsync.Util.getInstance();
     	userService = (UserServiceAsync) GWT.create(UserService.class);
         studyService = (StudyServiceAsync)GWT.create(StudyService.class);
+        openclinicaService = (OpenclinicaServiceAsync)GWT.create(OpenclinicaService.class);
         
         // determine the logged in user
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -172,7 +176,7 @@ public class Emit implements EntryPoint, Refreshable {
         dispatcher.addController(new ItemExportController());
         dispatcher.addController(new ItemImportController(studyService));
         dispatcher.addController(new FormDesignerController(studyService, formService));
-        dispatcher.addController(new OpenClinicaStudyController(studyService));
+        dispatcher.addController(new OpenClinicaStudyController(studyService, openclinicaService));
         
         RefreshablePublisher publisher = RefreshablePublisher.get();
         publisher.subscribe(RefreshableEvent.Type.NAME_CHANGE, this);

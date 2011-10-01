@@ -237,6 +237,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <servlet-name>utilityservice</servlet-name>
     <url-pattern>/OpenXDataServerAdmin/UtilityService</url-pattern>
   </servlet-mapping>
+
+	<servlet>
+		<servlet-name>OpenClinicaService</servlet-name>
+		<servlet-class>org.openxdata.server.admin.server.OpenclinicaServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OpenClinicaService</servlet-name>
+		<url-pattern>/emit/openclinica</url-pattern>
+	</servlet-mapping>
   
   <!-- hide .jsp from the url (hides the technology from the user) -->
   <servlet>

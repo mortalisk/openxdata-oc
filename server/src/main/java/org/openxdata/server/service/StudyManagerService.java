@@ -9,7 +9,6 @@ import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -103,13 +102,6 @@ public interface StudyManagerService {
 	 * @return true if it has, else false.
 	 */
 	Boolean hasEditableData(Editable item); 
-	
-	/**
-	 * Check if a study has data collected for its forms
-	 * @param studyKey the studyKey for the study
-	 * @return
-	 */
-	Boolean hasStudyData(String studyKey);
 	
 	/**
 	 * Gets a list of headers for form data submitted to the database.
@@ -254,10 +246,4 @@ public interface StudyManagerService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete);
-
-	List<OpenclinicaStudy> getOpenClinicaStudies();
-
-	String importOpenClinicaStudy(String identifier);
-
-	void exportOpenClinicaStudyData(String studyKey);
 }
