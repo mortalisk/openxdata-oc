@@ -246,4 +246,8 @@ public interface AppMessages extends Messages {
 	String noDataToExport();
 	
 	String exportSuccess();
+	
+	String changeSettings();
+	
+	String changeOpenclinicaSettings();
 }

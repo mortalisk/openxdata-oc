@@ -12,6 +12,7 @@ import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDataDAO;
+import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.StudyDAO;
 import org.openxdata.server.service.OpenclinicaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,22 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	@Autowired
 	private EditableDAO editableDAO;
 	
+	@Autowired
+	private SettingDAO settingDAO;
+	
 	private OpenClinicaSoapClientImpl getClient() {
-		ConnectionURLFactory factory = new ConnectionURLFactory();
-		OpenClinicaSoapClientImpl client = new OpenClinicaSoapClientImpl("study", "b9a60a9d91a96ee522d0c942e5b88dfba25b0a12");
-		client.setConnectionFactory(factory);
+		
+		OpenClinicaSoapClientImpl client = null;
+		if(client == null){
+			String host = settingDAO.getSetting("openClinicaWebServiceHost");
+			String userName = settingDAO.getSetting("OpenClinicaUserName");
+			String password = settingDAO.getSetting("OpenClinicaUserHashedPassword");
+			
+			ConnectionURLFactory factory = new ConnectionURLFactory(host);
+			
+			client = new OpenClinicaSoapClientImpl(userName, password);
+			client.setConnectionFactory(factory);
+		}
 		return client;
 	}
 	

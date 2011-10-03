@@ -16,4 +16,37 @@
     	<dropNotNullConstraint tableName="form_data_version" columnName="form_data_id" 
     		columnDataType="INT"/>
     </changeSet>
+
+	<changeSet author="cattabanks@gmail.com" id="add_default_openclinica_setting">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM setting_group where name='Openclinica';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding the default openclinica setting group.
+		</comment>
+		<sql>
+			insert into setting_group (name, description)
+			value('Openclinica','For managing the connection to OpenClinica Web
+			Services.')
+		</sql>
+		<sql>
+			insert into setting (name, description, value, setting_group_id)
+			values ('openClinicaWebServiceHost', 'Url to point the where OpenClinic Web Services is hosted', 'http://host:8080/OpenClinica',
+			(select setting_group_id from setting_group where name='OpenClinica'));
+		</sql>
+		<sql>
+			insert into setting (name, description, value, setting_group_id)
+			values ('OpenClinicaUserName', 'User Name allowed to access Web Services in OpenClinica', 'openclinica',
+			(select setting_group_id from setting_group where name='OpenClinica'));
+		</sql>
+		<sql>
+			insert into setting (name, description, value, setting_group_id)
+			values ('OpenClinicaUserHashedPassword', 'Hashed Password for the User that will connect to OpenClinica Web Services.', '****',
+			(select setting_group_id from setting_group where name='OpenClinica'));
+		</sql>
+	</changeSet> 
 </databaseChangeLog>
