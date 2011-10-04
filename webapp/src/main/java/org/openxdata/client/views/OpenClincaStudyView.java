@@ -208,7 +208,6 @@ public class OpenClincaStudyView extends View {
 	public void setStudies(Set<OpenclinicaStudy> studies) {
 		this.studies.clear();
 		for (OpenclinicaStudy s : studies) {
-			this.studies.clear();
 			this.studies.add(new OpenclinicaStudySummary(s));
 		}
 		store.removeAll();
