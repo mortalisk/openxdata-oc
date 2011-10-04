@@ -3,6 +3,7 @@ package org.openxdata.server.service;
 import java.util.Set;
 
 import org.openxdata.server.admin.model.OpenclinicaStudy;
+import org.openxdata.server.admin.model.exception.UnexpectedException;
 
 public interface OpenclinicaService {
 
@@ -13,9 +14,11 @@ public interface OpenclinicaService {
 	 */
 	Boolean hasStudyData(String studyKey);
 	
-	Set<OpenclinicaStudy> getOpenClinicaStudies();
+	Set<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException;
+	
+	Set<String> getStudySubjects(String studyOID) throws UnexpectedException;
 
-	String importOpenClinicaStudy(String identifier);
+	String importOpenClinicaStudy(String identifier) throws UnexpectedException;
 
 	void exportOpenClinicaStudyData(String studyKey);
 }

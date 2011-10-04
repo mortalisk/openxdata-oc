@@ -12,6 +12,7 @@ import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDataDAO;
 import org.openxdata.server.dao.SettingDAO;
@@ -67,7 +68,6 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		
 		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
 		List<org.openxdata.oc.model.OpenclinicaStudy> studies = getClient().listAll();
-		
 		List<StudyDef> oxdStudies = studyDAO.getStudies();
 		
 		// Add only unique studies not previously downloaded.
@@ -92,7 +92,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	}
 
 	@Override
-	public String importOpenClinicaStudy(String identifier) {
+	public String importOpenClinicaStudy(String identifier) throws UnexpectedException {
 		
 		Collection<String> subjectKeys = getClient().getSubjectKeys(identifier);
 		
@@ -116,5 +116,4 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		}
 		getClient().importData(allData);	
 	}
-
 }

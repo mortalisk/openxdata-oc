@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.openxdata.server.admin.client.service.OpenclinicaService;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
+import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -23,12 +24,12 @@ public class OpenclinicaServiceImpl extends OxdPersistentRemoteService implement
 	}
 
 	@Override
-	public Set<OpenclinicaStudy> getOpenClinicaStudies() {
+	public Set<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException {
 		return getOpenClinicaService().getOpenClinicaStudies();
 	}
 
 	@Override
-	public String importOpenClinicaStudy(String identifier) {
+	public String importOpenClinicaStudy(String identifier) throws UnexpectedException {
 		return getOpenClinicaService().importOpenClinicaStudy(identifier);
 	}
 
