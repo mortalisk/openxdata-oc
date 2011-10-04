@@ -33,7 +33,7 @@ public class OpenClincaStudyView extends View {
 
 	private Window window;
 	private ContentPanel cp;
-	private Button importStudies, closelButton, exportButton;
+	private Button importStudies, closeButton, exportButton;
 
 	private Grid<OpenclinicaStudySummary> grid;
 	private ListStore<OpenclinicaStudySummary> store;
@@ -146,8 +146,8 @@ public class OpenClincaStudyView extends View {
 
 		});
 
-		closelButton = new Button(appMessages.close());
-		closelButton.addListener(Events.Select, new Listener<ButtonEvent>() {
+		closeButton = new Button(appMessages.close());
+		closeButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -157,7 +157,7 @@ public class OpenClincaStudyView extends View {
 		});
 		cp.addButton(importStudies);
 		cp.addButton(exportButton);
-		cp.addButton(closelButton);
+		cp.addButton(closeButton);
 	}
 
 	protected void exportOpenClinicaStudyData() {
