@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.google.gwt.core.client.GWT;
 
 public class ItemImportController extends Controller {
@@ -117,5 +118,12 @@ public class ItemImportController extends Controller {
 				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, result));
 			}
 		});
+	}
+	
+	public void forwardToOpenClinicaController(){
+		GWT.log("FormListController : forwardToOpenClinicaController");
+        Dispatcher dispatcher = Dispatcher.get();
+        AppEvent event = new AppEvent(OpenClinicaStudyController.LOADOPECLINICASTUDIES);
+    	dispatcher.dispatch(event);
 	}
 }

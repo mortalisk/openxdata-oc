@@ -56,7 +56,7 @@ public class FormListView extends View implements Refreshable {
 	final AppMessages appMessages = GWT.create(AppMessages.class);
 
 	Button export, importButton, newButton, edit, delete, capture,
-			browseResponses, openclinica;
+			browseResponses;
 	
 	private DashboardPortlet portlet;
 	private Grid<FormSummary> grid;
@@ -246,15 +246,6 @@ public class FormListView extends View implements Refreshable {
 			}
 		});
 		browseResponses.hide();
-		
-		openclinica = new Button(appMessages.openClinica());
-		openclinica.addListener(Events.Select, new Listener<ButtonEvent>() {
-			@Override
-			public void handleEvent(ButtonEvent be) {
-				showOpenClinicaView();
-			}
-		});
-		//openclinica.hide();
 
 		User loggedInUser = Registry.get(Emit.LOGGED_IN_USER_NAME);
 		if (loggedInUser != null) {
@@ -270,7 +261,6 @@ public class FormListView extends View implements Refreshable {
 		buttonBar.add(delete, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(export, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(importButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
-		buttonBar.add(openclinica, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		
 		HBoxLayoutData flex = new HBoxLayoutData(new Margins(5, 5, 0, 0));
 		flex.setFlex(1);
@@ -293,11 +283,6 @@ public class FormListView extends View implements Refreshable {
 		portlet.add(cp);
 		portlet.setBottomComponent(buttonBar);
 		portlet.setTopComponent(filterBar);
-	}
-	
-	protected void showOpenClinicaView() {
-		((FormListController) this.controller).forwardToOpenClinicaController();
-		
 	}
 
 	private void checkLoggedInUserPermissions(ColumnModel cm, User loggedInUser) {
@@ -329,7 +314,6 @@ public class FormListView extends View implements Refreshable {
 		if(loggedInUser.hasPermission(Permission.PERM_EXPORT_STUDIES, Permission.PERM_IMPORT_STUDIES)){
 			export.show();
 			importButton.show();
-			openclinica.show();
 		}
 		if (loggedInUser.hasPermission(Permission.PERM_ADD_FORM_DATA)) {
 			capture.show();
