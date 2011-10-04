@@ -70,22 +70,28 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		List<org.openxdata.oc.model.OpenclinicaStudy> studies = getClient().listAll();
 		List<StudyDef> oxdStudies = studyDAO.getStudies();
 		
-		// Add only unique studies not previously downloaded.
-		for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
-			for (StudyDef def : oxdStudies) {
-				if (!def.getName().equals(xStudy.getName())) {
-					studies.remove(xStudy);
+		try{
+			
+			// Add only unique studies not previously downloaded.
+			for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
+				for (StudyDef def : oxdStudies) {
+					if (!def.getName().equals(xStudy.getName())) {
+						studies.remove(xStudy);
+					}
 				}
 			}
-		}
 
-		for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
-			OpenclinicaStudy ocStudy = new OpenclinicaStudy();
-			ocStudy.setName(xStudy.getName());
-			ocStudy.setOID(xStudy.getOID());
-			ocStudy.setIdentifier(xStudy.getIdentifier());
+			for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
+				OpenclinicaStudy ocStudy = new OpenclinicaStudy();
+				ocStudy.setName(xStudy.getName());
+				ocStudy.setOID(xStudy.getOID());
+				ocStudy.setIdentifier(xStudy.getIdentifier());
+				ocStudy.setSubjects(getClient().getSubjectKeys(xStudy.getIdentifier()));
 
-			returnStudies.add(ocStudy);
+				returnStudies.add(ocStudy);
+			}
+		}catch(Exception ex){
+			throw new UnexpectedException(ex.getMessage());
 		}
 
 		return returnStudies;
