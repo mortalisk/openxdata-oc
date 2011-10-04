@@ -33,8 +33,6 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.event.RowEditorEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
@@ -54,7 +52,6 @@ import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
-import com.extjs.gxt.ui.client.widget.form.SimpleComboValue;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TimeField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
@@ -66,8 +63,6 @@ import com.extjs.gxt.ui.client.widget.grid.RowEditor;
 import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.TableLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
-import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -89,7 +84,7 @@ public class FormResponsesView extends View implements Refreshable  {
 	private Grid<FormDataSummary> grid;
 	private RowEditor<FormDataSummary> rowEditor;
 	private ColumnModel columnModel;
-	private PagingToolBar toolBar;
+	private AdjustablePagingToolBar toolBar;
 	private PagingLoader<PagingLoadResult<ModelData>> loader;
 	private Button exportButton;
 	private Button editButton;
@@ -230,7 +225,7 @@ public class FormResponsesView extends View implements Refreshable  {
 
         grid = new Grid<FormDataSummary>(store, columnModel);
         grid.setStripeRows(true);
-        toolBar = new PagingToolBar(PAGE_SIZE);
+        toolBar = new AdjustablePagingToolBar(PAGE_SIZE);
         
         final int numBtns = 4;
         editButton = new Button(appMessages.editResponse());
@@ -384,42 +379,6 @@ public class FormResponsesView extends View implements Refreshable  {
                 }
         );
         loader.setRemoteSort(true);
-    }
-
-    private void initializePagingToolbar() {
-    	GWT.log("FormResponsesView : initializePagingToolbar");
-
-        // initialize the toolbar used for going between pages
-        SimpleComboBox<String> pageSize = new SimpleComboBox<String>();
-        pageSize.setAutoWidth(true);
-        pageSize.setTriggerAction(TriggerAction.ALL);
-        pageSize.setEmptyText(appMessages.itemsPerPage(""));
-        pageSize.add(appMessages.itemsPerPage("10"));
-        pageSize.add(appMessages.itemsPerPage("20"));
-        pageSize.add(appMessages.itemsPerPage("30"));
-        pageSize.add(appMessages.itemsPerPage("40"));
-        pageSize.add(appMessages.itemsPerPage("50"));
-
-        pageSize.addSelectionChangedListener(new SelectionChangedListener<SimpleComboValue<String>>() {
-            @Override
-			public void selectionChanged(SelectionChangedEvent<SimpleComboValue<String>> se) {
-                String[] pageSizeText = se.getSelectedItem().getValue().split("[^\\d]");
-                if (pageSizeText.length > 0) {
-                    try {
-                        Integer newPageSize = Integer.parseInt(pageSizeText[0]);
-                        toolBar.setPageSize(newPageSize);
-                        toolBar.refresh();
-                    } catch (NumberFormatException e) {
-                        GWT.log("Page size "+pageSizeText[0]+" is not a number", e);
-                    }
-                } else {
-                    GWT.log("Page size could not be found in the selected text " + se.getSelectedItem().getValue());
-                }
-            }
-        });
-
-        toolBar.add(new SeparatorToolItem());
-        toolBar.add(pageSize);
         toolBar.bind(loader);
     }
 
@@ -524,7 +483,6 @@ public class FormResponsesView extends View implements Refreshable  {
                      formDataBinding = controller.getFormDataColumnModel(formVersion);
                      initializeColumnModel();
                      initializePagingLoader();
-                     initializePagingToolbar();
                      initializeGrid();
                      controller.getUser();
                      ProgressIndicator.hideProgressBar();
