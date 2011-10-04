@@ -4,7 +4,7 @@
     <groupId>org.openxdata</groupId>
     <artifactId>oxd</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-ALPHA-SNAPSHOT</version>
+    <version>0.1-ALPHA</version>
     <name>OpenXdata</name>
     <url>http://openxdata.org</url>
 
