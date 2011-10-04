@@ -10,6 +10,7 @@ import org.openxdata.client.controllers.FormDesignerController;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.model.StudySummary;
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -32,6 +33,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
+import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.Validator;
@@ -51,8 +53,8 @@ public class NewStudyFormView extends WizardView {
 	private RadioFieldSet createStudyFS;
 	private Radio newStudy;
 	private Radio existingStdyRdio;
-	private UserAccessListField userStudyAccessListField;
-	private UserAccessListField userFormAccessListField;
+	private ItemAccessListField<UserSummary> userStudyAccessListField;
+	private ItemAccessListField<UserSummary> userFormAccessListField;
 	// input fields for new form page
 	private RadioFieldSet createFormFS;
 	private TextField<String> newFormName;
@@ -77,6 +79,8 @@ public class NewStudyFormView extends WizardView {
 
 	private int currentPage = 0;
 	private boolean formVersionEditMode = false;
+	
+	private final NewStudyFormController controller = (NewStudyFormController) this.getController();
 
 	public NewStudyFormView(Controller controller) {
 		super(controller);
@@ -207,7 +211,6 @@ public class NewStudyFormView extends WizardView {
 						userStudyAccessListField.mask();
 						studyDef = null; formDef = null;
 						existingFormName.clearSelections();
-						NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 						controller.getStudyDef(studyId);
 						controller.getForms(studyId);
 					}
@@ -226,9 +229,22 @@ public class NewStudyFormView extends WizardView {
 						newStudyDescription.setValue("");
 					}
 				});
-		userStudyAccessListField = new UserAccessListField(UserAccessListField.Category.STUDY, (NewStudyFormController)controller);
+		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
+        		"rightHeading="+appMessages.usersWithAccessToStudy()+"\n" +
+        		"addOne="+appMessages.addUser()+"\n" +
+        		"addAll="+appMessages.addAllUsers()+"\n" +
+        		"removeOne="+appMessages.removeUser()+"\n" +
+        		"removeAll="+appMessages.removeAllUsers()+"\n" +
+        		"search="+appMessages.searchForAUser()+"\n" +
+        		"loading="+appMessages.loading());
+		userStudyAccessListField = new ItemAccessListField<UserSummary>(messages, controller.getUserStudyAccessController());
+		FieldSet fs = new FieldSet();
+		fs.setHeading(appMessages.setUserAccessToStudy());
+		fs.setCollapsible(true);
+		fs.setExpanded(false);
+		fs.add(userStudyAccessListField);
 		userStudyAccessListField.setEnabled(false);
-		createStudyFS.add(userStudyAccessListField);
+		createStudyFS.add(fs);
 
 		return createStudyPanel;
 	}
@@ -296,7 +312,7 @@ public class NewStudyFormView extends WizardView {
 							public void execute() {
 								ProgressIndicator.showProgressBar();
 								userFormAccessListField.mask();
-								userFormAccessListField.setForm(formDef);
+								controller.setFormForAccessControl(formDef);
 								userFormAccessListField.refresh();
 								userFormAccessListField.unmask();
 								ProgressIndicator.hideProgressBar();
@@ -318,9 +334,22 @@ public class NewStudyFormView extends WizardView {
 				newFormDescription.setValue("");
 			}
 		});
-		userFormAccessListField = new UserAccessListField(UserAccessListField.Category.FORM, (NewStudyFormController)controller);
+		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
+        		"rightHeading="+appMessages.usersWithAccessToForm()+"\n" +
+        		"addOne="+appMessages.addUser()+"\n" +
+        		"addAll="+appMessages.addAllUsers()+"\n" +
+        		"removeOne="+appMessages.removeUser()+"\n" +
+        		"removeAll="+appMessages.removeAllUsers()+"\n" +
+        		"search="+appMessages.searchForAUser()+"\n" +
+        		"loading="+appMessages.loading());
+		userFormAccessListField = new ItemAccessListField<UserSummary>(messages, controller.getUserFormAccessController());
+		FieldSet fs = new FieldSet();
+		fs.setHeading(appMessages.setUserAccessToForm());
+		fs.setCollapsible(true);
+		fs.setExpanded(false);
+		fs.add(userFormAccessListField);
 		userFormAccessListField.setEnabled(false);
-		createFormFS.add(userFormAccessListField);
+		createFormFS.add(fs);
 
 		return createFormPanel;
 	}
@@ -365,7 +394,6 @@ public class NewStudyFormView extends WizardView {
 				@Override
 				public void execute() {
 					ProgressIndicator.showProgressBar();
-					NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 					controller.getStudies();
 					ProgressIndicator.hideProgressBar();
 				}
@@ -386,7 +414,6 @@ public class NewStudyFormView extends WizardView {
 		if (studyDef == null) {
 			return;
 		}
-		NewStudyFormController controller = (NewStudyFormController) NewStudyFormView.this.getController();
 		controller.saveStudy(studyDef, launchFormDesigner, triggerRefreshEvent);
 	}
 	
@@ -491,7 +518,7 @@ public class NewStudyFormView extends WizardView {
 	public void setStudyDef(StudyDef studyDef) {
 		this.studyDef = studyDef;
 		existingStudyDescription.setValue(studyDef.getDescription());
-		userStudyAccessListField.setStudy(studyDef);
+		controller.setStudyForAccessControl(studyDef);
 		userStudyAccessListField.refresh();
 		userStudyAccessListField.unmask();
 		nextButton.setEnabled(true);

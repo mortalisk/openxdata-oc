@@ -7,6 +7,7 @@ import java.util.List;
 import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.controllers.FormDesignerController;
+import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -25,6 +26,7 @@ import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -43,12 +45,12 @@ public class EditStudyFormView extends WizardView {
 
 	private final TextField<String> studyName = new TextField<String>();
 	private final TextField<String> studyDescription = new TextField<String>();
-	private UserAccessListField userAccessToStudy;
+	private ItemAccessListField<UserSummary> userAccessToStudy;
 	private Button designFormButton1;
 
 	private final TextField<String> formName = new TextField<String>();
 	private final TextField<String> formDescription = new TextField<String>();
-	private UserAccessListField userAccessToForm;
+	private ItemAccessListField<UserSummary> userAccessToForm;
 	private Button designFormButton2;
 
 	private final TextField<String> formVersion = new TextField<String>();
@@ -100,10 +102,22 @@ public class EditStudyFormView extends WizardView {
 		studyDescription.setFieldLabel(appMessages.studyDescription());
 		studyDescription.setWidth(300);
 		formPanel.add(studyDescription);
-		userAccessToStudy = new UserAccessListField(UserAccessListField.Category.STUDY, controller);
+		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
+        		"rightHeading="+appMessages.usersWithAccessToStudy()+"\n" +
+        		"addOne="+appMessages.addUser()+"\n" +
+        		"addAll="+appMessages.addAllUsers()+"\n" +
+        		"removeOne="+appMessages.removeUser()+"\n" +
+        		"removeAll="+appMessages.removeAllUsers()+"\n" +
+        		"search="+appMessages.searchForAUser()+"\n" +
+        		"loading="+appMessages.loading());
+		userAccessToStudy = new ItemAccessListField<UserSummary>(messages, controller.getUserStudyAccessController());
+		FieldSet fs = new FieldSet();
+		fs.setHeading(appMessages.setUserAccessToStudy());
+		fs.setCollapsible(true);
+		fs.setExpanded(false);
+		fs.add(userAccessToStudy);
 		userAccessToStudy.mask();
-		userAccessToStudy.setExpanded(false);
-		formPanel.add(userAccessToStudy);
+		formPanel.add(fs);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
 		designFormButton1 = getDesignFormButton(appMessages.designForm());
 		formPanel.add(designFormButton1);
@@ -125,10 +139,22 @@ public class EditStudyFormView extends WizardView {
 		formDescription.setFieldLabel(appMessages.formDescription());
 		formDescription.setWidth(300);
 		formPanel.add(formDescription);
-		userAccessToForm = new UserAccessListField(UserAccessListField.Category.FORM, controller);
+		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
+        		"rightHeading="+appMessages.usersWithAccessToForm()+"\n" +
+        		"addOne="+appMessages.addUser()+"\n" +
+        		"addAll="+appMessages.addAllUsers()+"\n" +
+        		"removeOne="+appMessages.removeUser()+"\n" +
+        		"removeAll="+appMessages.removeAllUsers()+"\n" +
+        		"search="+appMessages.searchForAUser()+"\n" +
+        		"loading="+appMessages.loading());
+		userAccessToForm = new ItemAccessListField<UserSummary>(messages, controller.getUserFormAccessController());
+		FieldSet fs = new FieldSet();
+		fs.setHeading(appMessages.setUserAccessToForm());
+		fs.setCollapsible(true);
+		fs.setExpanded(false);
+		fs.add(userAccessToForm);
 		userAccessToForm.mask();
-		userAccessToForm.setExpanded(false);
-		formPanel.add(userAccessToForm);
+		formPanel.add(fs);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
 		designFormButton2 = getDesignFormButton(appMessages.designForm());
 		formPanel.add(designFormButton2);
@@ -187,13 +213,15 @@ public class EditStudyFormView extends WizardView {
 			// page 1
 			studyName.setValue(study.getName());
 			studyDescription.setValue(study.getDescription());
-			userAccessToStudy.setStudy(formDefVersion.getFormDef().getStudy());
+			controller.setStudyForAccessControl(formDefVersion.getFormDef().getStudy());
+			userAccessToStudy.refresh();
 			userAccessToStudy.unmask();
 			
 			// page 2
 			formName.setValue(form.getName());
 			formDescription.setValue(form.getDescription());
-			userAccessToForm.setForm(formDefVersion.getFormDef());
+			controller.setFormForAccessControl(formDefVersion.getFormDef());
+			userAccessToForm.refresh();
 			userAccessToForm.unmask();
 			
 			// page 3
@@ -202,7 +230,7 @@ public class EditStudyFormView extends WizardView {
 			published.setValue(formDefVersion.getIsDefault());
 
 			designFormButton1.setText(appMessages.designForm() + " (" + form.getName() + " " + formDefVersion.getName() + ")");
-			designFormButton2.setText(appMessages.designForm() + " (" + formDefVersion.getName() + ")");
+			designFormButton2.setText(appMessages.designForm() + " (" + formDefVersion.getName() + ")");			
 		}
 		showWindow(appMessages.editStudyOrForm(), 555, 400);
 	}

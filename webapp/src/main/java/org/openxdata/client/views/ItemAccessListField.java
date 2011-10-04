@@ -1,21 +1,16 @@
 package org.openxdata.client.views;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.openxdata.client.AppMessages;
-import org.openxdata.client.controllers.UserAccessController;
-import org.openxdata.client.model.UserSummary;
+import org.openxdata.client.controllers.ItemAccessController;
 import org.openxdata.client.util.ProgressIndicator;
-import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.User;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
@@ -31,7 +26,6 @@ import com.extjs.gxt.ui.client.widget.Label;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.core.client.GWT;
@@ -40,52 +34,41 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * UserAccessGrid is used to create a DualFieldList, with search and paging functionality.
- * A DualFieldList is two lists where items can be moved from one list to the other.
- * TODO: If this class is to be re-used elsewhere, it should be made generic (see DualFieldList for inspiration)
+ * ItemAccessGrid is used to create a DualFieldList, with search and paging functionality.
+ * (A DualFieldList is two lists where items can be moved from one list to the other.)
+ * This component is used to map items (e.g. Forms, Studies) to an object (e.g. User)
  */
-public class UserAccessListField extends FieldSet {
+public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
 	
-	private UserAccessController controller;
+	protected ItemAccessListFieldMessages messages;
+	
+	private ItemAccessController<M> controller;
 
-    private int pageSize = 20;
-    protected final AppMessages appMessages = GWT.create(AppMessages.class);
-    public enum Category { STUDY, FORM };
-    private Category category;
-    private StudyDef study;
-    private FormDef form;
+    private int pageSize = 20;   
     
-    private UserAccessList fromField;
-    private UserAccessList toField;
+    private PagingFilterListField fromField;
+    private PagingFilterListField toField;
 
-    public UserAccessListField(Category category, UserAccessController controller) {
-        this.category = category;
+
+    public ItemAccessListField(ItemAccessListFieldMessages messages, ItemAccessController<M> controller) {
+    	this.messages = messages;
         this.controller = controller;
         init();
     }
 
     private void init() {
     	setAutoWidth(true);
-    	if (category == Category.STUDY) {
-    		setHeading(appMessages.setUserAccessToStudy());
-    	} else {
-    		setHeading(appMessages.setUserAccessToForm());
-    	}
-        setCollapsible(true);
-        setExpanded(false);
 
-        Button addUserBtn = new Button(appMessages.addUser());
-        addUserBtn.setWidth(110); // note making the buttons manually the same width, so that different languages don't get extremely long buttons and mess up the width of the wizard
-        addUserBtn.setAutoHeight(true); //note: this might need extra word wrapping testing
+        Button addUserBtn = new Button(messages.getAddOne());
+        addUserBtn.setMinWidth(110);
         addUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
             	onButtonRight(be);
             }
         });
-        Button addAllUserBtn = new Button(appMessages.addAllUsers());
-        addAllUserBtn.setWidth(110);
-        addAllUserBtn.setAutoHeight(true);
+        Button addAllUserBtn = new Button(messages.getAddAll());
+        addAllUserBtn.setMinWidth(110);
         addAllUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
@@ -93,18 +76,16 @@ public class UserAccessListField extends FieldSet {
             }
         });
 
-        Button removeUserBtn = new Button(appMessages.removeUser());
-        removeUserBtn.setWidth(110);
-        removeUserBtn.setAutoHeight(true);
+        Button removeUserBtn = new Button(messages.getRemoveOne());
+        removeUserBtn.setMinWidth(110);
         removeUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
                 onButtonLeft(be);
             }
         });
-        Button removeAllUserBtn = new Button(appMessages.removeAllUsers());
-        removeAllUserBtn.setWidth(110);
-        removeAllUserBtn.setAutoHeight(true);
+        Button removeAllUserBtn = new Button(messages.getRemoveAll());
+        removeAllUserBtn.setMinWidth(110);
         removeAllUserBtn.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(ButtonEvent be) {
@@ -116,18 +97,9 @@ public class UserAccessListField extends FieldSet {
         userTable.setVerticalAlign(VerticalAlignment.MIDDLE);
         userTable.setBorders(false);
         
-        fromField = new UserAccessList(appMessages.availableUsers()) {
-            void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<UserSummary>> callback) {
-        		// unmapped studies + forms
-        		if (category == Category.STUDY) {
-        			if (study != null) {
-        				controller.getUnMappedStudyUsers(study.getId(), pagingLoadConfig, callback);
-        			}
-        		} else {
-        			if (form != null) {
-        				controller.getUnMappedFormUsers(form.getId(), pagingLoadConfig, callback);
-        			}
-        		}
+        fromField = new PagingFilterListField(messages.getLeftHeading()) {
+            void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<M>> callback) {
+    				controller.getUnMappedData(pagingLoadConfig, callback);
             }
         };
         userTable.add(fromField);
@@ -141,23 +113,10 @@ public class UserAccessListField extends FieldSet {
         buttons.add(removeUserBtn);
         buttons.add(removeAllUserBtn);
         userTable.add(buttons);
-        
-        String heading = appMessages.usersWithAccessToStudy();
-        if (category == Category.FORM) {
-        	heading = appMessages.usersWithAccessToForm();
-        }
-        toField = new UserAccessList(heading) {
-            void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<UserSummary>> callback) {
-        		// mapped studies + forms
-        		if (category == Category.STUDY) {
-        			if (study != null) {
-        				controller.getMappedStudyUsers(study.getId(), pagingLoadConfig, callback);
-        			}
-        		} else {
-        			if (form != null) {
-        				controller.getMappedFormUsers(form.getId(), pagingLoadConfig, callback);
-        			}
-        		}
+
+        toField = new PagingFilterListField(messages.getRightHeading()) {
+            void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<M>> callback) {
+        		controller.getMappedData(pagingLoadConfig, callback);
             }
         };
         userTable.add(toField);
@@ -183,22 +142,12 @@ public class UserAccessListField extends FieldSet {
     /**
      * delete from right(to), add to left (from)
      */
-    private void buttonLeft(List<UserSummary> sel) {
-    	final List<User> users = new ArrayList<User>();
-    	for (UserSummary summary : sel) {
-    		if (summary.getUser() != null) { // user would be null for "study access" users
-    			users.add(summary.getUser());
-    		}
-    	}
+    private void buttonLeft(final List<M> sel) {
     	ProgressIndicator.showProgressBar();
     	Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
 			public void execute() {
-		    	if (category == Category.STUDY) {
-		    		controller.updateStudyMapping(study.getId(), null, users, UserAccessListField.this);
-		    	} else {
-		    		controller.updateFormMapping(form.getId(), null, users, UserAccessListField.this);
-		    	}
+            	controller.deleteMapping(sel, ItemAccessListField.this);
             }
     	});
     }
@@ -214,40 +163,14 @@ public class UserAccessListField extends FieldSet {
     /**
      * add to right(to), delete from left(from)
      */
-    private void buttonRight(List<UserSummary> sel) {
-        final List<User> users = new ArrayList<User>();
-        for (UserSummary summary : sel) {
-        	if (summary.getUser() != null) { // user would be null for "study access" users
-        		users.add(summary.getUser());
-        	}
-        }
+    private void buttonRight(final List<M> sel) {
         ProgressIndicator.showProgressBar();
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
 			public void execute() {
-		        if (category == Category.STUDY) {
-		    		controller.updateStudyMapping(study.getId(), users, null, UserAccessListField.this);
-		    	} else {
-		    		controller.updateFormMapping(form.getId(), users, null, UserAccessListField.this);
-		    	}
+		    	controller.addMapping(sel, ItemAccessListField.this);
             }
         });
-    }
-    
-    public void setForm(FormDef form) {
-    	this.form = form;
-    }
-
-    public FormDef getForm() {
-    	return form;
-    }
-    
-    public void setStudy(StudyDef study) {
-    	this.study = study;
-    }
-    
-    public StudyDef getStudy() {
-    	return study;
     }
 
     public void refresh() {
@@ -256,27 +179,27 @@ public class UserAccessListField extends FieldSet {
         ProgressIndicator.hideProgressBar();
     }
     
-    abstract class UserAccessList extends ContentPanel {
-    	ListField<UserSummary> field = new ListField<UserSummary>();
+    abstract class PagingFilterListField extends ContentPanel {
+    	ListField<M> field = new ListField<M>();
         PagingToolBar pagingToolBar = new SmallPagingToolBar(pageSize);
-        PagingLoader<PagingLoadResult<UserSummary>> loader;
+        PagingLoader<PagingLoadResult<M>> loader;
         String filterValue;
         
         void loadData() {
         	loader.load();
         }
         
-        UserAccessList(String heading) {
+        PagingFilterListField(String heading) {
         	super();
         	
             setHeading(heading);
             setBorders(false);
             
-            loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(
-                    new RpcProxy<PagingLoadResult<UserSummary>>() {
+            loader = new BasePagingLoader<PagingLoadResult<M>>(
+                    new RpcProxy<PagingLoadResult<M>>() {
                         @Override
-                        public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
-                            GWT.log("UserAccessListField load data");
+                        public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<M>> callback) {
+                            GWT.log("ItemAccessListField load data");
                             final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig)loadConfig;
                             pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, filterValue);
                     		pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
@@ -295,24 +218,24 @@ public class UserAccessListField extends FieldSet {
             loader.setSortDir(SortDir.ASC);
             
             pagingToolBar.bind(loader);
-            ListStore<UserSummary> store = new ListStore<UserSummary>(loader);
+            ListStore<M> store = new ListStore<M>(loader);
             
             // filter to search for users
-            final RemoteStoreFilterField<UserSummary> filterField = new RemoteStoreFilterField<UserSummary> () {
+            final RemoteStoreFilterField<M> filterField = new RemoteStoreFilterField<M> () {
                @Override
                protected void handleOnFilter(String filterValue) {
             	   // handle filtering - this is a call after each key pressed - it might be improved */
-            	   UserAccessList.this.filterValue = filterValue;
+            	   PagingFilterListField.this.filterValue = filterValue;
             	   loader.load(0, pageSize);
                }
                
                @Override
                protected void handleCancelFilter () {
-            	   UserAccessList.this.filterValue = null;
+            	   PagingFilterListField.this.filterValue = null;
             	   loader.load(0, pageSize);
                }
             };
-            filterField.setEmptyText(appMessages.searchForAUser());
+            filterField.setEmptyText("Search");
             filterField.setWidth(185);
             filterField.bind(store);
             
@@ -326,7 +249,7 @@ public class UserAccessListField extends FieldSet {
             field.setBorders(false);
             field.setDisplayField("name");
             field.setSize(185, 100);
-            field.getListView().setLoadingText(appMessages.loading());
+            field.getListView().setLoadingText(messages.getLoading());
             
             setScrollMode(Scroll.AUTOY);
             add(field);
@@ -338,7 +261,7 @@ public class UserAccessListField extends FieldSet {
         	pagingToolBar.refresh();
         }
         
-        abstract void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<UserSummary>> callback);
+        abstract void loadData(PagingToolBar pagingToolBar, PagingLoadConfig pagingLoadConfig, AsyncCallback<PagingLoadResult<M>> callback);
         
     }
 }

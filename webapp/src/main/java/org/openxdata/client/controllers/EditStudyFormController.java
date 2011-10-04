@@ -14,6 +14,7 @@ import org.openxdata.server.admin.model.StudyDef;
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 
@@ -21,7 +22,7 @@ import com.google.gwt.core.client.GWT;
  * Event dispatcher for the EditStudyFormView.
  * 
  */
-public class EditStudyFormController extends UserAccessController {
+public class EditStudyFormController extends Controller {
 
 	AppMessages appMessages = GWT.create(AppMessages.class);
 
@@ -33,12 +34,17 @@ public class EditStudyFormController extends UserAccessController {
 	public final static EventType OPENREADONLY = new EventType();
 	public final static EventType EDITSTUDYFORM = new EventType();
 	public final static EventType CREATENEWVERSION = new EventType();
+	
+	private UserFormAccessController userFormAccessController;
+	private UserStudyAccessController userStudyAccessController;
 
 	public EditStudyFormController(StudyServiceAsync studyService, FormServiceAsync formService) {
 		super();
 		this.studyService = studyService;
 		this.formService = formService;
 		registerEventTypes(OPENREADONLY, EDITSTUDYFORM, CREATENEWVERSION);
+		userFormAccessController = new UserFormAccessController(formService);
+		userStudyAccessController = new UserStudyAccessController(studyService);
 	}
 
 	@Override
@@ -92,14 +98,20 @@ public class EditStudyFormController extends UserAccessController {
 			}
 		});
 	}
+	
+	public UserFormAccessController getUserFormAccessController() {
+		return userFormAccessController;
+	}
+	
+	public UserStudyAccessController getUserStudyAccessController() {
+		return userStudyAccessController;
+	}
+	
+	public void setFormForAccessControl(FormDef form) {
+		userFormAccessController.setForm(form);
+	}
 
-	@Override
-    public StudyServiceAsync getStudyService() {
-	    return studyService;
-    }
-
-	@Override
-    public FormServiceAsync getFormService() {
-	    return formService;
-    }
+	public void setStudyForAccessControl(StudyDef study) {
+		userStudyAccessController.setStudy(study);
+	}
 }
