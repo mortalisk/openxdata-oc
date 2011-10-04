@@ -230,7 +230,7 @@
         <dependency>
 					<groupId>org.openxdata</groupId>
 					<artifactId>oc-conversion-tools</artifactId>
-					<version>0.3-BETA-2-SNAPSHOT</version>
+					<version>0.3-BETA-2</version>
 				</dependency>
     </dependencies>
 
