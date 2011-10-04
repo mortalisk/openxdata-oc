@@ -16,4 +16,17 @@
     	<dropNotNullConstraint tableName="form_data_version" columnName="form_data_id" 
     		columnDataType="INT"/>
     </changeSet>
+
+	<changeSet author="cattabanks@gmail.com" id="changing_guyzb_details">
+		<comment>
+			changing the initial details of the default guyzb user.
+		</comment>
+		<update tableName="users">
+			<column name="first_name" value="legacy"/>
+			<column name="last_name" value="user"/>
+			<column name="email" value="contact@openxdata.org" />
+			<column name="secret_answer" value="the openxdata consortium" />
+			<where>first_name='daniel'</where>
+		</update>
+	</changeSet>
 </databaseChangeLog>
