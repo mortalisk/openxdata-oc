@@ -94,7 +94,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	@Override
 	public String importOpenClinicaStudy(String identifier) throws UnexpectedException {
 		
-		Collection<String> subjectKeys = getClient().getSubjectKeys(identifier);
+		Collection<String> subjectKeys = getStudySubjects(identifier);
 		
 		String xml = "";
 		if(subjectKeys != null && subjectKeys.size() > 0){
@@ -102,6 +102,21 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		}
 		
 		return xml;
+	}
+	
+	@Override
+	public Set<String> getStudySubjects(String studyOID) throws UnexpectedException {
+		Set<String> subjects = new HashSet<String>();
+		try{
+			Collection<String> returnedSubjects = getClient().getSubjectKeys(studyOID);
+			for(String x : returnedSubjects){
+				subjects.add(x);
+			}
+		}catch(Exception ex){
+			throw new UnexpectedException(ex);
+		}
+		
+		return subjects;
 	}
 
 	@Override
