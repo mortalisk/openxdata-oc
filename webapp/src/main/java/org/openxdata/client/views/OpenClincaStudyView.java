@@ -78,6 +78,15 @@ public class OpenClincaStudyView extends View {
 				return "<span>" + study.getIdentifier() + "</span>";
 			}
 		};
+		
+		GridCellRenderer<OpenclinicaStudySummary> subjectRenderer = new GridCellRenderer<OpenclinicaStudySummary>() {
+			public String render(OpenclinicaStudySummary study,
+					String property, ColumnData config, int rowIndex,
+					int colIndex, ListStore<OpenclinicaStudySummary> store,
+					Grid<OpenclinicaStudySummary> grid) {
+				return "<span>" + study.getSubjects().size() + "</span>";
+			}
+		};
 
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -103,6 +112,14 @@ public class OpenClincaStudyView extends View {
 		column.setWidth(75);
 		configs.add(column);
 		column.setRenderer(identifierRenderer);
+		
+		column = new ColumnConfig();
+		column.setId("#ofSubjects");
+		column.setHeader("# of Subjects");
+		column.setAlignment(HorizontalAlignment.RIGHT);
+		column.setWidth(75);
+		configs.add(column);
+		column.setRenderer(subjectRenderer);
 
 		store = new ListStore<OpenclinicaStudySummary>();
 
