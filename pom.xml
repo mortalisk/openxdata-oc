@@ -409,9 +409,9 @@
     </profiles>
 
     <scm>
-        <connection>scm:svn:https://svn.openxdata.org/Server/trunk</connection>
-        <developerConnection>scm:svn:https://svn.openxdata.org/Server/trunk</developerConnection>
-        <url>https://trac.openxdata.org/browser/Server/trunk</url>
+        <connection>scm:git:https://github.com/mortalisk/openxdata-oc</connection>
+	<developerConnection>scm:git:https://github.com/mortalisk/openxdata-oc</developerConnection>
+	<url>https://github.com/mortalisk/openxdata-oc</url>
     </scm>
 
     <distributionManagement>
