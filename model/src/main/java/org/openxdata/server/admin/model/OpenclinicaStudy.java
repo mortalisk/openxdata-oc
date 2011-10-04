@@ -34,4 +34,23 @@ public class OpenclinicaStudy extends LightEntity {
 	public void setIdentifier(String identifier){
 		this.identifier = identifier;
 	}
+	
+	@Override
+	public boolean equals(Object otherStudy) {
+		if (otherStudy == null)
+			return false;
+		
+		if (otherStudy == this)
+			return true;
+		
+		if (this.getClass() != otherStudy.getClass())
+			return false;
+
+		OpenclinicaStudy x = (OpenclinicaStudy) otherStudy;
+		if (this.OID == x.getOID() && this.name == x.getName()
+				&& this.identifier == x.getIdentifier())
+			return true;
+		
+		return false;
+	}
 }
