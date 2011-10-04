@@ -1,7 +1,6 @@
 package org.openxdata.server.admin.client.view;
 
-import org.openxdata.server.admin.client.presenter.IPresenter;
-import org.openxdata.server.admin.client.presenter.WidgetDisplay;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import org.openxdata.server.admin.client.util.CronEntity;
 import org.openxdata.server.admin.client.util.CronExpressionParser;
 import org.openxdata.server.admin.client.util.Utilities;
@@ -10,7 +9,6 @@ import org.openxdata.server.admin.model.TaskDef;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -22,12 +20,12 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
+import org.openxdata.server.admin.client.presenter.IPresenter;
+import org.openxdata.server.admin.client.presenter.WidgetDisplay;
 
 /**
  * This widget displays schedules of the selected task and lets you edit them.
  * 
- * @author daniel
- * @author Ronald.K
  * 
  */
 public class ScheduleView extends Composite implements IPresenter<ScheduleView>, WidgetDisplay {
@@ -298,6 +296,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
 
                 txtSeconds.setFocus(true);
                 rdAllMonthWeekDays.setValue(true);
+                rdAllMonthWeekDays.setEnabled(true);
                 updateAutoCronExpression();
             }
         });
@@ -317,6 +316,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
 
                 txtMinutes.setFocus(true);
                 rdAllMonthWeekDays.setValue(true);
+                rdAllMonthWeekDays.setEnabled(true);
                 updateAutoCronExpression();
             }
         });
@@ -336,6 +336,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
 
                 txtHours.setFocus(true);
                 rdAllMonthWeekDays.setValue(true);
+                rdAllMonthWeekDays.setEnabled(true);
                 updateAutoCronExpression();
             }
         });
@@ -360,6 +361,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                     enabled = true;
                 rdWeekDay.setEnabled(enabled);
                 rdAllMonthWeekDays.setValue(true);
+                rdAllMonthWeekDays.setEnabled(true);
                 enableWeekDays(enabled);
             }
         });
@@ -377,6 +379,7 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                 rdMonthDay.setValue(true);
                 txtMonthDay.setText("1");
                 txtMonthDay.setEnabled(true);
+                rdAllMonthWeekDays.setEnabled(false);
 
                 enableMonths(!enabled);
                 enabledMonthDay(!rdDays.getValue());
@@ -429,6 +432,8 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
 
             @Override
             public void onClick(ClickEvent event) {
+                enableWeekDays(!rdAllMonthWeekDays.getValue());
+                txtMonthDay.setEnabled(!rdAllMonthWeekDays.getValue());
                 updateAutoCronExpression();
             }
         });
@@ -719,6 +724,11 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
             expression += " " + getMonthDay();
             expression += getEveryMonths();
             expression += " " + getWeekDay();
+        }else{
+            expression = getAtSeconds();
+            expression += " "+getAtMinutes();
+            expression += " "+getAtHours();
+            expression += " " + getMonthDayMonthAndWeekDay();
         }
         return expression;
     }
@@ -1047,6 +1057,8 @@ public class ScheduleView extends Composite implements IPresenter<ScheduleView>,
                     this.txtAutoCronExpression.setText(cronExpression);
                     parseCronAndUpdateUI(cronExpression);
                 }
+            }else if(!taskDef.isStartOnStartup()){
+                rdAllMonthWeekDays.setValue(true);
             }
         }
 
