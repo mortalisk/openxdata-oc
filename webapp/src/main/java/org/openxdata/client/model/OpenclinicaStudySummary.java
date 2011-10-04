@@ -1,5 +1,7 @@
 package org.openxdata.client.model;
 
+import java.util.Set;
+
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
@@ -35,6 +37,15 @@ public class OpenclinicaStudySummary extends BaseModel {
 
 	public void setIdentifier(String identifier) {
 		set("identifier", identifier);
+	}
+	
+	public void setSubjects(Set<String> subjects){
+		set("subjects", subjects);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Set<String> getSubjects(){
+		return (Set<String>)get("subjects");
 	}
 
 }

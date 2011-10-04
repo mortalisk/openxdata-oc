@@ -1,5 +1,9 @@
 package org.openxdata.server.admin.model;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.sf.gilead.pojo.gwt.LightEntity;
 
 
@@ -10,6 +14,8 @@ public class OpenclinicaStudy extends LightEntity {
 	String OID;
 	String name;
 	String identifier;
+
+	private Set<String> subjects = new HashSet<String>();
 	
 	public String getOID(){
 		return OID;
@@ -52,5 +58,16 @@ public class OpenclinicaStudy extends LightEntity {
 			return true;
 		
 		return false;
+	}
+
+	
+	public void setSubjects(Collection<String> subjectKeys) {
+		for(String x : subjectKeys){
+			this.subjects.add(x);
+		}
+	}
+	
+	public Set<String> getSubjects(){
+		return this.subjects;
 	}
 }
