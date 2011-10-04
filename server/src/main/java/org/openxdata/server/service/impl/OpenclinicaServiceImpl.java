@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OpenclinicaServiceImpl implements OpenclinicaService {
 
 	@Autowired
-	private StudyDAO studyDao;	
+	private StudyDAO studyDAO;	
 	
 	@Autowired
 	private FormDataDAO formDataDAO;
@@ -58,7 +58,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Form_Data")
 	public Boolean hasStudyData(String studyKey) {
-		StudyDef study = studyDao.getStudy(studyKey);
+		StudyDef study = studyDAO.getStudy(studyKey);
 		return editableDAO.hasEditableData(study);
 	}
 	
@@ -68,7 +68,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
 		List<org.openxdata.oc.model.OpenclinicaStudy> studies = getClient().listAll();
 		
-		studies = getClient().listAll();
+		List<StudyDef> oxdStudies = studyDAO.getStudies();
 		
 		// Add only unique studies not previously downloaded.
 		for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
@@ -106,7 +106,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 
 	@Override
 	public void exportOpenClinicaStudyData(String studyKey) {
-		StudyDef study = studyDao.getStudy(studyKey);
+		StudyDef study = studyDAO.getStudy(studyKey);
 		List<String> allData = new ArrayList<String>(); 
 		for (FormDef form : study.getForms()) {
 			List<FormData> dataList = formDataDAO.getFormDataList(form);
