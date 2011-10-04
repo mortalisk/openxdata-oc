@@ -1,6 +1,6 @@
 package org.openxdata.server.service;
 
-import java.util.List;
+import java.util.Set;
 
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 
@@ -13,7 +13,7 @@ public interface OpenclinicaService {
 	 */
 	Boolean hasStudyData(String studyKey);
 	
-	List<OpenclinicaStudy> getOpenClinicaStudies();
+	Set<OpenclinicaStudy> getOpenClinicaStudies();
 
 	String importOpenClinicaStudy(String identifier);
 

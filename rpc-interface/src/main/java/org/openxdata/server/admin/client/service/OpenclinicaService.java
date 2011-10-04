@@ -1,6 +1,6 @@
 package org.openxdata.server.admin.client.service;
 
-import java.util.List;
+import java.util.Set;
 
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 
@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("openclinica")
 public interface OpenclinicaService extends RemoteService {
 	
-	List<OpenclinicaStudy> getOpenClinicaStudies();
+	Set<OpenclinicaStudy> getOpenClinicaStudies();
 	
 	String importOpenClinicaStudy(String identifier);
 	

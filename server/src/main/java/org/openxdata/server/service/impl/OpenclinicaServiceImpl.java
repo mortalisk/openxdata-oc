@@ -2,7 +2,9 @@ package org.openxdata.server.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.openxdata.oc.transport.OpenClinicaSoapClientImpl;
 import org.openxdata.oc.transport.factory.ConnectionURLFactory;
@@ -61,21 +63,31 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	}
 	
 	@Override
-	public List<OpenclinicaStudy> getOpenClinicaStudies() {
+	public Set<OpenclinicaStudy> getOpenClinicaStudies() {
 		
-		List<OpenclinicaStudy> returnStudies = new ArrayList<OpenclinicaStudy>();
-		List<org.openxdata.oc.model.OpenclinicaStudy> studies = new ArrayList<org.openxdata.oc.model.OpenclinicaStudy>();
+		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
+		List<org.openxdata.oc.model.OpenclinicaStudy> studies = getClient().listAll();
 		
 		studies = getClient().listAll();
 		
-		for(org.openxdata.oc.model.OpenclinicaStudy s : studies) {
+		// Add only unique studies not previously downloaded.
+		for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
+			for (StudyDef def : oxdStudies) {
+				if (!def.getName().equals(xStudy.getName())) {
+					studies.remove(xStudy);
+				}
+			}
+		}
+
+		for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
 			OpenclinicaStudy ocStudy = new OpenclinicaStudy();
-			ocStudy.setName(s.getName());
-			ocStudy.setOID(s.getOID());
-			ocStudy.setIdentifier(s.getIdentifier());
+			ocStudy.setName(xStudy.getName());
+			ocStudy.setOID(xStudy.getOID());
+			ocStudy.setIdentifier(xStudy.getIdentifier());
+
 			returnStudies.add(ocStudy);
 		}
-		
+
 		return returnStudies;
 	}
 

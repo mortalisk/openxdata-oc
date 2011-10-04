@@ -1,6 +1,6 @@
 package org.openxdata.server.admin.server;
 
-import java.util.List;
+import java.util.Set;
 
 import org.openxdata.server.admin.client.service.OpenclinicaService;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
@@ -23,7 +23,7 @@ public class OpenclinicaServiceImpl extends OxdPersistentRemoteService implement
 	}
 
 	@Override
-	public List<OpenclinicaStudy> getOpenClinicaStudies() {
+	public Set<OpenclinicaStudy> getOpenClinicaStudies() {
 		return getOpenClinicaService().getOpenClinicaStudies();
 	}
 
