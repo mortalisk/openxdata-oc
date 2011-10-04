@@ -9,26 +9,33 @@ import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.views.NewStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 
-public class NewStudyFormController extends UserAccessController {
+public class NewStudyFormController extends Controller {
     AppMessages appMessages = GWT.create(AppMessages.class);
     private StudyServiceAsync studyService;
     private FormServiceAsync formService;
     private NewStudyFormView newStudyFormView;
 
     public final static EventType NEWSTUDYFORM = new EventType();
+    
+	private UserFormAccessController userFormAccessController;
+	private UserStudyAccessController userStudyAccessController;
 
     public NewStudyFormController(FormServiceAsync aFormService,StudyServiceAsync aStudyService) {
         super();
         studyService = aStudyService;
         formService = aFormService;
         registerEventTypes(NEWSTUDYFORM);
+        userFormAccessController = new UserFormAccessController(formService);
+    	userStudyAccessController = new UserStudyAccessController(studyService);
     }
     
     @Override
@@ -102,14 +109,20 @@ public class NewStudyFormController extends UserAccessController {
             }
         });
     }
+    
+	public UserFormAccessController getUserFormAccessController() {
+		return userFormAccessController;
+	}
+	
+	public UserStudyAccessController getUserStudyAccessController() {
+		return userStudyAccessController;
+	}
+	
+	public void setFormForAccessControl(FormDef form) {
+		userFormAccessController.setForm(form);
+	}
 
-	@Override
-    public StudyServiceAsync getStudyService() {
-	    return studyService;
-    }
-
-	@Override
-    public FormServiceAsync getFormService() {
-	    return formService;
-    }
+	public void setStudyForAccessControl(StudyDef study) {
+		userStudyAccessController.setStudy(study);
+	}
 }
