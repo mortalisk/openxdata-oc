@@ -229,11 +229,10 @@ public class NewEditUserView extends WizardView {
 			});
 			FormLayout formLayout = new FormLayout();
 			formLayout.setLabelWidth(155);
+			formLayout.setDefaultWidth(300);
 			passwordSet.setLayout(formLayout);
 			passwordSet.setCheckboxToggle(true);
 			passwordSet.setExpanded(false);
-			password.setWidth(300);
-			confirmPassword.setWidth(300);
 			passwordSet.add(password);
 			passwordSet.add(confirmPassword);
 			createUserPanel.add(passwordSet);
