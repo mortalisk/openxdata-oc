@@ -40,6 +40,12 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 	public FormData saveFormData(FormData formData) {
 		return formService.saveFormData(formData);
 	}
+	
+	@Override
+    public void deleteFormData(FormData formData) throws OpenXDataSecurityException {
+	    formService.deleteFormData(formData);
+	    
+    }
 
 	public List<FormDef> getForms() {
 		return formService.getForms();
@@ -72,7 +78,7 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 	}
 
     @Override
-    public Boolean  hasEditableData(Editable item) {
+    public Boolean hasEditableData(Editable item) {
         return formService.hasEditableData(item);
     }
 
@@ -93,14 +99,22 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     }
 
 	@Override
-    public void saveMappedFormUsers(Integer formId, List<User> usersToAdd,
-            List<User> usersToDelete) throws OpenXDataSecurityException {
+    public void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException {
 	    formService.saveMappedFormUsers(formId, usersToAdd, usersToDelete);
     }
-	
-	@Override
-	public void deleteFormData(FormData formData){
-		formService.deleteFormData(formData);
-	}
 
+	@Override
+    public PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getMappedForms(userId, loadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getUnmappedForms(userId, loadConfig);
+    }
+
+	@Override
+    public void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException {
+	    formService.saveMappedUserForms(userId, formsToAdd, formsToDelete);	    
+    }
 }

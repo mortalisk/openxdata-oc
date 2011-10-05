@@ -8,11 +8,9 @@ import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
 import org.openxdata.server.admin.client.presenter.tree.RolezListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.SettingListPresenter;
 import org.openxdata.server.admin.client.presenter.tree.TasksListPresenter;
-import org.openxdata.server.admin.client.presenter.tree.UsersListPresenter;
 import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.MobileInstaller;
-import org.openxdata.server.admin.client.view.StudyView;
 import org.openxdata.server.admin.client.view.constants.OpenXDataStackPanelConstants;
 import org.openxdata.server.admin.client.view.event.LogOutEvent;
 import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
@@ -70,20 +68,16 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
     }
     private OpenXDataImages images;
     private OpenXDataViewApplicationEventListener currentListener;
-    private UsersListPresenter usersListPresenter;
     private RolezListPresenter rolezPresenter;
     private TasksListPresenter tasksListPresenter;
     private SettingListPresenter settingListPresenter;
     private DatasetTreeView datasetTreeView;
     private final DatasetView datasetView;
-    private final StudyView studyView;
     private EventBus eventBus;
     private Display display;
 
     @Inject
     public MainPresenter(EventBus eventBus, Display display,
-            UsersListPresenter usersListPresenter,
-            UserPresenter userPresenter,
             RolezListPresenter rolezPresenter,
             RolePresenter rolePresenter,
             TasksListPresenter tasksListPresenter,
@@ -92,10 +86,8 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
             SettingPresenter settingPresenter,
             DatasetTreeView reportTreeView,
             MainViewController controller,
-            DatasetView reportView,
-            StudyView studyView) {
+            DatasetView reportView) {
         this.eventBus = eventBus;
-        this.usersListPresenter = usersListPresenter;
         this.rolezPresenter = rolezPresenter;
         this.tasksListPresenter = tasksListPresenter;
         this.settingListPresenter = settingListPresenter;
@@ -103,7 +95,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
         this.display = display;
         images = WidgetDisplay.images;
         this.datasetView = reportView;
-        this.studyView = studyView;
         bindHandlers();
         bindUI();
 
@@ -111,8 +102,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
     private void bindUI() {
 
-        display.addStack(usersListPresenter.getDisplay(),
-                Utilities.createHeaderHTML(images.users(), CONSTANTS.label_users()));
         display.addStack(rolezPresenter.getDisplay(),
                 Utilities.createHeaderHTML(images.roles(), CONSTANTS.label_roles()));
         display.addStack(tasksListPresenter.getDisplay(),
@@ -231,7 +220,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
         //TODO  widget code does not belong here
         final DialogBox dataListBox = new DialogBox(false);
         VerticalPanel vp = new VerticalPanel();
-        vp.add(studyView);
         VerticalPanel bottomPanel = new VerticalPanel();
         Button btn = new Button("Close");
         btn.addClickHandler(new ClickHandler() {
@@ -263,12 +251,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
     private void switchToView(int newIndex) {
         switch (newIndex) {
-            case OpenXDataStackPanelConstants.INDEX_STUDIES:
-                //load studies and maps
-                break;
-            case OpenXDataStackPanelConstants.INDEX_USERS:
-                eventBus.fireEvent(new ViewEvent<User>(User.class));
-                break;
             case OpenXDataStackPanelConstants.INDEX_ROLES:
                 eventBus.fireEvent(new ViewEvent<Role>(Role.class));
                 break;

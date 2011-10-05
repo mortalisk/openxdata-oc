@@ -44,6 +44,13 @@ public interface UserDAO extends BaseDAO<User> {
 	User findUserByPhoneNo(String phoneNo);
 	
 	/**
+	 * Retrieves user by identifier
+	 * @param id
+	 * @return
+	 */
+	User getUser(Integer id);
+	
+	/**
 	 * Saves a user to the database.
 	 * 
 	 * @param user the user to save.

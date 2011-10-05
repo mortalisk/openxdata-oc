@@ -235,7 +235,7 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
             	   loader.load(0, pageSize);
                }
             };
-            filterField.setEmptyText("Search");
+            filterField.setEmptyText(messages.getSearch());
             filterField.setWidth(185);
             filterField.bind(store);
             

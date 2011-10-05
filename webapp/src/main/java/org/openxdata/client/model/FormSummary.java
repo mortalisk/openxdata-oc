@@ -29,10 +29,12 @@ public class FormSummary extends BaseModel {
     public FormSummary(String id, String form) {
     	setId(id);
     	setForm(form);
+    	setName(form);
     }
 	
 	public FormSummary(String id, String form, String version, String status, String organisation, String creator, Date changed, String responses) {
 		setId(id);
+		setName(form);
 	    setForm(form);
 	    setVersion(version);
 	    setStatus(status);
@@ -56,6 +58,14 @@ public class FormSummary extends BaseModel {
 
 	public void setForm(String form) {
 		set("form", form);
+	}
+	
+	public String getName() {
+		return get("name");
+	}
+	
+	public void setName(String name) {
+		set("name", name);
 	}
 
 	public String getStatus() {
@@ -136,10 +146,10 @@ public class FormSummary extends BaseModel {
 	public void updateFormDefinition(FormDef formDef) {
 		setId(String.valueOf("d" + formDef.getId()));
 		setForm(formDef.getName());
+		setName(formDef.getName());
 		// newly created forms may not have any version
-		// FIXME: what is this about no versions....
-		if (formDef.getVersions().size() > 0) {
-			FormDefVersion formVersion = formDef.getDefaultVersion();
+		FormDefVersion formVersion = formDef.getDefaultVersion();
+		if (formVersion != null) {
 			setVersion(formVersion.getName());
 			setPublished(true);
 		} else {
@@ -157,6 +167,7 @@ public class FormSummary extends BaseModel {
 		setId(String.valueOf(formVersion.getId()));
 		FormDef formDef = formVersion.getFormDef();
 		setForm(formDef.getName());
+		setName(formDef.getName());
 		setVersion(formVersion.getName());
 		setPublished(formVersion.getIsDefault());
 		StudyDef study = formDef.getStudy();

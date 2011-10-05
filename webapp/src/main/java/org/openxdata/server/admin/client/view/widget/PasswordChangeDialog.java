@@ -205,7 +205,7 @@ public class PasswordChangeDialog extends DialogBox {
 		else{
 			if(validateUserPassword()){
                 adminUser.setClearTextPassword(newPassword);
-                Context.getUserService().saveUser(adminUser, new OpenXDataAsyncCallback<Void>() {
+                Context.getUserService().saveUser(adminUser, new OpenXDataAsyncCallback<User>() {
 
                     @Override
 					public void onOtherFailure(Throwable throwable) {
@@ -213,7 +213,7 @@ public class PasswordChangeDialog extends DialogBox {
                     }
 
                     @Override
-					public void onSuccess(Void result) {
+					public void onSuccess(User result) {
                         finalizePasswordChange();
                     }
                 });

@@ -8,6 +8,7 @@ import org.openxdata.client.Emit;
 import org.openxdata.client.Refreshable;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.controllers.UserListController;
+import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.Permission;
@@ -23,6 +24,7 @@ import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
@@ -47,13 +49,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class UserListView extends View implements Refreshable {
 	final AppMessages appMessages = GWT.create(AppMessages.class);
-	
+
 	public static final int PAGE_SIZE = 20;
 
 	private Button importButton;
 	private Button newButton;
 	private Button editButton;
-	
+
 	private DashboardPortlet portlet;
 	private Grid<UserSummary> grid;
 	SearchPagingToolBar<UserSummary> toolBar;
@@ -70,55 +72,58 @@ public class UserListView extends View implements Refreshable {
 		ProgressIndicator.showProgressBar();
 
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-		configs.add(new ColumnConfig("ID", "id", 20));
-		configs.add(new ColumnConfig("name", "user name", 175));
-		configs.add(new ColumnConfig("firstName", "first name", 175));
-		configs.add(new ColumnConfig("middleName", "middle name", 100));
-		configs.add(new ColumnConfig("lastName", "last name", 175));
-		configs.add(new ColumnConfig("status", "status", 100));
-		configs.add(new ColumnConfig("email", "email", 250));
-		configs.add(new ColumnConfig("phoneNo", "phone", 100));
+		configs.add(new ColumnConfig("ID", appMessages.id(), 20));
+		configs.add(new ColumnConfig("name", appMessages.username(), 175));
+		configs.add(new ColumnConfig("firstName", appMessages.firstName(), 175));
+		configs.add(new ColumnConfig("middleName", appMessages.middleName(), 100));
+		configs.add(new ColumnConfig("lastName", appMessages.lastName(), 175));
+		configs.add(new ColumnConfig("status", appMessages.status(), 100));
+		configs.add(new ColumnConfig("email", appMessages.eMail(), 250));
+		configs.add(new ColumnConfig("phoneNo", appMessages.phoneNo(), 100));
 		cm = new ColumnModel(configs);
 		cm.setHidden(0, true); // hide ID column
-		
+
 		toolBar = new SearchPagingToolBar<UserSummary>(PAGE_SIZE);
 		loader = new BasePagingLoader<PagingLoadResult<UserSummary>>(
-                new RpcProxy<PagingLoadResult<UserSummary>>() {
-                    @Override
-                    public void load(Object loadConfig, final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
-                    	ProgressIndicator.showProgressBar();
-                        final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig)loadConfig;
-                        if (pagingLoadConfig.getSortField() == null || pagingLoadConfig.getSortField().trim().equals("")) {
-                        	pagingLoadConfig.setSortField("name");
-                        	pagingLoadConfig.setSortDir(SortDir.ASC);
-                        }
-                        GWT.log("sortField="+pagingLoadConfig.getSortField());
-                        pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
-                        pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, toolBar.getSearchFilterValue());
-                        GWT.log("UserListView RpcProxy:load loadConfig pageSize="+pagingLoadConfig.getLimit()+" sortField="+pagingLoadConfig.getSortField()+" filter="+toolBar.getSearchFilterValue());
-                        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-                            @Override
-							public void execute() {
-                                final UserListController controller = (UserListController)UserListView.this.getController();
-                                controller.getUsers(pagingLoadConfig, callback);
-                            }
-                        });
-                    }
-                }
-        );
-        loader.setRemoteSort(true);
-        toolBar.bind(loader);
-        
+		        new RpcProxy<PagingLoadResult<UserSummary>>() {
+			        @Override
+			        public void load(Object loadConfig,
+			                final AsyncCallback<PagingLoadResult<UserSummary>> callback) {
+				        ProgressIndicator.showProgressBar();
+				        final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig) loadConfig;
+				        if (pagingLoadConfig.getSortField() == null
+				                || pagingLoadConfig.getSortField().trim().equals("")) {
+					        pagingLoadConfig.setSortField("name");
+					        pagingLoadConfig.setSortDir(SortDir.ASC);
+				        }
+				        GWT.log("sortField=" + pagingLoadConfig.getSortField());
+				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
+				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, toolBar.getSearchFilterValue());
+				        GWT.log("UserListView RpcProxy:load loadConfig pageSize=" + pagingLoadConfig.getLimit()
+				                + " sortField=" + pagingLoadConfig.getSortField()
+				                + " filter=" + toolBar.getSearchFilterValue());
+				        Scheduler.get().scheduleDeferred(
+				                new ScheduledCommand() {
+					                @Override
+					                public void execute() {
+						                final UserListController controller = (UserListController) UserListView.this.getController();
+						                controller.getUsers(pagingLoadConfig, callback);
+					                }
+				                });
+			        }
+		        });
+		loader.setRemoteSort(true);
+		toolBar.bind(loader);
+
 		ListStore<UserSummary> store = new ListStore<UserSummary>(loader);
 		grid = new Grid<UserSummary>(store, cm);
 		grid.setAutoExpandColumn("name");
 		grid.setAutoExpandMax(10000);
 		grid.setStripeRows(true);
 		grid.setBorders(true);
-		
 
 		// new
-		newButton = new Button("New");
+		newButton = new Button(appMessages.newX());
 		newButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -128,7 +133,7 @@ public class UserListView extends View implements Refreshable {
 		newButton.hide();
 
 		// edit
-		editButton = new Button("Edit");
+		editButton = new Button(appMessages.edit());
 		editButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 			@Override
 			public void handleEvent(ButtonEvent be) {
@@ -136,18 +141,26 @@ public class UserListView extends View implements Refreshable {
 			}
 		});
 		editButton.hide();
-		
-		importButton = new Button("Import");
-		importButton.addListener(Events.Select, new Listener<ButtonEvent>(){
+
+		importButton = new Button(appMessages.importX());
+		importButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 
 			@Override
 			public void handleEvent(ButtonEvent be) {
 				importItem();
 			}
-			
+
 		});
 		importButton.hide();
-		
+
+		grid.addListener(Events.CellDoubleClick,
+		        new Listener<GridEvent<FormSummary>>() {
+			        @Override
+			        public void handleEvent(GridEvent<FormSummary> be) {
+				        editUser();
+			        }
+		        });
+
 		User loggedInUser = Registry.get(Emit.LOGGED_IN_USER_NAME);
 		if (loggedInUser != null) {
 			checkLoggedInUserPermissions(cm, loggedInUser);
@@ -160,32 +173,32 @@ public class UserListView extends View implements Refreshable {
 		buttonBar.add(newButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(editButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(importButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
-		
-		//LayoutContainer filterBar = new LayoutContainer();
-		//filterBar.setLayout(new HBoxLayout());
-		//filterBar.add(filterField, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
+
+		// LayoutContainer filterBar = new LayoutContainer();
+		// filterBar.setLayout(new HBoxLayout());
+		// filterBar.add(filterField, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 
 		portlet = new DashboardPortlet();
-		portlet.setHeading("List of Users");
+		portlet.setHeading(appMessages.listOfUsers());
 		ContentPanel cp = new ContentPanel();
 		cp.setLayout(new FitLayout());
 		cp.setHeaderVisible(false);
 		cp.add(grid);
-		//cp.setTopComponent(filterBar);
+		// cp.setTopComponent(filterBar);
 		cp.setBottomComponent(toolBar);
 		portlet.add(cp);
 		portlet.setBottomComponent(buttonBar);
-		
+
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-            @Override
+			@Override
 			public void execute() {
-                // load the first set of data
-                PagingLoadConfig config = new BasePagingLoadConfig(0, PAGE_SIZE);
-                loader.load(config);
-            }
-        });
+				// load the first set of data
+				PagingLoadConfig config = new BasePagingLoadConfig(0, PAGE_SIZE);
+				loader.load(config);
+			}
+		});
 	}
-	
+
 	private void checkLoggedInUserPermissions(ColumnModel cm, User loggedInUser) {
 		if (loggedInUser.hasPermission(Permission.PERM_ADD_USERS)) {
 			newButton.show();
@@ -193,30 +206,29 @@ public class UserListView extends View implements Refreshable {
 		if (loggedInUser.hasPermission(Permission.PERM_EDIT_USERS)) {
 			editButton.show();
 		}
-		//if(loggedInUser.hasPermission(Permission.PERM_IMPORT_USERS)){
-		//	importButton.show();
-		//}
+		// if(loggedInUser.hasPermission(Permission.PERM_IMPORT_USERS)){
+		// importButton.show();
+		// }
 	}
-	
+
 	protected void importItem() {
 		ProgressIndicator.showProgressBar();
 		UserListController controller = (UserListController) getController();
 		if (grid.getSelectionModel().getSelectedItem() != null) {
 			UserSummary summary = grid.getSelectionModel().getSelectedItem();
-			if(summary.getUser() != null){
-				controller.forwardToItemImportController(summary.getUser());				
-			}
-			else{
-				MessageBox.alert(appMessages.listOfForms(), appMessages.noFormVersion(), null);
+			if (summary.getUser() != null) {
+				controller.forwardToItemImportController(summary.getUser());
+			} else {
+				MessageBox.alert(appMessages.listOfUsers(), appMessages.noUserSelected(), null);
 				ProgressIndicator.hideProgressBar();
 			}
-		}
-		else{
+		} else {
 			controller.forwardToItemImportController(null);
 		}
 	}
-	
+
 	private void newUser() {
+		ProgressIndicator.showProgressBar();
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
@@ -238,7 +250,7 @@ public class UserListView extends View implements Refreshable {
 				}
 			});
 		} else {
-			MessageBox.alert("List of Users", "A User must be selected", null);
+			MessageBox.alert(appMessages.listOfUsers(), appMessages.noUserSelected(), null);
 		}
 	}
 
@@ -264,13 +276,13 @@ public class UserListView extends View implements Refreshable {
 				store.update(summary);
 			}
 		} else if (event.getEventType() == RefreshableEvent.Type.CREATE_USER) {
-			User user = event.getData();			
+			User user = event.getData();
 			ListStore<UserSummary> store = grid.getStore();
 			UserSummary summary = new UserSummary(user);
 			store.add(summary);
 		}
 	}
-	
+
 	UserSummary getUserSummary(int userId) {
 		String userIdStr = String.valueOf(userId);
 		for (UserSummary userSummary : grid.getStore().getModels()) {
@@ -278,7 +290,7 @@ public class UserListView extends View implements Refreshable {
 				return userSummary;
 			}
 		}
-		GWT.log("ERROR: no user summary found id="+userId);
+		GWT.log("ERROR: no user summary found id=" + userId);
 		return null;
 	}
 }

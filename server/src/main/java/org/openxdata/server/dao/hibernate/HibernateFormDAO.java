@@ -8,10 +8,15 @@ import org.hibernate.Query;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.FormDAO;
 import org.springframework.stereotype.Repository;
+
+import com.googlecode.genericdao.search.Filter;
+import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 
 /**
  *
@@ -70,5 +75,21 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	@Override
     public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) {
 		return findAllUsersByPage(loadConfig, false, FormDef.class, formId);
+    }
+
+	@Override
+    public PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
+		formSearch.addFilterSome("users", Filter.equal("id", userId));
+	    SearchResult<FormDef> result = searchAndCount(formSearch);
+	    return getPagingLoadResult(loadConfig, result);
+    }
+
+	@Override
+    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
+		formSearch.addFilterAll("users", Filter.notEqual("id", userId));
+	    SearchResult<FormDef> result = searchAndCount(formSearch);
+	    return getPagingLoadResult(loadConfig, result);
     }
 }

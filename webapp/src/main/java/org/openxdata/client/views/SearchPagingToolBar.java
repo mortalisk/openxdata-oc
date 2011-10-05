@@ -36,7 +36,7 @@ public class SearchPagingToolBar<M extends ModelData> extends AdjustablePagingTo
         	   loader.load(new BasePagingLoadConfig(0, getPageSize()));
            }
         };
-        filterField.setEmptyText("Search");
+        filterField.setEmptyText(appMessages.search());
         filterField.setWidth(185);
 
         insert(new SeparatorToolItem(), 0);

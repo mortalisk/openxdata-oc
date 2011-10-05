@@ -9,7 +9,6 @@ import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.TaskDef;
-import org.openxdata.server.admin.model.User;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -35,17 +34,6 @@ public class MainViewControllerFacade  {
 	private static MainViewController mainViewControllerInstance;
 	
 	/**
-	 * Loads <code>Studies</code>.
-	 * 
-	 * @param reload
-	 *            parameter to indicate if <code>database</code> call should be
-	 *            made in subsequent calls of this method.
-	 */
-	public static void loadStudies(boolean reload) {
-		getMVCInstance().getStudiesViewController().loadStudies(reload);
-	}
-	
-	/**
 	 * @return <code>this</code> instance of <code>MainViewController</code>
 	 */
 	private static MainViewController getMVCInstance() {
@@ -65,27 +53,10 @@ public class MainViewControllerFacade  {
 	}
 	
 	/**
-	 * Saves new, modified or dirty <code>Studies</code>.
-	 */
-	public static void saveStudies() {
-		getMVCInstance().getStudiesViewController().saveStudies();
-	}
-	
-	/**
 	 * Saves new, modified or dirty <code>Reports</code>.
 	 */
 	public static void saveReports() {
 		getMVCInstance().getReportsViewController().saveReports();
-	}
-	
-	/**
-	 * Loads all the persisted <code>UserStudyMap objects.</code>
-	 * 
-	 * @param reload
-	 *            parameter to determine if a database reload is needed.
-	 */
-	public static void loadAllUserMappedStudies(boolean reload) {
-		getMVCInstance().getStudiesViewController().loadMappedStudies(reload);
 	}
 	
 	/**
@@ -106,16 +77,6 @@ public class MainViewControllerFacade  {
 	 */
 	public static void saveMappedReports() {
 		getMVCInstance().getReportsViewController().saveMappedReports();
-	}
-	
-	/**
-	 * Loads all the persisted <code>UserFormMap objects.</code>
-	 * 
-	 * @param reload
-	 *            parameter to determine if a database reload is needed.
-	 */
-	public static void loadAllUserMappedForms(boolean reload) {
-		getMVCInstance().getStudiesViewController().loadMappedForms(reload);
 	}
 	
 	/**
@@ -146,16 +107,10 @@ public class MainViewControllerFacade  {
 				// notify observers
 				// so we need some objects at the earliest time possible like
 				// Permissions, Roles and Users.
-				if (RolesListUtil.getPermissionResolver().isViewPermission(
-				        "Perm_View_Studies"))
-					MainViewControllerFacade.loadStudies(false);
 				
 				if (RolesListUtil.getPermissionResolver().isViewPermission(
 				        "Perm_View_Reports"))
 					MainViewControllerFacade.loadReports(false);
-				if (RolesListUtil.getPermissionResolver().isViewPermission(
-				        "Perm_View_Forms"))
-					MainViewControllerFacade.loadAllUserMappedForms(false);
 				
 				if (RolesListUtil.getPermissionResolver().isViewPermission(
 				        "Perm_View_ReportGroups"))
@@ -215,20 +170,6 @@ public class MainViewControllerFacade  {
 			public void execute() {
 				switch (widgetFactory.getOpenXdataStackPanel()
 				        .getSelectedIndex()) {
-					case OpenXDataStackPanelConstants.INDEX_STUDIES:
-						if ((widgetFactory.getStudyView())
-						        .isInFormDesignMode())
-							(widgetFactory.getStudyView())
-							        .refreshItem();
-						else {
-							if (RolesListUtil.getPermissionResolver()
-							        .isViewPermission("Perm_View_Studies")) {
-								loadStudies(true);
-								loadAllUserMappedStudies(true);
-							}
-						}
-						break;
-
 					case OpenXDataStackPanelConstants.INDEX_REPORTS:
 						if (RolesListUtil.getPermissionResolver()
 						        .isViewPermission("Perm_View_Reports")) {
@@ -259,19 +200,6 @@ public class MainViewControllerFacade  {
 			@SuppressWarnings("deprecation")
 			public void execute() {
 				switch (newIndex) {
-					case OpenXDataStackPanelConstants.INDEX_STUDIES:
-						if (RolesListUtil.getPermissionResolver()
-						        .isViewPermission("Perm_View_Studies")) {
-							MainViewControllerFacade
-							        .loadAllUserMappedStudies(false);
-							MainViewControllerFacade.loadStudies(false);
-						}
-						widgetFactory.getHorizontalSplitPanel().setRightWidget(
-						        widgetFactory.getStudyView());
-						break;
-					case OpenXDataStackPanelConstants.INDEX_USERS:
-                                                eventBus.fireEvent(new ViewEvent<User>(User.class));
-						break;
 					case OpenXDataStackPanelConstants.INDEX_ROLES:
                                                 eventBus.fireEvent(new ViewEvent<Role>(Role.class));
 						break;

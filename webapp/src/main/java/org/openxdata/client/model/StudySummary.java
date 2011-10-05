@@ -26,6 +26,7 @@ public class StudySummary extends BaseModel {
     	studyDefinition = studyDef;
     	setId(String.valueOf(studyDef.getId()));
     	setStudy(studyDef.getName());
+    	setName(studyDef.getName());
 	    setDescription(studyDef.getDescription());
 	    setCreator(studyDef.getCreator().getName());
 	    if (studyDef.getDateChanged() != null) {
@@ -38,6 +39,7 @@ public class StudySummary extends BaseModel {
 	
 	public StudySummary(String id, String study, String description, String creator, Date changed, List<FormDef> forms) {
 		setId(id);
+		setName(study);
 	    setStudy(study);
 	    setDescription(description);
 	    setCreator(creator);
@@ -59,6 +61,14 @@ public class StudySummary extends BaseModel {
 
 	public void setStudy(String study) {
 	    set("study", study);
+	}
+	
+	public String getName() {
+		return get("name");
+	}
+	
+	public void setName(String name) {
+		set("name", name);
 	}
 	  
 	public String getDescription() {

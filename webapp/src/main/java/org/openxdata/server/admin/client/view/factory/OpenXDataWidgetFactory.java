@@ -2,10 +2,8 @@ package org.openxdata.server.admin.client.view.factory;
 
 import org.openxdata.server.admin.client.permissions.UIViewLabels;
 import org.openxdata.server.admin.client.view.DatasetView;
-import org.openxdata.server.admin.client.view.StudyView;
-import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
-import org.openxdata.server.admin.client.view.treeview.StudiesTreeView;
+import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
@@ -27,12 +25,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 @SuppressWarnings("deprecation")
 public interface OpenXDataWidgetFactory {
 	
-	/**
-	 * Retrieves the <tt>StudiesTreeView</tt>
-	 * 
-	 * @return Instance of {@link StudiesTreeView}
-	 */
-	StudiesTreeView getStudiesTreeView();
 	
 	/**
 	 * Retrieves the <tt>ReportsTreeView</tt>
@@ -40,13 +32,6 @@ public interface OpenXDataWidgetFactory {
 	 * @return Instance of {@link DatasetTreeView}
 	 */
 	DatasetTreeView getReportsTreeView();
-	
-	/**
-	 * Retrieves the <tt>StudyView</tt>
-	 * 
-	 * @return Instance of {@link StudyView}
-	 */
-	StudyView getStudyView();
 	
 	/**
 	 * Retrieves the <tt>ReportView</tt>

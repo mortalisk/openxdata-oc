@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.StudyDAO;
 import org.springframework.stereotype.Repository;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 
 /**
  *
@@ -67,5 +70,21 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
 	@Override
     public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
 		return findAllUsersByPage(loadConfig, false, StudyDef.class, studyId);
+    }
+
+	@Override
+    public PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		Search studySearch = getSearchFromLoadConfig(loadConfig, "name");
+		studySearch.addFilterSome("users", Filter.equal("id", userId));
+	    SearchResult<StudyDef> result = searchAndCount(studySearch);
+	    return getPagingLoadResult(loadConfig, result);
+    }
+
+	@Override
+    public PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		Search studySearch = getSearchFromLoadConfig(loadConfig, "name");
+		studySearch.addFilterAll("users", Filter.notEqual("id", userId));
+	    SearchResult<StudyDef> result = searchAndCount(studySearch);
+	    return getPagingLoadResult(loadConfig, result);
     }
 }

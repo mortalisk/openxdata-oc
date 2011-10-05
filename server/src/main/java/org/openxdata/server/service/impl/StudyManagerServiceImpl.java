@@ -13,6 +13,7 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -308,5 +309,35 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 				userStudyMapDAO.deleteUserMappedStudy(map);
 			}
 		}
+    }
+
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+    public PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return studyDao.getMappedStudies(userId, loadConfig);
+    }
+
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+    public PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return studyDao.getUnmappedStudies(userId, loadConfig);
+    }
+
+	@Override
+	@Secured({"Perm_Add_Users", "Perm_Add_Studies"})
+    public void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete)
+            throws OpenXDataSecurityException {
+	    if (studiesToAdd != null) {
+		    for (StudyDef sd : studiesToAdd) {
+		    	UserStudyMap map = new UserStudyMap(userId, sd.getId());
+				userStudyMapDAO.saveUserMappedStudy(map);
+		    }
+	    }
+	    if (studiesToDelete != null) {
+		    for (StudyDef sd : studiesToDelete) {
+		    	UserStudyMap map = userStudyMapDAO.getUserStudyMap(userId, sd.getId());
+				userStudyMapDAO.deleteUserMappedStudy(map);
+		    }
+	    }
     }
 }

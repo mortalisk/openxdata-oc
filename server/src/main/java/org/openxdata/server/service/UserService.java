@@ -41,8 +41,9 @@ public interface UserService {
 	 * Saves a new and modified users to the database.
 	 * 
 	 * @param user the user to save.
+	 * @return user saved user with id populated
 	 */
-	void saveUser(User user);
+	User saveUser(User user);
 	
 	/**
 	 * Saves modified user (must be currently logged in user) to the database.

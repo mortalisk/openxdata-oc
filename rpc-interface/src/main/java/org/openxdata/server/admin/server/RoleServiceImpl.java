@@ -6,6 +6,9 @@ import javax.servlet.ServletException;
 
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Role;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -56,4 +59,19 @@ public class RoleServiceImpl extends OxdPersistentRemoteService implements org.o
 	public void saveRole(Role role) {
 		roleService.saveRole(role);
 	}
+
+	@Override
+    public PagingLoadResult<Role> getMappedRoles(Integer userId, PagingLoadConfig pagingLoadConfig) {
+	    return roleService.getMappedRoles(userId, pagingLoadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<Role> getUnMappedRoles(Integer userId, PagingLoadConfig pagingLoadConfig) {
+	    return roleService.getUnMappedRoles(userId, pagingLoadConfig);
+    }
+
+	@Override
+    public void saveMappedRoles(Integer userId, List<Role> rolesToAdd, List<Role> rolesToDelete) throws OpenXDataSecurityException {
+	    roleService.saveMappedRoles(userId, rolesToAdd, rolesToDelete);
+    }
 }

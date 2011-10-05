@@ -246,4 +246,29 @@ public interface StudyManagerService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete);
+	
+	/**
+	 * Get a page of Studies mapped to a specific User 
+	 * @param userId Integer id of specified user
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Get a page of Studies NOT mapped to the specified User
+	 * @param userId Integer id of specified user
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Updates the studies currently mapped to the specified user.
+	 * @param userId Integer id of specified user
+	 * @param studiesToAdd List of studies to add to the user's access
+	 * @param studiesToDelete List of studies to delete from the user's access
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete) throws OpenXDataSecurityException;
 }

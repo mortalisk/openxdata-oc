@@ -27,6 +27,7 @@ public interface AppMessages extends Messages {
 	String cancel();
 	String close();
 	String firstName();
+	String middleName();
 	String lastName();
 	String phoneNo();
 	String eMail();
@@ -237,4 +238,45 @@ public interface AppMessages extends Messages {
 	String openReadOnly();
 	
 	String closeFormDesigner();
+	
+	String search();
+	
+	String newX();
+	String listOfUsers();
+	String noUserSelected();
+	
+	String newUser();
+	String editUser(String username);
+	String saveAndNext();
+	String setPassword();
+	String usernameIsNotUnique();
+	String passwordAtLeastXCharacters(String numberOfCharacters);
+	String invalidEmailAddress();
+	
+	String setRolesForUser();
+	String availableRoles();
+	String rolesAssignedToUser();
+	String addRole();
+	String addAllRoles();
+	String removeRole();
+	String removeAllRoles();
+	String searchForRole();
+	
+	String setStudiesForUser();
+	String availableStudies();
+	String studiesAssignedToUser();
+	String addStudy();
+	String addAllStudies();
+	String removeStudy();
+	String removeAllStudies();
+	String searchForStudy();
+	
+	String setFormsForUser();
+	String availableForms();
+	String formsAssignedToUser();
+	String addForm();
+	String addAllForms();
+	String removeForm();
+	String removeAllForms();
+	String searchForForm();
 }
