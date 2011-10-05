@@ -115,10 +115,8 @@ public class ItemExportView extends ActionOptionView {
 	private String getSanitisedFileName(String originalFileName) {
 		String newFileName = originalFileName.replace(" ", "_");
 		newFileName = newFileName.replaceAll("[^\\w]", "");
-		GWT.log("fileName="+newFileName+" length="+newFileName.length());
 	    if (newFileName.length() > 50) {
 	    	int startIndex = newFileName.length() - 49;
-	    	GWT.log("startIndex="+startIndex);
 	    	newFileName = newFileName.substring(startIndex, startIndex+49);
 	    }
 	    return newFileName;
