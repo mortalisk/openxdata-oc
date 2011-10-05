@@ -313,12 +313,13 @@ public class EditStudyFormView extends WizardView {
 	}
 
 	public Button getDesignFormButton(String label) {
-		Button designFormButton = new Button(label);
+		final Button designFormButton = new Button(label);
 		designFormButton.addListener(Events.Select,
 				new Listener<ButtonEvent>() {
 
 					@Override
 					public void handleEvent(ButtonEvent be) {
+                                                designFormButton.setEnabled(false);
 						controller.formHasData(formDefVersion);
 					}
 				});
