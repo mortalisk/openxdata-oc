@@ -103,7 +103,7 @@ public class ItemImportView extends ActionOptionView {
 	protected void updateRadioButtons(){
 		firstRadio.setBoxLabel(getFirstRadioLabel());
 		secondRadio.setBoxLabel(getSecondRadioLabel()+" (" + appMessages.intoStudy()+ " " +getStudyName()+")");
-		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+ appMessages.intoForm()+ " " + getFormName()+")");
+		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+ appMessages.intoForm()+ " " + getFormName(false)+")");
 	}
 
 	@Override
