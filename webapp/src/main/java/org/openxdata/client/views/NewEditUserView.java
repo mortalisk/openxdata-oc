@@ -16,6 +16,9 @@ import org.openxdata.server.admin.model.User;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.event.EventType;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldSetEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
@@ -205,9 +208,25 @@ public class NewEditUserView extends WizardView {
 		if (userViewEvent == NewEditUserController.NEWUSER) {
 			createUserPanel.add(password);
 			createUserPanel.add(confirmPassword);
+			password.setAllowBlank(false);
+			confirmPassword.setAllowBlank(false);
 		}
 		if (userViewEvent == NewEditUserController.EDITUSER) {
 			passwordSet.setHeading(appMessages.setPassword());
+			passwordSet.addListener(Events.Expand, new Listener<FieldSetEvent>() {
+				@Override
+				public void handleEvent(FieldSetEvent be) {
+					password.setAllowBlank(false);
+					confirmPassword.setAllowBlank(false);
+				}
+			});
+			passwordSet.addListener(Events.Collapse, new Listener<FieldSetEvent>() {
+				@Override
+				public void handleEvent(FieldSetEvent be) {
+					password.setAllowBlank(true);
+					confirmPassword.setAllowBlank(true);
+				}
+			});
 			FormLayout formLayout = new FormLayout();
 			formLayout.setLabelWidth(155);
 			passwordSet.setLayout(formLayout);
