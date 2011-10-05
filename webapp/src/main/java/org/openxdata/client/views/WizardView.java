@@ -48,7 +48,7 @@ public abstract class WizardView extends View {
 	protected Button finishButton;
 	protected Button cancelButton;
 	
-	private int activePage = 0;
+	protected int activePage = 0;
 	private List<LayoutContainer> pages = new ArrayList<LayoutContainer>();
 
     public WizardView(Controller controller) {
@@ -180,7 +180,7 @@ public abstract class WizardView extends View {
     	}
     };
     
-    private void toggleButtons() {
+    protected void toggleButtons() {
         if (activePage == 0) {
         	backButton.hide();
         } else {
@@ -195,7 +195,7 @@ public abstract class WizardView extends View {
         }
     }
     
-    private void next() {
+    protected void next() {
     	ProgressIndicator.showProgressBar();
     	activePage++;
     	if (activePage != pages.size()) {
@@ -208,7 +208,7 @@ public abstract class WizardView extends View {
     	ProgressIndicator.hideProgressBar();
     }
     
-    private void back() {
+    protected void back() {
     	ProgressIndicator.showProgressBar();
     	activePage--;
     	if (activePage >= 0) {
@@ -221,7 +221,7 @@ public abstract class WizardView extends View {
     	ProgressIndicator.hideProgressBar();
     }
     
-    private void cancel() {
+    protected void cancel() {
     	MessageBox.confirm(appMessages.cancel(), appMessages.areYouSureWizard(), new Listener<MessageBoxEvent>() {
 			@Override
 			public void handleEvent(MessageBoxEvent be) {
@@ -243,6 +243,7 @@ public abstract class WizardView extends View {
 		window.hide();
 		ProgressIndicator.hideProgressBar();
 		window.addListener(Events.BeforeHide, windowListener);
+		ProgressIndicator.hideProgressBar();
     }
     
     protected abstract void finish();

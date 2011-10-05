@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Secured("Perm_Add_Users")
-	public void saveUser(User user) {
+	public User saveUser(User user) {
     	
         checkAndSetUserLoginProperties(user);
 		userDAO.saveUser(user);
@@ -150,6 +150,8 @@ public class UserServiceImpl implements UserService {
 		sessionRegistry.updateUserEntries(user);
 
 		sendEmailToNewUser(user);
+
+		return user;
     }
     
     @Override

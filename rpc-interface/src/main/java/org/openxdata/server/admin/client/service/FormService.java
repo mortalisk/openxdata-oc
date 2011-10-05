@@ -37,6 +37,13 @@ public interface FormService extends RemoteService {
     FormData saveFormData(FormData formData) throws OpenXDataSecurityException;
     
     /**
+     * Deletes the data captured by the user for a particular form.
+     * 
+     * @param formData FormData
+     */
+    void deleteFormData(FormData formData) throws OpenXDataSecurityException;
+    
+    /**
      * Retrieves all the form definitions in the system.
      * 
      * @return List of FormDef
@@ -118,11 +125,29 @@ public interface FormService extends RemoteService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
-
+	
 	/**
-	 * Deletes a row of data from the database.
-	 * 
-	 * @param formData the form data to be deleted.
+	 * Get a page of Forms mapped to a specific user 
+	 * @param userId
+	 * @param loadConfig
+	 * @return
 	 */
-	void deleteFormData(FormData formData);
+	PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Get a page of Forms NOT mapped to the specified user
+	 * @param userId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Updates the forms currently mapped to the specified user.
+	 * @param userId Integer id of specified user
+	 * @param formsToAdd List of forms to add to the user's access
+	 * @param formsToDelete List of forms to delete from the user's access
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException;
 }

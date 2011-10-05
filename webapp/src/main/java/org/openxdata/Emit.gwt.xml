@@ -36,6 +36,7 @@
 	<servlet path='/FormService' class='org.openxdata.server.admin.server.FormServiceImpl' />
 	<servlet path='/SettingService' class='org.openxdata.server.admin.server.SettingServiceImpl'/>
 	<servlet path='/openclinica' class='org.openxdata.server.admin.server.OpenclinicaServiceImpl'/>
+  <servlet path='/RoleService' class='org.openxdata.server.admin.server.RoleServiceImpl'/>
 
 	<!-- Internationalisation -->
 	<inherits name="com.google.gwt.i18n.I18N" />

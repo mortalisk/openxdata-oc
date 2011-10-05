@@ -203,48 +203,47 @@ public class User extends AbstractEditable {
 	 * Retrieves all the <code>User Roles.</code>
 	 * @return <code>Set</code> of <code>User Roles.</code>
 	 */
-	public synchronized Set<Role> getRoles() {
-		synchronized(this){
-			return roles;
-		}
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
 	/**
 	 * Sets the <code>User Roles.</code>
 	 * @param roles <code>User Roles.</code>
 	 */
-	public synchronized void setRoles(Set<Role> roles) {
-		synchronized(this){
-			this.roles = roles;
-		}
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 	
 	/**
 	 * Adds a <code>Role</code> to the set of roles mapped to this <code>User.</code>
 	 * @param role <code>Role</code> to map to the <code>User.</code>
 	 */
-	public synchronized void addRole(Role role){
-		synchronized(this){
-			if(roles == null)
-				roles = new HashSet<Role>();
-			roles.add(role);
+	public void addRole(Role role){
+		if (roles == null) {
+			roles = new HashSet<Role>();
 		}
+		roles.add(role);
 	}
 
 	/**
 	 * Removes a <code>Role</code> from the set of roles mapped to this <code>User.</code>
 	 * @param role <code>Role</code> to remove from the <code>User.</code>
 	 */
-	public synchronized void removeRole(Role role){
-		synchronized(this){
-			if (roles != null) {
-				for(Role x : roles){
-					if(x.getName().equals(role.getName())){
-						roles.remove(x);
-						break;
-					}
+	public void removeRole(Role role){
+		Role roleToRemove = null;
+		if (roles != null) {
+			for(Role x : roles) {
+				System.out.println("role "+x.getName()+" matching "+role.getName());
+				if (x.getName().equals(role.getName())) {
+					roleToRemove = x;
+					break;
 				}
 			}
+		}
+		if (roleToRemove != null) {
+			// can't remove from a collection while you are iterating over it
+			roles.remove(roleToRemove);
 		}
 	}
 	
@@ -381,6 +380,8 @@ public class User extends AbstractEditable {
 			return "Disabled";
 		if(isActive())
 			return "Active";
+		if (isPendingApproval())
+			return "Pending Approval";
 		
 		return "";
 	}
@@ -391,6 +392,10 @@ public class User extends AbstractEditable {
 	
 	public boolean isDisabled() {
 		return status == 1;
+	}
+	
+	public boolean isPendingApproval() {
+		return status == 2;
 	}
 
 	public void setUserStatus(int status) {

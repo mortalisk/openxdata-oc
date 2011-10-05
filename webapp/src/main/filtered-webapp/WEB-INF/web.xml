@@ -190,6 +190,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   </servlet>
   <servlet-mapping>
     <servlet-name>roleservice</servlet-name>
+    <url-pattern>/emit/RoleService</url-pattern>
     <url-pattern>/OpenXDataServerAdmin/RoleService</url-pattern>
   </servlet-mapping>
 

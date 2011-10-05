@@ -17,6 +17,11 @@ import com.googlecode.genericdao.search.Search;
  */
 @Repository("userDAO")
 public class HibernateUserDAO extends BaseDAOImpl<User> implements UserDAO {
+	
+	@Override
+    public User getUser(Integer id) {
+		return super.find(id);
+    }
 
     @Override
 	public void deleteUser(User user) {

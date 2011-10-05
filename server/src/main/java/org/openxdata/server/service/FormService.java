@@ -9,6 +9,7 @@ import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
@@ -41,7 +42,7 @@ public interface FormService {
 	/**
 	 * Deletes a row of data from the database.
 	 * 
-	 * @param formData the identifier for the row of data to delete.
+	 * @param formData FormData to delete
 	 */
 	void deleteFormData(FormData formData);
 	
@@ -135,4 +136,29 @@ public interface FormService {
 	 * @param usersToDelete List of users to delete from the study mapping
 	 */
 	void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete);
+	
+	/**
+	 * Get a page of Forms mapped to a specific user 
+	 * @param userId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Get a page of Forms NOT mapped to the specified user
+	 * @param userId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Updates the forms currently mapped to the specified user.
+	 * @param userId Integer id of specified form
+	 * @param formsToAdd List of forms to add to the user's access
+	 * @param formsToDelete List of forms to delete from the user's access
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException;
 }

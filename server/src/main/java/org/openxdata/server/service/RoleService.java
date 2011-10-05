@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Role;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 /**
  * This service is used for managing 
@@ -58,4 +60,28 @@ public interface RoleService {
 	List<Role> getRolesByName(String name);
 	
 	Permission getPermission(String permissionName);
+	
+	/**
+	 * Get a paged list of the roles mapped to the specified user
+	 * @param userId
+	 * @param pagingLoadConfig
+	 * @return
+	 */
+    PagingLoadResult<Role> getMappedRoles(Integer userId, PagingLoadConfig pagingLoadConfig);
+
+    /**
+     * Get a paged list of the roles NOT mapped to the specified user
+     * @param userId
+     * @param pagingLoadConfig
+     * @return
+     */
+    public PagingLoadResult<Role> getUnMappedRoles(Integer userId, PagingLoadConfig pagingLoadConfig);
+    
+	/**
+	 * Updates the roles currently mapped to the specified user.
+	 * @param userId Integer id of specified user
+	 * @param rolesToAdd List of roles to add to the user
+	 * @param rolesToDelete List of roles to delete from the user
+	 */
+	void saveMappedRoles(Integer userId, List<Role> rolesToAdd, List<Role> rolesToDelete);
 }

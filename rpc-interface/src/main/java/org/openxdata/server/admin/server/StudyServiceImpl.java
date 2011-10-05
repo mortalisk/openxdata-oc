@@ -78,4 +78,20 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
         }
         return studyService;
     }
+
+	@Override
+    public PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return getStudyManagerService().getMappedStudies(userId, loadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return getStudyManagerService().getUnmappedStudies(userId, loadConfig);
+    }
+
+	@Override
+    public void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete)
+            throws OpenXDataSecurityException {
+		getStudyManagerService().saveMappedUserStudies(userId, studiesToAdd, studiesToDelete);
+    }
 }

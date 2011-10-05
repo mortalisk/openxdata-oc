@@ -1,0 +1,111 @@
+package org.openxdata.client.controllers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openxdata.client.EmitAsyncCallback;
+import org.openxdata.client.model.RoleSummary;
+import org.openxdata.client.util.PagingUtil;
+import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.client.views.ItemAccessListField;
+import org.openxdata.server.admin.client.service.RoleServiceAsync;
+import org.openxdata.server.admin.model.Role;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
+
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+/**
+ * Controller for mapping access of Roles to a User.
+ */
+public class RoleUserAccessController implements ItemAccessController<RoleSummary> {
+	
+	private User user;
+	private RoleServiceAsync roleService;
+	
+	public RoleUserAccessController(RoleServiceAsync roleService) {
+		this.roleService = roleService;
+	}
+	
+	public RoleUserAccessController(RoleServiceAsync roleService, User user) {
+		this.roleService = roleService;
+		this.user = user;
+	}
+	
+	public void setUser(User user) {
+		GWT.log("set user="+user);
+		this.user = user;
+	}
+
+	@Override
+    public void getMappedData(
+            PagingLoadConfig pagingLoadConfig,
+            final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<RoleSummary>> callback) {
+		roleService.getMappedRoles(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<Role>>() {
+            @Override
+            public void onSuccess(PagingLoadResult<Role> result) {
+            	ProgressIndicator.hideProgressBar();
+            	callback.onSuccess(new BasePagingLoadResult<RoleSummary>(convertResults(result), 
+            		   result.getOffset(), result.getTotalLength()));
+            }
+        });
+    }
+
+	@Override
+    public void getUnMappedData(
+            PagingLoadConfig pagingLoadConfig,
+            final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<RoleSummary>> callback) {
+		roleService.getUnMappedRoles(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<Role>>() {
+            @Override
+            public void onSuccess(PagingLoadResult<Role> result) {
+            	ProgressIndicator.hideProgressBar();
+            	callback.onSuccess(new BasePagingLoadResult<RoleSummary>(convertResults(result), 
+            		   result.getOffset(), result.getTotalLength()));
+            }
+        });
+    }
+	
+	private List<RoleSummary> convertResults(PagingLoadResult<Role> result) {
+        List<RoleSummary> results = new ArrayList<RoleSummary>();
+    	List<Role> roles = result.getData();
+        for (Role r : roles) {
+        	results.add(new RoleSummary(r));
+        }
+        return results;
+    }
+
+	@Override
+    public void addMapping(List<RoleSummary> rolesToAdd,
+            final ItemAccessListField<RoleSummary> itemAccessListField) {
+		roleService.saveMappedRoles(user.getId(), convertRoles(rolesToAdd), null, new EmitAsyncCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+            	itemAccessListField.refresh();
+            }
+        });
+    }
+
+	@Override
+    public void deleteMapping(List<RoleSummary> rolesToDelete,
+            final ItemAccessListField<RoleSummary> itemAccessListField) {
+		roleService.saveMappedRoles(user.getId(), null, convertRoles(rolesToDelete), new EmitAsyncCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+            	itemAccessListField.refresh();
+            }
+        });
+    }
+	
+	private List<Role> convertRoles(List<RoleSummary> roleList) {
+		List<Role> roles = new ArrayList<Role>();
+		for (RoleSummary rs : roleList) {
+			roles.add(rs.getRole());
+		}
+		return roles;
+	}
+}

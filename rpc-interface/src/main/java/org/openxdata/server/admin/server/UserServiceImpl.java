@@ -44,8 +44,8 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements org.o
 	}
 
 	@Override
-	public void saveUser(User user) {
-		userService.saveUser(user);
+	public User saveUser(User user) {
+		return userService.saveUser(user);
 	}
 	
 	@Override

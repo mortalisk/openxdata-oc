@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Role;
+import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.PermissionDAO;
 import org.openxdata.server.dao.RoleDAO;
+import org.openxdata.server.dao.UserDAO;
 import org.openxdata.server.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
@@ -23,6 +27,9 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
     private RoleDAO roleDAO;
+	
+	@Autowired
+	private UserDAO userDAO;
 	
 	@Autowired
 	private PermissionDAO permissionDAO;
@@ -79,5 +86,34 @@ public class RoleServiceImpl implements RoleService {
 	@Transactional(readOnly=true)
     public Permission getPermission(String permissionName) {
     	return permissionDAO.getPermission(permissionName);
+    }
+
+	@Override
+	@Secured("Perm_View_Roles")
+    public PagingLoadResult<Role> getMappedRoles(Integer userId, PagingLoadConfig pagingLoadConfig) {
+		return roleDAO.getMappedRoles(userId, pagingLoadConfig);
+    }
+
+	@Override
+	@Secured("Perm_View_Roles")
+    public PagingLoadResult<Role> getUnMappedRoles(Integer userId, PagingLoadConfig pagingLoadConfig) {
+	    return roleDAO.getUnMappedRoles(userId, pagingLoadConfig);
+    }
+
+	@Override
+	@Secured("Perm_Add_Users")
+    public void saveMappedRoles(Integer userId, List<Role> rolesToAdd, List<Role> rolesToDelete) {
+		User user = userDAO.getUser(userId);
+		if (rolesToAdd != null) {
+			for (Role r : rolesToAdd) {
+				user.addRole(r);
+			}
+		}
+		if (rolesToDelete != null) {
+			for (Role r : rolesToDelete) {
+				user.removeRole(r);
+			}
+		}
+		userDAO.save(user);
     }
 }

@@ -6,6 +6,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openxdata.server.admin.model.Role;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.service.RoleService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +73,23 @@ public class RoleServiceTest extends BaseContextSensitiveTest {
 		roles = roleService.getRoles();
 		Assert.assertEquals(2,roles.size());
 		Assert.assertNotSame(roleName,roles.get(0).getName());
+	}
+	
+	@Test
+	public void getMappedRoles() throws Exception {
+		PagingLoadConfig config = new PagingLoadConfig(0,10);
+		PagingLoadResult<Role> mappedRoles = roleService.getMappedRoles(1, config);
+		List<Role> data = mappedRoles.getData();
+		Assert.assertEquals(1, data.size());
+		Assert.assertEquals("Role_Administrator", data.get(0).getName());
+	}
+	
+	@Test
+	public void getUnMappedRoles() throws Exception {
+		PagingLoadConfig config = new PagingLoadConfig(0,10);
+		PagingLoadResult<Role> mappedRoles = roleService.getUnMappedRoles(1, config);
+		List<Role> data = mappedRoles.getData();
+		Assert.assertEquals(1, data.size());
+		Assert.assertEquals("Role_DataCapturer", data.get(0).getName());
 	}
 }

@@ -210,6 +210,12 @@ public class StudyDef extends AbstractEditable implements Exportable {
         }
         this.users.add(user);
     }
+    
+    public void removeUser(User user) {
+        if (this.users != null) {
+            this.users.remove(user);
+        }
+    }
 
 	@Override
 	public String getType() {

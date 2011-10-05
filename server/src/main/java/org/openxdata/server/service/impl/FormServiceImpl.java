@@ -15,12 +15,14 @@ import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.FormDataDAO;
+import org.openxdata.server.dao.UserDAO;
 import org.openxdata.server.dao.UserFormMapDAO;
 import org.openxdata.server.export.rdbms.task.RdmsDataExportTask;
 import org.openxdata.server.service.FormService;
@@ -52,6 +54,9 @@ public class FormServiceImpl implements FormService {
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private UserDAO userDAO;
     
     @Autowired
     private RdmsDataExportTask exportTask;
@@ -262,6 +267,7 @@ public class FormServiceImpl implements FormService {
 	}
 
 	@Override
+	@Secured({"Perm_Add_Users", "Perm_Add_Forms"})
     public void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) {
 		if (usersToAdd != null) {
 			for (User u : usersToAdd) {
@@ -274,6 +280,35 @@ public class FormServiceImpl implements FormService {
 				UserFormMap map = userFormMapDAO.getUserMappedForm(u.getId(), formId);
 				userFormMapDAO.deleteUserMappedForm(map);
 			}
+		}
+    }
+
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+    public PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formDAO.getMappedForms(userId, loadConfig);
+    }
+
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formDAO.getUnmappedForms(userId, loadConfig);
+    }
+
+	@Override
+	@Secured({"Perm_Add_Users", "Perm_Add_Forms"})
+    public void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException {
+		if (formsToAdd != null) {
+		    for (FormDef fd : formsToAdd) {
+		    	UserFormMap map = new UserFormMap(userId, fd.getId());
+				userFormMapDAO.saveUserMappedForm(map);
+		    }
+		}
+		if (formsToDelete != null) {
+		    for (FormDef fd : formsToDelete) {
+		    	UserFormMap map = userFormMapDAO.getUserMappedForm(userId, fd.getId());
+				userFormMapDAO.deleteUserMappedForm(map);
+		    }
 		}
     }
 }

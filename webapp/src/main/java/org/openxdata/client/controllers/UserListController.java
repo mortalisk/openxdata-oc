@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.EmitAsyncCallback;
+import org.openxdata.client.RefreshableEvent;
+import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.PagingUtil;
 import org.openxdata.client.util.ProgressIndicator;
@@ -40,9 +42,8 @@ public class UserListController extends Controller {
     protected void initialize() {
         GWT.log("FormListController : initialize");
         userListView = new UserListView(this);
-        // FIXME
-        //RefreshablePublisher.get().subscribe(RefreshableEvent.Type.UPDATE_USER, formListView);
-        //RefreshablePublisher.get().subscribe(RefreshableEvent.Type.CREATE_USER, formListView);
+        RefreshablePublisher.get().subscribe(RefreshableEvent.Type.UPDATE_USER, userListView);
+        RefreshablePublisher.get().subscribe(RefreshableEvent.Type.CREATE_USER, userListView);
     }
 
     @Override
@@ -75,16 +76,17 @@ public class UserListController extends Controller {
     public void forwardToNewWizard() {
     	GWT.log("UserListController : forwardToNewWizard");
         Dispatcher dispatcher = Dispatcher.get();
-        //AppEvent event = new AppEvent(NewEditUserController.NEWUSER);
-    	//dispatcher.dispatch(event);
+        AppEvent event = new AppEvent(NewEditUserController.NEWUSER);
+        GWT.log("dispatching event="+event);
+    	dispatcher.dispatch(event);
     }
     
     public void forwardToEditWizard(UserSummary userSummary){
        	GWT.log("UserListController : forwardToEditWizard");
         Dispatcher dispatcher = Dispatcher.get();
-        //AppEvent event = new AppEvent(NewEditUserController.EDITUSER);
-        //event.setData("user", userSummary.getUser());
-    	//dispatcher.dispatch(event);
+        AppEvent event = new AppEvent(NewEditUserController.EDITUSER);
+        event.setData("user", userSummary.getUser());
+    	dispatcher.dispatch(event);
     }
 
 	public void forwardToItemImportController(Editable editable) {
