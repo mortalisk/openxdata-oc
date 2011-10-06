@@ -153,7 +153,7 @@ public class OpenClincaStudyView extends View {
 
 		});
 
-		exportButton = new Button(appMessages.export());
+		exportButton = new Button(appMessages.exportA());
 		exportButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 
 			@Override
@@ -163,7 +163,7 @@ public class OpenClincaStudyView extends View {
 
 		});
 
-		closeButton = new Button(appMessages.close());
+		closeButton = new Button(appMessages.cancel());
 		closeButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 
 			@Override
@@ -172,9 +172,11 @@ public class OpenClincaStudyView extends View {
 			}
 
 		});
+		
 		cp.addButton(importStudies);
 		cp.addButton(exportButton);
 		cp.addButton(closeButton);
+		cp.setButtonAlign(HorizontalAlignment.RIGHT);
 	}
 
 	protected void exportOpenClinicaStudyData() {
