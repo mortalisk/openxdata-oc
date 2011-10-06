@@ -24,7 +24,6 @@ import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.TaskDef;
-import org.openxdata.server.admin.model.User;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -153,7 +152,8 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
         display.setApplicationEventListener(getAppListener());
 
-        eventBus.fireEvent(new ViewEvent<User>(User.class));
+        // load the Role tab
+        eventBus.fireEvent(new ViewEvent<Role>(Role.class));
 
     }
 
