@@ -40,3 +40,4 @@ webapp/openxdata.log*
 webapp/war/WEB-INF/protocol-jars/*.jar
 webapp/war/WEB-INF/web.xml
 webapp/bin
+rpc-interface/bin/
