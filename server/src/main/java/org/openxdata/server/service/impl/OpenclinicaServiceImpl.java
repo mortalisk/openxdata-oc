@@ -68,25 +68,27 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		
 		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
 		List<org.openxdata.oc.model.OpenclinicaStudy> studies = getClient().listAll();
-		List<StudyDef> oxdStudies = studyDAO.getStudies();
 		
 		try{
 			
+			List<StudyDef> openxdataStudies = studyDAO.getStudies();
+			List<org.openxdata.oc.model.OpenclinicaStudy> uniqueStudies = new ArrayList<org.openxdata.oc.model.OpenclinicaStudy>();
+			
 			// Add only unique studies not previously downloaded.
-			for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
-				for (StudyDef def : oxdStudies) {
-					if (!def.getName().equals(xStudy.getName())) {
-						studies.remove(xStudy);
-					}
+			for (org.openxdata.oc.model.OpenclinicaStudy study : studies) {
+				if(!isStudyDownloaded(openxdataStudies, study)){
+					uniqueStudies.add(study);
 				}
 			}
 
-			for (org.openxdata.oc.model.OpenclinicaStudy xStudy : studies) {
+			for (org.openxdata.oc.model.OpenclinicaStudy study : uniqueStudies) {
 				OpenclinicaStudy ocStudy = new OpenclinicaStudy();
-				ocStudy.setName(xStudy.getName());
-				ocStudy.setOID(xStudy.getOID());
-				ocStudy.setIdentifier(xStudy.getIdentifier());
-				ocStudy.setSubjects(getClient().getSubjectKeys(xStudy.getIdentifier()));
+				ocStudy.setName(study.getName());
+				ocStudy.setOID(study.getOID());
+				ocStudy.setIdentifier(study.getIdentifier());
+				
+				Collection<String> subjects = getClient().getSubjectKeys(study.getIdentifier());
+				ocStudy.setSubjects(subjects);
 
 				returnStudies.add(ocStudy);
 			}
@@ -95,6 +97,25 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		}
 
 		return returnStudies;
+	}
+
+	private boolean isStudyDownloaded(List<StudyDef> studies, org.openxdata.oc.model.OpenclinicaStudy study) {
+				
+		for (StudyDef def : studies) {
+			
+			String oxdStudyName = def.getName();
+			String oxdStudyIdentifier = def.getStudyKey();
+			
+			String ocStudyName = study.getName();
+			String ocStudyIdentifier = study.getIdentifier();
+			
+			if(oxdStudyName.equals(ocStudyName) && 
+					oxdStudyIdentifier == ocStudyIdentifier){
+				
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
