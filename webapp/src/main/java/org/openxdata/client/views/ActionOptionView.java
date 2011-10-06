@@ -14,7 +14,9 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
+import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormButtonBinding;
@@ -22,6 +24,8 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.extjs.gxt.ui.client.widget.layout.HBoxLayout;
+import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -57,10 +61,6 @@ abstract class ActionOptionView extends View {
         window.add(formPanel);
         window.setDraggable(true);
         window.setResizable(true);
-
-        window.addButton(execButton);
-        window.addButton(openclinicaButton);
-        window.addButton(cancelButton);
 
         window.show();
         ProgressIndicator.hideProgressBar();
@@ -125,7 +125,23 @@ abstract class ActionOptionView extends View {
 		formLayout.setLabelWidth(0);
 		radioGroupContainer.setLayout(formLayout);
 		radioGroupContainer.add(radioGroup);
+		
+		LayoutContainer buttonBar = new LayoutContainer();
+		buttonBar.setLayout(new HBoxLayout());
+		buttonBar.add(openclinicaButton, new HBoxLayoutData(new Margins(2, 2, 0, 1)));
+		
+		HBoxLayoutData flex = new HBoxLayoutData(new Margins(2, 2, 0, 1));
+		flex.setFlex(1);
+		buttonBar.add(new Text(), flex);
+		buttonBar.add(execButton, new HBoxLayoutData(new Margins(2, 2, 0, 1)));
+		buttonBar.add(cancelButton, new HBoxLayoutData(new Margins(2, 2, 0, 1)));
+		
+		LayoutContainer filterBar = new LayoutContainer();
+		filterBar.setLayout(new HBoxLayout());
+		filterBar.add(new Text(), flex);
+		
 		formPanel.add(radioGroupContainer);
+		formPanel.setBottomComponent(buttonBar);
 		
 		window.setModal(true);
 	}
