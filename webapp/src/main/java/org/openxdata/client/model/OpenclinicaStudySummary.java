@@ -13,6 +13,7 @@ public class OpenclinicaStudySummary extends BaseModel {
 		set("name", model.getName());
 		set("OID", model.getOID());
 		set("identifier", model.getIdentifier());
+		set("subjects", model.getSubjects());
 	}
 
 	public String getName() {

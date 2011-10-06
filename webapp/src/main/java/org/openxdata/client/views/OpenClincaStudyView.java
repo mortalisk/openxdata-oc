@@ -84,7 +84,7 @@ public class OpenClincaStudyView extends View {
 					String property, ColumnData config, int rowIndex,
 					int colIndex, ListStore<OpenclinicaStudySummary> store,
 					Grid<OpenclinicaStudySummary> grid) {
-				return "<span>" + study.getSubjects().size() + "</span>";
+				return (String) ("<span>" + (study.getSubjects().size()) != null ? String.valueOf(study.getSubjects().size()) : "0" + "</span>");
 			}
 		};
 
