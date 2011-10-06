@@ -1,6 +1,7 @@
 package org.openxdata.client.views;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.controllers.ItemImportController;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -31,8 +32,7 @@ abstract class ActionOptionView extends View {
 	protected Radio secondRadio;
 	protected Radio thirdRadio;
 	
-	protected Button execButton;
-	protected Button cancelButton;
+	protected Button execButton, openclinicaButton, cancelButton;
 		
 	protected FormPanel formPanel;
 	protected Window window = new Window();
@@ -59,6 +59,7 @@ abstract class ActionOptionView extends View {
         window.setResizable(true);
 
         window.addButton(execButton);
+        window.addButton(openclinicaButton);
         window.addButton(cancelButton);
 
         window.show();
@@ -79,7 +80,7 @@ abstract class ActionOptionView extends View {
 		FormButtonBinding binding = new FormButtonBinding(formPanel);
 		binding.addButton(execButton);
 		execButton.setType("submit");
-		
+				
 		final RadioGroup radioGroup = new RadioGroup("RadioGroup");
 		radioGroup.setLabelSeparator("");
 		radioGroup.setFieldLabel("");
@@ -128,8 +129,9 @@ abstract class ActionOptionView extends View {
 		
 		window.setModal(true);
 	}
-	
+		
 	protected void createButtons(){
+		
 		execButton = new Button(getExecuteButtonLabel());
 		execButton.setEnabled(false);
 		execButton.addListener(Events.Select, new Listener<ButtonEvent>() {
@@ -140,6 +142,19 @@ abstract class ActionOptionView extends View {
 					@Override
 					public void execute() {
 						action();
+					}
+				});
+			}
+		});
+		
+		openclinicaButton = new Button(appMessages.openClinica());
+		openclinicaButton.addListener(Events.Select, new Listener<ButtonEvent>() {
+			@Override
+			public void handleEvent(ButtonEvent be) {
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
+					public void execute() {
+						showOpenClinicaView();
 					}
 				});
 			}
@@ -237,6 +252,10 @@ abstract class ActionOptionView extends View {
 		execButton.setEnabled(true);
 	}
 
+	protected void showOpenClinicaView() {
+		this.closeWindow();
+		((ItemImportController) this.controller).forwardToOpenClinicaController();
+	}
 	/**
 	 * Conceals the window from the User.
 	 */

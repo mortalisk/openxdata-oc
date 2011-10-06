@@ -8,14 +8,12 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 
-import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FileUploadField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel.Encoding;
 import com.extjs.gxt.ui.client.widget.form.FormPanel.Method;
@@ -65,22 +63,7 @@ public class ItemImportView extends ActionOptionView {
 			
 		});
 		
-		Button openclinica = new Button(appMessages.openClinica());
-		openclinica.addListener(Events.Select, new Listener<ButtonEvent>() {
-			@Override
-			public void handleEvent(ButtonEvent be) {
-				showOpenClinicaView();
-			}
-		});
-		
 		formPanel.add(uploadFile);
-		formPanel.add(openclinica);
-	}
-	
-	
-	protected void showOpenClinicaView() {
-		this.closeWindow();
-		((ItemImportController) this.controller).forwardToOpenClinicaController();
 	}
 		
 	@Override
