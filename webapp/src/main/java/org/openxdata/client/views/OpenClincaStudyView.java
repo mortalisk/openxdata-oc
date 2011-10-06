@@ -204,6 +204,7 @@ public class OpenClincaStudyView extends View {
 
 		if (window == null) {
 			window = new Window();
+			window.setAutoHeight(true);
 			window.setModal(true);
 			window.setPlain(true);
 			window.setHeading("OpenClinica Study Management");
@@ -213,7 +214,7 @@ public class OpenClincaStudyView extends View {
 			window.setScrollMode(Scroll.AUTO);
 			window.setLayout(new FitLayout());
 			window.add(cp);
-			window.setSize(600, 450);
+			window.setSize(500, 250);
 		}
 		window.show();
 	}
