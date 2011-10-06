@@ -214,7 +214,7 @@ public class OpenClincaStudyView extends View {
 			window.setScrollMode(Scroll.AUTO);
 			window.setLayout(new FitLayout());
 			window.add(cp);
-			window.setSize(500, 250);
+			window.setSize(500, 150);
 		}
 		window.show();
 	}
