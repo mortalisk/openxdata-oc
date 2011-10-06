@@ -26,6 +26,8 @@ public class ItemExportView extends ActionOptionView {
 		fileName = new TextField<String>();
 		fileName.setFieldLabel(appMessages.filename());
 		fileName.setAllowBlank(false);
+		fileName.setRegex("[\\w]{1,50}");
+		fileName.getMessages().setRegexText(appMessages.filenameContainsIllegalCharacters());
 		formPanel.add(fileName);
 	}
 	
@@ -59,7 +61,6 @@ public class ItemExportView extends ActionOptionView {
 		}
 		
 		if (name != null && itemToExport != null) {
-			name = name.replace(" ", "");
 			ItemExportController controller = (ItemExportController) this.getController();
 			controller.exportEditable(itemToExport, name);
 			
@@ -96,18 +97,28 @@ public class ItemExportView extends ActionOptionView {
 	@Override
     protected void onFirstRadioSelected() {
 	    super.onFirstRadioSelected();
-	    fileName.setValue(getStudyName());
+	    fileName.setValue(getSanitisedFileName(getStudyName()));
     }
 
 	@Override
     protected void onSecondRadioSelected() {
 	    super.onSecondRadioSelected();
-	    fileName.setValue(getFormName());
+	    fileName.setValue(getSanitisedFileName(getFormName(true)));
     }
 
 	@Override
     protected void onThirdRadioSelected() {
 	    super.onThirdRadioSelected();
-	    fileName.setValue(getFormVersionName());
+	    fileName.setValue(getSanitisedFileName(getFormVersionName(true)));
     }
+	
+	private String getSanitisedFileName(String originalFileName) {
+		String newFileName = originalFileName.replace(" ", "_");
+		newFileName = newFileName.replaceAll("[^\\w]", "");
+	    if (newFileName.length() > 50) {
+	    	int startIndex = newFileName.length() - 49;
+	    	newFileName = newFileName.substring(startIndex, startIndex+49);
+	    }
+	    return newFileName;
+	}
 }

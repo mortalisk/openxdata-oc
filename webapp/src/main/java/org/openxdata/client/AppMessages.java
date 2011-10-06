@@ -206,6 +206,7 @@ public interface AppMessages extends Messages {
 	String exportStudyTooltip();
 	String exportFormTooltip();
 	String exportFormVersionTooltip();
+	String filenameContainsIllegalCharacters();
 	
 	String filename();
 	String importX();

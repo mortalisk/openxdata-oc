@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.FormButtonBinding;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
@@ -50,7 +51,7 @@ abstract class ActionOptionView extends View {
 	@Override
 	protected void handleEvent(AppEvent event) {
         window.setAutoHeight(true);
-        window.setWidth(425);
+        window.setWidth(500);
         window.setPlain(true);
         window.setHeading(getHeading());
         window.add(formPanel);
@@ -67,11 +68,17 @@ abstract class ActionOptionView extends View {
 	@Override
 	protected void initialize() {
 		createButtons();
+		
 		formPanel = new FormPanel();
+		formPanel.setFieldWidth(350);
 		formPanel.setFrame(false);
 		formPanel.setBorders(false);
 		formPanel.setBodyBorder(false);
 		formPanel.setHeaderVisible(false);
+		
+		FormButtonBinding binding = new FormButtonBinding(formPanel);
+		binding.addButton(execButton);
+		execButton.setType("submit");
 		
 		final RadioGroup radioGroup = new RadioGroup("RadioGroup");
 		radioGroup.setLabelSeparator("");
@@ -90,7 +97,7 @@ abstract class ActionOptionView extends View {
 		});
 		
 		secondRadio = new Radio();
-		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName()+")");
+		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName(false)+")");
 		secondRadio.setHideLabel(true);
 		radioGroup.add(secondRadio);
 		secondRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
@@ -102,7 +109,7 @@ abstract class ActionOptionView extends View {
 		
 		thirdRadio = new Radio();
 		thirdRadio.setHideLabel(true);
-		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");
+		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName(false)+")");
 		radioGroup.add(thirdRadio);
 		thirdRadio.addListener(Events.OnClick, new Listener<FieldEvent>() {
 			@Override
@@ -154,32 +161,36 @@ abstract class ActionOptionView extends View {
 	
 	protected void updateRadioButtons() {
 		firstRadio.setBoxLabel(getFirstRadioLabel()+" ("+getStudyName()+")");
-		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName()+")");
-		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName()+")");
+		secondRadio.setBoxLabel(getSecondRadioLabel()+" ("+getFormName(false)+")");
+		thirdRadio.setBoxLabel(getThirdRadioLabel()+" ("+getFormVersionName(false)+")");
 		if (formVersion == null) {
 			thirdRadio.hide();
 		}
 	}
 	
-	protected String getFormVersionName() {
+	protected String getFormVersionName(boolean full) {
 		if (formVersion != null) {
 			FormDef form = formVersion.getFormDef();
 			StringBuilder formVersionName = new StringBuilder();
-			formVersionName.append(form.getStudy().getName());
-			formVersionName.append(" ");
-			formVersionName.append(form.getName());
-			formVersionName.append(" ");
+			if (full) {
+				formVersionName.append(form.getStudy().getName());
+				formVersionName.append(" ");
+				formVersionName.append(form.getName());
+				formVersionName.append(" ");
+			}
 			formVersionName.append(formVersion.getName());
 			return formVersionName.toString();
 		}
 		return "";
 	}
 	
-	protected String getFormName() {
+	protected String getFormName(boolean full) {
 		if (form != null) {
 			StringBuilder formName = new StringBuilder();
-			formName.append(form.getStudy().getName());
-			formName.append(" ");
+			if (full) {
+				formName.append(form.getStudy().getName());
+				formName.append(" ");
+			}
 			formName.append(form.getName());
 			return formName.toString();
 		}
