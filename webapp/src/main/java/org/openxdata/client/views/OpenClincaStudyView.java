@@ -7,6 +7,7 @@ import java.util.Set;
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.OpenClinicaStudyController;
 import org.openxdata.client.model.OpenclinicaStudySummary;
+import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -189,10 +190,9 @@ public class OpenClincaStudyView extends View {
 	}
 
 	protected void importOpenClinicaStudy() {
-		OpenclinicaStudySummary studySummary = grid.getSelectionModel()
-				.getSelectedItem();
-		((OpenClinicaStudyController) this.controller)
-				.importOpenClinicaStudy(studySummary.getIdentifier());
+		ProgressIndicator.showProgressBar();
+		OpenclinicaStudySummary studySummary = grid.getSelectionModel().getSelectedItem();
+		((OpenClinicaStudyController) this.controller).importOpenClinicaStudy(studySummary.getIdentifier());
 	}
 
 	protected void hide() {
@@ -232,5 +232,8 @@ public class OpenClincaStudyView extends View {
 		}
 		store.removeAll();
 		store.add(this.studies);
+		
+		// Hide the progress initiated from ActionOptionView when initializing this view.
+		ProgressIndicator.hideProgressBar();
 	}
 }

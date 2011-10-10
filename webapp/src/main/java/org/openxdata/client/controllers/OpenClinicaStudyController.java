@@ -9,6 +9,7 @@ import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.model.OpenclinicaStudySummary;
+import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.OpenClincaStudyView;
 import org.openxdata.server.admin.client.service.OpenclinicaServiceAsync;
 import org.openxdata.server.admin.client.service.SettingServiceAsync;
@@ -90,6 +91,7 @@ public class OpenClinicaStudyController extends Controller {
 			public void onSuccess(StudyDef study) {
 				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
 				MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
+				ProgressIndicator.hideProgressBar();
 				
 			}});
 		
@@ -124,6 +126,7 @@ public class OpenClinicaStudyController extends Controller {
 						MessageBox.info(appMessages.changeSettings(), appMessages.changeOpenclinicaSettings(), null);
 					}
 					else{
+						ProgressIndicator.showProgressBar();
 						getOpenclinicaStudies();
 						forwardToView(view, event);
 					}

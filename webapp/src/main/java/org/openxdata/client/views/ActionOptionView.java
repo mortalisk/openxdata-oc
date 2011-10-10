@@ -272,6 +272,7 @@ abstract class ActionOptionView extends View {
 		this.closeWindow();
 		((ItemImportController) this.controller).forwardToOpenClinicaController();
 	}
+
 	/**
 	 * Conceals the window from the User.
 	 */
