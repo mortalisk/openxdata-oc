@@ -234,7 +234,6 @@ public class User extends AbstractEditable {
 		Role roleToRemove = null;
 		if (roles != null) {
 			for(Role x : roles) {
-				System.out.println("role "+x.getName()+" matching "+role.getName());
 				if (x.getName().equals(role.getName())) {
 					roleToRemove = x;
 					break;
