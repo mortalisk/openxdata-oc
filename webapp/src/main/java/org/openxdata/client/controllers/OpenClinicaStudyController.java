@@ -59,11 +59,12 @@ public class OpenClinicaStudyController extends Controller {
 
 	public void importOpenClinicaStudy(String identifier) {
 		
-		GWT.log("OpenClinicaStudyController : Converting xml Using Study Import");
 		openclinicaService.importOpenClinicaStudy(identifier, new EmitAsyncCallback<String>() {
 			
 			@Override
 			public void onSuccess(String xml) {
+				GWT.log("OpenClinicaStudyController : Converting xml Using Study Import");
+
 				StudyDef study = (StudyDef) StudyImport.importStudyItem(xml);
 				study.setDateCreated(new Date());
 				User user = (User) Registry.get(Emit.LOGGED_IN_USER_NAME);
