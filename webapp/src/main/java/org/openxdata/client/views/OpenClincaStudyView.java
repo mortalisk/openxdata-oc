@@ -164,7 +164,7 @@ public class OpenClincaStudyView extends View {
 
 		});
 
-		closeButton = new Button(appMessages.cancel());
+		closeButton = new Button(appMessages.finish());
 		closeButton.addListener(Events.Select, new Listener<ButtonEvent>() {
 
 			@Override
