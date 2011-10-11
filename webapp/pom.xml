@@ -21,7 +21,7 @@
         <filtered.sourceDir>${project.build.directory}/generated-sources/filtered</filtered.sourceDir>
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
-        <purcforms.version>1.0.1-r5159</purcforms.version>
+        <oxdforms.version>1.0-SNAPSHOT</oxdforms.version>
     </properties>
 
     <profiles>
@@ -56,18 +56,23 @@
     </profiles>
 
     <dependencies>
-        <!-- purcforms needs to be first because it includes
-        some modified GWT classes, sigh -->
+
         <dependency>
-            <groupId>org.purc</groupId>
-            <artifactId>gwt-purcforms</artifactId>
-            <version>${purcforms.version}</version>
+            <groupId>org.openxdata.forms</groupId>
+            <artifactId>oxdforms-designer</artifactId>
+            <version>${oxdforms.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.purc</groupId>
-            <artifactId>gwt-querybuilder</artifactId>
-            <version>${purcforms.version}</version>
+            <groupId>org.openxdata.forms</groupId>
+            <artifactId>oxdforms-runner</artifactId>
+            <version>${oxdforms.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openxdata.forms</groupId>
+            <artifactId>oxdforms-querybuilder</artifactId>
+            <version>${oxdforms.version}</version>
             <scope>provided</scope>
         </dependency>
 
