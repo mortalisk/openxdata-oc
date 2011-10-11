@@ -29,6 +29,13 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	FormDef getForm(Integer id);
 	
 	/**
+	 * Retrieves the Form by the specified name
+	 * @param name
+	 * @return
+	 */
+	FormDef getForm(String  name);
+	
+	/**
 	 * Returns a list of forms that belong to the specified study
 	 * @param studyId
 	 * @return

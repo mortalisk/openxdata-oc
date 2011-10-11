@@ -115,6 +115,7 @@ public class ItemImportController extends Controller {
 			@Override
 			public void onSuccess(StudyDef result) {
 				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, result));
+				view.importSuccess();
 			}
 		});
 	}

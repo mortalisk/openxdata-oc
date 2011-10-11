@@ -36,8 +36,13 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	
 	@Override
 	public FormDef getForm(Integer id) {
-		return super.find(id);
+		return find(id);
 	}
+	
+	@Override
+    public FormDef getForm(String name) {
+	    return searchUniqueByPropertyEqual("name", name);
+    }
 	
 	/* (non-Javadoc)
 	 * @see org.openxdata.server.dao.FormDAO#getForms()

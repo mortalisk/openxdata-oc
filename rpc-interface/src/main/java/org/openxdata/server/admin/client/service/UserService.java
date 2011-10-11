@@ -132,4 +132,12 @@ public interface UserService extends RemoteService {
      * @throws OpenXDataSecurityException For any <tt>security related</tt> that occurs on the <tt>service layer.</tt>
      */
     void resetPassword(User user, int size) throws OpenXDataSecurityException;
+    
+    /**
+     * Import Users from a CSV file
+     * @param importFileContents String file contents
+     * @return String filename of an error CSV file, null if there are no errors
+     * @throws OpenXDataSecurityException
+     */
+    String importUsers(String importFileContents) throws OpenXDataSecurityException;
 }

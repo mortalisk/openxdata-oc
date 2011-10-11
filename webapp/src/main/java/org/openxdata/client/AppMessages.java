@@ -280,4 +280,10 @@ public interface AppMessages extends Messages {
 	String removeForm();
 	String removeAllForms();
 	String searchForForm();
+	
+	String importUsers();
+	String importUserSuccess(int numberOfUsers);
+	String importUserError(int numberOfUsers);
+	String name();
+	String errorMessages();
 }

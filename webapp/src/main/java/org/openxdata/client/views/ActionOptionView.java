@@ -69,7 +69,7 @@ abstract class ActionOptionView extends View {
 	protected void initialize() {
 		createButtons();
 		
-		formPanel = new FormPanel();
+		formPanel = createFormPanel();
 		formPanel.setFieldWidth(350);
 		formPanel.setFrame(false);
 		formPanel.setBorders(false);
@@ -157,6 +157,11 @@ abstract class ActionOptionView extends View {
 				});
 			}
 		});
+	}
+	
+	protected FormPanel createFormPanel() {
+		FormPanel formPanel = new FormPanel();
+		return formPanel;
 	}
 	
 	protected void updateRadioButtons() {

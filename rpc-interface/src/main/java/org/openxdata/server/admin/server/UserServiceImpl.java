@@ -111,4 +111,10 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements org.o
             throws OpenXDataSecurityException {
 	    return userService.getUsers(pagingLoadConfig);
     }
+
+	@Override
+    public String importUsers(String importFileContents)
+            throws OpenXDataSecurityException {
+	    return userService.importUsers(importFileContents);
+    }
 }
