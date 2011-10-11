@@ -597,9 +597,6 @@ public class DatasetView extends OpenXDataBaseView implements
 	
 	@Override
 	public void onSave() {
-		if (openxdataStackPanel.getSelectedIndex() == OpenXDataStackPanelConstants.INDEX_REPORTS) {
-			MainViewControllerFacade.saveReports();
-		}
 	}
 
         private void clearPropeties(){
