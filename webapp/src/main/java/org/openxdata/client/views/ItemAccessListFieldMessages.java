@@ -16,9 +16,8 @@ public class ItemAccessListFieldMessages {
 	private String loading;
 
 	AppMessages appMessages = GWT.create(AppMessages.class);
-    private static final long serialVersionUID = -6078411953994010139L;
     
-    public ItemAccessListFieldMessages() {
+	public ItemAccessListFieldMessages() {
     	loadDefaultMessages();
     }
     
