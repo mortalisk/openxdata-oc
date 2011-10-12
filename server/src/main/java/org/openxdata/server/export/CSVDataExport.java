@@ -95,7 +95,7 @@ public class CSVDataExport implements DataExport {
         Map<String, String> dataLine = new HashMap<String, String>();
         addAuditFields(dataLine, data);
         // other data
-        String xml = (String) data[3];
+        String xml = ((String) data[3]).trim();
         NodeList nodes = XmlUtil.fromString2Doc(xml).getDocumentElement().getChildNodes();
         int size = nodes.getLength();
         for (int i = 0; i < size; i++) {
