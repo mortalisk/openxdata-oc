@@ -2,8 +2,10 @@ package org.openxdata.client.views;
 
 import java.util.List;
 
+import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.ItemAccessController;
 import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.model.exception.OpenXDataValidationException;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -24,6 +26,7 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HorizontalPanel;
 import com.extjs.gxt.ui.client.widget.Label;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.ListField;
@@ -40,6 +43,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
 	
+	protected final AppMessages appMessages = GWT.create(AppMessages.class);
 	protected ItemAccessListFieldMessages messages;
 	
 	private ItemAccessController<M> controller;
@@ -147,7 +151,12 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
     	Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
 			public void execute() {
-            	controller.deleteMapping(sel, ItemAccessListField.this);
+            	try {
+	                controller.deleteMapping(sel, ItemAccessListField.this);
+                } catch (OpenXDataValidationException e) {
+                	ProgressIndicator.hideProgressBar();
+                	MessageBox.alert(appMessages.error(), e.getMessage(), null);
+                }
             }
     	});
     }
@@ -168,7 +177,12 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
 			public void execute() {
-		    	controller.addMapping(sel, ItemAccessListField.this);
+		    	try {
+	                controller.addMapping(sel, ItemAccessListField.this);
+                } catch (OpenXDataValidationException e) {
+                	ProgressIndicator.hideProgressBar();
+                	MessageBox.alert(appMessages.error(), e.getMessage(), null);
+                }
             }
         });
     }
