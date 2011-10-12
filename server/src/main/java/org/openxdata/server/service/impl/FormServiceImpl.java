@@ -22,7 +22,6 @@ import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.FormDataDAO;
-import org.openxdata.server.dao.UserDAO;
 import org.openxdata.server.dao.UserFormMapDAO;
 import org.openxdata.server.export.rdbms.task.RdmsDataExportTask;
 import org.openxdata.server.service.FormService;
@@ -54,9 +53,6 @@ public class FormServiceImpl implements FormService {
     
     @Autowired
     private UserService userService;
-    
-    @Autowired
-    private UserDAO userDAO;
     
     @Autowired
     private RdmsDataExportTask exportTask;

@@ -265,6 +265,8 @@ public interface AppMessages extends Messages {
 	String usernameIsNotUnique();
 	String passwordAtLeastXCharacters(String numberOfCharacters);
 	String invalidEmailAddress();
+	String cannotDisableRoleAdministrator();
+	String cannotRemoveRoleAdministratorFromLoggedInUser();
 	
 	String setRolesForUser();
 	String availableRoles();

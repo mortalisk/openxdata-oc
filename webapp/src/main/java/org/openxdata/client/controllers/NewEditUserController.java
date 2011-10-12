@@ -122,7 +122,6 @@ public class NewEditUserController extends Controller {
     }
     
     public void setUserForAccessMapping(User user) {
-    	GWT.log("setting user access="+user+" id="+user.getId());
     	roleUserAccessController.setUser(user);
         formUserAccessController.setUser(user);
         studyUserAccessController.setUser(user);

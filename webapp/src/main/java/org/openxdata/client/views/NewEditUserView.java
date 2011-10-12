@@ -172,6 +172,20 @@ public class NewEditUserView extends WizardView {
 		status.setTriggerAction(TriggerAction.ALL);
 		status.setValue(status.getStore().getAt(2)); // Pending Approval
 		createUserPanel.add(status);
+		status.setValidator(new Validator() {
+			@Override
+			public String validate(Field<?> field, String value) {
+				if (value != null) {
+					if (status.getSelectedIndex() != 0) { // disabled or pending approval
+						// check that the user does not have the role_administrator
+						if (user != null && user.hasAdministrativePrivileges()) {
+							return appMessages.cannotDisableRoleAdministrator();
+						}
+					}
+				}
+				return null;
+			}
+		});
 		
 		passwordSet = new FieldSet();
 		password = new TextField<String>();
