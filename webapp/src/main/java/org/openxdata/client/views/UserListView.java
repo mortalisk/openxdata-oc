@@ -174,17 +174,12 @@ public class UserListView extends View implements Refreshable {
 		buttonBar.add(editButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(importButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 
-		// LayoutContainer filterBar = new LayoutContainer();
-		// filterBar.setLayout(new HBoxLayout());
-		// filterBar.add(filterField, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
-
 		portlet = new DashboardPortlet();
 		portlet.setHeading(appMessages.listOfUsers());
 		ContentPanel cp = new ContentPanel();
 		cp.setLayout(new FitLayout());
 		cp.setHeaderVisible(false);
 		cp.add(grid);
-		// cp.setTopComponent(filterBar);
 		cp.setBottomComponent(toolBar);
 		portlet.add(cp);
 		portlet.setBottomComponent(buttonBar);
@@ -206,25 +201,15 @@ public class UserListView extends View implements Refreshable {
 		if (loggedInUser.hasPermission(Permission.PERM_EDIT_USERS)) {
 			editButton.show();
 		}
-		// if(loggedInUser.hasPermission(Permission.PERM_IMPORT_USERS)){
-		// importButton.show();
-		// }
+		if (loggedInUser.hasPermission(Permission.PERM_IMPORT_USERS)) {
+			importButton.show();
+		}
 	}
 
 	protected void importItem() {
 		ProgressIndicator.showProgressBar();
 		UserListController controller = (UserListController) getController();
-		if (grid.getSelectionModel().getSelectedItem() != null) {
-			UserSummary summary = grid.getSelectionModel().getSelectedItem();
-			if (summary.getUser() != null) {
-				controller.forwardToItemImportController(summary.getUser());
-			} else {
-				MessageBox.alert(appMessages.listOfUsers(), appMessages.noUserSelected(), null);
-				ProgressIndicator.hideProgressBar();
-			}
-		} else {
-			controller.forwardToItemImportController(null);
-		}
+		controller.forwardToItemImportController();
 	}
 
 	private void newUser() {

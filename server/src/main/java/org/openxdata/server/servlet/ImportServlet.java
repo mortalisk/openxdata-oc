@@ -39,7 +39,7 @@ public class ImportServlet extends HttpServlet{
     
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String errorFileName = "no file";
+		String errorData = "no file";
 		response.setHeader("Content-Type", "text/html;charset=UTF-8");
 		
 		try{
@@ -59,14 +59,14 @@ public class ImportServlet extends HttpServlet{
 				log.info("Starting import of type: " + importType);
 				
 				if (importType != null && importType.equals("user")){
-					errorFileName = userService.importUsers(filecontents);
+					errorData = userService.importUsers(filecontents);
 				}else {
 					log.warn("Unknown import type: " + importType);
 				}
 			}
 			response.setStatus(HttpServletResponse.SC_OK);
-			if (errorFileName != null){
-				response.getOutputStream().print(errorFileName);
+			if (errorData != null){
+				response.getOutputStream().print(errorData);
 			}
 		}
 		catch(Exception ex){

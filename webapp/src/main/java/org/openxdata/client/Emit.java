@@ -15,6 +15,7 @@ import org.openxdata.client.controllers.LoginController;
 import org.openxdata.client.controllers.NewEditUserController;
 import org.openxdata.client.controllers.NewStudyFormController;
 import org.openxdata.client.controllers.OpenClinicaStudyController;
+import org.openxdata.client.controllers.UserImportController;
 import org.openxdata.client.controllers.UserListController;
 import org.openxdata.client.controllers.UserProfileController;
 import org.openxdata.client.util.ProgressIndicator;
@@ -190,6 +191,7 @@ public class Emit implements EntryPoint, Refreshable {
         dispatcher.addController(new FormDesignerController(studyService, formService));
         dispatcher.addController(new OpenClinicaStudyController(studyService, openclinicaService, settingService));
         dispatcher.addController(new NewEditUserController(userService, roleService, studyService, formService));
+        dispatcher.addController(new UserImportController(userService));
         
         RefreshablePublisher publisher = RefreshablePublisher.get();
         publisher.subscribe(RefreshableEvent.Type.NAME_CHANGE, this);

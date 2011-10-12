@@ -62,4 +62,21 @@
 			<where>first_name='daniel'</where>
 		</update>
 	</changeSet>
+    
+    <changeSet author="Dagmar" id="add_Perm_Import_Users">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                SELECT count(*) FROM permission where name='Perm_Import_users';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Adding permission to enable importing of users
+        </comment>      
+            <insert tableName="permission">
+                <column name="name" value="Perm_Import_Users"/>
+                <column name="description" value="Ability to import users to the system"/>
+            </insert>
+    </changeSet>
 </databaseChangeLog>

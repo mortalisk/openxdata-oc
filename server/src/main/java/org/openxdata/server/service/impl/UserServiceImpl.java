@@ -1,9 +1,8 @@
 package org.openxdata.server.service.impl;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -24,6 +23,7 @@ import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
+import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.RoleDAO;
 import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.UserDAO;
@@ -78,6 +78,9 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private StudyManagerService studyService;
+    
+    @Autowired
+    private FormDAO formDAO;
 
     private Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -226,16 +229,9 @@ public class UserServiceImpl implements UserService {
     	List<UserImportBean> list = getUsersToImport(filecontents);
     	 
         log.info("String import of " + list.size() + " users");
-        File errorFile;
-        CSVWriter csvWriter;
-        try {
-			errorFile = File.createTempFile("openxdata-","-userimporterrors.csv");
-			FileWriter fileWriter = new FileWriter(errorFile);
-			csvWriter = new CSVWriter(fileWriter, ',');
-			csvWriter.writeNext(UserImportBean.getColumnHeaders());
-		} catch (Exception e) {
-			 throw new UnexpectedException("Error writing user import errors.", e);
-		}
+        StringWriter errorString = new StringWriter();
+        CSVWriter csvWriter = new CSVWriter(errorString, ',');
+		csvWriter.writeNext(UserImportBean.getColumnHeaders());
 		
 		User loggedInUser = getLoggedInUser();
 		boolean hasErrors = false;
@@ -272,7 +268,7 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		if (hasErrors){
-			return errorFile.getAbsolutePath();
+			return errorString.toString();
 		} else {
 			return null;
 		}
@@ -313,14 +309,12 @@ public class UserServiceImpl implements UserService {
 		List<UserFormMap> maps = new ArrayList<UserFormMap>();
 		String[] formArr = formPermissions.split(",");
 		for (String formName : formArr) {
-			List<FormDef> list = studyService.getFormByName(formName);
-			if (list.size() == 1) {
+			FormDef form = formDAO.getForm(formName);
+			if (form != null) {
 				UserFormMap map = new UserFormMap();
-				map.setFormId(list.get(0).getId());
+				map.setFormId(form.getId());
 				maps.add(map);
-			} else if (list.size() > 1) {
-				errors.add("More than one form matched form name: " + formName);
-			} else if (list.isEmpty()) {
+			} else {
 				errors.add("No form matched form name: " + formName);
 			}
 		}

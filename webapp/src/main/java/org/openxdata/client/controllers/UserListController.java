@@ -12,7 +12,6 @@ import org.openxdata.client.util.PagingUtil;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.UserListView;
 import org.openxdata.server.admin.client.service.UserServiceAsync;
-import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
@@ -89,11 +88,11 @@ public class UserListController extends Controller {
     	dispatcher.dispatch(event);
     }
 
-	public void forwardToItemImportController(Editable editable) {
+	public void forwardToItemImportController() {
 		GWT.log("UserListController : forwardToItemImportController");
         Dispatcher dispatcher = Dispatcher.get();
-        AppEvent event = new AppEvent(ItemImportController.IMPORTITEM);
-        event.setData("editable", editable);
+        AppEvent event = new AppEvent(UserImportController.IMPORTUSERS);
+        event.setData("editable", null);
     	dispatcher.dispatch(event);
 	}
 }

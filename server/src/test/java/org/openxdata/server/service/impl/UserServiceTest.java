@@ -1,7 +1,7 @@
 package org.openxdata.server.service.impl;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -184,7 +184,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 			e.printStackTrace();
  		}
 		log.debug(errorfile);
-		String errorString = IOUtils.toString(new FileReader(errorfile));
+		String errorString = IOUtils.toString(new StringReader(errorfile));
 		errorString = errorString.trim().replaceAll("\\n*\\r*", "");
 
 		Assert.assertEquals(expectedErrorString, errorString);

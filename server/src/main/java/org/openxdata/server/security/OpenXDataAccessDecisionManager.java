@@ -17,15 +17,17 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.vote.AffirmativeBased;
 
 /**
- *  
- * @author dagmar@cell-life.org.za
+ * Spring Security Decision Manager used to determine if a user's session has expired and
+ * then throw the OpenXDataSessionExpiredException instead of the OpenXDataSecurityException.
+ * The SessionExpiredSession will prompt a re-login dialog box on the client so the user 
+ * can continue working.
  */
 public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	
 	@Autowired
 	private UserService userService;
-        @Autowired
-        private OpenXDataSessionRegistry sessionRegistry;
+    @Autowired
+    private OpenXDataSessionRegistry sessionRegistry;
 	
     /** The logger. */
     private Logger log = LoggerFactory.getLogger(OpenXDataAccessDecisionManager.class);
@@ -34,19 +36,19 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	public void decide(Authentication auth, Object obj,
 			ConfigAttributeDefinition config) throws AccessDeniedException {
 		try {
-                        mayBeFireUserDisabledException();
+            mayBeFireUserDisabledException();
 			super.decide(auth, obj, config);
 		} catch (AccessDeniedException exception) {
-		        if (isUserLoggedIn()) {
-		        	//We handle a security exception after
-		        	//confirming the User is still logged in
-		        	//But lacks permission to accomplish operation.
-		        	logAndFireSecurityException(exception);
-		        } else {
-		        	//We handle a session expiry after affirming
-		        	//that the User is no longer in the Security Context.
-		        	logAndFireSessionExpiredException(exception);
-		        }
+	        if (isUserLoggedIn()) {
+	        	//We handle a security exception after
+	        	//confirming the User is still logged in
+	        	//But lacks permission to accomplish operation.
+	        	logAndFireSecurityException(exception);
+	        } else {
+	        	//We handle a session expiry after affirming
+	        	//that the User is no longer in the Security Context.
+	        	logAndFireSessionExpiredException(exception);
+	        }
 		}
 	}
 
@@ -57,7 +59,6 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	 * @throws OpenXDataSecurityException With meaningful <tt>Message</tt> to the <tt>User.</tt>
 	 */
 	private void logAndFireSecurityException(Exception exception) throws OpenXDataSecurityException {
-		
 		//TODO This message should be internationalized. 
 		String exMsg = "Access to restricted operation is denied";
 		
@@ -76,8 +77,6 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	 * @throws OpenXDataSessionExpiredException With meaningful <tt>Message</tt> to the <tt>User.</tt>
 	 */
 	private void logAndFireSessionExpiredException(Exception exception) throws OpenXDataSessionExpiredException {
-		
-		
 		//TODO This message should be internationalized.	        	
 		String exMsg = "Your session has expired. Re-Login to proceed.";
 		
@@ -88,7 +87,7 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 		// Logout User.
 		userService.logout();
 		
-		//Re throw know exception to the User.
+		//Re throw known exception to the User.
 		throw new OpenXDataSessionExpiredException(exMsg);
 	}
 	
@@ -96,16 +95,9 @@ public class OpenXDataAccessDecisionManager extends AffirmativeBased {
 	 * Checks if the <code>User</code> is still 
 	 * registered in the <code>Spring security context.</code>
 	 * 
-	 * @return 
-	 * 		<code>true</code> 
-	 * <code>if(auth instanceof OpenXDataUserDetails)</code>
-	 * <p>
-	 * else
-	 * 	<code>false</code>
-	 * </p>
+	 * @return true if the authentication object can be found and is OpenXDataUserDetails
 	 */
 	private boolean isUserLoggedIn() {
-		
 		// see if the authentication object is intact.
         SecurityContext context = SecurityContextHolder.getContext();
         if (context != null) {
