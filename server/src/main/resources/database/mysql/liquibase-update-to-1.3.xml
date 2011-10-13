@@ -227,4 +227,14 @@
          (select permission_id from permission where name='Perm_Edit_My_User'));
     </sql>
     </changeSet>
+    <changeSet author="batkinson" id="oxd343-update-admin-username">
+        <update tableName="users">
+            <column name="first_name" value="OpenXdata" />
+            <column name="middle_name" value="" />
+            <column name="last_name" value="Administrator" />
+            <column name="date_changed" valueDate="2011-10-13" />
+            <where>user_id = 2 and user_name = 'admin' and date_changed = '2009-03-13'</where>
+        </update>
+        <comment>Updates admin username to more friendly value.</comment>
+    </changeSet>
 </databaseChangeLog>
