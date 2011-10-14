@@ -19,6 +19,13 @@ import org.openxdata.server.admin.model.User;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -51,16 +58,21 @@ import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class FormListView extends View implements Refreshable {
 	final AppMessages appMessages = GWT.create(AppMessages.class);
 
+	public static final int PAGE_SIZE = 10;
+	
 	Button export, importButton, newButton, edit, delete, capture,
 			browseResponses;
 	
 	private DashboardPortlet portlet;
 	private Grid<FormSummary> grid;
 	private ColumnModel cm;
+	SearchPagingToolBar<FormSummary> toolBar;
+	private PagingLoader<PagingLoadResult<FormSummary>> loader;
 
 	private CheckBox allVersions;
 	private CheckBox allForms;
@@ -107,11 +119,43 @@ public class FormListView extends View implements Refreshable {
 
 		cm = new ColumnModel(configs);
 		cm.setHidden(0, true); // hide ID column
+		
+		toolBar = new SearchPagingToolBar<FormSummary>(PAGE_SIZE);
+		loader = new BasePagingLoader<PagingLoadResult<FormSummary>>(
+		        new RpcProxy<PagingLoadResult<FormSummary>>() {
+			        @Override
+			        public void load(Object loadConfig,
+			                final AsyncCallback<PagingLoadResult<FormSummary>> callback) {
+				        ProgressIndicator.showProgressBar();
+				        final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig) loadConfig;
+				        if (pagingLoadConfig.getSortField() == null
+				                || pagingLoadConfig.getSortField().trim().equals("")) {
+					        pagingLoadConfig.setSortField("name");
+					        pagingLoadConfig.setSortDir(SortDir.ASC);
+				        }
+				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
+				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, toolBar.getSearchFilterValue());
+				        GWT.log("FormListListView RpcProxy:load loadConfig pageSize=" + pagingLoadConfig.getLimit()
+				                + " sortField=" + pagingLoadConfig.getSortField()
+				                + " filter=" + toolBar.getSearchFilterValue());
+				        Scheduler.get().scheduleDeferred(
+				                new ScheduledCommand() {
+					                @Override
+					                public void execute() {
+						                final FormListController controller = (FormListController) FormListView.this.getController();
+						                controller.getForms(pagingLoadConfig, callback);
+					                }
+				                });
+			        }
+		        });
+		loader.setRemoteSort(true);
+		toolBar.bind(loader);
+
 
 		GroupingView view = new GroupingView();
 		view.setShowGroupedColumn(false);
 
-		GroupingStore<FormSummary> store = new GroupingStore<FormSummary>();
+		GroupingStore<FormSummary> store = new GroupingStore<FormSummary>(loader);
 		store.groupBy("organisation", true);
 		grid = new Grid<FormSummary>(store, cm);
 		grid.setAutoExpandColumn("form");
@@ -153,8 +197,9 @@ public class FormListView extends View implements Refreshable {
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
-				ProgressIndicator.showProgressBar();
-				((FormListController) FormListView.this.getController()).getForms();
+				// load the first set of data
+				PagingLoadConfig config = new BasePagingLoadConfig(0, PAGE_SIZE);
+				loader.load(config);
 			}
 		});
 
@@ -280,6 +325,7 @@ public class FormListView extends View implements Refreshable {
 		cp.setLayout(new FitLayout());
 		cp.setHeaderVisible(false);
 		cp.add(grid);
+		cp.setBottomComponent(toolBar);
 		portlet.add(cp);
 		portlet.setBottomComponent(buttonBar);
 		portlet.setTopComponent(filterBar);
@@ -366,36 +412,23 @@ public class FormListView extends View implements Refreshable {
 			controller.forwardToItemImportController(null);
 		}
 	}
-
-	public void setFormData(List<FormDef> formDefs) {
-		GWT.log("FormListView : setFormData");
-		ProgressIndicator.showProgressBar();
-		ListStore<FormSummary> store = grid.getStore();
-		store.removeAll();
-		for (FormDef formDef : formDefs) {
-			addFormDef(store, formDef);
-		}
-		ProgressIndicator.hideProgressBar();
-	}
 	
-	private void addFormDef(ListStore<FormSummary> store, FormDef formDef) {
+	public List<FormSummary> createFormSummaries(FormDef formDef) {
+		List<FormSummary> summaries = new ArrayList<FormSummary>();
 		if (formDef.getVersions() == null || formDef.getVersions().size() == 0) {
 			FormSummary formSummary = new FormSummary(formDef);
 			formSummary.setResponses("0");
-			store.add(formSummary);
-			allFormSummaries.add(formSummary);
+			summaries.add(formSummary);
 		} else {
 			for (final FormDefVersion formVersion : formDef.getVersions()) {
 				if (formVersion != null) {
 					FormSummary formSummary = getFormSummary(formVersion.getId());
 					if (formSummary == null) {
 						formSummary = new FormSummary(formVersion);
-						store.add(formSummary);
-						allFormSummaries.add(formSummary);
+						summaries.add(formSummary);
 					}
 					formSummary.setStatus(appMessages.loading());
 					formSummary.setResponses(appMessages.loading());
-					store.update(formSummary);
 					// get response data
 					Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 						@Override
@@ -405,6 +438,24 @@ public class FormListView extends View implements Refreshable {
 						}
 					});
 				}
+			}
+		}
+		return summaries;
+	}
+	
+	public void setAllFormSummaries(List<FormSummary> formSummaries) {
+		this.allFormSummaries = formSummaries;
+	}
+	
+	private void addFormDef(ListStore<FormSummary> store, FormDef formDef) {
+		List<FormSummary> newSummaries = createFormSummaries(formDef);
+		for (final FormSummary fs : newSummaries) {
+			FormSummary formSummary = getFormSummary(Integer.parseInt(fs.getId()));
+			if (formSummary == null) {
+				allFormSummaries.add(fs);
+				store.add(fs);
+			} else {
+				store.update(fs);
 			}
 		}
 	}

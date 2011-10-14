@@ -44,16 +44,12 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 	@Override
     public void deleteFormData(FormData formData) throws OpenXDataSecurityException {
 	    formService.deleteFormData(formData);
-	    
     }
-
-	public List<FormDef> getForms() {
-		return formService.getForms();
-	}
-
-	public List<FormDef> getFormsForCurrentUser() {
-		return formService.getFormsForCurrentUser();
-	}
+	
+	@Override
+    public PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getForms(loadConfig);
+    }
 
     @Override
 	public Integer getFormResponseCount(int formDefVersionId) {

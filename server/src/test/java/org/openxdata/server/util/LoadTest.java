@@ -108,7 +108,8 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
         System.out.println("Start time: "+new Date());
 
         // find the last test form created (it contains all the test data)
-        List<FormDef> forms = formService.getForms();
+        PagingLoadResult<FormDef> formsLoadResult = formService.getForms(new PagingLoadConfig(0,20));
+        List<FormDef> forms = formsLoadResult.getData();
         if (forms != null) {
             for (FormDef form : forms) {
                 FormDefVersion version = form.getDefaultVersion();
@@ -184,7 +185,7 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
         formV.setFormDef(form);
         form.addVersion(formV);
         // save the form
-        studyManagerService.saveForm(form);
+        formService.saveForm(form);
         return formV;
     }
     
@@ -218,16 +219,17 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
                 int selector = (int)(Math.random()*6);
                 switch (selector) {
                     case 0 : 
-                        List<FormDef> forms = formService.getForms();
+                        PagingLoadResult<FormDef> formsLoadResult = formService.getForms( new PagingLoadConfig(0, 20));
+                        List<FormDef> forms = formsLoadResult.getData();
                         System.out.println("getForms returned: "+(forms != null ? forms.size() : null)); 
                         break;
                     case 1 : 
-                        forms = formService.getFormsForCurrentUser();
-                        System.out.println("getFormsForCurrentUser returned: "+(forms != null ? forms.size() : null)); 
+                        //forms = formService.getFormsForCurrentUser();
+                        //System.out.println("getFormsForCurrentUser returned: "+(forms != null ? forms.size() : null)); 
                         break;
                     case 2 : 
-                        //List<FormData> formData = formService.getFormData(form.getFormDefVersionId());
-                        //System.out.println("getFormData returned: "+(formData != null ? formData.size() : null)); 
+                        List<FormData> formData = formService.getFormData(form.getId());
+                        System.out.println("getFormData returned: "+(formData != null ? formData.size() : null)); 
                         break;
                     case 3 : 
                         Integer count = formService.getFormResponseCount(form.getId());

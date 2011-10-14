@@ -69,16 +69,8 @@ public class FormServiceImpl implements FormService {
     @Override
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Forms")
-    public List<FormDef> getForms() {
-        return formDAO.getForms();
-    }
-
-    @Override
-	@Transactional(readOnly=true)
-	@Secured("Perm_View_Forms")
-    public List<FormDef> getFormsForCurrentUser() {
-        List<FormDef> forms = userFormMapDAO.getFormsForUser(userService.getLoggedInUser());
-        return forms;
+    public PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig) {
+        return formDAO.getForms(loadConfig);
     }
     
     @Override

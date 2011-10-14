@@ -7,6 +7,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
@@ -29,7 +31,7 @@ public class FormDefServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getForms_shouldReturnAllForms() throws Exception {
 		
-		List<FormDef> forms = formService.getForms();
+		List<FormDef> forms = getForms();
 		
 		Assert.assertNotNull(forms);
 		Assert.assertEquals("The number of forms is 5", 5, forms.size());
@@ -40,7 +42,7 @@ public class FormDefServiceTest extends BaseContextSensitiveTest {
 	public void saveForm_shouldSaveForm() throws Exception {
 		final String formName = "FormName";
 		
-		List<FormDef> forms = formService.getForms();
+		List<FormDef> forms = getForms();
 		Assert.assertNotNull(forms);
 		int numberOfForms = forms.size();
 		
@@ -51,7 +53,7 @@ public class FormDefServiceTest extends BaseContextSensitiveTest {
 		
 		formService.saveForm(form);
 		
-		forms = formService.getForms();
+		forms = getForms();
 		Assert.assertEquals("Added one form", (numberOfForms+1), forms.size());
 		Assert.assertNotNull(getForm(formName,forms));
 	}
@@ -61,7 +63,7 @@ public class FormDefServiceTest extends BaseContextSensitiveTest {
 		
 		final String formName = "Form Name";
 		
-		List<FormDef> forms = formService.getForms();
+		List<FormDef> forms = getForms();
 		int numberOfForms = forms.size();
 	
 		FormDef form = new FormDef();
@@ -70,14 +72,14 @@ public class FormDefServiceTest extends BaseContextSensitiveTest {
 		form.setDateCreated(new Date());
 		
 		formService.saveForm(form);
-		forms = formService.getForms();
+		forms = getForms();
 		Assert.assertEquals("Added one form, so now there is one more", (numberOfForms+1), forms.size());		
 		form = getForm(formName,forms);
 		Assert.assertNotNull(form);
 
 		formService.deleteForm(form);
 		
-		forms = formService.getForms();
+		forms = getForms();
 		Assert.assertEquals("Deleted the form, so now there is the same", numberOfForms, forms.size());
 		Assert.assertNull(getForm(formName,forms));
 	}
@@ -97,5 +99,10 @@ public class FormDefServiceTest extends BaseContextSensitiveTest {
 		}
 		
 		return null;
+	}
+	
+	private List<FormDef> getForms() {
+		PagingLoadResult<FormDef> formsLoadResult = formService.getForms(new PagingLoadConfig(0,20));
+		return formsLoadResult.getData();
 	}
 }

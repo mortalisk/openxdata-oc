@@ -61,16 +61,11 @@ public interface FormService {
     FormData saveFormData(FormData formData);
     
     /**
-     * Retrieves all the form definitions in the system
-     * @return List of FormDef
+     * Retrieves a page of form definitions in the system
+     * @param loadConfig PagingLoadConfiguration specifying page number and size etc
+     * @return PagingLoadResult of Form Definitions
      */
-    List<FormDef> getForms();
-    
-    /**
-     * Retrives all the form definitions that are available for the currently logged in user
-     * @return List of FormDef
-     */
-    List<FormDef> getFormsForCurrentUser();
+    PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig);
     
     /**
      * Retrieves all the names of the forms that are available for the currently logged in user

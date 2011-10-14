@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.hibernate.Query;
 import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -44,19 +43,11 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	    return searchUniqueByPropertyEqual("name", name);
     }
 	
-	/* (non-Javadoc)
-	 * @see org.openxdata.server.dao.FormDAO#getForms()
-	 */
 	@Override
-	public List<FormDef> getForms() {
-		return findAll();
-	}
-	
-	@Override
-	public List<FormDef> getForms(Integer studyId) {
-		StudyDef value = new StudyDef();
-		value.setId(studyId);
-		return this.searchByPropertyEqual("study", value);
+	public PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig) {
+		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
+	    SearchResult<FormDef> result = searchAndCount(formSearch);
+	    return getPagingLoadResult(loadConfig, result);
 	}
 	
 	@SuppressWarnings("unchecked")
