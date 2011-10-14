@@ -151,25 +151,6 @@ public interface StudyManagerService {
 	void deleteUserMappedStudy(UserStudyMap map);
 	
 	/**
-	 * Gets all the forms that are mapped to the specified user
-	 * Deprecated - use FormService instead
-	 * @param user User
-	 * @return List of FormDef
-	 */
-	@Deprecated
-	List<FormDef> getFormsForUser(User user);
-	
-	/**
-	 * Gets all the forms that are mapped to the specified user in a specified study
-	 * Deprecated - use FormService instead
-	 * @param user User
-	 * @param studyDefId Integer
-	 * @return List of FormDef
-	 */
-	@Deprecated
-	List<FormDef> getFormsForUser(User user, Integer studyDefId);
-	
-	/**
 	 * Deletes a given <code>UserFormMap.</code>
 	 * @param map map to delete.
 	 */

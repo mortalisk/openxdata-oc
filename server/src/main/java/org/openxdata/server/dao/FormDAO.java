@@ -1,6 +1,5 @@
 package org.openxdata.server.dao;
 
-import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.FormDef;
@@ -19,7 +18,7 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * 
 	 * @return the form list.
 	 */
-	List<FormDef> getForms();
+	PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig);
 	
 	/**
 	 * Retrieves the Form with the specified identifier
@@ -34,13 +33,6 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * @return
 	 */
 	FormDef getForm(String  name);
-	
-	/**
-	 * Returns a list of forms that belong to the specified study
-	 * @param studyId
-	 * @return
-	 */
-	List<FormDef> getForms(Integer studyId);
 	
 	/**
 	 * Gets the form names for the forms in a particular study.

@@ -6,6 +6,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,6 @@ public class HibernateFormDAOTest extends BaseContextSensitiveTest {
 
     @Autowired
     private FormDAO dao;
-
-    @Test
-    public void getFormDefFromStudy() {
-    	List<FormDef> forms = dao.getForms(1); // Sample Study
-    	Assert.assertNotNull(forms);
-    	Assert.assertEquals(2, forms.size());
-    	Assert.assertEquals("Sample Form", forms.get(0).getName());
-    }
     
     @Test
     public void getFormNameFromStudy() {

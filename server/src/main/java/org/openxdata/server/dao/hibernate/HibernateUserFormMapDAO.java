@@ -6,16 +6,19 @@ import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.UserFormMapDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 
 /**
  *
@@ -52,46 +55,7 @@ public class HibernateUserFormMapDAO extends BaseDAOImpl<UserFormMap> implements
 	public void saveUserMappedForm(UserFormMap map) {
 		save(map);
 	}
-    
-    @Override
-	@SuppressWarnings("unchecked")
-    public List<FormDef> getFormsForUser(User user) {
-    	// gets all the forms for the specified user
-    	if (user.hasAdministrativePrivileges()) {
-    		return formDAO.getForms();
-    	} else {
-    		Session session = getSession();
-			Query query = session.createQuery(
-					"select distinct fd from FormDef as fd, User as u" +
-					" where u.name = :name" +
-					" and (u in elements(fd.users) or u in elements(fd.study.users))");
-			query.setString("name", user.getName());
-			List<FormDef> forms = query.list();
-			return forms;
-    	}
-    }
-    
-    @Override
-	@SuppressWarnings("unchecked")
-    public List<FormDef> getFormsForUser(User user, Integer studyDefId) {
-    	// gets all the forms for the specified user
-    	List<FormDef> forms = null;
-    	Session session = getSession();
-    	if (user.hasAdministrativePrivileges()) {
-    		forms = session.createCriteria(FormDef.class).createAlias("study", "s").add(Restrictions.eq("s.id", studyDefId)).list();
-    	} else {
-			Query query = session.createQuery(
-					"select distinct fd from FormDef as fd, User as u" +
-					" where u.name = :name and fd.study.id = :studyId" +
-					" and (u in elements(fd.users) or u in elements(fd.study.users))");
-			query.setString("name", user.getName());
-			query.setInteger("studyId", studyDefId);
-			forms = query.list();
-    	}
-    	
-    	return forms;
-    }
-    
+        
     @Override
 	@SuppressWarnings({ "unchecked" })
     public Map<Integer,String> getFormNamesForUser(User user, Integer studyDefId) {
@@ -118,8 +82,25 @@ public class HibernateUserFormMapDAO extends BaseDAOImpl<UserFormMap> implements
 		}
     	return formNames;
     }
-    
-    @Override
+
+	@Override
+    public PagingLoadResult<FormDef> getUserMappedForms(User user, PagingLoadConfig loadConfig) {
+    	// gets all the forms for the specified user
+    	if (user.hasAdministrativePrivileges()) {
+    		return formDAO.getForms(loadConfig);
+    	} else {
+    		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
+    		formSearch.addFilterSome("users", Filter.equal("id", user.getId()));
+    		formSearch.addFilterSome("study.users", Filter.equal("id", user.getId()));
+    	    SearchResult<FormDef> result = searchAndCount(formSearch);
+    		List<FormDef> list = result.getResult();
+    		int totalNum = result.getTotalCount();
+    		int offset = loadConfig == null ? 0 : loadConfig.getOffset();
+    		return new PagingLoadResult<FormDef>(list, offset, list.size(), totalNum);
+    	}
+    }
+
+	@Override
     public void deleteUserMappedForms(int formId) {
     	Session session = getSession();
 		Query query = session.createQuery("delete from UserFormMap where formId = :formId");

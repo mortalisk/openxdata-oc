@@ -221,23 +221,7 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	public void saveUserMappedForm(UserFormMap map) {
 		userFormMapDAO.saveUserMappedForm(map);
 	}
-	
-	@Override
-	@Transactional(readOnly=true)
-	@Secured("Perm_View_Forms")
-	@Deprecated
-	public List<FormDef> getFormsForUser(User user) {
-		return userFormMapDAO.getFormsForUser(user);
-	}
-	
-	@Override
-	@Transactional(readOnly=true)
-	@Secured("Perm_View_Forms")
-	@Deprecated
-	public List<FormDef> getFormsForUser(User user, Integer studyDefId) {
-		return userFormMapDAO.getFormsForUser(user, studyDefId);
-	}
-	
+
 	@Override
 	@Secured({"Perm_Delete_Forms", "Perm_Delete_Users"})
 	public void deleteUserMappedForm(UserFormMap map) {

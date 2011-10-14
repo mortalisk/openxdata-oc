@@ -1,5 +1,6 @@
 package org.openxdata.client.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
@@ -7,17 +8,23 @@ import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.model.FormSummary;
+import org.openxdata.client.util.PagingUtil;
+import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.FormListView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class FormListController extends Controller {
     AppMessages appMessages = GWT.create(AppMessages.class); 
@@ -97,13 +104,23 @@ public class FormListController extends Controller {
     	dispatcher.dispatch(event);
     }
     
-    public void getForms() {
+    public void getForms(PagingLoadConfig loadConfig,
+    		final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<FormSummary>> callback) {
     	GWT.log("FormListController : getForms");
-        formService.getFormsForCurrentUser(new EmitAsyncCallback<List<FormDef>>() {
+        formService.getForms(PagingUtil.createPagingLoadConfig(loadConfig),
+        		new EmitAsyncCallback<PagingLoadResult<FormDef>>() {
 
             @Override
-            public void onSuccess(List<FormDef> result) {
-                formListView.setFormData(result);
+            public void onSuccess(PagingLoadResult<FormDef> result) {
+            	ProgressIndicator.hideProgressBar();
+            	List<FormSummary> results = new ArrayList<FormSummary>();
+                List<FormDef> data = result.getData();
+                GWT.log("got data:"+data.size());
+                for (FormDef f : data) {
+                    results.addAll(formListView.createFormSummaries(f));
+                }
+                formListView.setAllFormSummaries(results);
+                callback.onSuccess(new BasePagingLoadResult<FormSummary>(results, result.getOffset(), result.getTotalLength()));
             }
         });
     }

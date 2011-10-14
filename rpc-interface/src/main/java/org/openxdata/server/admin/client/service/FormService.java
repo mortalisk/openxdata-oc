@@ -43,19 +43,27 @@ public interface FormService extends RemoteService {
      */
     void deleteFormData(FormData formData) throws OpenXDataSecurityException;
     
+    ///**
+     //* Retrieves all the form definitions in the system.
+     //* 
+     //* @return List of FormDef
+     //*/
+    //List<FormDef> getForms() throws OpenXDataSecurityException ;
+    
     /**
-     * Retrieves all the form definitions in the system.
-     * 
-     * @return List of FormDef
+     * Retrieves a page of form definitions that are available for the currently logged in user.
+     * @param loadConfig PagingLoadConfiguration specifying page number and size etc
+     * @return PagingLoadResult of Form Definitions
      */
-    List<FormDef> getForms() throws OpenXDataSecurityException ;
+    PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
     
     /**
      * Retrieves all the form definitions that are available for the currently logged in user.
      * 
      * @return List of FormDef
      */
-    List<FormDef> getFormsForCurrentUser() throws OpenXDataSecurityException;
+    
+    //List<FormDef> getFormsForCurrentUser() throws OpenXDataSecurityException;
     
     /**
      * Retrieves all the names of the forms that are available for the currently logged in user
