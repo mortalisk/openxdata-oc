@@ -1,12 +1,8 @@
 package org.openxdata.server.dao.hibernate;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
