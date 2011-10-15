@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.server.admin.client.service.AuthenticationServiceAsync;
-import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.ReportServiceAsync;
 import org.openxdata.server.admin.client.service.RoleServiceAsync;
 import org.openxdata.server.admin.client.service.SettingServiceAsync;
 import org.openxdata.server.admin.client.service.SmsServiceAsync;
-import org.openxdata.server.admin.client.service.StudyManagerServiceAsync;
 import org.openxdata.server.admin.client.service.TaskServiceAsync;
 import org.openxdata.server.admin.client.service.UserServiceAsync;
 import org.openxdata.server.admin.client.service.UtilityServiceAsync;
@@ -41,9 +39,7 @@ public class Context  {
 	private static AuthenticationServiceAsync authenticationServiceAsync;
 		
 	private static SmsServiceAsync smsServiceAsync;
-	
-	private static FormServiceAsync formServiceAsync;
-	
+		
 	private static TaskServiceAsync taskServiceAsync;
 	
 	private static UserServiceAsync userServiceAsync;
@@ -54,10 +50,7 @@ public class Context  {
 	
 	private static SettingServiceAsync settingServiceAsync;
 	
-	
-	/** The study manager service async interface. */
-	private static StudyManagerServiceAsync studyMgrService;
-	
+		
 	private static RoleServiceAsync roleServiceAsync;
 	
 	/** The currently logged on user. */
@@ -100,7 +93,6 @@ public class Context  {
 	 * Starts up the context.
 	 */
     public static void startup() {
-        studyMgrService = StudyManagerServiceAsync.Util.getInstance();
         authenticationServiceAsync = AuthenticationServiceAsync.Util.getInstance();
         smsServiceAsync = SmsServiceAsync.Util.getInstance();
         roleServiceAsync = RoleServiceAsync.Util.getInstance();
@@ -109,7 +101,6 @@ public class Context  {
         settingServiceAsync = SettingServiceAsync.Util.getInstance();
         reportServiceAsync = ReportServiceAsync.Util.getInstance();
         utilityServiceAsync = UtilityServiceAsync.Util.getInstance();
-        formServiceAsync = FormServiceAsync.Util.getInstance();
     }
 	
 	/**
@@ -302,15 +293,6 @@ public class Context  {
 	public static String getSetting(String name, String defaultValue){
 		return SettingGroup.getSetting(name,settingGroups,defaultValue);
 	}
-	
-	/**
-	 * Gets the study manager service async interface.
-	 * 
-	 * @return the interface.
-	 */
-	public static StudyManagerServiceAsync getStudyManagerService(){ 
-		return studyMgrService;
-	}
 
 	/**
 	 * @return the reportServiceAsync
@@ -358,12 +340,5 @@ public class Context  {
 	 */
 	public static List<Permission> getPermissions(){
 		return Context.permissions;
-	}
-
-	/**
-	 * @return the formServiceAsync
-	 */
-	public static FormServiceAsync getFormServiceAsync() {
-		return formServiceAsync;
 	}
 }
