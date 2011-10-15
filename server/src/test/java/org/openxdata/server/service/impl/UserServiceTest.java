@@ -27,10 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Tests methods in the UserService which deal with users.
- * 
- * @author daniel
- * 
+ *  
  */
+@SuppressWarnings("deprecation")
 public class UserServiceTest extends BaseContextSensitiveTest {
 
 	private static Logger log = LoggerFactory.getLogger(UserServiceTest.class);

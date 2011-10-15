@@ -29,10 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Tests methods in the StudyManagerService which deal with StudyDef.
- * 
- * @author daniel
- * 
+ *  
  */
+@SuppressWarnings("deprecation")
 public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired

@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 /**
  * Default Implementation for the StudyManagerService <code>Interface.</code>
  */
+@SuppressWarnings("deprecation")
 public class StudyManagerServiceImpl extends OxdPersistentRemoteService implements
 		org.openxdata.server.admin.client.service.StudyManagerService {
 

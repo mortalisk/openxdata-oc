@@ -29,9 +29,8 @@ import org.w3c.dom.Document;
  * Handles multimedia (Picture, Audio and Video) requests 
  * for the form designer and runner.
  * 
- * @author daniel
- *
  */
+@SuppressWarnings("deprecation")
 public class MultimediaServlet extends HttpServlet {
 
 	private StudyManagerService studyManagerService;
