@@ -63,8 +63,7 @@
         var resetLoginForm = new Ext.FormPanel({
             formId: 'appResetLoginForm',
             labelWidth: 120,
-            frame:true, 
-            title:'<fmt:message key="resetPasswordTitle"/>', 
+            frame:false,  
             defaultType: 'textfield',
             monitorValid: true,
             keys:[
@@ -97,6 +96,18 @@
 
         });
         
+        var resetPanel = new Ext.Panel({
+            frame:true,  
+            title:'<fmt:message key="resetPasswordTitle"/>',
+            items:[
+                   resetLoginForm,
+              {
+                   id: 'forgot',
+                   xtype: 'panel',
+                   html: '<div style="text-align: center;"><a href="resetPassword.html"><fmt:message key="forgotMyPassword"/></a></div>'
+              }]
+        });
+        
         // This just creates a window to wrap the login form. 
         // The login object is passed to the items collection.       
         var win = new Ext.Window({
@@ -107,7 +118,7 @@
             draggable: false,
             plain: true,
             border: false,
-            items: [resetLoginForm]                                 
+            items: [resetPanel]                                 
         });
         win.show();
         

@@ -146,14 +146,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Secured("Perm_Add_Users")
 	public User saveUser(User user) {
-    	
+    	boolean newUser = user.getId() == 0 ? true : false;
         checkAndSetUserLoginProperties(user);
 		userDAO.saveUser(user);
-
 		sessionRegistry.updateUserEntries(user);
-
-		sendEmailToNewUser(user);
-
+		if (newUser) {
+			sendEmailToNewUser(user);
+		}
 		return user;
     }
     
@@ -178,9 +177,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void sendEmailToNewUser(User user) {
-		
-		boolean newUser = user.getId() == 0 ? true : false;
-		if (newUser && StringUtils.isNotEmpty(user.getEmail())) {
+		if (StringUtils.isNotEmpty(user.getEmail())) {
         	String enable = settingDAO.getSetting("enableNewUserEmail");
         	if (enable != null && enable.equalsIgnoreCase("true")) {
         		// FIXME: calculate user's actual locale (will have to be stored in their user profile)
@@ -190,6 +187,7 @@ public class UserServiceImpl implements UserService {
 		        String text = messageSource.getMessage("newUserEmail", 
 		        		new Object[] { user.getFirstName(), user.getName(), user.getClearTextPassword(), serverUrl }, 
 		        		locale);
+		        log.debug("sending email with text='"+text+"'");
 		        try {
 		        	mailService.sendEmail(user.getEmail(), subject, text);
 		        } catch (MailException ex) {
