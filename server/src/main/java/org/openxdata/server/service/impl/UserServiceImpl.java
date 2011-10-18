@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService {
         try {
 			csvWriter.close();
 		} catch (IOException e) {
-			 throw new UnexpectedException("Error writing user import errors.", e);
+			throw new UnexpectedException("Error writing user import errors.", e);
 		}
 		
 		if (hasErrors){
@@ -274,7 +274,7 @@ public class UserServiceImpl implements UserService {
     
 	private List<UserStudyMap> getUserStudyMaps(String studyPermissions,
 			List<String> errors) {
-		if (studyPermissions.trim().isEmpty()) {
+		if (studyPermissions==null || studyPermissions.trim().isEmpty()) {
 			log.debug("No study permissions");
 			return Collections.emptyList();
 		}
@@ -299,7 +299,7 @@ public class UserServiceImpl implements UserService {
 
 	private List<UserFormMap> getUserFormMaps(String formPermissions,
 			List<String> errors) {
-		if (formPermissions.trim().isEmpty()) {
+		if (formPermissions==null || formPermissions.trim().isEmpty()) {
 			log.debug("No form permissions");
 			return Collections.emptyList();
 		}
@@ -341,7 +341,7 @@ public class UserServiceImpl implements UserService {
 	 **/
 	private List<String> setRoles(User user, String roles) {
 		List<String> errors = new ArrayList<String>();
-		if (roles.trim().isEmpty()) {
+		if (roles==null || roles.trim().isEmpty()) {
 			log.debug("No roles for import user: " + user.getName());
 			errors.add("No roles specified");
 			return errors;
