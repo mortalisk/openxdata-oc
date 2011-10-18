@@ -177,10 +177,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void sendEmailToNewUser(User user) {
-		log.debug("Trying to send email for user "+user.getName()+" id="+user.getId()+" email="+user.getEmail());
 		if (StringUtils.isNotEmpty(user.getEmail())) {
         	String enable = settingDAO.getSetting("enableNewUserEmail");
-        	log.debug("enableNewUserEmail="+enable);
         	if (enable != null && enable.equalsIgnoreCase("true")) {
         		// FIXME: calculate user's actual locale (will have to be stored in their user profile)
         		Locale locale = Locale.ENGLISH; 
