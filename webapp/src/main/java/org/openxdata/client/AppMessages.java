@@ -288,4 +288,7 @@ public interface AppMessages extends Messages {
 	String importUserError(int numberOfUsers);
 	String name();
 	String errorMessages();
+	
+	String newUserEmailSubject();
+	String newUserEmail(String firstname, String username, String password, String loginUrl);
 }
