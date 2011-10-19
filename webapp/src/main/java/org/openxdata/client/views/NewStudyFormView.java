@@ -166,8 +166,9 @@ public class NewStudyFormView extends WizardView {
 		newStudyName = new TextField<String>();
 		newStudyName.setFieldLabel(appMessages.studyName());
 		newStudyName.setAllowBlank(false);
+		newStudyName.setAutoValidate(true);
+		newStudyName.setValidationDelay(1000);
 		newStudyName.setValidator(new Validator() {
-
 			@Override
 			public String validate(Field<?> field, String value) {
 				if (value != null) {
@@ -275,6 +276,8 @@ public class NewStudyFormView extends WizardView {
 		newFormName = new TextField<String>();
 		newFormName.setFieldLabel(appMessages.formName());
 		newFormName.setAllowBlank(false);
+		newFormName.setAutoValidate(true);
+		newFormName.setValidationDelay(1000);
 		newFormName.setValidator(new Validator() {
 			@Override
 			public String validate(Field<?> field, String value) {
