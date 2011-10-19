@@ -120,13 +120,19 @@ public class RdmsDataExportTask {
 	class ExportFormDataThread implements Runnable {
 	    FormData formData;
 	    FormDefVersion formDefVersion;
+	    public ExportFormDataThread() {
+	    }
 	    public ExportFormDataThread(FormData formData, FormDefVersion formDefVersion) {
 	        this.formData = formData;
 	        this.formDefVersion = formDefVersion;
 	    }
         @Override
 		public void run() {
-            exportFormData(formData, formDefVersion);
+        	if (formData != null && formDefVersion != null) {
+        		exportFormData(formData, formDefVersion);
+        	} else {
+        		exportAllFormData();
+        	}
         }
 	}
 	
@@ -144,6 +150,15 @@ public class RdmsDataExportTask {
         @Override
 		public void run() {
             deleteFormData(formData, formDefVersion);
+        }
+	}
+	
+	protected void exportAllFormData() {
+		List<FormData> dataList = dataExportService.getFormDataToExport(ExportConstants.EXPORT_BIT_RDBMS);
+        log.info("Running Data Export Service to export " + dataList.size() + " form data items");
+        for (int index = 0; index < dataList.size(); index++) {
+            FormData formData = dataList.get(index);
+            exportFormData(formData, getFormDefVersion(formData));
         }
 	}
 	
@@ -213,6 +228,7 @@ public class RdmsDataExportTask {
 	public void init() {
 		exporter = new JdbcRdmsExporterDAO(getConnectionURL(), databaseName);
 		dateSettingGroup = dataExportService.getDateSettings();
+		exportAllFormData(); // run an export on all un-exported data on startup
 	}
 	
 	public static String getDateSetting(String name, String defaultValue) {
