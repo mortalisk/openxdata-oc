@@ -96,7 +96,6 @@ public class UserListView extends View implements Refreshable {
 					        pagingLoadConfig.setSortField("name");
 					        pagingLoadConfig.setSortDir(SortDir.ASC);
 				        }
-				        GWT.log("sortField=" + pagingLoadConfig.getSortField());
 				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
 				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, toolBar.getSearchFilterValue());
 				        GWT.log("UserListView RpcProxy:load loadConfig pageSize=" + pagingLoadConfig.getLimit()
@@ -174,7 +173,20 @@ public class UserListView extends View implements Refreshable {
 		buttonBar.add(editButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		buttonBar.add(importButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 
-		portlet = new DashboardPortlet();
+		portlet = new DashboardPortlet() {
+			@Override
+			public void maximise() {
+				super.maximise();
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
+					public void execute() {
+						// load the first set of data
+						PagingLoadConfig config = new BasePagingLoadConfig(0, PAGE_SIZE);
+						loader.load(config);
+					}
+				});
+			}
+		};
 		portlet.setHeading(appMessages.listOfUsers());
 		ContentPanel cp = new ContentPanel();
 		cp.setLayout(new FitLayout());
@@ -183,15 +195,6 @@ public class UserListView extends View implements Refreshable {
 		cp.setBottomComponent(toolBar);
 		portlet.add(cp);
 		portlet.setBottomComponent(buttonBar);
-
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				// load the first set of data
-				PagingLoadConfig config = new BasePagingLoadConfig(0, PAGE_SIZE);
-				loader.load(config);
-			}
-		});
 	}
 
 	private void checkLoggedInUserPermissions(ColumnModel cm, User loggedInUser) {
