@@ -94,13 +94,12 @@ public class EditStudyFormView extends WizardView {
 		editStudyPanel.setLayout(new FitLayout());
 		editStudyPanel.setStyleAttribute("padding", "10px");
 		FormPanel formPanel = getWizardFormPanel();
+		((FormLayout)formPanel.getLayout()).setDefaultWidth(300);
 		studyName.setFieldLabel(appMessages.studyName());
-		studyName.setWidth(300);
 		studyName.setAllowBlank(false);
 		formPanel.add(studyName);
 
 		studyDescription.setFieldLabel(appMessages.studyDescription());
-		studyDescription.setWidth(300);
 		formPanel.add(studyDescription);
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
         		"rightHeading="+appMessages.usersWithAccessToStudy()+"\n" +
@@ -131,13 +130,12 @@ public class EditStudyFormView extends WizardView {
 		editFormPanel.setLayout(new FitLayout());
 		editFormPanel.setStyleAttribute("padding", "10px");
 		FormPanel formPanel = getWizardFormPanel();
+		((FormLayout)formPanel.getLayout()).setDefaultWidth(300);
 		formName.setFieldLabel(appMessages.formName());
 		formName.setAllowBlank(false);
-		formName.setWidth(300);
 		formPanel.add(formName);
 
 		formDescription.setFieldLabel(appMessages.formDescription());
-		formDescription.setWidth(300);
 		formPanel.add(formDescription);
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
         		"rightHeading="+appMessages.usersWithAccessToForm()+"\n" +
