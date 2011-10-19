@@ -78,10 +78,13 @@ public class FormListController extends Controller {
     	dispatcher.dispatch(FormResponsesController.BROWSE, formSummary);
     }
     
-    public void forwardToNewStudyFormWizard() {
+    public void forwardToNewStudyFormWizard(FormSummary formSummary) {
     	GWT.log("FormListController : forwardToNewStudyFormWizard");
         Dispatcher dispatcher = Dispatcher.get();
         AppEvent event = new AppEvent(NewStudyFormController.NEWSTUDYFORM);
+        if (formSummary != null) {
+	        event.setData("formDef", formSummary.getFormDefinition());
+        }
     	dispatcher.dispatch(event);
     }
     

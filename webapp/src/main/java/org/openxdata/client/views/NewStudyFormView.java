@@ -32,8 +32,8 @@ import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.Field;
-import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
+import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.Validator;
@@ -76,6 +76,9 @@ public class NewStudyFormView extends WizardView {
 
 	ListStore<StudySummary> store;
 	ListStore<FormSummary> formStore;
+	
+	// used to pre-select items in the drop down lists
+	FormDef preselectForm;
 
 	private int currentPage = 0;
 	private boolean formVersionEditMode = false;
@@ -227,6 +230,18 @@ public class NewStudyFormView extends WizardView {
 						userStudyAccessListField.setEnabled(true);
 						newStudyName.setValue("");
 						newStudyDescription.setValue("");
+						// set the preselected study if applicable
+						if (preselectForm != null) {
+							StudyDef preselectStudy = preselectForm.getStudy();
+							setStudyDef(preselectStudy);
+							List<StudySummary> sss = store.getModels();
+							for (StudySummary ss : sss) {
+								if (ss.getId().equals(String.valueOf(preselectStudy.getId()))) {
+									existingStudyName.setValue(ss);
+									break;
+								}
+							}
+						}
 					}
 				});
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
@@ -332,6 +347,17 @@ public class NewStudyFormView extends WizardView {
 				userFormAccessListField.setEnabled(true);
 				newFormName.setValue("");
 				newFormDescription.setValue("");
+				// set preselected form if applicable
+				if (preselectForm != null) {
+					formDef = preselectForm;
+					List<FormSummary> fss = formStore.getModels();
+					for (FormSummary fs : fss) {
+						if (fs.getId().equals(String.valueOf(preselectForm.getId()))) {
+							existingFormName.setValue(fs);
+							break;
+						}
+					}
+				}
 			}
 		});
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
@@ -390,6 +416,8 @@ public class NewStudyFormView extends WizardView {
 		GWT.log("NewStudyFormView : handleEvent");
 		if (event.getType() == NewStudyFormController.NEWSTUDYFORM) {
 
+			preselectForm = event.getData("formDef");
+			
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 				@Override
 				public void execute() {
@@ -513,6 +541,7 @@ public class NewStudyFormView extends WizardView {
 		for (Integer studyId : studyNames.keySet()) {
 			store.add(new StudySummary(studyId.toString(), studyNames.get(studyId)));
 		}
+		
 	}
 	
 	public void setStudyDef(StudyDef studyDef) {
