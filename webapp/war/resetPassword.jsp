@@ -8,9 +8,9 @@
 <fmt:setBundle basename='org.openxdata.client.AppMessages'/>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title><fmt:message key="title" /></title>
-<link type="text/css" rel="stylesheet" href="Emit.css">
-<link rel="stylesheet" type="text/css"
-	href="extjs/resources/css/ext-all.css" />
+<link rel="shortcut icon" href="favicon.ico" >
+<link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="Emit.css">
 <!-- extjs -->
 <script type="text/javascript" src="extjs/adapter/ext/ext-base.js"></script>
 <script type="text/javascript" src="extjs/ext-all.js"></script>

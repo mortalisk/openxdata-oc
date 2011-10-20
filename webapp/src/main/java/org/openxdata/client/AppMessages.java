@@ -6,6 +6,7 @@ public interface AppMessages extends Messages {
 	String title();
 	String logo();
 	String logoUrl();
+	String splashImageUrl();
 	String user();
 	String login();
 	String logout();

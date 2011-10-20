@@ -358,8 +358,8 @@ public class Emit implements EntryPoint, Refreshable {
         sb.append("<table border=0 cellspacing=10><tr><td>");
         sb.append(appMessages.disclaimer());
         sb.append("</td><td>");
-   		sb.append("<a href=\"#\" onclick=\"window.open('http://www.cell-life.org');\" title=\"Cell-Life : http://www.cell-life.org' style='cursor:hand;\">");
-        sb.append("<img width=\"40\" height=\"34\" src=\"images/emit/cellifeLogoTinyTrans.png\" title=\"Cell-Life\" style=\"cursor:hand;\"/>");
+        sb.append("<a href=\"#\" onclick=\"window.open('http://www.cell-life.org');\" title=\"Cell-Life : http://www.cell-life.org' style='cursor:hand;\">");
+        sb.append("<img width=\"102\" height=\"45\" src=\"images/emit/cellifeLogoTinyTrans.png\" title=\"Cell-Life\" style=\"cursor:hand;\"/>");
         sb.append("</a>");
         sb.append("</td><td>");        
         sb.append(appMessages.and());

@@ -27,3 +27,12 @@
 .emit-viewport {
     background-color: #FFFFFF;
 }
+
+.x-body-masked {
+	background: url(${splashImageUrl}) no-repeat;
+}
+
+.ext-el-mask { 
+	background-color:#FFFFFF !important;
+	opacity:0;
+}
