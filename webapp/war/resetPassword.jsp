@@ -101,11 +101,11 @@
             title:'<fmt:message key="resetPasswordTitle"/>',
             items:[
                    resetLoginForm,
-              {
-                   id: 'forgot',
-                   xtype: 'panel',
-                   html: '<div style="text-align: center;"><a href="resetPassword.html"><fmt:message key="forgotMyPassword"/></a></div>'
-              }]
+                   {
+                       id: 'login',
+                       xtype: 'panel',
+                       html: '<div style="text-align: center;"><a href="login.html"><fmt:message key="login"/></a></div>'
+                  }]
         });
         
         // This just creates a window to wrap the login form. 
