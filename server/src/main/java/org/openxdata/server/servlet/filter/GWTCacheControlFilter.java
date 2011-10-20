@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  * cache and history).
  */
 public class GWTCacheControlFilter implements Filter {
+	
+	private static final long ONE_DAY_IN_MILISECONDS = (1000L * 60L * 60L * 24L);
 
 	public void destroy() {
 	}
@@ -38,9 +40,9 @@ public class GWTCacheControlFilter implements Filter {
 			Date now = new Date();
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			httpResponse.setDateHeader("Date", now.getTime());
-			httpResponse.setDateHeader("Expires", now.getTime() - 86400000L); // one day
-			httpResponse.setHeader("Pragma", "no-cache");
-			httpResponse.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
+			httpResponse.setDateHeader("Expires", now.getTime() - ONE_DAY_IN_MILISECONDS); // HTTP 1.0
+			httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0
+			httpResponse.setHeader("Cache-control", "no-cache, no-store, must-revalidate, private, max-stale=0, post-check=0, pre-check=0, max-age=0"); // HTTP 1.1
 		}
 
 		filterChain.doFilter(request, response);
