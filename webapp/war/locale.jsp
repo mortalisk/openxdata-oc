@@ -17,7 +17,7 @@
        <c:choose>
          <c:when test="${empty cookie.locale.value}">
            <!-- 4: get locale from the browser header 'Accept-Language' -->
-           <c:set var="locale" scope="session" value="${fn:substringBefore(fn:substringBefore(header['Accept-Language'],','),'-')}" />
+           <c:set var="locale" scope="session" value="${fn:split(fn:split(header['Accept-Language'],',')[0],'-')[0]}" />
          </c:when>
          <c:otherwise>
            <!-- 3: get the locale from the cookie -->
