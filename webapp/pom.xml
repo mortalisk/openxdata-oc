@@ -18,6 +18,7 @@
         <brandKey>openxdata</brandKey>
         <logo>images/emit/openxdata-logo.png</logo>
         <logoUrl>http://www.openxdata.org/</logoUrl>
+        <splashImageUrl>images/emit/openXdata_splash.gif</splashImageUrl>
         <filtered.sourceDir>${project.build.directory}/generated-sources/filtered</filtered.sourceDir>
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
@@ -39,22 +40,22 @@
             </properties>
         </profile>
         <profile>
-            <id>emit</id>
+            <id>capture</id>
             <activation>
                 <property>
                     <name>brand</name>
-                    <value>emit</value>
+                    <value>capture</value>
                 </property>
             </activation>
             <properties>
-                <name>EMIT</name>
-                <brandKey>emit</brandKey>
-                <logo>images/emit/EMIT_logo_small_TRANS.png</logo>
+                <name>Capture</name>
+                <brandKey>capture</brandKey>
+                <logo>images/emit/capture_logo.png</logo>
+                <splashImageUrl>images/emit/capture_splash.gif</splashImageUrl>
                 <logoUrl>http://www.emitmobile.co.za/</logoUrl>
             </properties>
         </profile>
     </profiles>
-
     <dependencies>
 
         <dependency>

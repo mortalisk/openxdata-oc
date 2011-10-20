@@ -63,4 +63,22 @@ public class FormDefTest {
 
 		Assert.assertTrue(formDef.isNew());
 	}
+	
+	@Test
+	public void testGetNextVersionName2nd() {
+		FormDef formDef = new FormDef();
+		FormDefVersion version1 = new FormDefVersion(1, "v1", formDef);
+		formDef.addVersion(version1);
+		Assert.assertEquals("version incremented", formDef.getNextVersionName(), "v2");
+	}
+	
+	@Test
+	public void testGetNextVersionName4th() {
+		FormDef formDef = new FormDef();
+		FormDefVersion version1 = new FormDefVersion(1, "v1", formDef);
+		FormDefVersion version3 = new FormDefVersion(3, "v3", formDef);
+		formDef.addVersion(version1);
+		formDef.addVersion(version3);
+		Assert.assertEquals("version incremented", formDef.getNextVersionName(), "v4");
+	}
 }

@@ -283,6 +283,7 @@ public class EditStudyFormView extends WizardView {
 	
 	public FormDefVersion createNewVersionForFormWithData() {
 		FormDef form = formDefVersion.getFormDef();
+		formVersion.setValue(form.getNextVersionName()); // this value is used in the save
 		FormDefVersion version = new FormDefVersion();
 		form.addVersion(version);
 		version.setFormDef(form);
@@ -292,7 +293,6 @@ public class EditStudyFormView extends WizardView {
 		version.setFormDef(formDefVersion.getFormDef());
 		version.setLayout(formDefVersion.getLayout());
 		version.setXform(formDefVersion.getXform());
-		formVersion.setValue(form.getNextVersionName()); // this value is used in the save
 		version.setName(formVersion.getValue());
 		version.setDescription(formDefVersion.getDescription());
 		formDefVersion = version; // replace selected version with the new one so future saves will work

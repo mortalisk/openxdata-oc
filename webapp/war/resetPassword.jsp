@@ -8,9 +8,9 @@
 <fmt:setBundle basename='org.openxdata.client.AppMessages'/>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title><fmt:message key="title" /></title>
-<link type="text/css" rel="stylesheet" href="Emit.css">
-<link rel="stylesheet" type="text/css"
-	href="extjs/resources/css/ext-all.css" />
+<link rel="shortcut icon" href="favicon.ico" >
+<link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="Emit.css">
 <!-- extjs -->
 <script type="text/javascript" src="extjs/adapter/ext/ext-base.js"></script>
 <script type="text/javascript" src="extjs/ext-all.js"></script>
@@ -101,11 +101,11 @@
             title:'<fmt:message key="resetPasswordTitle"/>',
             items:[
                    resetLoginForm,
-              {
-                   id: 'forgot',
-                   xtype: 'panel',
-                   html: '<div style="text-align: center;"><a href="resetPassword.html"><fmt:message key="forgotMyPassword"/></a></div>'
-              }]
+                   {
+                       id: 'login',
+                       xtype: 'panel',
+                       html: '<div style="text-align: center;"><a href="login.html"><fmt:message key="login"/></a></div>'
+                  }]
         });
         
         // This just creates a window to wrap the login form. 
