@@ -318,7 +318,12 @@
            		id: "ID",
            		formKey: "Form Key",
            		filterField: "Filter Field",
-           		invalidDefaultValueForQuestionType: "The default value specified is invalid with regard to the question type selected. It contains invalid characters. You cannot enter characters where numbers are expected. Please check to proceed!"
+           		invalidDefaultValueForQuestionType: "The default value specified is invalid with regard to the question type selected. It contains invalid characters. You cannot enter characters where numbers are expected. Please check to proceed!",
+           		
+           		sharedSkipRule: "Shared Skip Rule",
+           		sharedSkipRuleDesc: "The skip rule you are changing applies to multiple questions. Would you like to create a new skip rule, or apply the changes to all the questions?",
+           		sharedSkipRuleNew: "Create New Rule",
+           		sharedSkipRuleApplyAll: "Apply To All",
           };
 
           function isUserAuthenticated(){
