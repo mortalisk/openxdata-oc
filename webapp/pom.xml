@@ -329,13 +329,14 @@
                                 <fileset>
                                     <directory>war</directory>
                                         <includes>
-                                        <include>WEB-INF/lib</include>
-                                        <include>WEB-INF/classes</include>
+                                        <include>WEB-INF/lib/**</include>
+                                        <include>WEB-INF/classes/**</include>
+                                        <include>WEB-INF/deploy/**</include>
                                         <include>WEB-INF/web.xml</include>
                                         <include>WEB-INF/protocol-jars/*.jar</include>
-                                        <include>emit</include>
-                                        <include>OpenXDataServerAdmin</include>
-                                        <include>META-INF</include>
+                                        <include>emit/**</include>
+                                        <include>OpenXDataServerAdmin/**</include>
+                                        <include>META-INF/**</include>
                                     </includes>
                                     <followSymlinks>false</followSymlinks>
                                 </fileset>
