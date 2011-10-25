@@ -52,6 +52,11 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
     
     private PagingFilterListField fromField;
     private PagingFilterListField toField;
+    
+    private List<M> fromItems;
+    private List<M> toItems;
+    private int fromCounter;
+    private int toCounter;
 
 
     public ItemAccessListField(ItemAccessListFieldMessages messages, ItemAccessController<M> controller) {
@@ -62,6 +67,9 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
 
     private void init() {
     	setAutoWidth(true);
+    	
+    	fromCounter=0;
+    	toCounter=0;
 
         Button addUserBtn = new Button(messages.getAddOne());
         addUserBtn.setMinWidth(110);
@@ -147,6 +155,10 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
      * delete from right(to), add to left (from)
      */
     private void buttonLeft(final List<M> sel) {
+    	toCounter = toCounter+sel.size();
+    	fromCounter = fromCounter-sel.size();
+    	toItems = sel;
+    	fromItems = null;
     	ProgressIndicator.showProgressBar();
     	Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
@@ -173,7 +185,11 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
      * add to right(to), delete from left(from)
      */
     private void buttonRight(final List<M> sel) {
-        ProgressIndicator.showProgressBar();
+        fromCounter = fromCounter+sel.size();
+        toCounter = toCounter-sel.size();
+    	fromItems = sel;
+    	toItems = null;
+    	ProgressIndicator.showProgressBar();
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
 			public void execute() {
@@ -188,8 +204,29 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
     }
 
     public void refresh() {
-        fromField.refresh();
-        toField.refresh();
+    	if ( ((fromItems == null || fromItems.size()==0) && (toItems == null || toItems.size()==0)) // first time around
+    		|| fromCounter>=pageSize || toCounter>=pageSize) // one of the counters is bigger than pageSize (indicating the other is empty)  
+    	{ 
+    		// do a full (server side) refresh of data in the lists
+    		fromCounter=0;
+    		fromField.refresh();
+    		toCounter=0;
+    		toField.refresh();
+    	} else {
+    		// manually add/remove items to/from the lists
+    		if (fromItems != null) {
+	    		for (M model : fromItems) {
+	        		fromField.field.getStore().remove(model);
+	        		toField.field.getStore().add(model);
+	        	}
+    		}
+    		if (toItems != null) {
+	    		for (M model : toItems) {
+	        		toField.field.getStore().remove(model);
+	        		fromField.field.getStore().add(model);
+	        	}
+    		}
+    	}
         ProgressIndicator.hideProgressBar();
     }
     
