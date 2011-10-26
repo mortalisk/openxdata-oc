@@ -99,12 +99,14 @@ public class NewStudyFormView extends WizardView {
 	protected void display(int activePage, List<LayoutContainer> pages) {
 		currentPage = activePage;
 		if (activePage == 0) {
+			saveAndExitButton.hide();
 			if (createStudyFS.getSelectedRadio() == null) {
 				nextButton.setEnabled(false);
 			} else {
 				nextButton.setEnabled(true);
 			}
 		} else if (activePage == 1) {
+			saveAndExitButton.show(); 
 			if (createFormFS.getSelectedRadio() == null) {
 				nextButton.setEnabled(false);
 			} else {
