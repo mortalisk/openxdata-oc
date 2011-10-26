@@ -357,7 +357,7 @@ public class Emit implements EntryPoint, Refreshable {
         panel.setBodyBorder(false);
 
         /*
-         * None: © 2011 openXdata
+         * None: &copy; 2011 openXdata
          * Only provider: <openXdata logo> provided by <provider logo>
          * Only branding: BrandName built on <openXdata logo>
          * Both: BrandName built on <openXdata logo> provided by <provider logo>
