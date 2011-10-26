@@ -115,7 +115,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     @Transactional(readOnly = true)
-    @Secured("Perm_View_Form_Data")
+    @Secured("Perm_View_Forms")
     public Boolean hasEditableData(Editable item) {
         return editableDAO.hasEditableData(item);
     }
