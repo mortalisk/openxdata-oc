@@ -367,4 +367,20 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		Assert.assertEquals("Sample Form2", data.get(1).getName());
 		Assert.assertEquals("Another Sample Form2", data.get(2).getName());
 	}
+	
+	@Test
+	public void testGetFormsForAdminUser() throws Exception {
+		User adminUser = userService.findUserByUsername("admin");
+		PagingLoadResult<FormDef> loadResult = formService.getForms(adminUser, new PagingLoadConfig(0,10));
+		Assert.assertEquals(5, loadResult.getTotalLength());
+		Assert.assertEquals(5, loadResult.getData().size());
+	}
+	
+	@Test
+	public void testGetFormsForUser() throws Exception {
+		User user = userService.findUserByUsername("user");
+		PagingLoadResult<FormDef> loadResult = formService.getForms(user, new PagingLoadConfig(0,10));
+		Assert.assertEquals(3, loadResult.getTotalLength());
+		Assert.assertEquals(3, loadResult.getData().size());
+	}
 }

@@ -65,12 +65,26 @@ public class FormServiceImpl implements FormService {
 	public Integer getFormResponseCount(int formDefVersionId) {
         return studyDAO.getFormDataCount(formDefVersionId);
     }
+    
+    @Override
+	@Transactional(readOnly=true)
+	@Secured("Perm_View_Forms")
+    public PagingLoadResult<FormDef> getForms(User user, PagingLoadConfig loadConfig) {
+        return formDAO.getForms(user, loadConfig);
+    }
 
     @Override
 	@Transactional(readOnly=true)
 	@Secured("Perm_View_Forms")
     public PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig) {
         return formDAO.getForms(loadConfig);
+    }
+    
+    @Override
+    @Transactional(readOnly=true)
+	@Secured("Perm_View_Forms")
+	public List<FormDef> getStudyForms(User user, Integer studyDefId) {
+    	return formDAO.getStudyForms(user, studyDefId);
     }
     
     @Override
