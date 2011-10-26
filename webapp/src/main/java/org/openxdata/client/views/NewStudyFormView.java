@@ -18,6 +18,7 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 
 import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -66,7 +67,7 @@ public class NewStudyFormView extends WizardView {
 	// input fields for form versions
 	private TextField<String> formDefinitionVersionName;
 	private TextField<String> formDefinitionVersionDescription;
-	private CheckBox formVersionDefault;
+	private CheckBox published;
 	// keep track of created study/form
 	private StudyDef studyDef;
 	private FormDef formDef;
@@ -133,9 +134,12 @@ public class NewStudyFormView extends WizardView {
 		} else if (activePage == 2) {
 			if (createFormFS.getSelectedRadio().equals(appMessages.addNewForm())) {
 				formDefinitionVersionName.setValue("v1");
-			} else  if (createFormFS.getSelectedRadio().equals(appMessages.existingForm())) {
+				published.setValue(true);
+				published.setBoxLabel("");
+			} else if (createFormFS.getSelectedRadio().equals(appMessages.existingForm())) {
 				formDefinitionVersionName.setValue(formDef.getNextVersionName());
 				formVersionEditMode = true;
+				published.setBoxLabel(appMessages.publishedHelp());
 			}
 		}
 	}
@@ -408,10 +412,20 @@ public class NewStudyFormView extends WizardView {
 		formDefinitionVersionDescription.setName("formVersionDescription");
 		
 		createFormVersionPanel.add(formDefinitionVersionDescription);
-		formVersionDefault = new CheckBox();
-		formVersionDefault.setBoxLabel("");
-		formVersionDefault.setFieldLabel(appMessages.formVersionDefault());
-		createFormVersionPanel.add(formVersionDefault);
+		published = new CheckBox();
+		published.setBoxLabel("");
+		published.setFieldLabel(appMessages.formVersionDefault());
+		createFormVersionPanel.add(published);
+		published.addListener(Events.OnClick, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				if (published.getValue()) {
+					published.setBoxLabel("");
+				} else {
+					published.setBoxLabel(appMessages.publishedHelp());
+				}
+			}
+		});
 
 		return createFormVersionPanel;
 	}
@@ -528,7 +542,7 @@ public class NewStudyFormView extends WizardView {
 			formDefVersion.setCreator((User) Registry.get(Emit.LOGGED_IN_USER_NAME));
 			formDefVersion.setDateCreated(new Date());
 
-			if (formVersionDefault.getValue()) {
+			if (published.getValue()) {
 				GWT.log("turning off other defaults for "+formDefVersion.getName());
 				formDefVersion.setIsDefault(true);
 				formDef.turnOffOtherDefaults(formDefVersion);

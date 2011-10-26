@@ -117,6 +117,7 @@ public interface AppMessages extends Messages {
 	String formVersionDescription();
 	String formVersionDefault();
 	String designForm();
+	String publishedHelp();
 
 	String setUserAccessToStudy();
 
