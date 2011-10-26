@@ -187,7 +187,6 @@ public class UserServiceImpl implements UserService {
 		        String text = messageSource.getMessage("newUserEmail", 
 		        		new Object[] { user.getFirstName(), user.getName(), user.getClearTextPassword(), serverUrl }, 
 		        		locale);
-		        log.debug("sending email with text='"+text+"'");
 		        try {
 		        	mailService.sendEmail(user.getEmail(), subject, text);
 		        } catch (MailException ex) {
