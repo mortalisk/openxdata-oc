@@ -295,6 +295,7 @@ public class FormResponsesController  extends Controller {
 			public void onSuccess(Void result) {
                 GWT.log("Successful delete of form data");
                 ProgressIndicator.hideProgressBar();
+                RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CAPTURE, formData)); 
             }
         });
 	}
