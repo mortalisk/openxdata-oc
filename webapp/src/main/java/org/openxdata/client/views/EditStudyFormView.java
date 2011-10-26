@@ -17,6 +17,7 @@ import org.openxdata.server.admin.model.state.EditableState;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -178,6 +179,16 @@ public class EditStudyFormView extends WizardView {
 		published.setBoxLabel("");
 		published.setLabelSeparator("");
 		published.setFieldLabel(appMessages.formVersionDefault());
+		published.addListener(Events.OnClick, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				if (published.getValue()) {
+					published.setBoxLabel("");
+				} else {
+					published.setBoxLabel(appMessages.publishedHelp());
+				}
+			}
+		});
 		formPanel.add(published);
 		designFormButton3 = getDesignFormButton(appMessages.designForm());
 		formPanel.add(designFormButton3);
