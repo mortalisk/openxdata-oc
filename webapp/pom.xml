@@ -14,11 +14,15 @@
     <properties>
         <emit.gwt.module>org.openxdata.EmitFirefox</emit.gwt.module>
         <openxdata.gwt.module>org.openxdata.server.admin.OpenXDataServerAdminFirefox</openxdata.gwt.module>
-        <name>OpenXdata</name>
-        <brandKey>openxdata</brandKey>
-        <logo>images/emit/openxdata-logo.png</logo>
-        <logoUrl>http://www.openxdata.org/</logoUrl>
-        <splashImageUrl>images/emit/openXdata_splash.gif</splashImageUrl>
+        <name>OpenXdata</name> <!-- name used in titlebars etc -->
+        <brandKey>openxdata</brandKey> <!-- key used for icons -->
+        <logo>images/emit/openxdata-logo.png</logo> <!-- top left logo -->
+        <logoUrl>http://www.openxdata.org/</logoUrl> <!-- link used for top left logo -->
+        <splashImageUrl>images/emit/openXdata_splash.gif</splashImageUrl> <!-- background used for login screen -->
+        <branded>false</branded> <!--indicates if brand information should be displayed in the text at the bottom -->
+        <provider></provider> <!-- provider name, usually company name for brand (used for text at the bottom) -->
+        <providerLogo></providerLogo> <!-- provider logo -->
+        <providerLink></providerLink> <!-- link to provider website -->
         <filtered.sourceDir>${project.build.directory}/generated-sources/filtered</filtered.sourceDir>
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
@@ -53,6 +57,10 @@
                 <logo>images/emit/capture_logo.png</logo>
                 <splashImageUrl>images/emit/capture_splash.gif</splashImageUrl>
                 <logoUrl>http://www.emitmobile.co.za/</logoUrl>
+                <branded>true</branded>
+                <provider>Cell-Life</provider>
+                <providerLogo>images/emit/cellifeLogoTinyTrans.png</providerLogo>
+                <providerLink>http://www.cell-life.org</providerLink>
             </properties>
         </profile>
     </profiles>

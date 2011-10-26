@@ -8,6 +8,10 @@ public interface AppMessages extends Messages {
 	String logo();
 	String logoUrl();
 	String splashImageUrl();
+	String branded();
+	String provider();
+	String providerLogo();
+	String providerLink();
 	String user();
 	String login();
 	String logout();
@@ -71,7 +75,8 @@ public interface AppMessages extends Messages {
 	String errorWhileRetrievingForms();
 	String accessDeniedError();
 	String sessionExpired();
-	String disclaimer();
+	String providerBlurb();
+	String brandedBlurb();
 	String and();
 	
 	String itemsPerPage(String pageSize);
