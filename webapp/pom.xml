@@ -57,7 +57,7 @@
                 <logo>images/emit/capture_logo.png</logo>
                 <splashImageUrl>images/emit/capture_splash.gif</splashImageUrl>
                 <logoUrl>http://www.emitmobile.co.za/</logoUrl>
-                <branded>false</branded>
+                <branded>true</branded>
                 <provider>Cell-Life</provider>
                 <providerLogo>images/emit/cellifeLogoTinyTrans.png</providerLogo>
                 <providerLink>http://www.cell-life.org</providerLink>
