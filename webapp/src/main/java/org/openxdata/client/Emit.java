@@ -1,5 +1,6 @@
 package org.openxdata.client;
 
+import java.util.Date;
 import java.util.List;
 
 import org.openxdata.client.controllers.DataCaptureController;
@@ -70,6 +71,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
@@ -353,24 +355,64 @@ public class Emit implements EntryPoint, Refreshable {
         panel.setHeaderVisible(false);
         panel.setBorders(false);
         panel.setBodyBorder(false);
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append("<table border=0 cellspacing=10><tr><td>");
-        sb.append(appMessages.disclaimer());
-        sb.append("</td><td>");
-        sb.append("<a href=\"#\" onclick=\"window.open('http://www.cell-life.org');\" title=\"Cell-Life : http://www.cell-life.org' style='cursor:hand;\">");
-        sb.append("<img width=\"102\" height=\"45\" src=\"images/emit/cellifeLogoTinyTrans.png\" title=\"Cell-Life\" style=\"cursor:hand;\"/>");
-        sb.append("</a>");
-        sb.append("</td><td>");        
-        sb.append(appMessages.and());
-        sb.append("</td><td valign=middle>");
-        sb.append("<a href=\"#\" onclick=\"window.open('http://www.openxdata.org');\" title=\"OpenXData : http://www.openxdata.org' style='cursor:hand;\">");
-        sb.append("<img width=\"145\" height=\"23\" src=\"images/emit/openxdata-logo-small.png\" valign=middle title=\"OpenXData\" style=\"cursor:hand;\"/>");        
-        sb.append("</a>");
-        sb.append("</td></tr></table>");
-        Html html = new Html(sb.toString());        
-              
-        lc.add(html);        
+
+        /*
+         * None: © 2011 openXdata
+         * Only provider: <openXdata logo> provided by <provider logo>
+         * Only branding: BrandName built on <openXdata logo>
+         * Both: BrandName built on <openXdata logo> provided by <provider logo>
+         */
+		Boolean branded = Boolean.valueOf(appMessages.branded());
+		Boolean provider = (appMessages.provider() == null || appMessages.provider().trim().equals("")) ? false : true;
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("<table border=0 cellspacing=10><tr>");
+        if (branded) {
+        	// ${name} provided by
+        	sb.append("<td>");
+	        sb.append(appMessages.brandedBlurb());
+	        sb.append("</td>");
+        }
+        if (branded || provider) {
+	        // openXdata logo
+	    	sb.append("<td valign=middle>");
+	        sb.append("<a href=\"#\" onclick=\"window.open('http://www.openxdata.org');\" title=\"OpenXData : http://www.openxdata.org' style='cursor:hand;\">");
+	        sb.append("<img width=\"145\" height=\"23\" src=\"images/emit/openxdata-logo-small.png\" valign=middle title=\"OpenXData\" style=\"cursor:hand;\"/>");        
+	        sb.append("</a>");
+	        sb.append("</td>");
+        } else {
+        	// default copyright notice
+        	sb.append("<td valign=middle>");
+        	sb.append("&copy; ");
+        	sb.append(DateTimeFormat.getFormat("yyyy").format(new Date()));
+        	sb.append(" ");
+        	sb.append("<a href=\"#\" onclick=\"window.open('http://www.openxdata.org');\" title=\"OpenXData : http://www.openxdata.org' style='cursor:hand;\">");
+	        sb.append("openXdata");        
+	        sb.append("</a>");
+	        sb.append("</td>");
+        }
+        if (provider) {
+        	// provided by <provider logo>
+        	sb.append("<td>");
+	        sb.append(appMessages.providerBlurb()); 
+	        sb.append("</td><td valign=middle>");
+	        sb.append("<a href=\"#\" onclick=\"window.open('");
+	        sb.append(appMessages.providerLink());
+	        sb.append("');\" title=\"");
+	        sb.append(appMessages.provider());
+	        sb.append(" : ");
+	        sb.append(appMessages.providerLink());
+	        sb.append("' style='cursor:hand;\">");
+	        sb.append("<img width=\"102\" height=\"45\" src=\"");
+	        sb.append(appMessages.providerLogo());
+	        sb.append("\" title=\"");
+	        sb.append(appMessages.provider());
+	        sb.append("\" style=\"cursor:hand;\"/>");
+	        sb.append("</a>");
+	        sb.append("</td>");
+        }
+        sb.append("</tr></table>");
+        Html html = new Html(sb.toString());
+        lc.add(html);
         
         BorderLayoutData data = new BorderLayoutData(LayoutRegion.SOUTH, 100);
         data.setMargins(new Margins(10,40,10,14));
