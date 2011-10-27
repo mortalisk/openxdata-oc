@@ -1,5 +1,6 @@
 package org.openxdata.server.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.FormDef;
@@ -15,10 +16,18 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	
 	/**
 	 * Gets a list of form definitions from the database.
-	 * 
+	 * @param loadConfig PagingLoadConfig
 	 * @return the form list.
 	 */
 	PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig);
+	
+	/**
+	 * Gets a list of form definitions from the database.
+	 * @param User user
+	 * @param loadConfig PagingLoadConfig
+	 * @return the form list.
+	 */
+	PagingLoadResult<FormDef> getForms(User user, PagingLoadConfig loadConfig);
 	
 	/**
 	 * Retrieves the Form with the specified identifier
@@ -33,6 +42,14 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * @return
 	 */
 	FormDef getForm(String  name);
+	
+	/**
+	 * Retrieves the Forms for the specified Study for which the user has permission
+	 * @param user User
+	 * @param studyDefId Integer identifier
+	 * @return List of Forms
+	 */
+	List<FormDef> getStudyForms(User user, Integer studyDefId);
 	
 	/**
 	 * Gets the form names for the forms in a particular study.

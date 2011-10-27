@@ -73,6 +73,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
@@ -108,6 +110,8 @@ public class Emit implements EntryPoint, Refreshable {
     private Text userBanner;
     private Button admin;
     
+    private static HandlerRegistration windowClosingRegistration;
+    
     /**
      * This is the entry point method.
      */
@@ -125,13 +129,7 @@ public class Emit implements EntryPoint, Refreshable {
             }
         });
     	
-    	Window.addWindowClosingHandler(new ClosingHandler() {
-            @Override
-            public void onWindowClosing(ClosingEvent event) {
-            	// this should handle backspaces and escape button presses
-            	event.setMessage("openXdata");
-            }
-        });
+    	addWindowClosingHandler();
 
     	formService = FormServiceAsync.Util.getInstance();
     	settingService = SettingServiceAsync.Util.getInstance();
@@ -216,6 +214,22 @@ public class Emit implements EntryPoint, Refreshable {
         FormUtil.dlg.hide();
     }
     
+    public static void addWindowClosingHandler() {
+    	windowClosingRegistration = Window.addWindowClosingHandler(new ClosingHandler() {
+            @Override
+            public void onWindowClosing(ClosingEvent event) {
+            	// this should handle backspaces and escape button presses
+            	event.setMessage("openXdata");
+            }
+        });
+    }
+    
+    public static void openWindow(String url) {
+    	windowClosingRegistration.removeHandler();
+    	com.google.gwt.user.client.Window.Location.replace(URL.encode(url));
+    	addWindowClosingHandler();
+    }
+    
     private void initUI() {
         viewport = new Viewport();
         viewport.setLayout(new BorderLayout());
@@ -281,6 +295,7 @@ public class Emit implements EntryPoint, Refreshable {
         logout.addListener(Events.Select, new Listener<ButtonEvent>() {
         	@Override
             public void handleEvent(ButtonEvent be) {
+        		windowClosingRegistration.removeHandler();
                 Window.Location.replace(GWT.getHostPageBaseURL()+"j_spring_security_logout"); 
             }
         });
@@ -344,6 +359,7 @@ public class Emit implements EntryPoint, Refreshable {
         		if (locale != null && !locale.trim().equals("")) {
         			UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
             		urlBuilder.setParameter("locale", locale);
+            		windowClosingRegistration.removeHandler();
         			Window.Location.replace(urlBuilder.buildString());
         		}
         	}

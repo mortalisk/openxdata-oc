@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.Emit;
 import org.openxdata.client.EmitAsyncCallback;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.RefreshablePublisher;
@@ -15,8 +16,10 @@ import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
+import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -110,19 +113,18 @@ public class FormListController extends Controller {
     public void getForms(PagingLoadConfig loadConfig,
     		final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<FormSummary>> callback) {
     	GWT.log("FormListController : getForms");
-        formService.getForms(PagingUtil.createPagingLoadConfig(loadConfig),
-        		new EmitAsyncCallback<PagingLoadResult<FormDef>>() {
-
+    	User user = Registry.get(Emit.LOGGED_IN_USER_NAME);
+        formService.getForms(user, PagingUtil.createPagingLoadConfig(loadConfig), new EmitAsyncCallback<PagingLoadResult<FormDef>>() {
             @Override
             public void onSuccess(PagingLoadResult<FormDef> result) {
             	ProgressIndicator.hideProgressBar();
             	List<FormSummary> results = new ArrayList<FormSummary>();
                 List<FormDef> data = result.getData();
-                GWT.log("got data:"+data.size());
+                formListView.setAllFormSummaries(results); // reset the list
                 for (FormDef f : data) {
                     results.addAll(formListView.createFormSummaries(f));
                 }
-                formListView.setAllFormSummaries(results);
+                formListView.setAllFormSummaries(results); // set the list
                 callback.onSuccess(new BasePagingLoadResult<FormSummary>(results, result.getOffset(), result.getTotalLength()));
             }
         });

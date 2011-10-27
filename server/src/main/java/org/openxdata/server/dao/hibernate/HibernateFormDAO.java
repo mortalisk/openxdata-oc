@@ -50,6 +50,34 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	    return getPagingLoadResult(loadConfig, result);
 	}
 	
+	@Override
+	public PagingLoadResult<FormDef> getForms(User user, PagingLoadConfig loadConfig) {
+		if (user.hasAdministrativePrivileges()) {
+			return getForms(loadConfig);
+		} else {
+			Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
+			formSearch.addFilterOr(
+					Filter.some("users", Filter.equal("id", user.getId())), 
+					Filter.some("study.users", Filter.equal("id", user.getId())));
+		    SearchResult<FormDef> result = searchAndCount(formSearch);
+		    return getPagingLoadResult(loadConfig, result);
+		}
+	}
+	
+	@Override 
+	public List<FormDef> getStudyForms(User user, Integer studyDefId) {
+		if (user.hasAdministrativePrivileges()) {
+			return searchByPropertyEqual("study.id", studyDefId);
+		} else {
+			Search formSearch = new Search();
+			formSearch.addFilterOr(
+					Filter.all("users", Filter.equal("id", user.getId())), 
+					Filter.all("study.users", Filter.equal("id", user.getId())));
+			formSearch.addFilter(Filter.equal("study.id", studyDefId));
+		    return search(formSearch);
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
     @Override
 	public Map<Integer, String> getFormNames(Integer studyId) {

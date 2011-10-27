@@ -16,9 +16,7 @@ import org.openxdata.server.dao.UserFormMapDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
-import com.googlecode.genericdao.search.SearchResult;
 
 /**
  *
@@ -89,14 +87,7 @@ public class HibernateUserFormMapDAO extends BaseDAOImpl<UserFormMap> implements
     	if (user.hasAdministrativePrivileges()) {
     		return formDAO.getForms(loadConfig);
     	} else {
-    		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
-    		formSearch.addFilterSome("users", Filter.equal("id", user.getId()));
-    		formSearch.addFilterSome("study.users", Filter.equal("id", user.getId()));
-    	    SearchResult<FormDef> result = searchAndCount(formSearch);
-    		List<FormDef> list = result.getResult();
-    		int totalNum = result.getTotalCount();
-    		int offset = loadConfig == null ? 0 : loadConfig.getOffset();
-    		return new PagingLoadResult<FormDef>(list, offset, list.size(), totalNum);
+    		return formDAO.getForms(user, loadConfig);
     	}
     }
 

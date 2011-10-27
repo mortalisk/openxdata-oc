@@ -47,8 +47,8 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     }
 	
 	@Override
-    public PagingLoadResult<FormDef> getForms(PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return formService.getForms(loadConfig);
+    public PagingLoadResult<FormDef> getForms(User user, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getForms(user, loadConfig);
     }
 
     @Override
