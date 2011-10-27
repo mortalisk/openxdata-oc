@@ -603,7 +603,7 @@ public class FormListView extends View implements Refreshable {
 				return formSummary;
 			}
 		}
-		GWT.log("ERROR: no form summary found id="+formDefVersionId);
+		GWT.log("WARN: no form summary found id="+formDefVersionId);
 		return null;
 	}
 

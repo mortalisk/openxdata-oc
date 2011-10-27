@@ -120,10 +120,11 @@ public class FormListController extends Controller {
             	ProgressIndicator.hideProgressBar();
             	List<FormSummary> results = new ArrayList<FormSummary>();
                 List<FormDef> data = result.getData();
+                formListView.setAllFormSummaries(results); // reset the list
                 for (FormDef f : data) {
                     results.addAll(formListView.createFormSummaries(f));
                 }
-                formListView.setAllFormSummaries(results);
+                formListView.setAllFormSummaries(results); // set the list
                 callback.onSuccess(new BasePagingLoadResult<FormSummary>(results, result.getOffset(), result.getTotalLength()));
             }
         });
