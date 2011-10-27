@@ -16,7 +16,10 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -34,8 +37,17 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class FormdesignerContainer extends DialogBox {
 	
 	final AppMessages appMessages = GWT.create(AppMessages.class);
+	
+	private HandlerRegistration closingHandlerRegistration; // used to remove window closing handler
 
     public FormdesignerContainer(final FormDesignerWidget widget, String formName) {
+    	closingHandlerRegistration = Window.addWindowClosingHandler(new ClosingHandler() {
+            @Override
+            public void onWindowClosing(ClosingEvent event) {
+            	// this should handle backspaces and escape button presses
+            	event.setMessage("openXdata");
+            }
+        });
         Button closeButton = new Button("Close");
         closeButton.addClickHandler(new ClickHandler() {
             @SuppressWarnings("unchecked")
@@ -50,6 +62,7 @@ public class FormdesignerContainer extends DialogBox {
                 box.addCallback(new Listener<MessageBoxEvent>() {
                 	@Override
                     public void handleEvent(MessageBoxEvent be) {
+                		closingHandlerRegistration.removeHandler();
 	    				if (be.getButtonClicked().getItemId().equals(Dialog.CANCEL)) {
 			            	// do nothing (don't exit)
 	    				} else {
@@ -83,6 +96,5 @@ public class FormdesignerContainer extends DialogBox {
         wrapper.getFlexCellFormatter().setColSpan(1, 0, 2);
         wrapper.getFlexCellFormatter().setWidth(1, 0, "100%");
         setWidget(wrapper);
-
     }
 }

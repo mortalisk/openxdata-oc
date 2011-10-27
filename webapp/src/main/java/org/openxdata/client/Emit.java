@@ -73,8 +73,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -118,14 +116,6 @@ public class Emit implements EntryPoint, Refreshable {
             	GWT.log("Uncaught Exception", tracepoint);
             	MessageBox.alert(appMessages.error(), appMessages.pleaseTryAgainLater(tracepoint.getMessage()), null);
             	ProgressIndicator.hideProgressBar();
-            }
-        });
-    	
-    	Window.addWindowClosingHandler(new ClosingHandler() {
-            @Override
-            public void onWindowClosing(ClosingEvent event) {
-            	// this should handle backspaces and escape button presses
-            	event.setMessage("openXdata");
             }
         });
 
