@@ -1,6 +1,7 @@
 package org.openxdata.client.controllers;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.Emit;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.ItemExportView;
 import org.openxdata.server.admin.model.Exportable;
@@ -12,8 +13,6 @@ import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Window;
 
 public class ItemExportController extends Controller {
 
@@ -50,7 +49,7 @@ public class ItemExportController extends Controller {
 					url += "&id=" + exportable.getId();
 					url += "&filename=" + fileName;
 
-					Window.Location.replace(URL.encode(url));
+					Emit.openWindow(url);
 
 					ProgressIndicator.hideProgressBar();	
 				}

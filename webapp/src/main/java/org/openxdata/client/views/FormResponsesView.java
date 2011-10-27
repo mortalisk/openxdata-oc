@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
+import org.openxdata.client.Emit;
 import org.openxdata.client.Refreshable;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.controllers.FormResponsesController;
@@ -173,7 +174,7 @@ public class FormResponsesView extends View implements Refreshable  {
                         }
                         url += "&filename=" + newFileName;
                         GWT.log("Loading CSV from URL "+URL.encode(url));
-                        com.google.gwt.user.client.Window.Location.replace(URL.encode(url));
+                        Emit.openWindow(url);
                         ProgressIndicator.hideProgressBar();
                     }
                 });
