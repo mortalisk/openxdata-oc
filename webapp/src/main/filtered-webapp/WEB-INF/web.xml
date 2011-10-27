@@ -294,6 +294,11 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     /WEB-INF/openxdata-emit-applicationContext-security.xml
     </param-value>
   </context-param>
+  
+  <context-param> 
+    <param-name>javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name> 
+    <param-value>en</param-value> 
+  </context-param> 
 
   <!-- Acegi/Spring Security filter (to intercept the requests and perform security checks) s-->  
   <filter>

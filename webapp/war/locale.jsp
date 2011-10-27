@@ -3,10 +3,6 @@
 <%@ taglib prefix='fmt' uri='http://java.sun.com/jsp/jstl/fmt' %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page isELIgnored="false" %>
-<%-- first check if the request variable has been set --%>
-<%-- second check if there is a session variable --%>
-<%-- third check if there is a cookie --%>
-<%-- fourth check the browser header --%>
 <c:choose>
   <c:when test="${!empty param.locale}">
     <!-- 1: get locale from the request parameter -->
@@ -16,8 +12,8 @@
     <c:if test="${empty locale}">
        <c:choose>
          <c:when test="${empty cookie.locale.value}">
-           <!-- 4: get locale from the browser header 'Accept-Language' -->
-           <c:set var="locale" scope="session" value="${fn:split(fn:split(header['Accept-Language'],',')[0],'-')[0]}" />
+           <!-- 2: get locale from the browser header: ${pageContext.response.locale} -->
+           <c:set var="locale" scope="session" value="${pageContext.response.locale.language}" />
          </c:when>
          <c:otherwise>
            <!-- 3: get the locale from the cookie -->
