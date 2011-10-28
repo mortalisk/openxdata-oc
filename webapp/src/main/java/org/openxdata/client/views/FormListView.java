@@ -421,7 +421,7 @@ public class FormListView extends View implements Refreshable {
 		} else {
 			for (final FormDefVersion formVersion : formDef.getVersions()) {
 				if (formVersion != null) {
-					FormSummary formSummary = getFormSummary(formVersion.getId());
+					FormSummary formSummary = getFormSummary(String.valueOf(formVersion.getId()));
 					if (formSummary == null) {
 						formSummary = new FormSummary(formVersion);
 						summaries.add(formSummary);
@@ -449,7 +449,7 @@ public class FormListView extends View implements Refreshable {
 	private void addFormDef(ListStore<FormSummary> store, FormDef formDef) {
 		List<FormSummary> newSummaries = createFormSummaries(formDef);
 		for (final FormSummary fs : newSummaries) {
-			FormSummary formSummary = getFormSummary(Integer.parseInt(fs.getId()));
+			FormSummary formSummary = getFormSummary(fs.getId());
 			if (formSummary == null) {
 				allFormSummaries.add(fs);
 				store.add(fs);
@@ -577,7 +577,7 @@ public class FormListView extends View implements Refreshable {
 	}
 
 	public void setNumberOfFormResponses(FormDefVersion formDefVersion, Integer numberOfResponses) {
-		FormSummary formSummary = getFormSummary(formDefVersion.getId());
+		FormSummary formSummary = getFormSummary(String.valueOf(formDefVersion.getId()));
 		if (formSummary != null) {
 			formSummary.setResponses(String.valueOf(numberOfResponses));
 		}
@@ -585,7 +585,7 @@ public class FormListView extends View implements Refreshable {
 	}
 
 	public void setFormStatus(FormDef formDef, Boolean active) {
-		FormSummary formSummary = getFormSummary(formDef.getId());
+		FormSummary formSummary = getFormSummary(String.valueOf(formDef.getId()));
 		if (formSummary != null) {
 			if (active) {
 				formSummary.setStatus(appMessages.active());
@@ -596,14 +596,13 @@ public class FormListView extends View implements Refreshable {
 		grid.getView().refresh(false);
 	}
 
-	FormSummary getFormSummary(int formDefVersionId) {
-		String formDefVerId = String.valueOf(formDefVersionId);
+	FormSummary getFormSummary(String formSummaryId) {
 		for (FormSummary formSummary : allFormSummaries) {
-			if (formDefVerId.equals(formSummary.getId())) {
+			if (formSummaryId.equals(formSummary.getId())) {
 				return formSummary;
 			}
 		}
-		GWT.log("WARN: no form summary found id="+formDefVersionId);
+		GWT.log("WARN: no form summary found id="+formSummaryId);
 		return null;
 	}
 
@@ -642,7 +641,7 @@ public class FormListView extends View implements Refreshable {
 			ListStore<FormSummary> store = grid.getStore();
 			for (FormDef form : study.getForms()) {
 				for (FormDefVersion formVersion : form.getVersions()) {
-					FormSummary summary = getFormSummary(formVersion.getId());
+					FormSummary summary = getFormSummary(String.valueOf(formVersion.getId()));
 					if (summary != null) {
 						summary.setFormVersion(formVersion);
 						store.update(summary);
