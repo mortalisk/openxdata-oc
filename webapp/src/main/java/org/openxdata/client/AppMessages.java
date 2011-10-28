@@ -291,6 +291,8 @@ public interface AppMessages extends Messages {
 	String searchForForm();
 	
 	String importUsers();
+	String importUsersWait();
+	String importing();
 	String importUserSuccess(int numberOfUsers);
 	String importUserError(int numberOfUsers);
 	String name();

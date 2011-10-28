@@ -43,6 +43,8 @@ public class UserImportView extends View {
 	private Button cancelButton;
 	
 	private int numberOfUsers;
+	
+	MessageBox progressWindow;
 
 	public UserImportView(Controller controller) {
 		super(controller);
@@ -69,6 +71,7 @@ public class UserImportView extends View {
 					@Override
 					public void execute() {
 						((UploadFileFormPanel)formPanel).uploadFile();
+						progressWindow = MessageBox.wait(appMessages.importUsers(), appMessages.importUsersWait(), appMessages.importing());
 					}
 				});
 			}
@@ -106,13 +109,14 @@ public class UserImportView extends View {
 	public void importSuccess() {
 		ProgressIndicator.hideProgressBar();
 		window.closeWindow();
+		progressWindow.close();
 		MessageBox.info(appMessages.importUsers(), appMessages.importUserSuccess(numberOfUsers), null);
 	}
 	
 	public void importError(String errorData) {
 		ProgressIndicator.hideProgressBar();
+		progressWindow.close();
 		window.closeWindow();
-		
 		String[] errorUsers = errorData.split("\n");
 		int numberOfErrorUsers = errorUsers.length-1; // minus 1 for the heading
 	    Dialog d = new Dialog();
