@@ -268,6 +268,8 @@ public class UserListView extends View implements Refreshable {
 			ListStore<UserSummary> store = grid.getStore();
 			UserSummary summary = new UserSummary(user);
 			store.add(summary);
+		} else if (event.getEventType() == RefreshableEvent.Type.REFRESH_USERLIST) {
+			toolBar.refresh();
 		}
 	}
 

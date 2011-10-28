@@ -43,6 +43,7 @@ public class UserListController extends Controller {
         userListView = new UserListView(this);
         RefreshablePublisher.get().subscribe(RefreshableEvent.Type.UPDATE_USER, userListView);
         RefreshablePublisher.get().subscribe(RefreshableEvent.Type.CREATE_USER, userListView);
+        RefreshablePublisher.get().subscribe(RefreshableEvent.Type.REFRESH_USERLIST, userListView);
     }
 
     @Override
