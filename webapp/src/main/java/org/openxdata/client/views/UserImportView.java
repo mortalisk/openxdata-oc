@@ -54,7 +54,7 @@ public class UserImportView extends View {
 			@Override
             public void handleUploadedFile(String fileContents) {
 				String[] users = fileContents.split("\n");
-				numberOfUsers = users.length;
+				numberOfUsers = users.length-1;
 				((UserImportController)controller).importUsers(fileContents);
             }
 		};
@@ -114,7 +114,7 @@ public class UserImportView extends View {
 		window.closeWindow();
 		
 		String[] errorUsers = errorData.split("\n");
-		int numberOfErrorUsers = errorUsers.length;
+		int numberOfErrorUsers = errorUsers.length-1; // minus 1 for the heading
 	    Dialog d = new Dialog();
 	    d.setBodyStyle("fontSize:larger;");
 	    d.addStyleName("x-window-dlg");

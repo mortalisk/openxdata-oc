@@ -2,6 +2,8 @@ package org.openxdata.client.controllers;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.EmitAsyncCallback;
+import org.openxdata.client.RefreshableEvent;
+import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.views.UserImportView;
 import org.openxdata.server.admin.client.service.UserServiceAsync;
 
@@ -44,6 +46,7 @@ public class UserImportController extends Controller {
 		userService.importUsers(fileContents, new EmitAsyncCallback<String>() {
             @Override
             public void onSuccess(String errorData) {
+            	RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.REFRESH_USERLIST));
             	if (errorData == null) {
             		userImportView.importSuccess();
             	} else {
