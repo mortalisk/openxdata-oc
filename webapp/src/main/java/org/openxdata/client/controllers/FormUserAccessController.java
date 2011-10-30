@@ -10,7 +10,6 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.ItemAccessListField;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
@@ -73,9 +72,7 @@ public class FormUserAccessController implements ItemAccessController<FormSummar
         List<FormSummary> results = new ArrayList<FormSummary>();
     	List<FormDef> forms = result.getData();
         for (FormDef fd : forms) {
-        	for (FormDefVersion fdv : fd.getVersions()) {
-        		results.add(new FormSummary(fdv));
-        	}
+        	results.add(new FormSummary(fd));
         }
         return results;
     }
