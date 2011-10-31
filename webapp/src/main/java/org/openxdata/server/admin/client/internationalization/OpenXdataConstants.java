@@ -439,11 +439,11 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_atleastoneexistinguser();
 
   /**
-   * Translated "Automatic Cron Expression:".
+   * Translated "Automatic Scheduling Expression:".
    * 
-   * @return translated "Automatic Cron Expression:"
+   * @return translated "Automatic Scheduling Expression:"
    */
-  @DefaultStringValue("Automatic Cron Expression:")
+  @DefaultStringValue("Automatic Scheduling Expression:")
   @Key("label_automatic_cron_expression")
   String label_automatic_cron_expression();
 
@@ -502,11 +502,11 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_createnew();
 
   /**
-   * Translated "Custom Cron Expression:".
+   * Translated "Custom Scheduling Expression:".
    * 
-   * @return translated "Custom Cron Expression:"
+   * @return translated "Custom Scheduling Expression:"
    */
-  @DefaultStringValue("Custom Cron Expression:")
+  @DefaultStringValue("Custom Scheduling Expression:")
   @Key("label_custom_cron_expression")
   String label_custom_cron_expression();
 
