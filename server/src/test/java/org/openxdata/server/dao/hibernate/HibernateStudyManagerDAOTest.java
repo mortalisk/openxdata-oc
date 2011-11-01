@@ -1,6 +1,7 @@
 package org.openxdata.server.dao.hibernate;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.service.StudyManagerService;
@@ -24,8 +25,8 @@ public class HibernateStudyManagerDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void testGetStudy() throws Exception {
 		StudyDef study = studyManagerService.getStudy(1);
-		Assert.assertNotNull(study);
-		Assert.assertEquals("Sample Study", study.getName());
+		assertNotNull(study);
+		assertEquals("Sample Study", study.getName());
 	}
 	
 	@Test
@@ -36,18 +37,18 @@ public class HibernateStudyManagerDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void testGetStudyKey() throws Exception {
 		String studyKey = studyManagerService.getStudyKey(1);
-		Assert.assertEquals("study key correct", "sample", studyKey);
+		assertEquals("study key correct", "sample", studyKey);
 		
 		studyKey = studyManagerService.getStudyKey(111);
-		Assert.assertEquals("study key unknown", "", studyKey);
+		assertEquals("study key unknown", "", studyKey);
 	}
 	
 	@Test
 	public void testGetStudyName() throws Exception {
 		String studyName = studyManagerService.getStudyName(1);
-		Assert.assertEquals("study name correct", "Sample Study", studyName);
+		assertEquals("study name correct", "Sample Study", studyName);
 		
 		studyName = studyManagerService.getStudyName(111);
-		Assert.assertEquals("study name unknown", "UNKNOWN STUDY", studyName);
+		assertEquals("study name unknown", "UNKNOWN STUDY", studyName);
 	}
 }
