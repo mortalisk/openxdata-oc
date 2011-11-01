@@ -72,9 +72,9 @@
             </exclusions>
         </dependency>
         <dependency>
-        	<groupId>org.codehaus.mojo.groovy.runtime</groupId>
-    		<artifactId>groovy-runtime-default</artifactId>
-    		<version>1.0-beta-3</version>
+        	<groupId>org.codehaus.groovy</groupId>
+    		<artifactId>groovy-all</artifactId>
+    		<version>1.8.0-beta-3</version>
         </dependency>
     </dependencies>
 </project>
