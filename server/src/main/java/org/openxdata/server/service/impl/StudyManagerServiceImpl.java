@@ -324,4 +324,9 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 		    }
 	    }
     }
+
+	@Override
+	public StudyDef getStudy(String studyKey) {
+		return studyDao.getStudy(studyKey);
+	}
 }

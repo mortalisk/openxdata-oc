@@ -46,4 +46,10 @@ public class HibernateStudyManagerDAOTest extends BaseContextSensitiveTest {
 		studyName = studyManagerService.getStudyName(111);
 		assertEquals("study name unknown", "UNKNOWN STUDY", studyName);
 	}
+	
+	@Test public void testGetStudyNameWithStudyKey(){
+		StudyDef study = studyManagerService.getStudy("sample");
+		assertNotNull(study);
+		assertEquals("Sample Study", study.getName());
+	}
 }

@@ -252,4 +252,6 @@ public interface StudyManagerService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete) throws OpenXDataSecurityException;
+	
+	StudyDef getStudy(String studyKey);
 }
