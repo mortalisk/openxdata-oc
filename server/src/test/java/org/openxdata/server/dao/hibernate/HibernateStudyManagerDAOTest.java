@@ -30,11 +30,6 @@ public class HibernateStudyManagerDAOTest extends BaseContextSensitiveTest {
 	}
 	
 	@Test
-	public void testGetForm() throws Exception {
-		
-	}
-	
-	@Test
 	public void testGetStudyKey() throws Exception {
 		String studyKey = studyManagerService.getStudyKey(1);
 		assertEquals("study key correct", "sample", studyKey);
