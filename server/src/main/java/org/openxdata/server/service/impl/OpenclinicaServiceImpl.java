@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@Service("OpenClinicaService")
+@Service("openClinicaService")
 public class OpenclinicaServiceImpl implements OpenclinicaService {
 
 	@Autowired
