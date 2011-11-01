@@ -1,11 +1,15 @@
 package org.openxdata.server.service.impl;
 
-import java.util.Date;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import junit.framework.Assert;
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.FormService;
@@ -49,4 +53,14 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 		formService.saveFormData(fd);
 		assertNotNull("Id has been set", fd.getId());
 	}
+	
+    @Test public void testGetFormDataListGivenFormDef() {
+    	
+    	FormDef form = formService.getForm(1);
+    	List<FormData> formDataList = formService.getFormData(form);
+    	
+    	assertNotNull(formDataList);
+    	assertEquals(2, formDataList.size());
+    	
+    }
 }

@@ -172,4 +172,6 @@ public interface FormService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException;
+
+	List<FormData> getFormData(FormDef form);
 }
