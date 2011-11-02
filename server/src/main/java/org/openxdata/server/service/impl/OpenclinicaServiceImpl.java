@@ -87,7 +87,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 			convertToOpenXDataOCStudy(returnStudies, uniqueStudies);
 			
 		}catch(Exception ex){
-			throw new UnexpectedException(ex.getMessage());
+			throw new UnexpectedException(ex);
 		}
 
 		return returnStudies;
