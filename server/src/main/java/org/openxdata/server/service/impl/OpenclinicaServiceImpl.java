@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.openxdata.oc.transport.OpenClinicaSoapClientImpl;
+import org.openxdata.oc.model.ConvertedOpenclinicaStudy;
+import org.openxdata.oc.transport.OpenClinicaSoapClient;
 import org.openxdata.oc.transport.factory.ConnectionURLFactory;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
@@ -38,10 +39,11 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	
 	@Autowired
 	private SettingDAO settingDAO;
+
+	private OpenClinicaSoapClient client;
 	
-	private OpenClinicaSoapClientImpl getClient() {
+	private OpenClinicaSoapClient getClient() {
 		
-		OpenClinicaSoapClientImpl client = null;
 		if(client == null){
 			String host = settingDAO.getSetting("openClinicaWebServiceHost");
 			String userName = settingDAO.getSetting("OpenClinicaUserName");
@@ -157,5 +159,19 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 			}
 		}
 		getClient().importData(allData);	
+	}
+
+	@Override
+	public void setClient(OpenClinicaSoapClient client) {
+		this.client = (OpenClinicaSoapClientImpl) client;
+	}
+
+	
+	public void setStudyDAO(StudyDAO studyDAO) {
+		this.studyDAO = studyDAO;
+	}
+
+	public void setEditableDAO(EditableDAO editableDAO) {
+		this.editableDAO = editableDAO;
 	}
 }
