@@ -9,6 +9,7 @@ import java.util.Set;
 import org.openxdata.oc.model.ConvertedOpenclinicaStudy;
 import org.openxdata.oc.transport.OpenClinicaSoapClient;
 import org.openxdata.oc.transport.factory.ConnectionURLFactory;
+import org.openxdata.oc.transport.impl.OpenClinicaSoapClientImpl;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
@@ -69,31 +70,22 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	public Set<OpenclinicaStudy> getOpenClinicaStudies() {
 		
 		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
-		List<org.openxdata.oc.model.OpenclinicaStudy> studies = getClient().listAll();
+		List<ConvertedOpenclinicaStudy> studies = getClient().listAll();
 		
 		try{
 			
 			List<StudyDef> openxdataStudies = studyDAO.getStudies();
-			List<org.openxdata.oc.model.OpenclinicaStudy> uniqueStudies = new ArrayList<org.openxdata.oc.model.OpenclinicaStudy>();
+			List<ConvertedOpenclinicaStudy> uniqueStudies = new ArrayList<ConvertedOpenclinicaStudy>();
 			
 			// Add only unique studies not previously downloaded.
-			for (org.openxdata.oc.model.OpenclinicaStudy study : studies) {
+			for (ConvertedOpenclinicaStudy study : studies) {
 				if(!isStudyDownloaded(openxdataStudies, study)){
 					uniqueStudies.add(study);
 				}
 			}
 
-			for (org.openxdata.oc.model.OpenclinicaStudy study : uniqueStudies) {
-				OpenclinicaStudy ocStudy = new OpenclinicaStudy();
-				ocStudy.setName(study.getName());
-				ocStudy.setOID(study.getOID());
-				ocStudy.setIdentifier(study.getIdentifier());
-				
-				Collection<String> subjects = getClient().getSubjectKeys(study.getIdentifier());
-				ocStudy.setSubjects(subjects);
-
-				returnStudies.add(ocStudy);
-			}
+			convertToOpenXDataOCStudy(returnStudies, uniqueStudies);
+			
 		}catch(Exception ex){
 			throw new UnexpectedException(ex.getMessage());
 		}
@@ -101,7 +93,22 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		return returnStudies;
 	}
 
-	private boolean isStudyDownloaded(List<StudyDef> studies, org.openxdata.oc.model.OpenclinicaStudy study) {
+	private void convertToOpenXDataOCStudy(Set<OpenclinicaStudy> returnStudies,
+			List<ConvertedOpenclinicaStudy> uniqueStudies) {
+		for (ConvertedOpenclinicaStudy study : uniqueStudies) {
+			OpenclinicaStudy ocStudy = new OpenclinicaStudy();
+			ocStudy.setName(study.getName());
+			ocStudy.setOID(study.getOID());
+			ocStudy.setIdentifier(study.getIdentifier());
+			
+			Collection<String> subjects = getClient().getSubjectKeys(study.getIdentifier());
+			ocStudy.setSubjects(subjects);
+
+			returnStudies.add(ocStudy);
+		}
+	}
+
+	private boolean isStudyDownloaded(List<StudyDef> studies, ConvertedOpenclinicaStudy study) {
 				
 		for (StudyDef def : studies) {
 			
@@ -127,7 +134,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		
 		String xml = "";
 		if(subjectKeys != null && subjectKeys.size() > 0){
-			xml = getClient().getOpenxdataForm(identifier, subjectKeys);
+			xml = (String) getClient().getOpenxdataForm(identifier);
 		}
 		
 		return xml;
