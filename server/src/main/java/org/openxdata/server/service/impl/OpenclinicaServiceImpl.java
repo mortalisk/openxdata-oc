@@ -166,17 +166,4 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		getClient().importData(allData);	
 	}
 
-	@Override
-	public void setClient(OpenClinicaSoapClient client) {
-		this.client = (OpenClinicaSoapClientImpl) client;
-	}
-
-	
-	public void setStudyDAO(StudyDAO studyDAO) {
-		this.studyDAO = studyDAO;
-	}
-
-	public void setEditableDAO(EditableDAO editableDAO) {
-		this.editableDAO = editableDAO;
-	}
 }

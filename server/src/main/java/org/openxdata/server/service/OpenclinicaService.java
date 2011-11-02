@@ -2,7 +2,6 @@ package org.openxdata.server.service;
 
 import java.util.List;
 
-import org.openxdata.oc.transport.OpenClinicaSoapClient;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
 
@@ -18,5 +17,4 @@ public interface OpenclinicaService {
 
 	void exportOpenClinicaStudyData(String studyKey);
 
-	void setClient(OpenClinicaSoapClient client);
 }

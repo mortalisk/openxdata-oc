@@ -53,10 +53,7 @@ public class OpenClinicaServiceImplTest {
     	
     	Mockito.when(openClinicaSoapClient.listAll()).thenReturn(openClinicaConvertedStudies);
     	Mockito.when(openClinicaSoapClient.getSubjectKeys(Mockito.anyString())).thenReturn(subjects);
-    	
-    	openClinicaService.setStudyDAO(studyDAO);
-    	openClinicaService.setEditableDAO(editableDAO);
-				
+    				
     }
 
 	private void initSubjects() {
