@@ -329,4 +329,10 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	public StudyDef getStudy(String studyKey) {
 		return studyDao.getStudy(studyKey);
 	}
+
+	
+	@Override
+	public void setStudyDAO(StudyDAO studyDAO) {
+		this.studyDao = studyDAO;
+	}
 }
