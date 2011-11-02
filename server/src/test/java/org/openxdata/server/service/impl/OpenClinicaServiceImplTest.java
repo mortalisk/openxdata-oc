@@ -32,7 +32,7 @@ public class OpenClinicaServiceImplTest {
    
     @Mock private StudyManagerService studyService;
    
-    @Mock OpenClinicaSoapClient openClinicaSoapClient;
+    @Mock private OpenClinicaSoapClient soapClient;
     
     @InjectMocks private OpenclinicaServiceImpl openClinicaService = new OpenclinicaServiceImpl();
 
@@ -51,8 +51,8 @@ public class OpenClinicaServiceImplTest {
     	Mockito.when(studyDAO.getStudy(Mockito.anyString())).thenReturn(new StudyDef());
     	Mockito.when(editableDAO.hasEditableData(Mockito.any(Editable.class))).thenReturn(Boolean.TRUE);
     	
-    	Mockito.when(openClinicaSoapClient.listAll()).thenReturn(openClinicaConvertedStudies);
-    	Mockito.when(openClinicaSoapClient.getSubjectKeys(Mockito.anyString())).thenReturn(subjects);
+    	Mockito.when(soapClient.listAll()).thenReturn(openClinicaConvertedStudies);
+    	Mockito.when(soapClient.getSubjectKeys(Mockito.anyString())).thenReturn(subjects);
     				
     }
 
