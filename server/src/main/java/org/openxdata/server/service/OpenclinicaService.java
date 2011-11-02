@@ -1,6 +1,6 @@
 package org.openxdata.server.service;
 
-import java.util.Set;
+import java.util.List;
 
 import org.openxdata.oc.transport.OpenClinicaSoapClient;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
@@ -15,7 +15,7 @@ public interface OpenclinicaService {
 	 */
 	Boolean hasStudyData(String studyKey);
 	
-	Set<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException;
+	List<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException;
 	
 	Set<String> getStudySubjects(String studyOID) throws UnexpectedException;
 

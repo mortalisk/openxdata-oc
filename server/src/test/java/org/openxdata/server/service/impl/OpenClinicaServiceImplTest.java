@@ -91,12 +91,8 @@ public class OpenClinicaServiceImplTest {
 	
 	@Test public void testGetOpenclinicaStudiesMustNotReturnNull(){
 		
-		List<OpenclinicaStudy> ocStudies = new ArrayList<OpenclinicaStudy>();
-		Set<OpenclinicaStudy> studies = openClinicaService.getOpenClinicaStudies();
+		List<OpenclinicaStudy> studies = openClinicaService.getOpenClinicaStudies();
 		
-		ocStudies.addAll(studies);
-		
-		assertNotNull(studies);
 		assertEquals(2, studies.size());
 		assertEquals("study2", ocStudies.get(0).getName());
 		assertEquals("study", ocStudies.get(1).getName());

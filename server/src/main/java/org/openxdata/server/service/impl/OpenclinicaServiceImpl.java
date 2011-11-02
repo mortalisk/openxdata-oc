@@ -67,10 +67,10 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	}
 	
 	@Override
-	public Set<OpenclinicaStudy> getOpenClinicaStudies() {
+	public List<OpenclinicaStudy> getOpenClinicaStudies() {
 		
 		List<ConvertedOpenclinicaStudy> studies = getClient().listAll();
-		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
+		List<OpenclinicaStudy> returnStudies = new ArrayList<OpenclinicaStudy>();
 		
 		try{
 			
@@ -93,7 +93,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		return returnStudies;
 	}
 
-	private void convertToOpenXDataOCStudy(Set<OpenclinicaStudy> returnStudies,
+	private void convertToOpenXDataOCStudy(List<OpenclinicaStudy> returnStudies,
 			List<ConvertedOpenclinicaStudy> uniqueStudies) {
 		for (ConvertedOpenclinicaStudy study : uniqueStudies) {
 			OpenclinicaStudy ocStudy = new OpenclinicaStudy();

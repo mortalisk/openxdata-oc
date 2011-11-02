@@ -24,7 +24,7 @@ public class OpenclinicaServiceImpl extends OxdPersistentRemoteService implement
 	}
 
 	@Override
-	public Set<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException {
+	public List<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException {
 		return getOpenClinicaService().getOpenClinicaStudies();
 	}
 
