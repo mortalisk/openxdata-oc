@@ -8,11 +8,6 @@ import org.openxdata.server.admin.model.exception.UnexpectedException;
 
 public interface OpenclinicaService {
 
-	/**
-	 * Check if a study has data collected for its forms
-	 * @param studyKey the studyKey for the study
-	 * @return boolean
-	 */
 	Boolean hasStudyData(String studyKey);
 	
 	List<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException;
