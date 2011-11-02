@@ -69,8 +69,8 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	@Override
 	public Set<OpenclinicaStudy> getOpenClinicaStudies() {
 		
-		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
 		List<ConvertedOpenclinicaStudy> studies = getClient().listAll();
+		Set<OpenclinicaStudy> returnStudies = new HashSet<OpenclinicaStudy>();
 		
 		try{
 			
