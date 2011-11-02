@@ -12,7 +12,7 @@ public interface OpenclinicaService {
 	
 	List<OpenclinicaStudy> getOpenClinicaStudies() throws UnexpectedException;
 	
-	Set<String> getStudySubjects(String studyOID) throws UnexpectedException;
+	List<String> getStudySubjects(String studyOID) throws UnexpectedException;
 
 	String importOpenClinicaStudy(String identifier) throws UnexpectedException;
 

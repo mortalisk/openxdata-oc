@@ -2,9 +2,7 @@ package org.openxdata.server.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.openxdata.oc.model.ConvertedOpenclinicaStudy;
 import org.openxdata.oc.transport.OpenClinicaSoapClient;
@@ -141,8 +139,8 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	}
 	
 	@Override
-	public Set<String> getStudySubjects(String studyOID) throws UnexpectedException {
-		Set<String> subjects = new HashSet<String>();
+	public List<String> getStudySubjects(String studyOID) throws UnexpectedException {
+		List<String> subjects = new ArrayList<String>();
 		try{
 			Collection<String> returnedSubjects = getClient().getSubjectKeys(studyOID);
 			for(String x : returnedSubjects){

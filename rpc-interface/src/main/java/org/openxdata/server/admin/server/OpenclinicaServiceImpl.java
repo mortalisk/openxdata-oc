@@ -1,6 +1,6 @@
 package org.openxdata.server.admin.server;
 
-import java.util.Set;
+import java.util.List;
 
 import org.openxdata.server.admin.client.service.OpenclinicaService;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
