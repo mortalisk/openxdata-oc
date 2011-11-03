@@ -237,7 +237,7 @@ public class NewStudyFormView extends WizardView {
 						userStudyAccessListField.setEnabled(true);
 						newStudyName.setValue("");
 						newStudyDescription.setValue("");
-						// set the preselected study if applicable
+						// set the preselected study if applicable or if it there is only one study
 						if (preselectForm != null) {
 							StudyDef preselectStudy = preselectForm.getStudy();
 							setStudyDef(preselectStudy);
@@ -248,7 +248,9 @@ public class NewStudyFormView extends WizardView {
 									break;
 								}
 							}
-						}
+						}else if(store.getModels().size()==1){
+                                                    existingStudyName.setValue(store.getModels().get(0));
+                                                }
 					}
 				});
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
@@ -366,7 +368,9 @@ public class NewStudyFormView extends WizardView {
 							break;
 						}
 					}
-				}
+				} else if (formStore.getModels().size() == 1) {
+                                        existingFormName.setValue(formStore.getModels().get(0));
+                                }
 			}
 		});
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
