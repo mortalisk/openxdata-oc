@@ -107,11 +107,13 @@ public class NewStudyFormView extends WizardView {
 				nextButton.setEnabled(true);
 			}
 		} else if (activePage == 1) {
-			saveAndExitButton.show(); 
+                        saveAndExitButton.show();
 			if (createFormFS.getSelectedRadio() == null) {
 				nextButton.setEnabled(false);
+                                saveAndExitButton.setEnabled(false);
 			} else {
 				nextButton.setEnabled(true);
+                                saveAndExitButton.setEnabled(true);
 			}
 			// check what was selected in the page before
 			if (createStudyFS.getSelectedRadio().equals(appMessages.addNewStudy())) {
@@ -237,7 +239,7 @@ public class NewStudyFormView extends WizardView {
 						userStudyAccessListField.setEnabled(true);
 						newStudyName.setValue("");
 						newStudyDescription.setValue("");
-						// set the preselected study if applicable
+						// set the preselected study if applicable or if it there is only one study
 						if (preselectForm != null) {
 							StudyDef preselectStudy = preselectForm.getStudy();
 							setStudyDef(preselectStudy);
@@ -248,7 +250,9 @@ public class NewStudyFormView extends WizardView {
 									break;
 								}
 							}
-						}
+						}else if(store.getModels().size()==1){
+                                                    existingStudyName.setValue(store.getModels().get(0));
+                                                }
 					}
 				});
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
@@ -295,6 +299,7 @@ public class NewStudyFormView extends WizardView {
 						}
 					}
 					nextButton.setEnabled(true);
+                                        saveAndExitButton.setEnabled(true);
 				}
 				return null;
 			}
@@ -309,6 +314,7 @@ public class NewStudyFormView extends WizardView {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
+                                saveAndExitButton.setEnabled(false);
 				userFormAccessListField.setEnabled(false);
 				if (existingFormName.getValue() != null) {
 					existingFormName.clearSelections();
@@ -331,6 +337,7 @@ public class NewStudyFormView extends WizardView {
 						formDef = studyDef.getForm(new Integer(se.getSelectedItem().getId()));
 						existingFormDescription.setValue(formDef.getDescription());
 						nextButton.setEnabled(true);
+                                                saveAndExitButton.setEnabled(true);
 						Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 							@Override
 							public void execute() {
@@ -366,7 +373,9 @@ public class NewStudyFormView extends WizardView {
 							break;
 						}
 					}
-				}
+				} else if (formStore.getModels().size() == 1) {
+                                        existingFormName.setValue(formStore.getModels().get(0));
+                                }
 			}
 		});
 		ItemAccessListFieldMessages messages = new ItemAccessListFieldMessages("leftHeading="+appMessages.availableUsers()+"\n" +
