@@ -16,6 +16,7 @@ import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
+import org.openxdata.server.dao.StudyDAO;
 
 
 /**
@@ -252,4 +253,8 @@ public interface StudyManagerService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete) throws OpenXDataSecurityException;
+	
+	StudyDef getStudy(String studyKey);
+
+	void setStudyDAO(StudyDAO studyDAO);
 }

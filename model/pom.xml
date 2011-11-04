@@ -72,9 +72,35 @@
             </exclusions>
         </dependency>
         <dependency>
-        	<groupId>org.codehaus.mojo.groovy.runtime</groupId>
-    		<artifactId>groovy-runtime-default</artifactId>
-    		<version>1.0-beta-3</version>
+        	<groupId>org.codehaus.groovy</groupId>
+    		<artifactId>groovy-all</artifactId>
+    		<version>1.8.0-beta-3</version>
         </dependency>
     </dependencies>
+    <build>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+	 <plugins>
+		<plugin>
+			<groupId>org.codehaus.gmaven</groupId>
+			<artifactId>gmaven-plugin</artifactId>
+			<version>1.2</version>
+			<configuration>
+				<providerSelection>1.7</providerSelection>
+			</configuration>
+			<executions>
+				<execution>
+					<goals>
+						<goal>compile</goal>
+						<goal>testCompile</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+    </build>
 </project>

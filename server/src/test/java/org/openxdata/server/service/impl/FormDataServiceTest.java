@@ -1,11 +1,15 @@
 package org.openxdata.server.service.impl;
 
-import java.util.Date;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import junit.framework.Assert;
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.FormService;
@@ -24,29 +28,39 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 	protected FormService formService;
 	
 	@Test
-	public void getSetting_shouldReturnNullIfNoFormDataFoundWithGivenId() throws Exception {
-		Assert.assertNull("formData with id=-1 exists", formService.getFormData(new Integer(-1)));
+	public void testGetFormDataShouldReturnNullIfNoFormDataFoundWithGivenId() throws Exception {
+		assertNull("formData with id=-1 exists", formService.getFormData(new Integer(-1)));
 	}
 	
 	@Test
-	public void getSetting_shouldNotReturnNullIfFormDataFoundWithGivenId() throws Exception {
-		Assert.assertNotNull("formData with id=1 doesn't exist", formService.getFormData(1));
+	public void testGetFormDataShouldNotReturnNullIfFormDataFoundWithGivenId() throws Exception {
+		assertNotNull("formData with id=1 doesn't exist", formService.getFormData(1));
 	}
 
 	@Test
-	public void deleteFormData_shouldDeleteFormDataWithGivenId() throws Exception {
+	public void deleteFormDataSDeleteFormDataWithGivenId() throws Exception {
 		FormData formData = formService.getFormData(new Integer(1));
-		Assert.assertNotNull("form data does not exist", formData);
+		assertNotNull("form data does not exist", formData);
 		formData.setChangedBy(OpenXDataSecurityUtil.getLoggedInUser());
 		formData.setDateChanged(new Date());
 		formService.deleteFormData(formData);
-		Assert.assertNull("formData still exists", formService.getFormData(new Integer(1)));
+		assertNull("formData still exists", formService.getFormData(new Integer(1)));
 	}
 	
 	@Test
-	public void saveFormData() throws Exception {
+	public void testSaveFormData() throws Exception {
 		FormData fd = new FormData(1, "data", "description", new Date(), new User(1, "guyzb"));
 		formService.saveFormData(fd);
-		Assert.assertNotNull("Id has been set", fd.getId());
+		assertNotNull("Id has been set", fd.getId());
 	}
+	
+    @Test public void testGetFormDataListGivenFormDef() {
+    	
+    	FormDef form = formService.getForm(1);
+    	List<FormData> formDataList = formService.getFormData(form);
+    	
+    	assertNotNull(formDataList);
+    	assertEquals(2, formDataList.size());
+    	
+    }
 }

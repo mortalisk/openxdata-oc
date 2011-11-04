@@ -13,9 +13,8 @@ public class HibernateFormDAOTest extends BaseContextSensitiveTest {
     @Autowired
     private FormDAO dao;
     
-    @Test
-    public void getFormNameFromStudy() {
-    	Map<Integer, String> formNames = dao.getFormNames(1); // Sample Study
+    @Test public void testGetFormNameFromStudy() {
+    	Map<Integer, String> formNames = dao.getFormNames(1);
     	Assert.assertNotNull(formNames);
     	Assert.assertEquals(2, formNames.size());
     	Assert.assertEquals("Sample Form", formNames.get(1));

@@ -324,4 +324,15 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 		    }
 	    }
     }
+
+	@Override
+	public StudyDef getStudy(String studyKey) {
+		return studyDao.getStudy(studyKey);
+	}
+
+	
+	@Override
+	public void setStudyDAO(StudyDAO studyDAO) {
+		this.studyDao = studyDAO;
+	}
 }

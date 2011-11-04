@@ -313,4 +313,9 @@ public class FormServiceImpl implements FormService {
 		    }
 		}
     }
+
+	@Override
+	public List<FormData> getFormData(FormDef form) {
+		return formDataDAO.getFormDataList(form);
+	}
 }

@@ -41,6 +41,16 @@ public class OpenclinicaStudy extends LightEntity {
 		this.identifier = identifier;
 	}
 	
+	public void setSubjects(Collection<String> subjectKeys) {
+		for(String x : subjectKeys){
+			this.subjects.add(x);
+		}
+	}
+	
+	public Set<String> getSubjects(){
+		return this.subjects;
+	}
+	
 	@Override
 	public boolean equals(Object otherStudy) {
 		if (otherStudy == null)
@@ -58,16 +68,5 @@ public class OpenclinicaStudy extends LightEntity {
 			return true;
 		
 		return false;
-	}
-
-	
-	public void setSubjects(Collection<String> subjectKeys) {
-		for(String x : subjectKeys){
-			this.subjects.add(x);
-		}
-	}
-	
-	public Set<String> getSubjects(){
-		return this.subjects;
 	}
 }
