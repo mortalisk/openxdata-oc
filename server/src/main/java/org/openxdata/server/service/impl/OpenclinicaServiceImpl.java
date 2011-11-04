@@ -75,7 +75,6 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 			List<StudyDef> openxdataStudies = studyDAO.getStudies();
 			List<ConvertedOpenclinicaStudy> uniqueStudies = new ArrayList<ConvertedOpenclinicaStudy>();
 			
-			// Add only unique studies not previously downloaded.
 			for (ConvertedOpenclinicaStudy study : studies) {
 				if(!isStudyDownloaded(openxdataStudies, study)){
 					uniqueStudies.add(study);
