@@ -26,7 +26,7 @@
         <filtered.sourceDir>${project.build.directory}/generated-sources/filtered</filtered.sourceDir>
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
-        <oxdforms.version>1.1-SNAPSHOT</oxdforms.version>
+        <oxdforms.version>1.1</oxdforms.version>
     </properties>
 
     <profiles>
