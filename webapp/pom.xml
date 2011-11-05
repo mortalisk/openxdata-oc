@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.openxdata</groupId>
         <artifactId>oxd</artifactId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.4</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -20,9 +20,9 @@
         <logoUrl>http://www.openxdata.org/</logoUrl> <!-- link used for top left logo -->
         <splashImageUrl>images/emit/openXdata_splash.gif</splashImageUrl> <!-- background used for login screen -->
         <branded>false</branded> <!--indicates if brand information should be displayed in the text at the bottom -->
-        <provider></provider> <!-- provider name, usually company name for brand (used for text at the bottom) -->
-        <providerLogo></providerLogo> <!-- provider logo -->
-        <providerLink></providerLink> <!-- link to provider website -->
+        <provider /> <!-- provider name, usually company name for brand (used for text at the bottom) -->
+        <providerLogo /> <!-- provider logo -->
+        <providerLink /> <!-- link to provider website -->
         <filtered.sourceDir>${project.build.directory}/generated-sources/filtered</filtered.sourceDir>
         <protocol.jarDir>war/WEB-INF/protocol-jars</protocol.jarDir>
         <published.version>${project.version} (build ${BUILD_NUMBER})</published.version>
