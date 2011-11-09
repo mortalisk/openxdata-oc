@@ -83,23 +83,5 @@
                 <filtering>true</filtering>
             </testResource>
         </testResources>
-	 <plugins>
-		<plugin>
-			<groupId>org.codehaus.gmaven</groupId>
-			<artifactId>gmaven-plugin</artifactId>
-			<version>1.2</version>
-			<configuration>
-				<providerSelection>1.7</providerSelection>
-			</configuration>
-			<executions>
-				<execution>
-					<goals>
-						<goal>compile</goal>
-						<goal>testCompile</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
     </build>
 </project>

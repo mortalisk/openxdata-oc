@@ -381,6 +381,22 @@
                         <xmlOutput>true</xmlOutput>
                     </configuration>
                 </plugin>
+				<plugin>
+					<groupId>org.codehaus.gmaven</groupId>
+					<artifactId>gmaven-plugin</artifactId>
+					<version>1.2</version>
+					<configuration>
+						<providerSelection>1.7</providerSelection>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>testCompile</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
         </plugins>
         </pluginManagement>
     </build>

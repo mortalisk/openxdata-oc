@@ -244,6 +244,10 @@
                 <directory>${basedir}/src/test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
         </testResources>
         <plugins>
             <plugin>
