@@ -15,6 +15,6 @@ public interface OpenclinicaService {
 
 	String importOpenClinicaStudy(String identifier) throws UnexpectedException;
 
-	void exportOpenClinicaStudyData(String studyKey);
+	String exportOpenClinicaStudyData(String studyKey);
 
 }

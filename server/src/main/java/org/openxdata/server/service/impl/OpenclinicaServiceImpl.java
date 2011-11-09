@@ -152,7 +152,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	}
 
 	@Override
-	public void exportOpenClinicaStudyData(String studyKey) {
+	public String exportOpenClinicaStudyData(String studyKey) {
 		StudyDef study = studyDAO.getStudy(studyKey);
 		List<String> allData = new ArrayList<String>(); 
 		for (FormDef form : study.getForms()) {
@@ -161,7 +161,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 				allData.add(formData.getData());
 			}
 		}
-		getClient().importData(allData);	
+		return (String) getClient().importData(allData);	
 	}
 
 }

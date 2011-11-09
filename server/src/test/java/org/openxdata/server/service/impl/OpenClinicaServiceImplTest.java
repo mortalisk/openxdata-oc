@@ -23,9 +23,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openxdata.oc.model.ConvertedOpenclinicaStudy;
 import org.openxdata.oc.transport.OpenClinicaSoapClient;
 import org.openxdata.server.admin.model.Editable;
+import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.dao.EditableDAO;
+import org.openxdata.server.dao.FormDataDAO;
 import org.openxdata.server.dao.StudyDAO;
 import org.openxdata.server.service.StudyManagerService;
 
@@ -33,6 +36,8 @@ import org.openxdata.server.service.StudyManagerService;
 public class OpenClinicaServiceImplTest {
 	
 	@Mock private StudyDAO studyDAO;
+	
+	@Mock private FormDataDAO formDataDAO;
 	
 	@Mock private EditableDAO editableDAO;
    
@@ -42,19 +47,26 @@ public class OpenClinicaServiceImplTest {
     
     @InjectMocks private OpenclinicaServiceImpl openClinicaService = new OpenclinicaServiceImpl();
 
+	
     List<String> subjects = new ArrayList<String>();
     List<StudyDef> studies = new ArrayList<StudyDef>();
+    List<FormData> formDataList = new ArrayList<FormData>();
     List<ConvertedOpenclinicaStudy> openClinicaConvertedStudies = new ArrayList<ConvertedOpenclinicaStudy>();
 	
-    @Before public void setUp() throws Exception {
+    @SuppressWarnings("unchecked")
+	@Before public void setUp() throws Exception {
     	
     	initSubjects();
+    	initFormDataList();
     	initStudyDefinitions();
     	initConvertedOpenClinicaStudies();
+    	
+    	
+    	StudyDef study = createStudy();
 				
 		Mockito.when(studyDAO.getStudies()).thenReturn(studies);
     	Mockito.when(studyService.getStudyKey(Mockito.anyInt())).thenReturn("key");
-    	Mockito.when(studyDAO.getStudy(Mockito.anyString())).thenReturn(new StudyDef());
+    	Mockito.when(studyDAO.getStudy(Mockito.anyString())).thenReturn(study);
     	Mockito.when(editableDAO.hasEditableData(Mockito.any(Editable.class))).thenReturn(Boolean.TRUE);
     	
     	Mockito.when(soapClient.listAll()).thenReturn(openClinicaConvertedStudies);
@@ -67,8 +79,31 @@ public class OpenClinicaServiceImplTest {
 		URL resource2 = this.getClass().getClassLoader().getResource("org/openxdata/server/service/impl/convertedOpenXdataSampleForm.xml");
 		String convertedStudyXML = FileUtils.readFileToString(new File(resource2.toURI()), "UTF-8");
 		Mockito.when(soapClient.getOpenxdataForm(Mockito.anyString())).thenReturn(convertedStudyXML);
-    				
+		
+		Mockito.when(formDataDAO.getFormDataList(Mockito.any(FormDef.class))).thenReturn(formDataList);
+		Mockito.when(soapClient.importData(Mockito.anyCollection())).thenReturn("Success");
+				
     }
+
+	private void initFormDataList() {
+		
+		FormData formData = new FormData();
+		FormData formData2 = new FormData();
+		
+		formDataList.add(formData);
+		formDataList.add(formData2);
+	}
+
+	private StudyDef createStudy() {
+		
+		StudyDef study = new StudyDef();
+		
+		FormDef form = new FormDef();
+
+		study.addForm(form);
+
+		return study;
+	}
 
 	private void initSubjects() {
 		subjects.add("Jorn");
@@ -153,9 +188,17 @@ public class OpenClinicaServiceImplTest {
 		assertEquals("Jonny", studySubjects.get(3));
 	}
 	
-	@Test public void testImportOpenClinicaStudyShouldReturnCorrectXML() throws IOException, URISyntaxException{
+	@Test public void testExportDataShouldReturnSuccessMessage() {
 
-		String message = openClinicaService.importOpenClinicaStudy("oid");
-		assertNotNull(message);
+		String message = openClinicaService.exportOpenClinicaStudyData("oid");
+		assertEquals("Success", message);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test public void testExportDataShouldShouldFailOnEmptyInstanceDataWithMessage() {
+
+		Mockito.when(soapClient.importData(Mockito.anyCollection())).thenReturn("Fail");
+		String message = openClinicaService.exportOpenClinicaStudyData("oid");
+		assertEquals("Fail", message);
 	}
 }
