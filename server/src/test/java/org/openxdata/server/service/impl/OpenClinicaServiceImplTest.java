@@ -72,11 +72,7 @@ public class OpenClinicaServiceImplTest {
     	URL resource = this.getClass().getClassLoader().getResource("org/openxdata/server/service/impl/openclinicaGetMetaDataSoapResponse.xml");
 		String odmMetaData = FileUtils.readFileToString(new File(resource.toURI()), "UTF-8");
 		Mockito.when(soapClient.getMetadata(Mockito.anyString())).thenReturn(odmMetaData);
-		
-		URL resource2 = this.getClass().getClassLoader().getResource("org/openxdata/server/service/impl/convertedOpenXdataSampleForm.xml");
-		String convertedStudyXML = FileUtils.readFileToString(new File(resource2.toURI()), "UTF-8");
-		Mockito.when(soapClient.getOpenxdataForm(Mockito.anyString())).thenReturn(convertedStudyXML);
-		
+				
 		Mockito.when(formDataDAO.getFormDataList(Mockito.any(FormDef.class))).thenReturn(formDataList);
 		Mockito.when(soapClient.importData(Mockito.anyCollection())).thenReturn("Success");
 				
