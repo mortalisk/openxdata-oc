@@ -178,7 +178,7 @@ public class OpenClinicaServiceImplTest {
 		assertEquals(4, studySubjects.size());
 	}
 	
-@Test public void testGetSubjectsShouldRetursValidSubjectKeys(){
+	@Test public void testGetSubjectsShouldRetursValidSubjectKeys(){
 		
 		List<String> studySubjects = openClinicaService.getStudySubjects("studyOID");
 		
