@@ -2,7 +2,6 @@ package org.openxdata.client.views;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.controllers.OpenClinicaStudyController;
