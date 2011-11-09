@@ -1,8 +1,8 @@
 package org.openxdata.server.service.impl;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -71,7 +71,7 @@ public class OpenClinicaServiceImplTest {
     }
 
 	private void initSubjects() {
-		subjects.add("J¿rn");
+		subjects.add("Jorn");
 		subjects.add("Janne");
 		subjects.add("Morten");
 		subjects.add("Jonny");
@@ -141,7 +141,13 @@ public class OpenClinicaServiceImplTest {
 		List<String> studySubjects = openClinicaService.getStudySubjects("studyOID");
 		
 		assertEquals(4, studySubjects.size());
-		assertEquals("J¿rn", studySubjects.get(0));
+	}
+	
+@Test public void testGetSubjectsShouldRetursValidSubjectKeys(){
+		
+		List<String> studySubjects = openClinicaService.getStudySubjects("studyOID");
+		
+		assertEquals("Jorn", studySubjects.get(0));
 		assertEquals("Janne", studySubjects.get(1));
 		assertEquals("Morten", studySubjects.get(2));
 		assertEquals("Jonny", studySubjects.get(3));
