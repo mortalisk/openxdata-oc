@@ -139,4 +139,45 @@ class OpenClinicaServiceTest extends GroovyTestCase {
 		def actual = 'http://www.w3.org/2002/xforms'
 		assertEquals actual, namespaceList[0].toString()
 	}
+	
+	@Test public void testImportOpenClinicaStudyShouldReturnValidXformWithModelElement() {
+
+		def xform = openclinicaService.importOpenClinicaStudy("identifier")
+
+		def xml = new XmlSlurper().parseText(xform)
+		def model = xml.form.version.xform.xforms.model
+		assertEquals 'model', model.name()
+	}
+	
+	@Test public void testImportOpenClinicaStudyShouldReturnValidXformWithModelContainingInstanceElement() {
+
+		def xform = openclinicaService.importOpenClinicaStudy("identifier")
+
+		def xml = new XmlSlurper().parseText(xform)
+		def instance = xml.form.version.xform.xforms.model.instance
+		assertEquals 'instance', instance.name()
+	}
+	
+	@Test public void testImportOpenClinicaStudyShouldReturnValidXformWithModelContainingInstanceElementHavingID() {
+
+		def xform = openclinicaService.importOpenClinicaStudy("identifier")
+
+		def xml = new XmlSlurper().parseText(xform)
+		def instance = xml.form.version.xform.xforms.model.instance
+		
+		assertEquals 'S_DEFAULTS1 - SE_SC1', instance.@id.text()
+	}
+	
+	@Test public void testInstanceIDEqualsStudyNameAndFormNameWithHyphenInBetween() {
+
+		def xform = openclinicaService.importOpenClinicaStudy("identifier")
+
+		def xml = new XmlSlurper().parseText(xform)
+		def instance = xml.form.version.xform.xforms.model.instance
+
+		def actual = instance.@id.text()
+		def studyFormNameCombo = "${xml.@studyKey.text()} - ${xml.form.@name.text()}"
+		
+		assertEquals actual, studyFormNameCombo.toString()
+	}
 }
