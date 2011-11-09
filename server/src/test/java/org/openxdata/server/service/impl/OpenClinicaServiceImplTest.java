@@ -1,8 +1,8 @@
 package org.openxdata.server.service.impl;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -112,7 +112,7 @@ public class OpenClinicaServiceImplTest {
 		assertFalse(openClinicaService.hasStudyData(studyKey2));
 	}
 	
-	@Test public void testGetOpenclinicaStudiesMustNotReturnNull(){
+	@Test public void testGetOpenclinicaStudiesMustReturnCorrectNumberOfStudies(){
 		
 		List<OpenclinicaStudy> studies = openClinicaService.getOpenClinicaStudies();
 		
@@ -136,7 +136,7 @@ public class OpenClinicaServiceImplTest {
 		
 	}
 	
-	@Test public void testGetSubjectsShouldNotReturnNull(){
+	@Test public void testGetSubjectsShouldReturnCorrectNumberOfSubjects(){
 		
 		List<String> studySubjects = openClinicaService.getStudySubjects("studyOID");
 		
@@ -149,7 +149,7 @@ public class OpenClinicaServiceImplTest {
 	
 	@Test public void testImportOpenClinicaStudyShouldReturnCorrectXML() throws IOException, URISyntaxException{
 
-		String convertedStudyXML = openClinicaService.importOpenClinicaStudy("oid");
-		assertNotNull(convertedStudyXML);
+		String message = openClinicaService.importOpenClinicaStudy("oid");
+		assertNotNull(message);
 	}
 }
