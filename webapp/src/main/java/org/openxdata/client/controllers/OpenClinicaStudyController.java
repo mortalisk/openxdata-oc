@@ -1,7 +1,7 @@
 package org.openxdata.client.controllers;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.Emit;
@@ -34,7 +34,7 @@ public class OpenClinicaStudyController extends Controller {
 	AppMessages appMessages = GWT.create(AppMessages.class);
 	
 	private OpenClincaStudyView view;
-	private Set<OpenclinicaStudy> studies;
+	private List<OpenclinicaStudy> studies;
 
 	
 	private StudyServiceAsync studyService;
@@ -98,10 +98,10 @@ public class OpenClinicaStudyController extends Controller {
 	}
 
 	void getOpenclinicaStudies(){		
-		openclinicaService.getOpenClinicaStudies(new EmitAsyncCallback<Set<OpenclinicaStudy>>() {
+		openclinicaService.getOpenClinicaStudies(new EmitAsyncCallback<List<OpenclinicaStudy>>() {
 
 			@Override
-			public void onSuccess(Set<OpenclinicaStudy> result) {
+			public void onSuccess(List<OpenclinicaStudy> result) {
 				studies = result;
 				view.setStudies(studies);
 			}
