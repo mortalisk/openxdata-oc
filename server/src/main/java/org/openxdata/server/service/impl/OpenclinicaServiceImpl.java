@@ -125,13 +125,8 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 
 	@Override
 	public String importOpenClinicaStudy(String identifier) throws UnexpectedException {
-		
-		Collection<String> subjectKeys = getStudySubjects(identifier);
-		
-		String xml = "";
-		if(subjectKeys != null && subjectKeys.size() > 0){
-			xml = (String) getClient().getOpenxdataForm(identifier);
-		}
+				
+		String xml = (String) getClient().getOpenxdataForm(identifier);
 		
 		return xml;
 	}
