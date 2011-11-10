@@ -17,22 +17,30 @@ import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Dialog;
+import com.extjs.gxt.ui.client.widget.Label;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormButtonBinding;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.HBoxLayout;
+import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.http.client.URL;
 
 public class UserImportView extends View {
 
@@ -41,9 +49,10 @@ public class UserImportView extends View {
 	private DashboardWindow window;
 	private Button importButton;
 	private Button cancelButton;
+	private Button templateButton;
 	
 	private int numberOfUsers;
-	
+		
 	MessageBox progressWindow;
 
 	public UserImportView(Controller controller) {
@@ -62,6 +71,21 @@ public class UserImportView extends View {
 		};
 		formPanel.initialize();
 		
+		LayoutContainer buttonBar = new LayoutContainer();
+		buttonBar.setLayout(new HBoxLayout());
+		
+		templateButton = new Button(appMessages.downloadImportTemplate(),new SelectionListener<ButtonEvent>(){
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				String headers = "\"name\",\"firstName\",\"middleName\",\"lastName\",\"phoneNo\",\"email\",\"clearTextPassword\",\"roles\",\"formPermissions\",\"studyPermissions\"";
+				((UserImportController)controller).downloadFile(headers,"Import_Template");				
+			}});
+		buttonBar.add(templateButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
+		
+		HBoxLayoutData flex = new HBoxLayoutData(new Margins(5, 5, 0, 0));
+		flex.setFlex(1);
+		buttonBar.add(new Text(), flex);
+		
 		importButton = new Button(appMessages.importX());
 		importButton.setEnabled(false);
 		importButton.addListener(Events.Select, new Listener<ButtonEvent>() {
@@ -76,7 +100,7 @@ public class UserImportView extends View {
 				});
 			}
 		});
-		formPanel.addButton(importButton);
+		buttonBar.add(importButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		
 		cancelButton = new Button(appMessages.cancel());
 		cancelButton.addListener(Events.Select, new Listener<ButtonEvent>() {
@@ -90,8 +114,10 @@ public class UserImportView extends View {
 				});
 			}
 		});
-		formPanel.addButton(cancelButton);
+		buttonBar.add(cancelButton, new HBoxLayoutData(new Margins(5, 5, 0, 0)));
 		
+		formPanel.add(new Label());
+		formPanel.add(buttonBar);		
 		FormButtonBinding binding = new FormButtonBinding(formPanel);
 		binding.addButton(importButton);
 		importButton.setType("submit");
@@ -113,7 +139,7 @@ public class UserImportView extends View {
 		MessageBox.info(appMessages.importUsers(), appMessages.importUserSuccess(numberOfUsers), null);
 	}
 	
-	public void importError(String errorData) {
+	public void importError(final String errorData) {
 		ProgressIndicator.hideProgressBar();
 		progressWindow.close();
 		window.closeWindow();
@@ -122,7 +148,7 @@ public class UserImportView extends View {
 	    Dialog d = new Dialog();
 	    d.setBodyStyle("fontSize:larger;");
 	    d.addStyleName("x-window-dlg");
-	    d.setHeading("Import Users");
+	    d.setHeading(appMessages.importUsers());
 	    d.addText(appMessages.importUserSuccess(numberOfUsers-numberOfErrorUsers));
 	    d.addText(appMessages.importUserError(numberOfErrorUsers));
 	    
@@ -170,10 +196,28 @@ public class UserImportView extends View {
 	    panel.setSize(500, 200);
 	    panel.setScrollMode(Scroll.AUTO);
 	    
+		Button downloadErrorFileButton = new Button(appMessages.exportErrorsLabel(), new SelectionListener<ButtonEvent>() {
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				if (formPanel.getUploadFileName() != null) {
+					String filename = "";
+					int index = formPanel.getUploadFileName().lastIndexOf("."); // check if the file has an extension
+					if (index > 0) { // remove the extension if it exists
+						filename = formPanel.getUploadFileName().substring(0, index - 1);
+					} else {
+						filename = formPanel.getUploadFileName();
+					}
+					((UserImportController) controller).downloadFile(errorData, URL.encode(filename.replace(" ", "")) + "_errors");
+				}
+			}
+		});
+	    
 	    d.add(panel);
+	    d.addButton(downloadErrorFileButton);
 	    d.setSize(530, 320);
 	    d.setClosable(false);
 	    d.setHideOnButtonClick(true);
 		d.show();
 	}
+
 }

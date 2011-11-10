@@ -117,6 +117,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/studyexport</url-pattern>
     <url-pattern>/emit/studyexport</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>filedownload</servlet-name>
+    <servlet-class>org.openxdata.server.servlet.FileDownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>filedownload</servlet-name>
+    <url-pattern>/filedownload</url-pattern>
+    <url-pattern>/emit/filedownload</url-pattern>
+  </servlet-mapping>
 
   <!-- RPC services -->
   <servlet>

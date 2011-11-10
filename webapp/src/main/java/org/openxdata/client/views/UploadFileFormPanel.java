@@ -112,4 +112,9 @@ public abstract class UploadFileFormPanel extends FormPanel {
 			MessageBox.alert(appMessages.error(), appMessages.importError(), null);
 		}
 	}
+	
+	public String getUploadFileName(){
+		return uploadFile.getValue();
+	}
+	
 }
