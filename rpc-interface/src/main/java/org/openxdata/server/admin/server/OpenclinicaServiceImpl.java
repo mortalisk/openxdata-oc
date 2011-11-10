@@ -18,7 +18,7 @@ public class OpenclinicaServiceImpl extends OxdPersistentRemoteService implement
 	private org.openxdata.server.service.OpenclinicaService getOpenClinicaService() {
 		if (openclinicaService == null) {
 			WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext());
-			openclinicaService = (org.openxdata.server.service.OpenclinicaService) ctx.getBean("OpenClinicaService");
+			openclinicaService = (org.openxdata.server.service.OpenclinicaService) ctx.getBean("openClinicaService");
 		}
 		return openclinicaService;
 	}
