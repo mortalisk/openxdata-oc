@@ -97,11 +97,16 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 			ocStudy.setOID(study.getOID());
 			ocStudy.setIdentifier(study.getIdentifier());
 			
-			Collection<String> subjects = getClient().getSubjectKeys(study.getIdentifier());
-			ocStudy.setSubjects(subjects);
+			appendSubjects(study, ocStudy);
 
 			returnStudies.add(ocStudy);
 		}
+	}
+
+	private void appendSubjects(ConvertedOpenclinicaStudy study,
+			OpenclinicaStudy ocStudy) {
+		Collection<String> subjects = getClient().getSubjectKeys(study.getIdentifier());
+		ocStudy.setSubjects(subjects);
 	}
 
 	private boolean isStudyDownloaded(List<StudyDef> studies, ConvertedOpenclinicaStudy study) {
