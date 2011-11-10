@@ -154,6 +154,10 @@ public interface AppMessages extends Messages {
 	
 	String exportA();
 	
+	String exportErrorsLabel();
+	
+	String downloadImportTemplate();
+	
 	String existingDataTitle();
 	
 	String existingDataMessage();
