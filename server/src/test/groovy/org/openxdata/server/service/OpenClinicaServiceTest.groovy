@@ -1,9 +1,6 @@
 package org.openxdata.server.service;
 
-import static org.hamcrest.Matchers.*
-import static org.junit.Assert.*
 import groovy.mock.interceptor.MockFor
-import groovy.xml.XmlUtil
 
 import org.gmock.WithGMock
 import org.junit.Before
@@ -180,4 +177,25 @@ class OpenClinicaServiceTest extends GroovyTestCase {
 		
 		assertEquals actual, studyFormNameCombo.toString()
 	}
+	
+	@Test public void testImportOpenClinicaStudyShouldReturnValidXformWithModelContainingBindElements() {
+
+		def xform = openclinicaService.importOpenClinicaStudy("identifier")
+
+		def xml = new XmlSlurper().parseText(xform)
+		def binds = xml.form.version.xform.xforms.model.bind
+
+		assertNotNull binds
+	}
+	
+	@Test public void testImportOpenClinicaStudyShouldReturnValidXformWithModelContainingCorrectSizeBindElements() {
+
+		def xform = openclinicaService.importOpenClinicaStudy("identifier")
+
+		def xml = new XmlSlurper().parseText(xform)
+		def binds = xml.form.version.xform.xforms.model.bind
+
+		assertEquals 527, binds.size()
+	}
+
 }
