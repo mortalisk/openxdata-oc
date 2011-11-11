@@ -89,6 +89,7 @@ public class DataBuilder {
             id = UUID.randomUUID().toString();
             columnValues.put("Id", id);
             columnValues.put("openxdata_form_data_id", String.valueOf(formData.getId()));
+            columnValues.put("openxdata_form_data_date_created", formData.getDateCreated());
         }
         columnValues.put("openxdata_user_name", formData.getCreator().getName());
         columnValues.put("openxdata_user_id", String.valueOf(formData.getCreator().getId()));
