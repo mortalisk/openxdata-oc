@@ -84,6 +84,14 @@
 		<property name="host" value="${mailSender.host}"/>
 		<property name="protocol" value="${mailSender.protocol}"/>
 		<property name="port" value="${mailSender.port}"/>
+		<property name="javaMailProperties">
+			<props>
+				<!-- Use SMTP-AUTH to authenticate to SMTP server -->
+				<prop key="mail.smtp.auth">${mailSender.smtp.auth}</prop>
+				<!-- Use TLS to encrypt communication with SMTP server -->
+				<prop key="mail.smtp.starttls.enable">${mailSender.smtp.starttls.enable}</prop>
+			</props>
+		</property>	
 	</bean>
 
 	<!--  **************************  BEAN DECLARATION SHOULD START HERE  *************************  -->
