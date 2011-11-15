@@ -74,6 +74,7 @@ public class StructureBuilder {
         appendFormDataId(sb);
         appendUserId(sb);
         appendUserName(sb);
+        appendExportDate(sb);
 
         //creating other columns
         NodeList columnElements = tableElement.getChildNodes();
@@ -149,6 +150,11 @@ public class StructureBuilder {
     private void appendUserName(StringBuilder sb) {
         sb.append("\t" + ",openxdata_user_name" + " " + TYPE_VARCHAR);
         sb.append(String.format(SIZE_OF_TYPE, 50));
+        sb.append(LINE_SEPARATOR);
+    }
+    
+    private void appendExportDate(StringBuilder sb) {
+        sb.append("\t" + ",openxdata_form_data_date_created" + " " + "DATETIME");
         sb.append(LINE_SEPARATOR);
     }
 

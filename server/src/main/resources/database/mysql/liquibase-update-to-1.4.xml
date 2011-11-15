@@ -79,4 +79,9 @@
                 <column name="description" value="Ability to import users to the system"/>
             </insert>
     </changeSet>
+	
+	<changeSet author="ebusingye@cit.mak.ac.ug" id="fixing_exported_form_data">
+        <comment>Fix for the existing exported form data</comment>
+        <customChange class="org.openxdata.server.database.liquibase.customchanges.FixExportDateColumnsExportedData"/>
+    </changeSet>
 </databaseChangeLog>

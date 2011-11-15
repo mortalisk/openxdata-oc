@@ -376,42 +376,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_advanced_schedule();
 
   /**
-   * Translated "Align Bottom".
-   * 
-   * @return translated "Align Bottom"
-   */
-  @DefaultStringValue("Align Bottom")
-  @Key("label_align_botton")
-  String label_align_botton();
-
-  /**
-   * Translated "Align Left".
-   * 
-   * @return translated "Align Left"
-   */
-  @DefaultStringValue("Align Left")
-  @Key("label_align_left")
-  String label_align_left();
-
-  /**
-   * Translated "Align Right".
-   * 
-   * @return translated "Align Right"
-   */
-  @DefaultStringValue("Align Right")
-  @Key("label_align_right")
-  String label_align_right();
-
-  /**
-   * Translated "Align Top".
-   * 
-   * @return translated "Align Top"
-   */
-  @DefaultStringValue("Align Top")
-  @Key("label_align_top")
-  String label_align_top();
-
-  /**
    * Translated "Analytics".
    * 
    * @return translated "Analytics"
@@ -484,15 +448,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_confirm_password();
 
   /**
-   * Translated "copy".
-   * 
-   * @return translated "copy"
-   */
-  @DefaultStringValue("copy")
-  @Key("label_copy")
-  String label_copy();
-
-  /**
    * Translated "Create New Version".
    * 
    * @return translated "Create New Version"
@@ -509,15 +464,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("Custom Scheduling Expression:")
   @Key("label_custom_cron_expression")
   String label_custom_cron_expression();
-
-  /**
-   * Translated "Cut".
-   * 
-   * @return translated "Cut"
-   */
-  @DefaultStringValue("Cut")
-  @Key("label_cut")
-  String label_cut();
 
   /**
    * Translated "Data".
@@ -880,15 +826,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_exporting_data();
 
   /**
-   * Translated "Export To PDF".
-   * 
-   * @return translated "Export To PDF"
-   */
-  @DefaultStringValue("Export To PDF")
-  @Key("label_exporttopdf")
-  String label_exporttopdf();
-
-  /**
    * Translated "File".
    * 
    * @return translated "File"
@@ -1033,33 +970,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_logout();
 
   /**
-   * Translated "Make Same Height".
-   * 
-   * @return translated "Make Same Height"
-   */
-  @DefaultStringValue("Make Same Height")
-  @Key("label_make_same_height")
-  String label_make_same_height();
-
-  /**
-   * Translated "Make Same Size".
-   * 
-   * @return translated "Make Same Size"
-   */
-  @DefaultStringValue("Make Same Size")
-  @Key("label_make_same_size")
-  String label_make_same_size();
-
-  /**
-   * Translated "Make Same Width".
-   * 
-   * @return translated "Make Same Width"
-   */
-  @DefaultStringValue("Make Same Width")
-  @Key("label_make_same_width")
-  String label_make_same_width();
-
-  /**
    * Translated "Mappings/GIS".
    * 
    * @return translated "Mappings/GIS"
@@ -1121,24 +1031,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("Month(s)")
   @Key("label_month")
   String label_month();
-
-  /**
-   * Translated "Move Down".
-   * 
-   * @return translated "Move Down"
-   */
-  @DefaultStringValue("Move Down")
-  @Key("label_move_down")
-  String label_move_down();
-
-  /**
-   * Translated "Move Up".
-   * 
-   * @return translated "Move Up"
-   */
-  @DefaultStringValue("Move Up")
-  @Key("label_move_up")
-  String label_move_up();
 
   /**
    * Translated "Name".
@@ -1310,15 +1202,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("Phone Number")
   @Key("label_phone_no")
   String label_phone_no(); 
-
-  /**
-   * Translated "Paste".
-   * 
-   * @return translated "Paste"
-   */
-  @DefaultStringValue("Paste")
-  @Key("label_paste")
-  String label_paste();
 
   /**
    * Translated "Permissions".

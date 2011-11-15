@@ -5,6 +5,7 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,6 +37,7 @@ public class MainDisplay implements MainPresenter.Display, StackPanelListener, R
     private StackPanelListener stackPanelListener;
     private HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
     private VerticalPanel verticalPanel = new VerticalPanel();
+    private HorizontalPanel horizontalPanel = new HorizontalPanel();
     private OpenXDataMenuBar menuBar;
     private OpenXDataToolBar toolBar;
     private OpenXDataNotificationBar notificationBar;
@@ -59,9 +61,10 @@ public class MainDisplay implements MainPresenter.Display, StackPanelListener, R
         splitPanel.setLeftWidget(stackPanel);
 
         verticalPanel.setWidth("100%");
-        verticalPanel.add(menuBar);
+        horizontalPanel.add(menuBar);
+        horizontalPanel.add(toolBar);
+        verticalPanel.add(horizontalPanel);
         verticalPanel.add(notificationBar);
-        verticalPanel.add(toolBar);
         verticalPanel.add(splitPanel);
 
 
