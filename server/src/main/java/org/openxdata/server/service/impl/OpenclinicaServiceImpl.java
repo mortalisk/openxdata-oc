@@ -89,8 +89,8 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		return returnStudies;
 	}
 
-	private void convertToOpenXDataOCStudy(List<OpenclinicaStudy> returnStudies,
-			List<ConvertedOpenclinicaStudy> uniqueStudies) {
+	private void convertToOpenXDataOCStudy(List<OpenclinicaStudy> returnStudies, List<ConvertedOpenclinicaStudy> uniqueStudies) {
+		
 		for (ConvertedOpenclinicaStudy study : uniqueStudies) {
 			OpenclinicaStudy ocStudy = new OpenclinicaStudy();
 			ocStudy.setName(study.getName());
@@ -103,8 +103,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		}
 	}
 
-	private void appendSubjects(ConvertedOpenclinicaStudy study,
-			OpenclinicaStudy ocStudy) {
+	private void appendSubjects(ConvertedOpenclinicaStudy study, OpenclinicaStudy ocStudy) {
 		Collection<String> subjects = getClient().getSubjectKeys(study.getIdentifier());
 		ocStudy.setSubjects(subjects);
 	}
@@ -163,5 +162,4 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		}
 		return (String) getClient().importData(allData);	
 	}
-
 }
