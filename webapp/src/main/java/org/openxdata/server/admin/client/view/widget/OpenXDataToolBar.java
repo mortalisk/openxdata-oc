@@ -37,28 +37,11 @@ import org.openxdata.server.admin.client.view.event.LogOutEvent;
 public class OpenXDataToolBar extends Composite implements ExtendedEventDispatcher {
 
 	/** The tool bar buttons. */
-	private PushButton btnCut;
-	private PushButton btnCopy;
-	private PushButton btnPaste;
 	private PushButton btnLogout;
 	private PushButton btnRefresh;
 	private PushButton btnNewItem;
-	private PushButton btnSameSize;
-	private PushButton btnAlignTop;
 	private PushButton btnSave;
-	private PushButton btnOpenForm;
-	private PushButton btnAlignLeft;
-	private PushButton btnSameWidth;
-	private PushButton btnMoveItemUp;
-	private PushButton btnAlignRight;
-	private PushButton btnSameHeight;
-	private PushButton btnAddNewItem;
-	private PushButton btnAlignBottom;
-	private PushButton btnMoveItemDown;
 	private PushButton btnAddNewChildItem;
-
-	/** The button to export the report to PDF format. */
-	private PushButton btnPdf;
 
 	/** Label to display the name of the currently logged on user. */
 	private Label lblTitleUser;
@@ -100,28 +83,11 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
         OpenXDataImages images = GWT.create(OpenXDataImages.class);
 
         btnNewItem = createButton(images.newform());
-        btnOpenForm = createButton(images.open());
         btnSave = createButton(images.save());
-        btnAddNewItem = createButton(images.add());
         btnAddNewChildItem = createButton(images.addchild());
 
-        btnMoveItemUp = createButton(images.moveup());
-        btnMoveItemDown = createButton(images.movedown());
-
-        btnAlignLeft = createButton(images.justifyleft());
-        btnAlignRight = createButton(images.justifyright());
-        btnAlignTop = createButton(images.alignTop());
-        btnAlignBottom = createButton(images.alignBottom());
-        btnSameWidth = createButton(images.samewidth());
-        btnSameHeight = createButton(images.sameheight());
-        btnSameSize = createButton(images.samesize());
-
-        btnCut = createButton(images.cut());
-        btnCopy = createButton(images.copy());
-        btnPaste = createButton(images.paste());
         btnRefresh = createButton(images.refresh());
 
-        btnPdf = createButton(images.pdf());
         btnLogout = createButton(images.logout());
     }
 
@@ -129,26 +95,10 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
         OpenXdataConstants constants = GWT.create(OpenXdataConstants.class);
 
         btnNewItem.setTitle(constants.label_new());
-        btnOpenForm.setTitle(constants.label_open());
         btnSave.setTitle(constants.label_save());
-        btnAddNewItem.setTitle(constants.label_add_new());
         btnAddNewChildItem.setTitle(constants.label_add_new_child());
 
-        btnMoveItemUp.setTitle(constants.label_move_up());
-        btnMoveItemDown.setTitle(constants.label_move_down());
-
-        btnCut.setTitle(constants.label_cut());
-        btnCopy.setTitle(constants.label_copy());
-        btnPaste.setTitle(constants.label_paste());
         btnRefresh.setTitle(constants.label_refresh());
-        btnAlignLeft.setTitle(constants.label_align_left());
-        btnAlignRight.setTitle(constants.label_align_right());
-        btnAlignTop.setTitle(constants.label_align_top());
-        btnAlignBottom.setTitle(constants.label_align_botton());
-        btnSameWidth.setTitle(constants.label_make_same_width());
-        btnSameHeight.setTitle(constants.label_make_same_height());
-        btnSameSize.setTitle(constants.label_make_same_size());
-        btnPdf.setTitle(constants.label_exporttopdf());
         btnLogout.setTitle(constants.label_logout());
     }
 
@@ -175,102 +125,11 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 			public void onClick(ClickEvent event) {
 				notifyOnRefreshEventListeners();}});
 		
-		btnAddNewItem.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyOnNewItemEventListeners();}});
-		
 		btnAddNewChildItem.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				notifyOnNewChildItemEventListeners();}});
-		
-		btnOpenForm.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyOnOpenEventListeners();}});
-		
-		btnMoveItemUp.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyMoveItemUpEventListeners();}});
-		
-		btnMoveItemDown.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyMoveItemDownEventListeners();}});
-		
-		btnAlignLeft.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyAlignLeftEventListeners();}});
-		
-		btnAlignRight.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyAlignRightEventListeners();}});
-		
-		btnAlignTop.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyAlignTopEventListeners();}});
-		
-		btnAlignBottom.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyAlignBottomEventListeners();}});
-		
-		btnCut.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyCutItemEventListeners();}});
-		
-		btnCopy.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyCopyItemEventListeners();}});
-		
-		btnPaste.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyPasteItemEventListeners();}});
-		
-		btnSameWidth.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyMakeSameWidthEventListeners();}});
-		
-		btnSameHeight.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyMakeSameHeightEventListeners();}});
-		
-		btnSameSize.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyMakeSameSizeEventListeners();}});
-		
-		
-		btnPdf.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				notifyOnExportAsPdfEventListeners();}});
 		
 		btnLogout.addClickHandler(new ClickHandler(){
 
@@ -314,38 +173,9 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	 */
 	private void bindMenuBarFunctionalButtons() {
 		panel.add(btnNewItem);
-		panel.add(btnOpenForm);
 		panel.add(btnSave);
-		panel.add(btnAddNewItem);
 		panel.add(btnAddNewChildItem);
-                panel.add(btnRefresh);
-	}
-
-	private void addClipboardButtons() {
-		panel.add(btnCut);
-		panel.add(btnCopy);
-		panel.add(btnPaste);
-		
-		panel.add(btnRefresh);
-	}
-
-	private void addAlignmentButtons() {
-		panel.add(btnMoveItemUp);
-		panel.add(btnMoveItemDown);
-		
-		panel.add(btnAlignLeft);
-		panel.add(btnAlignRight);
-		panel.add(btnAlignTop);
-		panel.add(btnAlignBottom);
-		panel.add(btnSameWidth);
-		panel.add(btnSameHeight);
-		panel.add(btnSameSize);
-		
-		panel.add(btnRefresh);
-	}
-	
-	private void addExtraButtons(){
-		panel.add(btnPdf);
+        panel.add(btnRefresh);
 	}
 
     private void addLogoutButton() {
@@ -359,9 +189,6 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	 */
 	public OpenXDataToolBar instanceOfAdminUser() {
 		this.bindMenuBarFunctionalButtons();
-		this.addClipboardButtons();
-		this.addAlignmentButtons();
-		this.addExtraButtons();
 		
 		this.addLogoutButton();
 		
@@ -380,15 +207,6 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 		if(RolesListUtil.getPermissionResolver().isAddPermission()){
 			this.bindMenuBarFunctionalButtons();			
 		}	
-		
-		if(RolesListUtil.getPermissionResolver().isEditPermission()){
-			this.addClipboardButtons();
-		}
-                //changed from isViewPermission.
-		if(RolesListUtil.getPermissionResolver().isExtraPermission("form_design")){
-			this.addAlignmentButtons();
-			this.addExtraButtons();
-		}
 		
 		this.addLogoutButton();
 		
@@ -416,140 +234,6 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	@Override
 	public void removeAdvancedApplicationEventListener(OpenXDataViewExtendedApplicationEventListener eventListener){
 		viewApplicationEventListeners.remove(eventListener);
-	}
-
-	@Override
-	public void notifyAlignBottomEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){			
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignBottom();
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyAlignLeftEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignLeft();		
-			}
-
-		}		
-	}
-
-	@Override
-	public void notifyAlignRightEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignRight();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyAlignTopEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).alignTop();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyCopyItemEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).copyItem();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyCutItemEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).cutItem();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyMakeSameHeightEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).makeSameHeight();				
-				
-
-			}
-
-			}		
-
-		}
-
-	@Override
-	public void notifyMakeSameSizeEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).makeSameSize();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyMakeSameWidthEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).makeSameWidth();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyMoveItemDownEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).moveItemDown();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyMoveItemUpEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).moveItemUp();				
-			}
-
-		}
-	}
-
-	@Override
-	public void notifyOpenFormEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).openForm();				
-			}
-		}
-	}
-
-	
-	@Override
-	public void notifyPasteItemEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).pasteItem();				
-			}
-
-		}
 	}
 
 	@Override
@@ -621,15 +305,6 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewApplicationEventListener){
 				((OpenXDataViewApplicationEventListener)xViewAppEventListener).onNewChildItem();
-			}
-		}
-	}
-
-	@Override
-	public void notifyOnExportAsPdfEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener){
-				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).exportAsPdf();				
 			}
 		}
 	}

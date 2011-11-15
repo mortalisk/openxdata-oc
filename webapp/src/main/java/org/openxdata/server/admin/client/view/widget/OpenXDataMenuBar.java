@@ -61,7 +61,8 @@ public class OpenXDataMenuBar extends Composite implements EventDispatcher {
      * Finalizes the <tt>Menu Bar</tt> preparation by binding the help menu.
      */
     private void constructHelpMenuBar() {
-        initWidget(menuBar);
+        menuBar.setHeight("28px");
+    	initWidget(menuBar);
     }
 
     /**
