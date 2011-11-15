@@ -66,9 +66,9 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 		} else if (action == ACTION_DOWNLOAD_USERS_AND_FORMS) {
 			try {
 				String userName = in.readUTF();
+				List<Object[]> user = getUser(ctx.getUsers(), userName); // no longer downloading ALL users
 				int studyId = in.readInt();
 				out.writeByte(ResponseHeader.STATUS_SUCCESS);
-				List<Object[]> user = getUser(ctx.getUsers(), userName); // no longer downloading ALL users
 				serializer.serializeUsers(ctx.getOutputStream(), user);
 				String studyName = ctx.getStudyName(studyId);
 				List<String> studyForms = ctx.getStudyForms(studyId);
