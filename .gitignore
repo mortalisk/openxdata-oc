@@ -42,3 +42,9 @@ webapp/war/WEB-INF/web.xml
 webapp/bin
 rpc-interface/bin/
 webapp/war/Emit.css
+model/.groovy/
+protocol-api/.classpath
+protocol-api/.project
+protocol-api/.settings/
+protocol-api/target/
+
