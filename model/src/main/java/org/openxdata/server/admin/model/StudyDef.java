@@ -128,10 +128,9 @@ public class StudyDef extends AbstractEditable implements Exportable {
 	 * @return FormDef (or null if not found)
 	 */
 	public FormDef getForm(String formName) {
-		for (byte i=0; i<forms.size(); i++) {
-			FormDef def = (FormDef)forms.get(i);
-			if (def.getName().equals(formName)) {
-				return def;
+		for (FormDef form : forms) {
+			if (form.getName().equals(formName)) {
+				return form;
 			}
 		}
 		
