@@ -35,6 +35,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import org.openxdata.client.util.FormDefVersionUtil;
 
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version..
@@ -306,6 +307,9 @@ public class EditStudyFormView extends WizardView {
 		version.setXform(formDefVersion.getXform());
 		version.setName(formVersion.getValue());
 		version.setDescription(formDefVersion.getDescription());
+		FormDefVersionUtil.renameFormBinding(version,
+		FormDefVersionUtil.generateDefaultFormBinding(version));
+		FormDefVersionUtil.renameXformName(version,formVersion.getValue());
 		formDefVersion = version; // replace selected version with the new one so future saves will work
 		return version;
 	}

@@ -43,6 +43,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import org.openxdata.client.util.FormDefVersionUtil;
 
 public class NewStudyFormView extends WizardView {
 
@@ -537,10 +538,13 @@ public class NewStudyFormView extends WizardView {
 			if (formVersionEditMode) {
 				formDefVersion = new FormDefVersion(0,formDefinitionVersionName.getValue(),formDef);
 				FormDefVersion defaultForm = formDef.getDefaultVersion();
-                if (defaultForm != null) {
-                    formDefVersion.setXform(defaultForm.getXform());
-                    formDefVersion.setLayout(defaultForm.getLayout());
-                }
+				if (defaultForm != null) {
+					formDefVersion.setXform(defaultForm.getXform());
+					FormDefVersionUtil.renameFormBinding(formDefVersion,
+					FormDefVersionUtil.generateDefaultFormBinding(formDefVersion));
+					FormDefVersionUtil.renameXformName(formDefVersion,formDefinitionVersionName.getValue());
+					formDefVersion.setLayout(defaultForm.getLayout());
+				}
 			}
 			else {
 				formDefVersion = new FormDefVersion(0,

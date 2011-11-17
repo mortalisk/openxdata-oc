@@ -19,12 +19,6 @@ import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.xml.client.Attr;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NamedNodeMap;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
@@ -109,9 +103,6 @@ public class FormDesignerView extends View implements IFormSaveListener {
 
 		// if not empty load it in the form designer for editing
 		if (xform != null && xform.trim().length() > 0) {
-			if (!checkMatching(formDefVersion)) {
-				xform = changeName(formDefVersion);
-			}
 			// If the form was localised for the current locale, then translate
 			// it to the locale.
 			FormDefVersionText text = formDefVersion
@@ -169,118 +160,6 @@ public class FormDesignerView extends View implements IFormSaveListener {
 		return FormDesignerUtil.getXmlTagName(binding);
 	}
 
-	/**
-	 * Checks whether the xform of the FormDefVersion binding needs to be
-	 * changed.
-	 * 
-	 * @param formDefVersion
-	 * @return boolean whether xform needs to be changed or not
-	 */
-	private boolean checkMatching(FormDefVersion formDefVersion) {
-		Document xformDocument = XMLParser.parse(formDefVersion.getXform());
-		NodeList instanceList = xformDocument.getElementsByTagName("instance");
-		Node instanceRoot = instanceList.item(0).getChildNodes().item(1);
-		Node nameNode = instanceRoot.getAttributes().getNamedItem("name");
-
-		String name = nameNode.getNodeValue();
-		if (formDefVersion.isNew() && !formDefVersion.getName().equals(name)) {
-			return false;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Changes the name it in the xml of a FormDefVersion that needs a name
-	 * change
-	 * 
-	 * @param formDefVersion
-	 *            FormDefVersion that has had its name changed
-	 * @return
-	 */
-	private String changeName(FormDefVersion formDefVersion) {
-		Document xformDocument = XMLParser.parse(formDefVersion.getXform());
-		NodeList instanceList = xformDocument.getElementsByTagName("instance");
-		Node instanceNode = instanceList.item(0);
-		Node instanceRoot = instanceNode.getChildNodes().item(1);
-		Node nameNode = instanceRoot.getAttributes().getNamedItem("name");
-
-		String newName = getDefaultFormBinding(formDefVersion);
-		String oldName = instanceRoot.getNodeName();
-
-		// do all changes
-		resetIdValue(instanceNode, newName);
-		resetFormKeyValue(instanceRoot, newName);
-		changeDescriptionTemplateValue(instanceRoot, oldName, newName);
-		nameNode.setNodeValue(formDefVersion.getFormDef().getName() + "_"
-				+ formDefVersion.getName());
-		replaceInstanceRoot(xformDocument, newName, instanceRoot);
-		changeNodesetOnBindElements(xformDocument, oldName, newName);
-
-		String xform = xformDocument.toString();
-		formDefVersion.setXform(xform);
-		return xform;
-	}
-
-	private void changeDescriptionTemplateValue(Node instanceRoot,
-			String oldName, String newName) {
-		Node descriptionNode = instanceRoot.getAttributes().getNamedItem(
-				"description-template");
-		if (descriptionNode != null) {
-			String value = descriptionNode.getNodeValue();
-			value = value.replaceAll(oldName, newName);
-			descriptionNode.setNodeValue(value);
-		}
-	}
-
-	private void resetFormKeyValue(Node instanceRoot, String newName) {
-		Node formKeyNode = instanceRoot.getAttributes().getNamedItem("formKey");
-		if (formKeyNode != null) {
-			formKeyNode.setNodeValue(newName);
-		}
-	}
-
-	private void resetIdValue(Node instanceNode, String newName) {
-		Node idNode = instanceNode.getAttributes().getNamedItem("id");
-		if (idNode != null) {
-			idNode.setNodeValue(newName);
-		}
-	}
-
-	private void changeNodesetOnBindElements(Document xformDocument,
-			String oldName, String newName) {
-		// Change the nodeset attribute on bind-elements to reflect new instance
-		// root name
-		NodeList bindElements = xformDocument.getElementsByTagName("bind");
-		for (int i = 0; i < bindElements.getLength(); i++) {
-			Node bind = bindElements.item(i);
-			Node nodeset = bind.getAttributes().getNamedItem("nodeset");
-			String nodesetValue = nodeset.getNodeValue();
-			nodesetValue = nodesetValue.replaceAll(oldName, newName);
-			nodeset.setNodeValue(nodesetValue);
-		}
-	}
-
-	private void replaceInstanceRoot(Document xformDocument, String newName,
-			Node instanceRoot) {
-		// We need to create a new element to replace the old name
-		// Renaming is not allowed in DOM
-		Element newInstanceRoot = xformDocument.createElement(newName);
-		// Copy the attributes to the new element
-		NamedNodeMap attrs = instanceRoot.getAttributes();
-		for (int i = 0; i < attrs.getLength(); i++) {
-			Attr attr2 = (Attr) xformDocument.importNode(attrs.item(i), true);
-			newInstanceRoot.setAttribute(attr2.getName(), attr2.getValue());
-		}
-		// Move all the children
-		while (instanceRoot.hasChildNodes()) {
-			newInstanceRoot.appendChild(instanceRoot.getFirstChild());
-		}
-		// Replace the new node for the old one
-		instanceRoot.getParentNode()
-				.replaceChild(newInstanceRoot, instanceRoot);
-	}
-	
 	@Override
 	public boolean onSaveForm(int formId, String xformsXml, String layoutXml, String javaScriptSrc) {
 		try {
