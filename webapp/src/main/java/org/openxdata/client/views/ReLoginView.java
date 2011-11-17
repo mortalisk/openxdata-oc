@@ -7,6 +7,8 @@ import org.openxdata.client.controllers.LoginController;
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.util.IconHelper;
@@ -17,6 +19,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
 
 /**
  * A window with specialized support for enabling a User login after a server
@@ -65,6 +68,15 @@ public class ReLoginView extends Dialog {
 		password.setPassword(true);
 		password.setFieldLabel(appMessages.passWord());
 		add(password);
+		
+		password.addKeyListener(new KeyListener() {
+			@Override
+			public void componentKeyDown(ComponentEvent ce) {
+				if (ce.getKeyCode() == KeyCodes.KEY_ENTER) {
+					startAuthentication();
+				}
+			}
+		});
 
 		setFocusWidget(username);
 
@@ -76,28 +88,33 @@ public class ReLoginView extends Dialog {
 		login = new Button("Login");
 		login.addSelectionListener(new SelectionListener<ButtonEvent>() {
 			public void componentSelected(ButtonEvent ce) {
-				if (validate()) {
-					if (username.getValue() != null) {
-						if (username.getValue().equals(
-								equals(Registry.get(Emit.LOGGED_IN_USER_NAME)))) {
-							MessageBox.info(appMessages.conflictingLogins(),
-									appMessages.anotherLoggedInUser(), null);
-							return;
-						} else {
-							((LoginController) controller).performLogin(
-									username.getValue(), password.getValue());
-                                                        password.clear();
-						}
-					}
-				} else {
-					reset();
-					MessageBox.alert(appMessages.invalidUsernameOrPassword(),
-							appMessages.rightCredentials(), null);
-				}
+				startAuthentication();
 			}
+
 		});
 
 		addButton(login);
+	}
+	
+	protected void startAuthentication() {
+		if (validate()) {
+			if (username.getValue() != null) {
+				if (username.getValue().equals(
+						equals(Registry.get(Emit.LOGGED_IN_USER_NAME)))) {
+					MessageBox.info(appMessages.conflictingLogins(),
+							appMessages.anotherLoggedInUser(), null);
+					return;
+				} else {
+					((LoginController) controller).performLogin(
+							username.getValue(), password.getValue());
+                                                password.clear();
+				}
+			}
+		} else {
+			reset();
+			MessageBox.alert(appMessages.invalidUsernameOrPassword(),
+					appMessages.rightCredentials(), null);
+		}
 	}
 
 	protected void reset() {

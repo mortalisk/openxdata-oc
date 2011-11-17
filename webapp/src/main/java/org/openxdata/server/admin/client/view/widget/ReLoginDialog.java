@@ -11,20 +11,20 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * This dialog is fired when the <code>User</code>
@@ -142,10 +142,10 @@ public class ReLoginDialog extends DialogBox {
 	 * for the <code>Controls</code> on the <code>widget.</code>
 	 */
 	private void setupEventListeners() {
-		passwordTextBox.addKeyPressHandler(new KeyPressHandler() {
+		passwordTextBox.addKeyDownHandler(new KeyDownHandler() {
 			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				char keyCode = event.getCharCode();
+			public void onKeyDown(KeyDownEvent event) {
+				int keyCode = event.getNativeKeyCode();
 				if(keyCode == KeyCodes.KEY_ENTER)
 					try {
 						reAuthenticate();
