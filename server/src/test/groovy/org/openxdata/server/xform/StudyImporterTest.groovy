@@ -15,10 +15,20 @@ class StudyImporterTest extends GroovyTestCase {
 
 		def xmlString = '''<study name='test' description='Test Study' studyKey='Test Key'>
 							<form name='Test Form' description='Test Description'>
-							 <version name='Test Version'></version><version name='Test Version 1'></version>
+							 <version name='Test Version'>
+							  	<xform></xform>
+							 </version>
+							 <version name='Test Version 1'>
+							  	<xform></xform>
+							 </version>
 							</form>
 							<form name='Test Form 1' description='Test Description 1'>
-							 <version name='Test Version 2'></version><version name='Test Version 3'></version>
+							 <version name='Test Version 2'>
+								<xform></xform>
+							 </version>
+							 <version name='Test Version 3'>
+								<xform></xform>
+							 </version>
 							</form>
 						  </study>'''
 
@@ -148,10 +158,36 @@ class StudyImporterTest extends GroovyTestCase {
 	
 	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement() {
 		
-		def studyWithXform = importer.importXform()
-		def form = studyWithXform.getForm('Test Form')
+		def form = study.getForm('Test Form')
 		
 		def version = form.getVersion('Test Version')
+		
+		assertNotNull version.getXform()
+	}
+	
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement2() {
+		
+		def form = study.getForm('Test Form')
+		
+		def version = form.getVersion('Test Version 1')
+		
+		assertNotNull version.getXform()
+	}
+	
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement3() {
+		
+		def form = study.getForm('Test Form 1')
+		
+		def version = form.getVersion('Test Version 2')
+		
+		assertNotNull version.getXform()
+	}
+	
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement4() {
+		
+		def form = study.getForm('Test Form 1')
+		
+		def version = form.getVersion('Test Version 3')
 		
 		assertNotNull version.getXform()
 	}

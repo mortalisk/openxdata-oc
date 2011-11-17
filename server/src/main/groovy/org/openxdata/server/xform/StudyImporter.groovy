@@ -86,11 +86,9 @@ class StudyImporter {
 		def versionDescription = versionNode.@description.text()
 		version.setDescription(versionDescription)
 		
-		return version
-	}
-	
-	def importXform() {
+		def xform = versionNode.xform[0].text()
+		version.setXform(xform)
 		
-		return study
+		return version
 	}
 }
