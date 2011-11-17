@@ -156,7 +156,7 @@ class StudyImporterTest extends GroovyTestCase {
 		assertEquals  'Test Version 2', form2.getDefaultVersion().getName()
 	}
 	
-	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement() {
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXform() {
 		
 		def form = study.getForm('Test Form')
 		
@@ -165,7 +165,7 @@ class StudyImporterTest extends GroovyTestCase {
 		assertNotNull version.getXform()
 	}
 	
-	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement2() {
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXform2() {
 		
 		def form = study.getForm('Test Form')
 		
@@ -174,7 +174,7 @@ class StudyImporterTest extends GroovyTestCase {
 		assertNotNull version.getXform()
 	}
 	
-	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement3() {
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXform3() {
 		
 		def form = study.getForm('Test Form 1')
 		
@@ -183,7 +183,7 @@ class StudyImporterTest extends GroovyTestCase {
 		assertNotNull version.getXform()
 	}
 	
-	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement4() {
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXform4() {
 		
 		def form = study.getForm('Test Form 1')
 		
