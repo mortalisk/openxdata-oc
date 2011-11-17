@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -35,6 +36,13 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * @return
 	 */
 	FormDef getForm(Integer id);
+	
+	/**
+	 * Retrieves the Form Version with the specified identifier
+	 * @param formVersionId
+	 * @return
+	 */
+	FormDefVersion getFormVersion(Integer formVersionId);
 	
 	/**
 	 * Retrieves the Form by the specified name

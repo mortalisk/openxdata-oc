@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fcitmuk.epihandy.DeserializationListenerAdapter;
+import org.fcitmuk.epihandy.EpihandyConstants;
 import org.fcitmuk.epihandy.FormData;
 import org.fcitmuk.epihandy.StudyData;
 
@@ -13,18 +14,22 @@ import org.fcitmuk.epihandy.StudyData;
 public class UploadDataProcessor extends DeserializationListenerAdapter {
 
 	int formsProcessed = 0;
-	List<List<String>> studyFormXmlList = new ArrayList<List<String>>();
+	List<List<UploadData>> studyFormXmlList = new ArrayList<List<UploadData>>();
 
 	@Override
 	public void processingStudy(StudyData studyData) {
-		List<String> formList = new ArrayList<String>();
+		List<UploadData> formList = new ArrayList<UploadData>();
 		studyFormXmlList.add(formList);
 	}
 
 	@Override
 	public void formProcessed(StudyData studyData, FormData formData, String xml) {
-		List<String> lastFormList = studyFormXmlList.get(studyFormXmlList.size() - 1);
-		lastFormList.add(xml);
+		List<UploadData> lastFormList = studyFormXmlList.get(studyFormXmlList.size() - 1);
+		if (formData.getDataId() == EpihandyConstants.NULL_ID) {
+			lastFormList.add(new UploadData(xml));
+		} else {
+			lastFormList.add(new UploadData(formData.getDataId(), xml));
+		}
 		formsProcessed++;
 	}
 
@@ -38,10 +43,10 @@ public class UploadDataProcessor extends DeserializationListenerAdapter {
 	/**
 	 * @return 2-dimensional array indexed by study, then form
 	 */
-	public String[][] getConvertedStudies() {
-		String[][] studies = new String[studyFormXmlList.size()][];
+	public UploadData[][] getConvertedStudies() {
+		UploadData[][] studies = new UploadData[studyFormXmlList.size()][];
 		for (int i = 0; i < studies.length; i++)
-			studies[i] = studyFormXmlList.get(i).toArray(new String[] {});
+			studies[i] = studyFormXmlList.get(i).toArray(new UploadData[] {});
 		return studies;
 	}
 }

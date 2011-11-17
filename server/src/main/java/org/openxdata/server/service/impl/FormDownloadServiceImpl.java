@@ -11,11 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.openxdata.proto.exception.ProtocolAccessDeniedException;
+import org.openxdata.proto.exception.ProtocolInvalidSessionReferenceException;
 import org.openxdata.server.OpenXDataConstants;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.FormSmsArchive;
 import org.openxdata.server.admin.model.FormSmsError;
 import org.openxdata.server.admin.model.Locale;
+import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
 import org.openxdata.server.dao.FormDownloadDAO;
@@ -174,6 +178,17 @@ public class FormDownloadServiceImpl implements FormDownloadService {
 	@Secured("Perm_Add_Form_Data")
 	public FormData saveFormData(String xml,User user, Date creationDate) {
 		return saveFormData(getFormId(xml), xml, null, user, creationDate);
+	}
+	
+	@Override
+	@Secured({"Perm_Edit_Form_Data", "Perm_Edit_My_Form_Data"})
+	public FormData updateFormData(Integer formDataId, String xml, User user, Date changedDate) {
+		FormData formData = formService.getFormData(formDataId);
+		formData.setData(xml);
+		formData.setChangedBy(user);
+		formData.setDateChanged(changedDate);
+		saveFormData(formData);
+		return formData;
 	}
 
 	@Override
@@ -484,4 +499,35 @@ public class FormDownloadServiceImpl implements FormDownloadService {
 	public Integer getStudyIdWithKey(String studyKey){
 		return formDownloadDAO.getStudyIdWithKey(studyKey);
 	}
+
+	@Override
+	@Secured({"Perm_Edit_Form_Data", "Perm_Edit_My_Form_Data"})
+	public FormData getFormData(User user, Integer formDefVersionId, Integer formDataId) throws ProtocolInvalidSessionReferenceException, ProtocolAccessDeniedException {
+		FormData formData = formService.getFormData(formDataId);
+		if (formData == null) {
+			// form data does not exist
+			log.error("Form data with session reference "+formDataId+" does not exist");
+			throw new ProtocolInvalidSessionReferenceException("Invalid session reference");
+		}
+		// check the form definition version
+		if (!formDefVersionId.equals(formData.getFormDefVersionId())) {
+			// the specified form version does match the actual form version
+			log.error("User "+user.getName()+" requested data from form version "+formDefVersionId
+					+" but data "+formDataId+" is actually for form version "+formData.getFormDefVersionId());
+			throw new ProtocolInvalidSessionReferenceException("Invalid session reference");
+		}
+		if (!user.hasPermission(Permission.PERM_EDIT_FORM_DATA) && formData.getCreator() != user) {
+			// the user only has permission to edit their own data
+			log.error("User "+user.getName()+" does not have permission to edit data "+formDataId
+					+" because they can only edit data captured by them.");
+			throw new ProtocolAccessDeniedException("Access denied");
+		}
+		return formData;
+	}
+
+	@Override
+	public FormDefVersion getFormVersion(Integer formVersionId) {
+		return formService.getFormVersion(formVersionId);
+	}
+	
 }

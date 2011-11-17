@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.openxdata.proto.exception.ProtocolAccessDeniedException;
+import org.openxdata.proto.exception.ProtocolInvalidSessionReferenceException;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.FormSmsArchive;
 import org.openxdata.server.admin.model.FormSmsError;
 import org.openxdata.server.admin.model.User;
@@ -69,6 +72,32 @@ public interface FormDownloadService {
      * @param creationDate the date when the data is being submitted.
      */
     FormData saveFormData(String xml, User user, Date creationDate);
+     
+    /**
+     * Updates existing form data.
+     *
+     * @param formDataId Integer previously saved identifier
+     * @param xml the xforms model xml data to save.
+     * @param user the user who is submitting the data.
+     * @param changedDate the date when the data is being modified.
+     */
+    FormData updateFormData(Integer formDataId, String xml, User user, Date changedDate);
+    
+    /**
+     * Retrieves form data, checking permissions of the user
+     * @param user User who is retrieving form data
+     * @param formDefVersionId Integer identifier of the form definition version
+     * @param formDataId
+     * @return FormData
+     */
+    FormData getFormData(User user, Integer formDefVersionId, Integer formDataId) throws ProtocolInvalidSessionReferenceException, ProtocolAccessDeniedException;
+    
+    /**
+     * Retrieves the form version
+     * @param formVersionId
+     * @return
+     */
+    FormDefVersion getFormVersion(Integer formVersionId);
 
     /**
      * Saves form data.

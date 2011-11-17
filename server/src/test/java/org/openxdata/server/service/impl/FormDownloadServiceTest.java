@@ -7,15 +7,22 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openxdata.server.admin.model.FormDataHeader;
+import org.openxdata.proto.exception.ProtocolAccessDeniedException;
+import org.openxdata.proto.exception.ProtocolInvalidSessionReferenceException;
+import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.Permission;
+import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.service.FormDownloadService;
+import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
@@ -30,6 +37,9 @@ public class FormDownloadServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired
 	protected StudyManagerService studyManagerService;
+	
+	@Autowired
+	protected FormService formService;
 	
 	@Autowired
 	protected UserService userService;
@@ -62,8 +72,8 @@ public class FormDownloadServiceTest extends BaseContextSensitiveTest {
 		formDownloadService.submitForms(in, out, null);
 		
 		// do checks afterwards
-		List<FormDataHeader>  formData = studyManagerService.getFormData(12, null, null, null);
-		Assert.assertEquals("after submit there is 1 form data", 1, formData.size());
+		FormData formData = formService.getFormData(new Integer(12));
+		Assert.assertNotNull("after submit form data exists", formData);
 	}
 	
 	@Test
@@ -122,4 +132,77 @@ public class FormDownloadServiceTest extends BaseContextSensitiveTest {
 		Assert.assertEquals("Study has Id "+expectedId, expectedId, study[0]);
 		Assert.assertEquals("Study is called "+expectedName, expectedName, study[1]);
 	}
+	
+	@Test
+	public void testGetFormData_forAdmin() throws Exception {
+		User admin = userService.findUserByUsername("admin");
+		User user = userService.findUserByUsername("user");
+		FormData formData = new FormData(1, "<data></data>", "admin data", new Date(), user);
+		formDownloadService.saveFormData(formData);
+		Assert.assertFalse("FormData has an ID", 0 == formData.getId());
+		FormData downloadedFormData = formDownloadService.getFormData(admin, 1, formData.getId());
+		Assert.assertNotNull("admin can download data submitted by another user", downloadedFormData);
+	}
+	
+	@Test
+	public void testGetFormData() throws Exception {
+		User admin = userService.findUserByUsername("admin");
+		User user = userService.findUserByUsername("user");
+		Role testRole = new Role("Test");
+		testRole.addPermission(new Permission(Permission.PERM_EDIT_FORM_DATA));
+		user.addRole(testRole);
+		FormData formData = new FormData(1, "<data></data>", "admin data", new Date(), admin);
+		formDownloadService.saveFormData(formData);
+		Assert.assertFalse("FormData has an ID", 0 == formData.getId());
+		FormData downloadedFormData = formDownloadService.getFormData(user, 1, formData.getId());
+		Assert.assertNotNull("user can download data submitted by someone else", downloadedFormData);
+	}
+	
+	@Test
+	public void testGetOwnFormData() throws Exception {
+		User admin = userService.findUserByUsername("admin");
+		User user = userService.findUserByUsername("user");
+		Role testRole = new Role("Test");
+		testRole.addPermission(new Permission(Permission.PERM_EDIT_MY_FORM_DATA));
+		user.addRole(testRole);
+		FormData formData = new FormData(1, "<data></data>", "admin data", new Date(), admin);
+		formDownloadService.saveFormData(formData);
+		Assert.assertFalse("FormData has an ID", 0 == formData.getId());
+		try {
+			formDownloadService.getFormData(user, 1, formData.getId());
+			Assert.fail("User cannot get data that hasn't been submitted by them");
+		} catch (ProtocolAccessDeniedException e) {
+			// expected
+		}
+		FormData formData2 = new FormData(1, "<data></data>", "admin data", new Date(), user);
+		formDownloadService.saveFormData(formData2);
+		FormData downloadedFormData = formDownloadService.getFormData(user, 1, formData2.getId());
+		Assert.assertNotNull("user can download data submitted by themselves", downloadedFormData);
+	}
+	
+	@Test
+	public void testGetFormData_IncorrectFormVersion() throws Exception {
+		User admin = userService.findUserByUsername("admin");
+		FormData formData = new FormData(1, "<data></data>", "admin data", new Date(), admin);
+		formDownloadService.saveFormData(formData);
+		Assert.assertFalse("FormData has an ID", 0 == formData.getId());
+		try {
+			formDownloadService.getFormData(admin, 2, formData.getId());
+			Assert.fail("Incorrect form version specified");
+		} catch (ProtocolInvalidSessionReferenceException e) {
+			// expected
+		}
+	}
+	
+	@Test
+	public void testUpdateFormData() throws Exception {
+		User user = userService.findUserByUsername("user");
+		FormData formData = new FormData(1, "<data></data>", "admin data", new Date(), user);
+		formDownloadService.saveFormData(formData);
+		Assert.assertFalse("FormData has an ID", 0 == formData.getId());
+		formDownloadService.updateFormData(formData.getId(), "<data>UPDATED</data>", user, new Date());
+		FormData updatedFormData = formService.getFormData(new Integer(formData.getId()));
+		Assert.assertEquals("Form data has been updated", "<data>UPDATED</data>", updatedFormData.getData());
+	}
+	
 }

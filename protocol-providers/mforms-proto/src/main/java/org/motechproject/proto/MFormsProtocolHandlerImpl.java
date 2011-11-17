@@ -27,6 +27,7 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 	public static final byte ACTION_DOWNLOAD_USERS_AND_FORMS = 11;
 	public static final byte ACTION_DOWNLOAD_STUDY_LIST = 2;
 	public static final byte ACTION_UPLOAD_DATA = 5;
+	public static final byte ACTION_DOWNLOAD_DATA = 17;
 
 	public static final byte RESPONSE_ERROR = 0;
 	public static final byte RESPONSE_SUCCESS = 1;
@@ -69,7 +70,7 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 				List<Object[]> user = getUser(ctx.getUsers(), userName); // no longer downloading ALL users
 				int studyId = in.readInt();
 				out.writeByte(ResponseHeader.STATUS_SUCCESS);
-				serializer.serializeUsers(ctx.getOutputStream(), user);
+				serializer.serializeUsers(out, user);
 				String studyName = ctx.getStudyName(studyId);
 				List<String> studyForms = ctx.getStudyForms(studyId);
 				serializer.serializeForms(out, studyForms, studyId, studyName);
@@ -88,7 +89,7 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 				String userName = in.readUTF();
 				out.writeByte(ResponseHeader.STATUS_SUCCESS);
 				List<Object[]> user = getUser(ctx.getUsers(), userName); // no longer downloading ALL users
-				serializer.serializeUsers(ctx.getOutputStream(), user);
+				serializer.serializeUsers(out, user);
 			} catch (Exception e) {
 				try {
 					out.writeByte(ResponseHeader.STATUS_ERROR);
@@ -103,7 +104,7 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 			try {
 				Map<Integer, String> xforms = ctx.getXForms();
 				serializer.deserializeStudiesWithEvents(in, xforms);
-                String[][] studyForms = uploadProcessor.getConvertedStudies();
+                UploadData[][] studyForms = uploadProcessor.getConvertedStudies();
                 String[][] sessionReferences = new String[studyForms.length][];
                 String[][] errorMessages = new String[studyForms.length][];
 	            int numForms = uploadProcessor.getFormsProcessed();
@@ -119,7 +120,8 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 	            			//if (maxProcessingTime > 0 && System.currentTimeMillis() - startTime > maxProcessingTime)
 	            			//	break formprocessing;
 	            			try {
-	            				sessionReferences[i][j] = ctx.setUploadResult(studyForms[i][j]);
+	            				UploadData data = studyForms[i][j];
+	            				sessionReferences[i][j] = ctx.setUploadResult(data.getDataId(), data.getXml());
 	            				log.debug("submitted data session reference="+sessionReferences[i][j]);
 	            			} catch (Exception ex) {
 	            				log.error("processing form failed", ex);
@@ -163,6 +165,28 @@ public class MFormsProtocolHandlerImpl implements ProtocolHandler {
 				}
 				throw new ProtocolException(
 						"failed to deserialize uploaded form data", e);
+			}
+		} else if (action == ACTION_DOWNLOAD_DATA) {
+			try {
+				int formDefId = in.readInt();
+				String sessionReference = in.readUTF();
+				String xform = ctx.getXForm(formDefId);
+				String formData = ctx.getFormInstance(formDefId, Integer.parseInt(sessionReference));
+				out.writeByte(ResponseHeader.STATUS_SUCCESS);
+				serializer.serializeFormData(out, xform, sessionReference, formData);
+			} catch (Exception e) {
+				if (e instanceof ProtocolException) {
+					throw (ProtocolException)e;
+				} else {
+					try {
+						out.writeByte(ResponseHeader.STATUS_ERROR);
+					} catch (IOException e1) {
+						throw new ProtocolException(
+								"failed to write error response", e1);
+					}
+					throw new ProtocolException(
+							"failed to serialize form data", e);
+				}
 			}
 		}
 	}

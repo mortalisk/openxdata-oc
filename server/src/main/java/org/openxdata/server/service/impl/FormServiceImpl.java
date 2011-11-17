@@ -13,6 +13,7 @@ import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -317,5 +318,9 @@ public class FormServiceImpl implements FormService {
 	@Override
 	public List<FormData> getFormData(FormDef form) {
 		return formDataDAO.getFormDataList(form);
+	}
+	
+	public FormDefVersion getFormVersion(int formVersionId) {
+		return formDAO.getFormVersion(formVersionId);
 	}
 }
