@@ -58,7 +58,6 @@ public class OpenClinicaServiceImplTest {
     	initStudyDefinitions();
     	initConvertedOpenClinicaStudies();
     	
-    	
     	StudyDef study = createStudy();
 				
 		Mockito.when(studyDAO.getStudies()).thenReturn(studies);
