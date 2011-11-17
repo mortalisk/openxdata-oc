@@ -25,22 +25,22 @@ class StudyImporter {
 		return study
 	}
 
-	def setStudyName(){
+	private setStudyName(){
 		def studyName = xml.@name.text()
 		study.setName(studyName)
 	}
 
-	def setStudyDescription(){
+	private setStudyDescription(){
 		def studyDescription = xml.@description.text()
 		study.setDescription(studyDescription)
 	}
 
-	def setStudyKey(){
+	private setStudyKey(){
 		def studyKey = xml.@studyKey.text()
 		study.setStudyKey(studyKey)
 	}
 
-	def setStudyFormsAndPotentiallyFormVersions(){
+	private setStudyFormsAndPotentiallyFormVersions(){
 		def forms = []
 
 		xml.form.each {
@@ -67,7 +67,7 @@ class StudyImporter {
 		return form
 	}
 	
-	def createFormVersions(def formNode){
+	private createFormVersions(def formNode){
 		def versions = []
 		formNode.version.each {
 			def version = extractFormVersion(it)
@@ -77,7 +77,7 @@ class StudyImporter {
 		return versions
 	}
 	
-	def extractFormVersion(def versionNode){
+	private extractFormVersion(def versionNode){
 		def version = new FormDefVersion()
 		
 		def versionName = versionNode.@name.text()
@@ -87,5 +87,10 @@ class StudyImporter {
 		version.setDescription(versionDescription)
 		
 		return version
+	}
+	
+	def importXform() {
+		
+		return study
 	}
 }
