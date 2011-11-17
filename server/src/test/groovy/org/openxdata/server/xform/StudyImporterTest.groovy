@@ -180,37 +180,7 @@ class StudyImporterTest extends GroovyTestCase {
 		def version = form.getVersion('Test Version')
 		def versionText = version.getXform()
 		
-		assertNotNull versionText
-	}
-	
-	@Test void testImportStudyReturnsValidStudyWithFormVersionHavingXformText2() {
-		
-		def form = study.getForm('Test Form')
-		
-		def version = form.getVersion('Test Version 1')
-		def versionText = version.getXform()
-		
-		assertNotNull versionText
-	}
-	
-	@Test void testImportStudyReturnsValidStudyWithFormVersionHavingXformText3() {
-		
-		def form = study.getForm('Test Form 1')
-		
-		def version = form.getVersion('Test Version 2')
-		def versionText = version.getXform()
-		
-		assertNotNull versionText
-	}
-	
-	@Test void testImportStudyReturnsValidStudyWithFormVersionHavingXformText4() {
-		
-		def form = study.getForm('Test Form 1')
-		
-		def version = form.getVersion('Test Version 3')
-		def versionText = version.getXform()
-		
-		assertNotNull versionText
+		assertFalse versionText.equals("")
 	}
 	
 	def xmlString = '''<study name='test' description='Test Study' studyKey='Test Key'>
