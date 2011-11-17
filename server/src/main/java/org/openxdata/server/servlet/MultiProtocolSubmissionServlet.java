@@ -19,7 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.openxdata.proto.ProtocolHandler;
 import org.openxdata.proto.ProtocolLoader;
 import org.openxdata.proto.SubmissionContext;
+import org.openxdata.proto.exception.ProtocolAccessDeniedException;
 import org.openxdata.proto.exception.ProtocolException;
+import org.openxdata.proto.exception.ProtocolInvalidSessionReferenceException;
 import org.openxdata.proto.exception.ProtocolNotFoundException;
 import org.openxdata.server.OpenXDataConstants;
 import org.openxdata.server.service.AuthenticationService;
@@ -50,6 +52,7 @@ public class MultiProtocolSubmissionServlet extends HttpServlet {
 	private byte ACTION_NONE = -1;
 	public static final byte RESPONSE_STATUS_ERROR = 0;
 	public static final byte RESPONSE_ACCESS_DENIED = 2;
+	public static final byte RESPONSE_INVALID_SESSION_REFERENCE = 4;
 
 	private UserService userService;
 	private FormDownloadService formDownloadService;
@@ -138,6 +141,14 @@ public class MultiProtocolSubmissionServlet extends HttpServlet {
 
 			log.debug("handling request");
 			handler.handleRequest(submitCtx);
+			resp.setStatus(HttpServletResponse.SC_OK);
+		} catch (ProtocolAccessDeniedException e) {
+			log.error("protocol access denied while handling request from client", e);
+			dataOut.writeByte(RESPONSE_ACCESS_DENIED);
+			resp.setStatus(HttpServletResponse.SC_OK);
+		} catch (ProtocolInvalidSessionReferenceException e) {
+			log.error("protocol invalid session reference errror while handling request from client", e);
+			dataOut.writeByte(RESPONSE_INVALID_SESSION_REFERENCE);
 			resp.setStatus(HttpServletResponse.SC_OK);
 		} catch (ProtocolException e) {
 			log.error("protocol error while handling request from client", e);

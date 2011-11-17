@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -116,4 +118,10 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	    SearchResult<FormDef> result = searchAndCount(formSearch);
 	    return getPagingLoadResult(loadConfig, result);
     }
+
+	@Override
+	public FormDefVersion getFormVersion(Integer formVersionId) {
+		return (FormDefVersion)getSession().createCriteria(FormDefVersion.class)
+			.add(Restrictions.eq("id", formVersionId)).uniqueResult();
+	}
 }

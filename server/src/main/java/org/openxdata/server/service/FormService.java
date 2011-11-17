@@ -7,6 +7,7 @@ import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -23,6 +24,13 @@ public interface FormService {
 	 * @return FormDef
 	 */
 	FormDef getForm(int formId);
+	
+	/**
+	 * Returns a FormDefVersion given the ID
+	 * @param formVersionId
+	 * @return
+	 */
+	FormDefVersion getFormVersion(int formVersionId);
 	
 	/**
 	 * Gets form data as identified by the id.

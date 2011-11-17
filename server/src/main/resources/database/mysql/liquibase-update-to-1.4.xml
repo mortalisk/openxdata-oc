@@ -51,4 +51,21 @@
         <comment>Fix for the existing exported form data</comment>
         <customChange class="org.openxdata.server.database.liquibase.customchanges.FixExportDateColumnsExportedData"/>
     </changeSet>
+
+    <changeSet author="Dagmar" id="add_Perm_Edit_My_Form_Data">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                SELECT count(*) FROM permission where name='Perm_Edit_My_Form_Data';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Adding permission to allow a user to only edit their own data
+        </comment>      
+            <insert tableName="permission">
+                <column name="name" value="Perm_Edit_My_Form_Data"/>
+                <column name="description" value="Ability for a User to edit their own captured data"/>
+            </insert>
+    </changeSet>
 </databaseChangeLog>

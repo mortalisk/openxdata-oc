@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.proto.SubmissionContext;
+import org.openxdata.proto.exception.ProtocolAccessDeniedException;
+import org.openxdata.proto.exception.ProtocolInvalidSessionReferenceException;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.service.FormDownloadService;
 import org.openxdata.server.service.StudyManagerService;
@@ -102,14 +105,37 @@ public class DefaultSubmissionContext implements SubmissionContext {
 	}
 
 
+	@Override
 	public String setUploadResult(String formInstance) {
 		FormData formData = formService.saveFormData(formInstance, userService.getLoggedInUser(), new Date());
 		return String.valueOf(formData.getId());
 	}
 
+	@Override
+	public String setUploadResult(Integer formInstanceId, String formInstance) {
+		if (formInstanceId != null) {
+			FormData formData = formService.updateFormData(formInstanceId, formInstance, userService.getLoggedInUser(), new Date());
+			return String.valueOf(formData.getId());
+		} else {
+			return setUploadResult(formInstance);
+		}
+		
+	}
 	
 	@Override
 	public String getStudyKey(int studyId) {
 		return studyManagerService.getStudyKey(studyId);
+	}
+
+	@Override
+	public String getFormInstance(int formDefVersionId, int formDataId) throws ProtocolInvalidSessionReferenceException, ProtocolAccessDeniedException {
+		FormData formData = formService.getFormData(userService.getLoggedInUser(), formDefVersionId, formDataId);
+		return formData.getData();
+	}
+
+	@Override
+	public String getXForm(int formDefVersionId) {
+		FormDefVersion formVersion = formService.getFormVersion(formDefVersionId);
+		return formVersion.getXform();
 	}
 }
