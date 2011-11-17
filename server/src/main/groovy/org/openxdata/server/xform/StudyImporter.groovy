@@ -9,10 +9,12 @@ class StudyImporter {
 
 	def xml
 	def study = new StudyDef()
-
-	def importStudyFrom(def xml){
-
+	
+	def StudyImporter(def xml) {
 		this.xml = xml
+	}
+
+	def importStudyFrom() {
 
 		setStudyName()
 		setStudyDescription()

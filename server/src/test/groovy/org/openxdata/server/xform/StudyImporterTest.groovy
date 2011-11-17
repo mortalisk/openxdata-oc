@@ -8,10 +8,11 @@ class StudyImporterTest extends GroovyTestCase {
 
 	def xml
 	def study
+	def forms
+	def importer
 
 	@Before void setUp(){
 
-		def importer = new StudyImporter()
 		def xmlString = '''<study name='test' description='Test Study' studyKey='Test Key'>
 							<form name='Test Form' description='Test Description'>
 							 <version name='Test Version'></version><version name='Test Version 1'></version>
@@ -22,17 +23,30 @@ class StudyImporterTest extends GroovyTestCase {
 						  </study>'''
 
 		xml = new XmlSlurper().parseText(xmlString)
-		study = importer.importStudyFrom(xml)
+
+		importer = new StudyImporter(xml)
+		study = importer.importStudyFrom()
+		
+		forms = study.getForms()
 	}
 
 	@Test void testImportStudyDoesNotReturnNull(){
 
 		assertNotNull study
 	}
+	
+	@Test void testImportStudyReturnsANewStudy(){
+		assertTrue study.isNew()
+	}
 
 	@Test void testImportStudyReturnsValidStudyWithName(){
 
-		assertEquals 'test', study.getName()
+		assertEquals 'test', study.toString()
+	}
+
+	@Test void testImportStudyReturnsValidStudyWithNameOnToString(){
+
+		assertEquals 'test', study.toString()
 	}
 
 	@Test void testImportStudyReturnsValidStudyWithDescription(){
@@ -47,14 +61,10 @@ class StudyImporterTest extends GroovyTestCase {
 
 	@Test void testImportStudyReturnsValidStudyWithFormElement(){
 
-		def forms = study.getForms()
-
 		assertNotNull forms
 	}
 
 	@Test void testImportStudyReturnsValidStudyWithCorrectNumberOfForms(){
-
-		def forms = study.getForms()
 
 		assertEquals 2, forms.size()
 	}
@@ -64,6 +74,10 @@ class StudyImporterTest extends GroovyTestCase {
 		def form = study.getForm('Test Form')
 
 		assertEquals 'Test Form', form.getName()
+
+	}
+	
+	@Test void testImportStudyReturnsValidStudyWithCorrectFormName2(){
 
 		def form1 = study.getForm('Test Form 1')
 
@@ -76,57 +90,69 @@ class StudyImporterTest extends GroovyTestCase {
 
 		assertEquals 'Test Description', form.getDescription()
 		
+	}
+	
+	@Test void testImportStudyReturnsValidStudyWithCorrectFormDescription2(){
+
 		def form1 = study.getForm('Test Form 1')
-		
+
 		assertEquals 'Test Description 1', form1.getDescription()
 	}
 	
-	@Test void testImportStudyReturnsValidStudyWithFormVersion(){
-		def forms = study.getForms()
+	@Test void testImportStudyReturnsValidStudyWithFormVersion() {
+		
 		forms.each{
 			assertNotNull it.getVersions()
 		}
 	}
 	
-	@Test void testImportStudyReturnsValidStudyWithCorrectNumberOfFormVersionsForEachForm(){
-		def forms = study.getForms()
+	@Test void testImportStudyReturnsValidStudyWithCorrectNumberOfFormVersionsForEachForm() {
+		
 		forms.each{
 			assertEquals 2, it.getVersions().size()
 		}
 	}
 	
 	@Test void testImportStudyReturnsValidStudyWithCorrectFormVersion() {
-		
-		def forms = study.getForms()
-		
+				
 		def form1 = forms[0]
 		
 		assertEquals 'Test Version', form1.getVersion('Test Version').getName()
 		assertEquals 'Test Version 1', form1.getVersion('Test Version 1').getName()
 		
+	}
+	
+	@Test void testImportStudyReturnsValidStudyWithCorrectFormVersion2() {
+
 		def form2 = forms[1]
 		assertEquals 'Test Version 2', form2.getVersion('Test Version 2').getName()
 		assertEquals 'Test Version 3', form2.getVersion('Test Version 3').getName()
-		
 	}
 	
 	@Test void testImportStudyReturnsValidStudyWithFormsHavingDefaultFormVersion() {
-		
-		def forms = study.getForms()
-		
+				
 		def form1 = forms[0]
 		
 		assertNotNull form1.getDefaultVersion()
 		assertEquals  'Test Version', form1.getDefaultVersion().getName()
 		
-		def form2 = forms[1]
-		
-		assertNotNull form2.getDefaultVersion()
-		assertEquals  'Test Version 2', form2.getDefaultVersion().getName()
-		
 	}
 	
-	@Test void testImportStudyReturnsValidStudyWithFormVersionHavingXformElement(){
+	@Test void testImportStudyReturnsValidStudyWithFormsHavingDefaultFormVersion2() {
+
+		def form2 = forms[1]
+
+		assertNotNull form2.getDefaultVersion()
+		assertEquals  'Test Version 2', form2.getDefaultVersion().getName()
+	}
+	
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformElement() {
 		
+		def studyWithXform = importer.importXform()
+		def form = studyWithXform.getForm('Test Form')
+		
+		def version = form.getVersion('Test Version')
+		
+		assertNotNull version.getXform()
 	}
 }
