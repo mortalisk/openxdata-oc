@@ -16,7 +16,14 @@ class StudyImporterTest extends GroovyTestCase {
 		def xmlString = '''<study name='test' description='Test Study' studyKey='Test Key'>
 							<form name='Test Form' description='Test Description'>
 							 <version name='Test Version'>
-							  	<xform></xform>
+							  	<xform>
+									&lt;xf:xforms xmlns:xf=&quot;http://www.w3.org/2002/xforms&quot; 
+									xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#10;
+										&lt;xf:model&gt;&#10;    
+											&lt;xf:instance id=&quot;test&quot;&gt;&#10;/xf:instance&gt;
+										&lt;/model&gt;
+										&lt;/xform&gt;
+								</xform>
 							 </version>
 							 <version name='Test Version 1'>
 							  	<xform></xform>
@@ -190,5 +197,15 @@ class StudyImporterTest extends GroovyTestCase {
 		def version = form.getVersion('Test Version 3')
 		
 		assertNotNull version.getXform()
+	}
+	
+	@Test void testSetXformReturnsValidStudyWithFormVersionHavingXformText() {
+		
+		def form = study.getForm('Test Form')
+		
+		def version = form.getVersion('Test Version')
+		def versionText = version.getXform()
+		
+		assertFalse versionText.equals("")
 	}
 }
