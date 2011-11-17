@@ -15,38 +15,42 @@ import org.junit.Test;
  */
 public class StudyDefTest {
 
-	@Test
-	public void isDirty_shouldReturnTrueForStudyWithDirtyForm() {
+	StudyDef studyDef;
+	List<FormDef> forms = new ArrayList<FormDef>();
 
-		StudyDef studyDef = new StudyDef();
+	@Before public void setUp(){
+		studyDef = new StudyDef();
+	}
+	
+	@Test
+	public void testIsDirtyShouldReturnTrueForStudyWithDirtyForm() {
+
 		FormDef formDef = new FormDef();
 		studyDef.addForm(formDef);
 
-		Assert.assertFalse(studyDef.isDirty());
+		assertFalse(studyDef.isDirty());
 		formDef.setDirty(true);
 
-		Assert.assertTrue(studyDef.isDirty());
+		assertTrue(studyDef.isDirty());
 	}
 
 	@Test
-	public void isDirty_shouldReturnTrueForStudyWithDirtyFormVersion() {
+	public void testIsDirtyShouldReturnTrueForStudyWithDirtyFormVersion() {
 
-		StudyDef studyDef = new StudyDef();
 		FormDef formDef = new FormDef();
 		studyDef.addForm(formDef);
 		FormDefVersion formDefVersion = new FormDefVersion();
 		formDef.addVersion(formDefVersion);
 
-		Assert.assertFalse(studyDef.isDirty());
+		assertFalse(studyDef.isDirty());
 		formDefVersion.setDirty(true);
 
-		Assert.assertTrue(studyDef.isDirty());
+		assertTrue(studyDef.isDirty());
 	}
 
 	@Test
-	public void isDirty_shouldReturnTrueForStudyWithDirtyFormVersionText() {
+	public void testIsDirtyShouldReturnTrueForStudyWithDirtyFormVersionText() {
 
-		StudyDef studyDef = new StudyDef();
 		FormDef formDef = new FormDef();
 		studyDef.addForm(formDef);
 		FormDefVersion formDefVersion = new FormDefVersion();
@@ -54,43 +58,40 @@ public class StudyDefTest {
 		FormDefVersionText formDefVersionText = new FormDefVersionText();
 		formDefVersion.addVersionText(formDefVersionText);
 
-		Assert.assertFalse(studyDef.isDirty());
+		assertFalse(studyDef.isDirty());
 		formDefVersionText.setDirty(true);
 
-		Assert.assertTrue(studyDef.isDirty());
+		assertTrue(studyDef.isDirty());
 	}
 
 	@Test
-	public void isNew_shouldReturnTrueForStudyWithNewForm() {
+	public void testIsNewShouldReturnTrueForStudyWithNewForm() {
 
-		StudyDef studyDef = new StudyDef();
 		studyDef.setId(1);
-		Assert.assertFalse(studyDef.isNew());
+		assertFalse(studyDef.isNew());
 
 		studyDef.addForm(new FormDef());
 
-		Assert.assertTrue(studyDef.isNew());
+		assertTrue(studyDef.isNew());
 	}
 
 	@Test
-	public void isNew_shouldReturnTrueForStudyWithNewFormVersion() {
+	public void testIsNewShouldReturnTrueForStudyWithNewFormVersion() {
 
-		StudyDef studyDef = new StudyDef();
 		studyDef.setId(1);
 		FormDef formDef = new FormDef();
 		formDef.setId(1);
 		studyDef.addForm(formDef);
-		Assert.assertFalse(studyDef.isNew());
+		assertFalse(studyDef.isNew());
 
 		formDef.addVersion(new FormDefVersion());
 
-		Assert.assertTrue(studyDef.isNew());
+		assertTrue(studyDef.isNew());
 	}
 
 	@Test
-	public void isNew_shouldReturnTrueForStudyWithNewFormVersionText() {
+	public void testIsNewShouldReturnTrueForStudyWithNewFormVersionText() {
 
-		StudyDef studyDef = new StudyDef();
 		studyDef.setId(1);
 		FormDef formDef = new FormDef();
 		formDef.setId(1);
@@ -98,7 +99,7 @@ public class StudyDefTest {
 		FormDefVersion formDefVersion = new FormDefVersion();
 		formDefVersion.setId(1);
 		formDef.addVersion(formDefVersion);
-		Assert.assertFalse(studyDef.isNew());
+		assertFalse(studyDef.isNew());
 
 		formDefVersion.addVersionText(new FormDefVersionText());
 
