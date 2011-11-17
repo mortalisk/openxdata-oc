@@ -28,7 +28,6 @@ import org.openxdata.test.BaseContextSensitiveTest;
 import org.openxdata.test.XFormsFixture;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings("deprecation")
 public class FormDownloadServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired
