@@ -146,7 +146,7 @@ public class ReLoginDialog extends DialogBox {
 			@Override
 			public void onKeyDown(KeyDownEvent event) {
 				int keyCode = event.getNativeKeyCode();
-				if(keyCode == KeyCodes.KEY_ENTER)
+				if (keyCode == KeyCodes.KEY_ENTER)
 					try {
 						reAuthenticate();
 					} catch (OpenXDataException e) {

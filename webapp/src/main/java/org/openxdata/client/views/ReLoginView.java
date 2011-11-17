@@ -95,26 +95,26 @@ public class ReLoginView extends Dialog {
 
 		addButton(login);
 	}
-	
-	protected void startAuthentication() {
-		if (validate()) {
-			if (username.getValue() != null) {
-				if (username.getValue().equals(
-						equals(Registry.get(Emit.LOGGED_IN_USER_NAME)))) {
-					MessageBox.info(appMessages.conflictingLogins(),
-							appMessages.anotherLoggedInUser(), null);
-					return;
-				} else {
-					((LoginController) controller).performLogin(
-							username.getValue(), password.getValue());
-                                                password.clear();
-				}
-			}
-		} else {
-			reset();
-			MessageBox.alert(appMessages.invalidUsernameOrPassword(),
-					appMessages.rightCredentials(), null);
-		}
+
+	protected void startAuthentication() { 
+	                if (validate()) { 
+	                        if (username.getValue() != null) { 
+	                                if (username.getValue().equals( 
+	                                                equals(Registry.get(Emit.LOGGED_IN_USER_NAME)))) { 
+	                                        MessageBox.info(appMessages.conflictingLogins(), 
+	                                                        appMessages.anotherLoggedInUser(), null); 
+	                                        return; 
+	                                } else { 
+	                                        ((LoginController) controller).performLogin( 
+	                                                        username.getValue(), password.getValue()); 
+	                                                password.clear(); 
+	                                } 
+	                        } 
+	                } else { 
+	                        reset(); 
+	                        MessageBox.alert(appMessages.invalidUsernameOrPassword(), 
+	                                        appMessages.rightCredentials(), null); 
+	                }
 	}
 
 	protected void reset() {

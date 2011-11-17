@@ -20,6 +20,7 @@ import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.service.FormDownloadService;
 import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.StudyManagerService;
