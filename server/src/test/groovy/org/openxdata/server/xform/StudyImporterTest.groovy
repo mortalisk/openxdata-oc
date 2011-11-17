@@ -12,33 +12,7 @@ class StudyImporterTest extends GroovyTestCase {
 	def importer
 
 	@Before void setUp(){
-
-		def xmlString = '''<study name='test' description='Test Study' studyKey='Test Key'>
-							<form name='Test Form' description='Test Description'>
-							 <version name='Test Version'>
-							  	<xform>
-									&lt;xf:xforms xmlns:xf=&quot;http://www.w3.org/2002/xforms&quot; 
-									xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#10;
-										&lt;xf:model&gt;&#10;    
-											&lt;xf:instance id=&quot;test&quot;&gt;&#10;/xf:instance&gt;
-										&lt;/model&gt;
-										&lt;/xform&gt;
-								</xform>
-							 </version>
-							 <version name='Test Version 1'>
-							  	<xform></xform>
-							 </version>
-							</form>
-							<form name='Test Form 1' description='Test Description 1'>
-							 <version name='Test Version 2'>
-								<xform></xform>
-							 </version>
-							 <version name='Test Version 3'>
-								<xform></xform>
-							 </version>
-							</form>
-						  </study>'''
-
+		
 		xml = new XmlSlurper().parseText(xmlString)
 
 		importer = new StudyImporter(xml)
@@ -208,4 +182,51 @@ class StudyImporterTest extends GroovyTestCase {
 		
 		assertFalse versionText.equals("")
 	}
+	
+	def xmlString = '''<study name='test' description='Test Study' studyKey='Test Key'>
+						<form name='Test Form' description='Test Description'>
+						 <version name='Test Version'>
+							  <xform>
+								&lt;xf:xforms xmlns:xf=&quot;http://www.w3.org/2002/xforms&quot;
+								xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#10;
+									&lt;xf:model&gt;&#10;
+										&lt;xf:instance id=&quot;test&quot;&gt;&#10;/xf:instance&gt;
+									&lt;/model&gt;
+									&lt;/xform&gt;
+							</xform>
+						 </version>
+						 <version name='Test Version 1'>
+							  <xform>
+								&lt;xf:xforms xmlns:xf=&quot;http://www.w3.org/2002/xforms&quot;
+								xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#10;
+									&lt;xf:model&gt;&#10;
+										&lt;xf:instance id=&quot;test&quot;&gt;&#10;/xf:instance&gt;
+									&lt;/model&gt;
+									&lt;/xform&gt;
+							</xform>
+						 </version>
+						</form>
+						<form name='Test Form 1' description='Test Description 1'>
+						 <version name='Test Version 2'>
+							<xform>
+								&lt;xf:xforms xmlns:xf=&quot;http://www.w3.org/2002/xforms&quot;
+								xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#10;
+									&lt;xf:model&gt;&#10;
+										&lt;xf:instance id=&quot;test&quot;&gt;&#10;/xf:instance&gt;
+									&lt;/model&gt;
+									&lt;/xform&gt;
+							</xform>
+						 </version>
+						 <version name='Test Version 3'>
+							<xform>
+								&lt;xf:xforms xmlns:xf=&quot;http://www.w3.org/2002/xforms&quot;
+								xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#10;
+									&lt;xf:model&gt;&#10;
+										&lt;xf:instance id=&quot;test&quot;&gt;&#10;/xf:instance&gt;
+									&lt;/model&gt;
+									&lt;/xform&gt;
+							</xform>
+						 </version>
+						</form>
+					  </study>'''
 }
