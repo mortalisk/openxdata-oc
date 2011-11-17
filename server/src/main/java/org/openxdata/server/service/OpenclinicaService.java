@@ -3,6 +3,7 @@ package org.openxdata.server.service;
 import java.util.List;
 
 import org.openxdata.server.admin.model.OpenclinicaStudy;
+import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
 
 public interface OpenclinicaService {
@@ -13,7 +14,7 @@ public interface OpenclinicaService {
 	
 	List<String> getStudySubjects(String studyOID) throws UnexpectedException;
 
-	String importOpenClinicaStudy(String identifier) throws UnexpectedException;
+	StudyDef importOpenClinicaStudy(String identifier) throws UnexpectedException;
 
 	String exportOpenClinicaStudyData(String studyKey);
 

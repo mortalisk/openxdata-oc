@@ -1,5 +1,7 @@
 package org.openxdata.server.service.impl;
 
+import groovy.util.slurpersupport.NodeChild;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +20,7 @@ import org.openxdata.server.dao.FormDataDAO;
 import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.StudyDAO;
 import org.openxdata.server.service.OpenclinicaService;
+import org.openxdata.server.xform.StudyImporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -128,11 +131,16 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	}
 
 	@Override
-	public String importOpenClinicaStudy(String identifier) throws UnexpectedException {
+	public StudyDef importOpenClinicaStudy(String identifier) throws UnexpectedException {
 				
-		String xml = (String) getClient().getOpenxdataForm(identifier);
+		NodeChild xml = (NodeChild) getClient().getOpenxdataForm(identifier);
 		
-		return xml;
+		StudyImporter importer = new StudyImporter(xml);
+		StudyDef study = (StudyDef) importer.extractStudy();
+		
+		studyDAO.saveStudy(study);
+		
+		return study;
 	}
 	
 	@Override

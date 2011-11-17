@@ -1,28 +1,19 @@
 package org.openxdata.client.controllers;
 
-import java.util.Date;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
-import org.openxdata.client.Emit;
 import org.openxdata.client.EmitAsyncCallback;
-import org.openxdata.client.RefreshableEvent;
-import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.model.OpenclinicaStudySummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.OpenClincaStudyView;
 import org.openxdata.server.admin.client.service.OpenclinicaServiceAsync;
 import org.openxdata.server.admin.client.service.SettingServiceAsync;
-import org.openxdata.server.admin.client.service.StudyServiceAsync;
-import org.openxdata.server.admin.client.util.StudyImport;
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.OpenclinicaStudy;
 import org.openxdata.server.admin.model.Setting;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.StudyDef;
-import org.openxdata.server.admin.model.User;
 
-import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Controller;
@@ -36,16 +27,13 @@ public class OpenClinicaStudyController extends Controller {
 	private OpenClincaStudyView view;
 	private List<OpenclinicaStudy> studies;
 
-	
-	private StudyServiceAsync studyService;
 	private SettingServiceAsync settingService;
 	private OpenclinicaServiceAsync openclinicaService;
 
 	public static final EventType LOADOPECLINICASTUDIES = new EventType();
 	
-	public OpenClinicaStudyController(StudyServiceAsync studyService, OpenclinicaServiceAsync openclinicaService, SettingServiceAsync settingService){
+	public OpenClinicaStudyController(OpenclinicaServiceAsync openclinicaService, SettingServiceAsync settingService){
 		view = new OpenClincaStudyView (this);
-		this.studyService = studyService;
 		this.openclinicaService = openclinicaService;
 		this.settingService = settingService;
 		registerEventTypes(LOADOPECLINICASTUDIES);
@@ -60,41 +48,13 @@ public class OpenClinicaStudyController extends Controller {
 
 	public void importOpenClinicaStudy(String identifier) {
 		
-		openclinicaService.importOpenClinicaStudy(identifier, new EmitAsyncCallback<String>() {
+		openclinicaService.importOpenClinicaStudy(identifier, new EmitAsyncCallback<StudyDef>() {
 			
 			@Override
-			public void onSuccess(String xml) {
-				GWT.log("OpenClinicaStudyController : Converting xml Using Study Import");
-
-				StudyDef study = (StudyDef) StudyImport.importStudyItem(xml);
-				study.setDateCreated(new Date());
-				User user = (User) Registry.get(Emit.LOGGED_IN_USER_NAME);
-				study.setCreator(user);
-				for (FormDef form : study.getForms()) {
-					form.setCreator(user);
-					form.setDateCreated(new Date());
-					form.getDefaultVersion().setCreator(user);
-					form.getDefaultVersion().setDateCreated(new Date());
-					
-				}
-				saveTransformedStudy(study);
+			public void onSuccess(StudyDef study) {
+				GWT.log("OpenClinicaStudyController : Conversion complete with: " + study.getName());
 			}
 		});
-	}
-	
-	protected void saveTransformedStudy(StudyDef study) {
-		
-		GWT.log("OpenClinicaStudyController : saveTransformedStudy");
-		studyService.saveStudy(study, new EmitAsyncCallback<StudyDef>() {
-
-			@Override
-			public void onSuccess(StudyDef study) {
-				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CREATE_STUDY, study));
-				MessageBox.info(appMessages.success(), appMessages.saveSuccess(), null);
-				ProgressIndicator.hideProgressBar();
-				
-			}});
-		
 	}
 
 	void getOpenclinicaStudies(){		

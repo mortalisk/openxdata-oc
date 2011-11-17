@@ -199,7 +199,7 @@ public class Emit implements EntryPoint, Refreshable {
         dispatcher.addController(new ItemExportController());
         dispatcher.addController(new ItemImportController(studyService));
         dispatcher.addController(new FormDesignerController(studyService, formService));
-        dispatcher.addController(new OpenClinicaStudyController(studyService, openclinicaService, settingService));
+        dispatcher.addController(new OpenClinicaStudyController(openclinicaService, settingService));
         dispatcher.addController(new NewEditUserController(userService, roleService, studyService, formService));
         dispatcher.addController(new UserImportController(userService));
         
