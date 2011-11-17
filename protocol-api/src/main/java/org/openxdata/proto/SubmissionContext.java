@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.openxdata.proto.exception.ProtocolAccessDeniedException;
+import org.openxdata.proto.exception.ProtocolInvalidSessionReferenceException;
+
 /**
  * An abstraction of the contextual information necessary to satisfy a
  * submission request. Essentially, this is needed to insulate the protocol
@@ -102,4 +105,31 @@ public interface SubmissionContext {
 	 */
 	String setUploadResult(String formInstance);
 
+	/**
+	 * Saves the form data and returns the record identifier
+	 *
+	 * @param formInstanceId Integer identifier of the form data (can be null if new data)
+	 * @param formInstance String XML containing the captured form data
+	 * @return String containing a session reference
+	 */
+	String setUploadResult(Integer formInstanceId, String formInstance);
+	
+	/**
+	 * Retrieves the specified Form Definition Version
+	 * @param formDefId
+	 * @return String xform
+	 */
+	String getXForm(int formDefId);
+	
+	/**
+	 * Retrieves a specific Form Data, usually for editing purposes
+	 * Extra checking:
+	 *  1. user must have extra edit permission if the data was not submitted by them.
+	 *  2. form data must be for the specified form definition
+	 *
+	 * @param formDefId int identifier of the form definition
+	 * @param formDataId int identifier of the form data to retrieve
+	 * @return String containing XML form data
+	 */
+	String getFormInstance(int formDefId, int formDataId) throws ProtocolInvalidSessionReferenceException, ProtocolAccessDeniedException;
 }
