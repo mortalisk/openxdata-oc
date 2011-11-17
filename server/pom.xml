@@ -216,6 +216,11 @@
 			<version>0.3-BETA-5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>org.openxdata</groupId>
+			<artifactId>xform-study-import</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
         	<groupId>org.codehaus.groovy</groupId>
     		<artifactId>groovy-all</artifactId>
         </dependency>
