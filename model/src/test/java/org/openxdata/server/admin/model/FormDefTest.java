@@ -10,7 +10,7 @@ import org.junit.Test;
 public class FormDefTest {
 
 	@Test
-	public void isDirty_shouldReturnTrueForFormWithDirtyFormVersion() {
+	public void testIsDirtyShouldReturnTrueForFormWithDirtyFormVersion() {
 
 		FormDef formDef = new FormDef();
 		FormDefVersion formDefVersion = new FormDefVersion();
@@ -23,7 +23,7 @@ public class FormDefTest {
 	}
 
 	@Test
-	public void isDirty_shouldReturnTrueForFormWithDirtyFormVersionText() {
+	public void tesIsDirtyShouldReturnTrueForFormWithDirtyFormVersionText() {
 
 		FormDef formDef = new FormDef();
 		FormDefVersion formDefVersion = new FormDefVersion();
@@ -38,7 +38,7 @@ public class FormDefTest {
 	}
 
 	@Test
-	public void isNew_shouldReturnTrueForFormWithNewFormVersion() {
+	public void testIsNewShouldReturnTrueForFormWithNewFormVersion() {
 
 		FormDef formDef = new FormDef();
 		formDef.setId(1);
@@ -50,7 +50,7 @@ public class FormDefTest {
 	}
 
 	@Test
-	public void isNew_shouldReturnTrueForFormWithNewFormVersionText() {
+	public void testIsNewShouldReturnTrueForFormWithNewFormVersionText() {
 
 		FormDef formDef = new FormDef();
 		formDef.setId(1);
