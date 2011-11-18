@@ -21,6 +21,8 @@ import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.StudyDAO;
 import org.openxdata.server.service.OpenclinicaService;
 import org.openxdata.server.xform.StudyImporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("openClinicaService")
 public class OpenclinicaServiceImpl implements OpenclinicaService {
 
+	
 	@Autowired
 	private StudyDAO studyDAO;	
 	
@@ -44,9 +47,14 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 
 	private OpenClinicaSoapClient client;
 	
+	private Logger log = LoggerFactory.getLogger(OpenclinicaServiceImpl.class);
+	
 	private OpenClinicaSoapClient getClient() {
 		
 		if(client == null){
+			
+			log.info("OXD: Initializing client for first time use.");
+			
 			String host = settingDAO.getSetting("openClinicaWebServiceHost");
 			String userName = settingDAO.getSetting("OpenClinicaUserName");
 			String password = settingDAO.getSetting("OpenClinicaUserHashedPassword");
@@ -69,7 +77,12 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	@Override
 	public List<OpenclinicaStudy> getOpenClinicaStudies() {
 		
+		log.info("OXD: Fetching available OpenClinica studies.");
+		
 		List<ConvertedOpenclinicaStudy> studies = getClient().listAll();
+		
+		log.info("OXD: " + studies.size() + "studies and returned to OpenXdata.");
+		
 		List<OpenclinicaStudy> returnStudies = new ArrayList<OpenclinicaStudy>();
 		
 		try{
@@ -78,6 +91,7 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 			List<ConvertedOpenclinicaStudy> uniqueStudies = new ArrayList<ConvertedOpenclinicaStudy>();
 			
 			for (ConvertedOpenclinicaStudy study : studies) {
+				log.info("OXD: Checking duplicate studies.");
 				if(!isStudyDownloaded(openxdataStudies, study)){
 					uniqueStudies.add(study);
 				}
@@ -107,7 +121,11 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 	}
 
 	private void appendSubjects(ConvertedOpenclinicaStudy study, OpenclinicaStudy ocStudy) {
+		
 		Collection<String> subjects = getClient().getSubjectKeys(study.getIdentifier());
+		
+		log.info("OXD: Appending " + subjects.size() + "subjects to the study");
+		
 		ocStudy.setSubjects(subjects);
 	}
 
@@ -135,9 +153,11 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 				
 		NodeChild xml = (NodeChild) getClient().getOpenxdataForm(identifier);
 		
+		log.info("OXD: Converting Xform to study definition.");
 		StudyImporter importer = new StudyImporter(xml);
 		StudyDef study = (StudyDef) importer.extractStudy();
 		
+		log.info("OXD: Saving converted study definition.");
 		studyDAO.saveStudy(study);
 		
 		return study;
