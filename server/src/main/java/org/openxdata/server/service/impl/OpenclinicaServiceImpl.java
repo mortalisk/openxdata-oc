@@ -190,6 +190,17 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 		return study;
 	}
 	
+	private void setFormVersionProperties(FormDef form, Date dateCreated, User creator) {
+		List<FormDefVersion> versions = form.getVersions();
+		
+		for(FormDefVersion version : versions) {
+			
+			version.setFormDef(form);
+			version.setCreator(creator);
+			version.setDateCreated(dateCreated);
+		}
+	}
+
 	@Override
 	public List<String> getStudySubjects(String studyOID) throws UnexpectedException {
 		List<String> subjects = new ArrayList<String>();
