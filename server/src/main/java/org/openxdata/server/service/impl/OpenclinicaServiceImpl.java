@@ -203,16 +203,24 @@ public class OpenclinicaServiceImpl implements OpenclinicaService {
 
 	@Override
 	public List<String> getStudySubjects(String studyOID) throws UnexpectedException {
-		List<String> subjects = new ArrayList<String>();
 		try{
-			Collection<String> returnedSubjects = getClient().getSubjectKeys(studyOID);
-			for(String x : returnedSubjects){
-				subjects.add(x);
-			}
+			List<String> subjects = fetchSubjects(studyOID);
+			return subjects;
 		}catch(Exception ex){
 			throw new UnexpectedException(ex);
 		}
+	}
+
+	private List<String> fetchSubjects(String studyOID) {
 		
+		List<String> subjects = new ArrayList<String>();
+
+		log.info("OXD: Fetching subjects.");
+		
+		Collection<String> returnedSubjects = getClient().getSubjectKeys(studyOID);
+		for(String x : returnedSubjects){
+			subjects.add(x);
+		}
 		return subjects;
 	}
 
