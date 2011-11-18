@@ -31,9 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Autowired
 	private OpenXdataUserDetailsService userDetailsService;
 
-        @Autowired OpenXDataSessionRegistryImpl sessionRegistry;
+	@Autowired
+	OpenXDataSessionRegistryImpl sessionRegistry;
 
-      private Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
+	private Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 	
 	@Override
 	// no security - used for login
