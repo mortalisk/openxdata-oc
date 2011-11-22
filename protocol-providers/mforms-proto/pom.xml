@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>org.openxdata</groupId>
 			<artifactId>epihandy-xforms-server</artifactId>
-			<version>0.9.5-SNAPSHOT</version>
+			<version>0.9.5</version>
 		</dependency>
             <dependency>
                   <groupId>log4j</groupId>
