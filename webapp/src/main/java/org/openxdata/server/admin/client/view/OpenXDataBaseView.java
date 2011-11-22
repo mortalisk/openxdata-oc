@@ -4,12 +4,9 @@ import org.openxdata.server.admin.client.OpenXDataAppMessages;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.presenter.WidgetDisplay;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
-import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
-import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataFlexTable;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
 import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 
@@ -84,36 +81,15 @@ public abstract class OpenXDataBaseView extends Composite {
 	/**
 	 * Registers this class with the relevant <tt>Event Dispatchers.</tt>
 	 * <p>
-	 * <tt>Event Dispatchers can be {@link OpenXDataMenuBar} or {@link OpenXDataToolBar}.
+	 * <tt>Event Dispatcher is {@link OpenXDataToolBar}.
 	 * </p>
 	 */
 	protected void registerWithEventDispatchers() {
 		if (this instanceof OpenXDataViewApplicationEventListener) {
-			widgetFactory.getOpenXDataMenuBar()
-					.registerApplicationEventListener(
-							(OpenXDataViewApplicationEventListener) this);
 			widgetFactory.getOpenXDataToolBar()
 					.registerApplicationEventListener(
 							(OpenXDataViewApplicationEventListener) this);
-		} else if (this instanceof OpenXDataViewExtendedApplicationEventListener) {
-			widgetFactory
-					.getOpenXDataMenuBar()
-					.registerAdvancedApplicationEventListener(
-							(OpenXDataViewExtendedApplicationEventListener) this);
-			widgetFactory
-					.getOpenXDataToolBar()
-					.registerAdvancedApplicationEventListener(
-							(OpenXDataViewExtendedApplicationEventListener) this);
-		} else if (this instanceof OpenXDataExportImportApplicationEventListener) {
-			widgetFactory
-					.getOpenXDataMenuBar()
-					.registerExportImportApplicationEventListener(
-							(OpenXDataExportImportApplicationEventListener) this);
-			widgetFactory
-					.getOpenXDataToolBar()
-					.registerExportImportApplicationEventListener(
-							(OpenXDataExportImportApplicationEventListener) this);
-		}
+		} 
 	}
 
     public WidgetDisplay getDisplay() {

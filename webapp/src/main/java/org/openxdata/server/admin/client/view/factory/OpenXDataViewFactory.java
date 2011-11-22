@@ -5,7 +5,6 @@ import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.contextmenu.OpenXDataContextMenu;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
 import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
@@ -54,11 +53,6 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
     }
 
     @Override
-    public OpenXDataMenuBar getOpenXDataMenuBar() {
-        return injector.getOpenXDataMenuBar();
-    }
-
-    @Override
     public OpenXDataToolBar getOpenXDataToolBar() {
         return injector.getOpenXDataToolBar();
     }
@@ -69,9 +63,6 @@ public class OpenXDataViewFactory implements OpenXDataWidgetFactory {
             verticalPanel = new VerticalPanel();
 
             verticalPanel.setWidth("100%");
-
-            // Menu Bar
-            verticalPanel.add(getOpenXDataMenuBar());
 
             // Notification Bar
             verticalPanel.add(getNotificationLabel());

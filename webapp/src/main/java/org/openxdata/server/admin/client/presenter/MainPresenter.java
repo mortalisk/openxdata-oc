@@ -55,8 +55,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
         public void addMobileInstallHandler(MobileInstallEvent.Handler handler);
 
-        public void addViewDataHandler(ViewEvent.Handler<FormDefVersion> handler);
-
         public void addLogoutHandler(LogOutEvent.Handler handler);
 
         public void setStackPanelListener(StackPanelListener stackListener);
@@ -115,14 +113,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
             @Override
             public void onInstall() {
                 showMobileInstaller();
-            }
-        });
-
-        display.addViewDataHandler(new ViewEvent.Handler<FormDefVersion>() {
-
-            @Override
-            public void onView() {
-                showDataList();
             }
         });
 
@@ -214,28 +204,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
     private void logOut() {
         eventBus.fireEvent(new LogOutEvent());
-    }
-
-    private void showDataList() {
-        //TODO  widget code does not belong here
-        final DialogBox dataListBox = new DialogBox(false);
-        VerticalPanel vp = new VerticalPanel();
-        VerticalPanel bottomPanel = new VerticalPanel();
-        Button btn = new Button("Close");
-        btn.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                dataListBox.hide();
-            }
-        });
-        bottomPanel.setWidth("100%");
-        bottomPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        bottomPanel.add(new HTML("<br>"));
-        bottomPanel.add(btn);
-        vp.add(bottomPanel);
-        dataListBox.setWidget(vp);
-        dataListBox.center();
     }
 
     @Override

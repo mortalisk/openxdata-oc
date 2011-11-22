@@ -475,24 +475,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_data();
 
   /**
-   * Translated "Export".
-   * 
-   * @return translated "Export"
-   */
-  @DefaultStringValue("Export")
-  @Key("label_data_export")
-  String label_data_export();
-
-  /**
-   * Translated "Import".
-   * 
-   * @return translated "Import"
-   */
-  @DefaultStringValue("Import")
-  @Key("label_data_import")
-  String label_data_import();
-
-  /**
    * Translated "Database Backup".
    * 
    * @return translated "Database Backup"
@@ -500,15 +482,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("Database Backup")
   @Key("label_databasebackup")
   String label_databasebackup();
-
-  /**
-   * Translated "Data List".
-   * 
-   * @return translated "Data List"
-   */
-  @DefaultStringValue("Data List")
-  @Key("label_datalist")
-  String label_datalist();
 
   /**
    * Translated "Data Of Submission".
@@ -826,15 +799,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_exporting_data();
 
   /**
-   * Translated "File".
-   * 
-   * @return translated "File"
-   */
-  @DefaultStringValue("File")
-  @Key("label_file")
-  String label_file();
-
-  /**
    * Translated "First Name".
    * 
    * @return translated "First Name"
@@ -860,15 +824,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("The Selected Form Version has data. Do you want to open it in read only mode or create a new version?")
   @Key("label_formDialogpromptmessage")
   String label_formDialogpromptmessage();
-
-  /**
-   * Translated "Format".
-   * 
-   * @return translated "Format"
-   */
-  @DefaultStringValue("Format")
-  @Key("label_format")
-  String label_format();
 
   /**
    * Translated "Form Version Edit".
@@ -1130,15 +1085,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("On:")
   @Key("label_on")
   String label_on();
-
-  /**
-   * Translated "Open".
-   * 
-   * @return translated "Open"
-   */
-  @DefaultStringValue("Open")
-  @Key("label_open")
-  String label_open();
 
   /**
    * Translated "Opening Form".
@@ -1564,15 +1510,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   String label_to();
 
   /**
-   * Translated "Tools".
-   * 
-   * @return translated "Tools"
-   */
-  @DefaultStringValue("Tools")
-  @Key("label_tools")
-  String label_tools();
-
-  /**
    * Translated "User".
    * 
    * @return translated "User"
@@ -1634,15 +1571,6 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("Version")
   @Key("label_version")
   String label_version();
-
-  /**
-   * Translated "View".
-   * 
-   * @return translated "View"
-   */
-  @DefaultStringValue("View")
-  @Key("label_view")
-  String label_view();
 
   /**
    * Translated "WorkFlow".
@@ -1796,4 +1724,11 @@ public interface OpenXdataConstants extends com.google.gwt.i18n.client.Constants
   @DefaultStringValue("Role(s) successfully saved")
   @Key("prompt_saverolesuccessful")
   String prompt_saverolesuccessful();
+  
+  /**
+   * @return translated "Mobile Installer"
+   */
+  @DefaultStringValue("Mobile Installer")
+  @Key("label_mobile_installer")
+  String label_mobile_installer();
 }

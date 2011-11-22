@@ -1,12 +1,8 @@
 package org.openxdata.server.admin.client.view.event.dispatcher;
 
-import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 
 /**
  * Defines a contract for an Extended <tt>Event Dispatcher.</tt> 
- * <p>
- * Please review the {@link OpenXDataViewExtendedApplicationEventListener} contract.
- * </p>
  *
  */
 public interface ExtendedEventDispatcher extends EventDispatcher {

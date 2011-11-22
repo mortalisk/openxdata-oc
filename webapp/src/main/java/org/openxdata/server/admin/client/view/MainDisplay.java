@@ -1,30 +1,26 @@
 package org.openxdata.server.admin.client.view;
 
+import org.openxdata.server.admin.client.listeners.StackPanelListener;
+import org.openxdata.server.admin.client.presenter.MainPresenter;
+import org.openxdata.server.admin.client.presenter.WidgetDisplay;
+import org.openxdata.server.admin.client.util.Utilities;
+import org.openxdata.server.admin.client.view.event.LogOutEvent;
+import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
+import org.openxdata.server.admin.client.view.event.MobileInstallEvent.Handler;
+import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
+import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
+import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
+import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
+
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import org.openxdata.server.admin.client.listeners.StackPanelListener;
-import org.openxdata.server.admin.client.presenter.MainPresenter;
-import org.openxdata.server.admin.client.presenter.WidgetDisplay;
-import org.openxdata.server.admin.client.util.Utilities;
-import org.openxdata.server.admin.client.view.event.EventRegistration;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
-import org.openxdata.server.admin.client.view.event.LogOutEvent;
-import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
-import org.openxdata.server.admin.client.view.event.MobileInstallEvent.Handler;
-import org.openxdata.server.admin.client.view.event.ViewEvent;
-import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
-import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
-import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
-import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
-import org.openxdata.server.admin.model.FormDefVersion;
 
 /**
  *
@@ -37,15 +33,12 @@ public class MainDisplay implements MainPresenter.Display, StackPanelListener, R
     private StackPanelListener stackPanelListener;
     private HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
     private VerticalPanel verticalPanel = new VerticalPanel();
-    private HorizontalPanel horizontalPanel = new HorizontalPanel();
-    private OpenXDataMenuBar menuBar;
     private OpenXDataToolBar toolBar;
     private OpenXDataNotificationBar notificationBar;
     private DockLayoutPanel dockPanel = new DockLayoutPanel(Unit.EM);
 
     @Inject
-    public MainDisplay(OpenXDataMenuBar menuBar, OpenXDataToolBar toolBar, OpenXDataNotificationBar notificationBar, OpenXDataStackPanel stackPanel) {
-        this.menuBar = menuBar;
+    public MainDisplay(OpenXDataToolBar toolBar, OpenXDataNotificationBar notificationBar, OpenXDataStackPanel stackPanel) {
         this.toolBar = toolBar;
         this.notificationBar = notificationBar;//TODO StackPanelWidget Should not be injected
         this.stackPanel = stackPanel;
@@ -61,9 +54,7 @@ public class MainDisplay implements MainPresenter.Display, StackPanelListener, R
         splitPanel.setLeftWidget(stackPanel);
 
         verticalPanel.setWidth("100%");
-        horizontalPanel.add(menuBar);
-        horizontalPanel.add(toolBar);
-        verticalPanel.add(horizontalPanel);
+        verticalPanel.add(toolBar);
         verticalPanel.add(notificationBar);
         verticalPanel.add(splitPanel);
 
@@ -90,18 +81,11 @@ public class MainDisplay implements MainPresenter.Display, StackPanelListener, R
 
     @Override
     public void addMobileInstallHandler(Handler handler) {
-        menuBar.addHandler(handler, MobileInstallEvent.TYPE);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void addViewDataHandler(ViewEvent.Handler<FormDefVersion> handler) {
-        menuBar.addHandler(handler, EventRegistration.getType(ViewEvent.class, FormDefVersion.class));
+        toolBar.addHandler(handler, MobileInstallEvent.TYPE);
     }
 
     @Override
     public void addLogoutHandler(LogOutEvent.Handler handler) {
-        toolBar.addHandler(handler, LogOutEvent.TYPE);
         toolBar.addHandler(handler, LogOutEvent.TYPE);
     }
 
@@ -118,7 +102,6 @@ public class MainDisplay implements MainPresenter.Display, StackPanelListener, R
 
     @Override
     public void setApplicationEventListener(OpenXDataViewApplicationEventListener listenr) {
-        menuBar.registerApplicationEventListener(listenr);
         toolBar.registerApplicationEventListener(listenr);
     }
 

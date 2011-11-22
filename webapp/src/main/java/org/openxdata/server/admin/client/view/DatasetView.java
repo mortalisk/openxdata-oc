@@ -10,7 +10,6 @@ import org.openxdata.server.admin.client.util.Utilities;
 import org.openxdata.server.admin.client.view.event.EditableEvent;
 import org.openxdata.server.admin.client.view.event.ItemSelectedEvent;
 import org.openxdata.server.admin.client.view.factory.OpenXDataWidgetFactory;
-import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
 import org.openxdata.server.admin.model.FormDef;
@@ -50,7 +49,6 @@ import com.google.inject.Inject;
  */
 public class DatasetView extends OpenXDataBaseView implements
         SelectionHandler<Integer>,
-        OpenXDataExportImportApplicationEventListener,
         OpenXDataViewApplicationEventListener {
 	
 	/** The dataset definition object. */
@@ -541,33 +539,11 @@ public class DatasetView extends OpenXDataBaseView implements
 		}
 	}
 	
-	@Override
-	public void exportAsPdf() {
-	}
-	
 	/**
 	 * @return
 	 */
 	public List<UserReportMap> getDeletedUserMappedReportGroups() {
 		return null;
-	}
-	
-	@Override
-	public void onExport() {
-		exportAsPdf();
-		
-	}
-	
-	@Override
-	public void onImport() {
-		// do nothing
-		
-	}
-	
-	@Override
-	public void onOpen() {
-		// do nothing
-		
 	}
 	
 	@Override
