@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>org.openxdata</groupId>
 	<artifactId>mforms-proto</artifactId>
-	<version>1.5</version>
+	<version>1.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>OpenXdata Protocols - mForms</name>
 	
@@ -59,10 +59,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <connection>scm:svn:https://svn.openxdata.org/Server/tags/mforms-proto-1.5</connection>
-    <developerConnection>scm:svn:https://svn.openxdata.org/Server/tags/mforms-proto-1.5</developerConnection>
-    <url>https://trac.openxdata.org/browser/Server/tags/mforms-proto-1.5</url>
-  </scm>
 </project>
