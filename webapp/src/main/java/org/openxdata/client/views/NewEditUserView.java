@@ -287,7 +287,7 @@ public class NewEditUserView extends WizardView {
         		"removeAll="+appMessages.removeAllRoles()+"\n" +
         		"search="+appMessages.searchForRole()+"\n" +
         		"loading="+appMessages.loading());
-		roleUserAccessListField = new ItemAccessListField<RoleSummary>(messages,controller.getRoleUserAccessController());
+		roleUserAccessListField = new ItemAccessListField<RoleSummary>(messages,controller.getRoleUserAccessController(), 200);
 		fs.add(roleUserAccessListField);
 		panel.add(fs);
 		return panel;
@@ -307,7 +307,7 @@ public class NewEditUserView extends WizardView {
         		"removeAll="+appMessages.removeAllStudies()+"\n" +
         		"search="+appMessages.searchForStudy()+"\n" +
         		"loading="+appMessages.loading());
-		studyUserAccessListField = new ItemAccessListField<StudySummary>(messages, controller.getStudyUserAccessController());
+		studyUserAccessListField = new ItemAccessListField<StudySummary>(messages, controller.getStudyUserAccessController(), 200);
 		fs.add(studyUserAccessListField);
 		panel.add(fs);
 		return panel;
@@ -327,7 +327,7 @@ public class NewEditUserView extends WizardView {
         		"removeAll="+appMessages.removeAllForms()+"\n" +
         		"search="+appMessages.searchForForm()+"\n" +
         		"loading="+appMessages.loading());
-		formUserAccessListField = new ItemAccessListField<FormSummary>(messages, controller.getFormUserAccessController());
+		formUserAccessListField = new ItemAccessListField<FormSummary>(messages, controller.getFormUserAccessController(), 200);
 		fs.add(formUserAccessListField);
 		panel.add(fs);
 		return panel;

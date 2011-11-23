@@ -50,6 +50,8 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
 
     private int pageSize = 20;   
     
+    private int listSize = 100;
+    
     private PagingFilterListField fromField;
     private PagingFilterListField toField;
     
@@ -62,6 +64,13 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
     public ItemAccessListField(ItemAccessListFieldMessages messages, ItemAccessController<M> controller) {
     	this.messages = messages;
         this.controller = controller;
+        init();
+    }
+    
+    public ItemAccessListField(ItemAccessListFieldMessages messages, ItemAccessController<M> controller, int listSize) {
+    	this.messages = messages;
+        this.controller = controller;
+        this.listSize = listSize;
         init();
     }
 
@@ -299,7 +308,7 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
             field.setStore(store);
             field.setBorders(false);
             field.setDisplayField("name");
-            field.setSize(185, 100);
+            field.setSize(185, listSize);
             field.getListView().setLoadingText(messages.getLoading());
             
             setScrollMode(Scroll.AUTOY);
