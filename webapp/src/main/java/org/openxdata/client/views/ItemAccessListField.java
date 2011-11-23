@@ -226,13 +226,17 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
     		if (fromItems != null) {
 	    		for (M model : fromItems) {
 	        		fromField.field.getStore().remove(model);
-	        		toField.field.getStore().add(model);
+	        		if (!toField.field.getStore().contains(model)) {
+	        			toField.field.getStore().add(model);
+	        		}
 	        	}
     		}
     		if (toItems != null) {
 	    		for (M model : toItems) {
 	        		toField.field.getStore().remove(model);
-	        		fromField.field.getStore().add(model);
+	        		if (!fromField.field.getStore().contains(model)) {
+	        			fromField.field.getStore().add(model);
+	        		}
 	        	}
     		}
     	}
