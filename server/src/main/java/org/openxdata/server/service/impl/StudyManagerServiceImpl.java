@@ -12,8 +12,8 @@ import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -297,28 +297,33 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 
 	@Override
 	@Secured({"Perm_View_Studies", "Perm_View_Users"})
-    public PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+    public PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) {
 		return studyDao.getMappedStudies(userId, loadConfig);
     }
 
 	@Override
 	@Secured({"Perm_View_Studies", "Perm_View_Users"})
-    public PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return studyDao.getUnmappedStudies(userId, loadConfig);
+	public PagingLoadResult<StudyDefHeader> getMappedStudyNames(Integer userId, PagingLoadConfig loadConfig) {
+		return studyDao.getMappedStudyNames(userId, loadConfig);
+	}
+
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+    public PagingLoadResult<StudyDefHeader> getUnmappedStudyNames(Integer userId, PagingLoadConfig loadConfig) {
+	    return studyDao.getUnmappedStudyNames(userId, loadConfig);
     }
 
 	@Override
 	@Secured({"Perm_Add_Users", "Perm_Add_Studies"})
-    public void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete)
-            throws OpenXDataSecurityException {
+    public void saveMappedUserStudyNames(Integer userId, List<StudyDefHeader> studiesToAdd, List<StudyDefHeader> studiesToDelete) {
 	    if (studiesToAdd != null) {
-		    for (StudyDef sd : studiesToAdd) {
+		    for (StudyDefHeader sd : studiesToAdd) {
 		    	UserStudyMap map = new UserStudyMap(userId, sd.getId());
 				userStudyMapDAO.saveUserMappedStudy(map);
 		    }
 	    }
 	    if (studiesToDelete != null) {
-		    for (StudyDef sd : studiesToDelete) {
+		    for (StudyDefHeader sd : studiesToDelete) {
 		    	UserStudyMap map = userStudyMapDAO.getUserStudyMap(userId, sd.getId());
 				userStudyMapDAO.deleteUserMappedStudy(map);
 		    }

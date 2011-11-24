@@ -10,6 +10,7 @@ import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
@@ -234,7 +235,15 @@ public interface StudyManagerService {
 	 * @param loadConfig PagingLoadConfig specifying page size and number
 	 * @return
 	 */
-	PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig);
+
+	/**
+	 * Get a page of Studies mapped to a specific User 
+	 * @param userId Integer id of specified user
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<StudyDefHeader> getMappedStudyNames(Integer userId, PagingLoadConfig loadConfig);
 	
 	/**
 	 * Get a page of Studies NOT mapped to the specified User
@@ -242,7 +251,7 @@ public interface StudyManagerService {
 	 * @param loadConfig PagingLoadConfig specifying page size and number
 	 * @return
 	 */
-	PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	PagingLoadResult<StudyDefHeader> getUnmappedStudyNames(Integer userId, PagingLoadConfig loadConfig);
 	
 	/**
 	 * Updates the studies currently mapped to the specified user.
@@ -251,5 +260,5 @@ public interface StudyManagerService {
 	 * @param studiesToDelete List of studies to delete from the user's access
 	 * @throws OpenXDataSecurityException
 	 */
-	void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete) throws OpenXDataSecurityException;
+	void saveMappedUserStudyNames(Integer userId, List<StudyDefHeader> studiesToAdd, List<StudyDefHeader> studiesToDelete);
 }

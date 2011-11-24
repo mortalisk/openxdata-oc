@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -103,12 +104,20 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * @return
 	 */
 	PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
-	
+
+	/**
+	 * Get a page of Forms mapped to a specific user 
+	 * @param userId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig);
+
 	/**
 	 * Get a page of Forms NOT mapped to the specified user
 	 * @param userId
 	 * @param loadConfig
 	 * @return
 	 */
-	PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig);
 }

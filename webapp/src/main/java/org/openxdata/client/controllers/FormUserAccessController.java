@@ -9,7 +9,7 @@ import org.openxdata.client.util.PagingUtil;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.ItemAccessListField;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
-import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
@@ -42,10 +42,10 @@ public class FormUserAccessController implements ItemAccessController<FormSummar
     public void getMappedData(
             PagingLoadConfig pagingLoadConfig,
             final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<FormSummary>> callback) {
-		formService.getMappedForms(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
-				new EmitAsyncCallback<PagingLoadResult<FormDef>>() {
+		formService.getMappedFormNames(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<FormDefHeader>>() {
             @Override
-            public void onSuccess(PagingLoadResult<FormDef> result) {
+            public void onSuccess(PagingLoadResult<FormDefHeader> result) {
                 ProgressIndicator.hideProgressBar();
             	callback.onSuccess(new BasePagingLoadResult<FormSummary>(convertFormResults(result), 
             			result.getOffset(), result.getTotalLength()));
@@ -57,10 +57,10 @@ public class FormUserAccessController implements ItemAccessController<FormSummar
     public void getUnMappedData(
             PagingLoadConfig pagingLoadConfig,
             final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<FormSummary>> callback) {
-		formService.getUnmappedForms(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
-				new EmitAsyncCallback<PagingLoadResult<FormDef>>() {
+		formService.getUnmappedFormNames(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<FormDefHeader>>() {
             @Override
-            public void onSuccess(PagingLoadResult<FormDef> result) {
+            public void onSuccess(PagingLoadResult<FormDefHeader> result) {
                 ProgressIndicator.hideProgressBar();
             	callback.onSuccess(new BasePagingLoadResult<FormSummary>(convertFormResults(result), 
             			result.getOffset(), result.getTotalLength()));
@@ -68,10 +68,10 @@ public class FormUserAccessController implements ItemAccessController<FormSummar
         });
     }
 	
-	private List<FormSummary> convertFormResults(PagingLoadResult<FormDef> result) {
+	private List<FormSummary> convertFormResults(PagingLoadResult<FormDefHeader> result) {
         List<FormSummary> results = new ArrayList<FormSummary>();
-    	List<FormDef> forms = result.getData();
-        for (FormDef fd : forms) {
+    	List<FormDefHeader> forms = result.getData();
+        for (FormDefHeader fd : forms) {
         	results.add(new FormSummary(fd));
         }
         return results;
@@ -79,7 +79,7 @@ public class FormUserAccessController implements ItemAccessController<FormSummar
 
 	@Override
     public void addMapping(List<FormSummary> formsToAdd, final ItemAccessListField<FormSummary> userAccessListField) {
-	    formService.saveMappedUserForms(user.getId(), convertFormList(formsToAdd), null, new EmitAsyncCallback<Void>() {
+	    formService.saveMappedUserFormNames(user.getId(), convertFormList(formsToAdd), null, new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                userAccessListField.refresh();
@@ -89,7 +89,7 @@ public class FormUserAccessController implements ItemAccessController<FormSummar
 
 	@Override
     public void deleteMapping(List<FormSummary> formsToDelete, final ItemAccessListField<FormSummary> userAccessListField) {
-		formService.saveMappedUserForms(user.getId(), null, convertFormList(formsToDelete), new EmitAsyncCallback<Void>() {
+		formService.saveMappedUserFormNames(user.getId(), null, convertFormList(formsToDelete), new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                userAccessListField.refresh();
@@ -97,10 +97,10 @@ public class FormUserAccessController implements ItemAccessController<FormSummar
         });
     }
 	
-	private List<FormDef> convertFormList(List<FormSummary> formList) {
-		List<FormDef> forms = new ArrayList<FormDef>();
+	private List<FormDefHeader> convertFormList(List<FormSummary> formList) {
+		List<FormDefHeader> forms = new ArrayList<FormDefHeader>();
 		for (FormSummary fd : formList) {
-			forms.add(fd.getFormDefinition());
+			forms.add(fd.getFormDefHeader());
 		}
 		return forms;
 	}

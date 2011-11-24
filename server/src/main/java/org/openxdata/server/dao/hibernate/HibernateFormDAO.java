@@ -1,5 +1,6 @@
 package org.openxdata.server.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -112,16 +114,37 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
     }
 
 	@Override
-    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
-		formSearch.addFilterAll("users", Filter.notEqual("id", userId));
-	    SearchResult<FormDef> result = searchAndCount(formSearch);
-	    return getPagingLoadResult(loadConfig, result);
-    }
-
-	@Override
 	public FormDefVersion getFormVersion(Integer formVersionId) {
 		return (FormDefVersion)getSession().createCriteria(FormDefVersion.class)
 			.add(Restrictions.eq("id", formVersionId)).uniqueResult();
+	}
+
+	@Override
+	public PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig) {
+		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
+		formSearch.addFilterSome("users", Filter.equal("id", userId));
+	    SearchResult<FormDef> result = searchAndCount(formSearch);
+	    return getFormDefHeaderPagingLoadResult(loadConfig, result);
+	}
+
+	@Override
+	public PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig) {
+		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
+		formSearch.addFilterAll("users", Filter.notEqual("id", userId));
+		SearchResult<FormDef> result = searchAndCount(formSearch);
+		return getFormDefHeaderPagingLoadResult(loadConfig, result);
+	}
+	
+	private PagingLoadResult<FormDefHeader> getFormDefHeaderPagingLoadResult(PagingLoadConfig loadConfig, SearchResult<FormDef> searchResult) {
+		List<FormDef> list = searchResult.getResult();
+		List<FormDefHeader> headerList = new ArrayList<FormDefHeader>();
+		if (list != null) {
+			for (FormDef fd : list) {
+				headerList.add(new FormDefHeader(fd.getId(), fd.getName()));
+			}
+		}
+		int totalNum = searchResult.getTotalCount();
+		int offset = loadConfig == null ? 0 : loadConfig.getOffset();
+		return new PagingLoadResult<FormDefHeader>(headerList, offset, list.size(), totalNum);
 	}
 }

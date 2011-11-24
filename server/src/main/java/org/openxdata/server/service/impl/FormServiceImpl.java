@@ -13,6 +13,7 @@ import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
@@ -304,30 +305,36 @@ public class FormServiceImpl implements FormService {
     }
 
 	@Override
+	public FormDefVersion getFormVersion(int formVersionId) {
+		return formDAO.getFormVersion(formVersionId);
+	}
+
+	@Override
 	@Secured({"Perm_View_Forms", "Perm_View_Users"})
-    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return formDAO.getUnmappedForms(userId, loadConfig);
-    }
+	public PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formDAO.getMappedFormNames(userId, loadConfig);
+	}
+
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+	public PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formDAO.getUnmappedFormNames(userId, loadConfig);
+	}
 
 	@Override
 	@Secured({"Perm_Add_Users", "Perm_Add_Forms"})
-    public void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException {
+	public void saveMappedUserFormNames(Integer userId, List<FormDefHeader> formsToAdd, List<FormDefHeader> formsToDelete) throws OpenXDataSecurityException {
 		if (formsToAdd != null) {
-		    for (FormDef fd : formsToAdd) {
-		    	UserFormMap map = new UserFormMap(userId, fd.getId());
+			for (FormDefHeader fd : formsToAdd) {
+				UserFormMap map = new UserFormMap(userId, fd.getId());
 				userFormMapDAO.saveUserMappedForm(map);
-		    }
+			}
 		}
 		if (formsToDelete != null) {
-		    for (FormDef fd : formsToDelete) {
-		    	UserFormMap map = userFormMapDAO.getUserMappedForm(userId, fd.getId());
+			for (FormDefHeader fd : formsToDelete) {
+				UserFormMap map = userFormMapDAO.getUserMappedForm(userId, fd.getId());
 				userFormMapDAO.deleteUserMappedForm(map);
-		    }
+			}
 		}
-    }
-
-	@Override
-	public FormDefVersion getFormVersion(int formVersionId) {
-		return formDAO.getFormVersion(formVersionId);
 	}
 }

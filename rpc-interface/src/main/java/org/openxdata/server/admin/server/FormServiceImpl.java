@@ -9,6 +9,7 @@ import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
@@ -111,12 +112,17 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     }
 
 	@Override
-    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return formService.getUnmappedForms(userId, loadConfig);
-    }
+	public PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formService.getMappedFormNames(userId, loadConfig);
+	}
 
 	@Override
-    public void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException {
-	    formService.saveMappedUserForms(userId, formsToAdd, formsToDelete);	    
-    }
+	public PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formService.getUnmappedFormNames(userId, loadConfig);
+	}
+
+	@Override
+	public void saveMappedUserFormNames(Integer userId, List<FormDefHeader> formsToAdd, List<FormDefHeader> formsToDelete) throws OpenXDataSecurityException {
+		formService.saveMappedUserFormNames(userId, formsToAdd, formsToDelete);
+	}
 }

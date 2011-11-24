@@ -9,7 +9,7 @@ import org.openxdata.client.util.PagingUtil;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.ItemAccessListField;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
-import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
@@ -42,10 +42,10 @@ public class StudyUserAccessController implements ItemAccessController<StudySumm
     public void getMappedData(
             PagingLoadConfig pagingLoadConfig,
             final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<StudySummary>> callback) {
-		studyService.getMappedStudies(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
-				new EmitAsyncCallback<PagingLoadResult<StudyDef>>() {
+		studyService.getMappedStudyNames(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<StudyDefHeader>>() {
             @Override
-            public void onSuccess(PagingLoadResult<StudyDef> result) {
+            public void onSuccess(PagingLoadResult<StudyDefHeader> result) {
                 ProgressIndicator.hideProgressBar();
             	callback.onSuccess(new BasePagingLoadResult<StudySummary>(convertStudyResults(result), 
             			result.getOffset(), result.getTotalLength()));
@@ -57,10 +57,10 @@ public class StudyUserAccessController implements ItemAccessController<StudySumm
     public void getUnMappedData(
             PagingLoadConfig pagingLoadConfig,
             final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<StudySummary>> callback) {
-		studyService.getUnmappedStudies(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
-				new EmitAsyncCallback<PagingLoadResult<StudyDef>>() {
+		studyService.getUnmappedStudyNames(user.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<StudyDefHeader>>() {
             @Override
-            public void onSuccess(PagingLoadResult<StudyDef> result) {
+            public void onSuccess(PagingLoadResult<StudyDefHeader> result) {
                 ProgressIndicator.hideProgressBar();
             	callback.onSuccess(new BasePagingLoadResult<StudySummary>(convertStudyResults(result), 
             			result.getOffset(), result.getTotalLength()));
@@ -68,10 +68,10 @@ public class StudyUserAccessController implements ItemAccessController<StudySumm
         });
     }
 	
-	private List<StudySummary> convertStudyResults(PagingLoadResult<StudyDef> result) {
+	private List<StudySummary> convertStudyResults(PagingLoadResult<StudyDefHeader> result) {
         List<StudySummary> results = new ArrayList<StudySummary>();
-    	List<StudyDef> studies = result.getData();
-        for (StudyDef sd : studies) {
+    	List<StudyDefHeader> studies = result.getData();
+        for (StudyDefHeader sd : studies) {
         	results.add(new StudySummary(sd));
         }
         return results;
@@ -79,7 +79,7 @@ public class StudyUserAccessController implements ItemAccessController<StudySumm
 
 	@Override
     public void addMapping(List<StudySummary> studiesToAdd, final ItemAccessListField<StudySummary> studyAccessListField) {
-	    studyService.saveMappedUserStudies(user.getId(), convertStudyList(studiesToAdd), null, new EmitAsyncCallback<Void>() {
+	    studyService.saveMappedUserStudyNames(user.getId(), convertStudyList(studiesToAdd), null, new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
             	studyAccessListField.refresh();
@@ -89,7 +89,7 @@ public class StudyUserAccessController implements ItemAccessController<StudySumm
 
 	@Override
     public void deleteMapping(List<StudySummary> studiesToDelete, final ItemAccessListField<StudySummary> studyAccessListField) {
-		studyService.saveMappedUserStudies(user.getId(), null, convertStudyList(studiesToDelete), new EmitAsyncCallback<Void>() {
+		studyService.saveMappedUserStudyNames(user.getId(), null, convertStudyList(studiesToDelete), new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                studyAccessListField.refresh();
@@ -97,10 +97,10 @@ public class StudyUserAccessController implements ItemAccessController<StudySumm
         });
     }
 	
-	private List<StudyDef> convertStudyList(List<StudySummary> studyList) {
-		List<StudyDef> studies = new ArrayList<StudyDef>();
+	private List<StudyDefHeader> convertStudyList(List<StudySummary> studyList) {
+		List<StudyDefHeader> studies = new ArrayList<StudyDefHeader>();
 		for (StudySummary fd : studyList) {
-			studies.add(fd.getStudyDefinition());
+			studies.add(fd.getStudyDefHeader());
 		}
 		return studies;
 	}

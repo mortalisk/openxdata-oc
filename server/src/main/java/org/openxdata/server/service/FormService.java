@@ -7,6 +7,7 @@ import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
@@ -171,6 +172,14 @@ public interface FormService {
 	 * @return
 	 */
 	PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+
+	/**
+	 * Get a page of Forms mapped to a specific user 
+	 * @param userId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
 	
 	/**
 	 * Get a page of Forms NOT mapped to the specified user
@@ -178,7 +187,7 @@ public interface FormService {
 	 * @param loadConfig
 	 * @return
 	 */
-	PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
 	
 	/**
 	 * Updates the forms currently mapped to the specified user.
@@ -187,5 +196,5 @@ public interface FormService {
 	 * @param formsToDelete List of forms to delete from the user's access
 	 * @throws OpenXDataSecurityException
 	 */
-	void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException;
+	void saveMappedUserFormNames(Integer userId, List<FormDefHeader> formsToAdd, List<FormDefHeader> formsToDelete) throws OpenXDataSecurityException;
 }

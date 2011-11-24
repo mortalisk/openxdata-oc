@@ -11,8 +11,10 @@ import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
@@ -341,8 +343,8 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void testGetUnMappedStudies() throws Exception {
 		PagingLoadConfig config = new PagingLoadConfig(0,10);
-		PagingLoadResult<StudyDef> result = studyManagerService.getUnmappedStudies(4, config);
-		List<StudyDef> data = result.getData();
+		PagingLoadResult<StudyDefHeader> result = studyManagerService.getUnmappedStudyNames(4, config);
+		List<StudyDefHeader> data = result.getData();
 		Assert.assertEquals(1, data.size());
 		Assert.assertEquals("More Sample Study", data.get(0).getName());
 	}
@@ -358,10 +360,10 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	}
 	
 	@Test
-	public void testGetUnMappedForms() throws Exception {
+	public void testGetUnMappedFormNames() throws Exception {
 		PagingLoadConfig config = new PagingLoadConfig(0,10);
-		PagingLoadResult<FormDef> result = formService.getUnmappedForms(3, config);
-		List<FormDef> data = result.getData();
+		PagingLoadResult<FormDefHeader> result = formService.getUnmappedFormNames(3, config);
+		List<FormDefHeader> data = result.getData();
 		Assert.assertEquals(3, data.size());
 		Assert.assertEquals("Yet Another Sample Form", data.get(0).getName());
 		Assert.assertEquals("Sample Form2", data.get(1).getName());
@@ -382,5 +384,15 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		PagingLoadResult<FormDef> loadResult = formService.getForms(user, new PagingLoadConfig(0,10));
 		Assert.assertEquals(3, loadResult.getTotalLength());
 		Assert.assertEquals(3, loadResult.getData().size());
+	}
+	
+	@Test
+	public void testGetMappedFormNames() throws Exception {
+		PagingLoadConfig config = new PagingLoadConfig(0,10);
+		PagingLoadResult<FormDefHeader> result = formService.getMappedFormNames(3, config);
+		List<FormDefHeader> data = result.getData();
+		Assert.assertEquals(2, data.size());
+		Assert.assertEquals("Sample Form", data.get(0).getName());
+		Assert.assertEquals("Another Sample Form", data.get(1).getName());
 	}
 }

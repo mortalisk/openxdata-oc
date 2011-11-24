@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.openxdata.server.admin.client.service.StudyService;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
@@ -85,13 +86,18 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
     }
 
 	@Override
-    public PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return getStudyManagerService().getUnmappedStudies(userId, loadConfig);
+	public PagingLoadResult<StudyDefHeader> getMappedStudyNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return getStudyManagerService().getMappedStudyNames(userId, loadConfig);
+	}
+
+	@Override
+    public PagingLoadResult<StudyDefHeader> getUnmappedStudyNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return getStudyManagerService().getUnmappedStudyNames(userId, loadConfig);
     }
 
 	@Override
-    public void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete)
+    public void saveMappedUserStudyNames(Integer userId, List<StudyDefHeader> studiesToAdd, List<StudyDefHeader> studiesToDelete)
             throws OpenXDataSecurityException {
-		getStudyManagerService().saveMappedUserStudies(userId, studiesToAdd, studiesToDelete);
+		getStudyManagerService().saveMappedUserStudyNames(userId, studiesToAdd, studiesToDelete);
     }
 }
