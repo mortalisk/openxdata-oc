@@ -10,6 +10,8 @@ import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.dao.FormDataDAO;
 import org.springframework.stereotype.Repository;
 
+import com.googlecode.genericdao.search.Search;
+
 /**
  *
  */
@@ -61,5 +63,12 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	public List<FormDataVersion> getFormDataVersion(Integer formDataId) {
 		return getSession().createCriteria(FormDataVersion.class)
 			.createAlias("formData", "fd").add(Restrictions.eq("fd.id", formDataId)).list();
+	}
+
+	@Override
+	public Integer getFormDataCount(Integer formDefId) {
+		Search dataCountSearch = new Search();
+		dataCountSearch.addFilterEqual("formDefVersionId", formDefId);
+		return count(dataCountSearch);
 	}
 }

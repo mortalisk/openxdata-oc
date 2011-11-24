@@ -7,7 +7,6 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
@@ -26,10 +25,7 @@ public interface StudyService extends RemoteService {
     StudyDef saveStudy(StudyDef studyDef) throws OpenXDataSecurityException;
 
     void deleteStudy(StudyDef studyDef) throws OpenXDataSecurityException;
-    
-    void saveUserMappedStudy(UserStudyMap userMappedStudy) throws OpenXDataSecurityException;
 
-    void deleteUserMappedStudy(UserStudyMap userMappedStudy) throws OpenXDataSecurityException;
     
 	/**
 	 * Get a page of Users mapped to a specific study 

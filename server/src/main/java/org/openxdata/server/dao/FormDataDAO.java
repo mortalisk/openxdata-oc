@@ -63,5 +63,12 @@ public interface FormDataDAO extends BaseDAO<FormData> {
      * @return List of FormDataVersion
      */
     List<FormDataVersion> getFormDataVersion(Integer formDataId);
-
+    
+	
+	/**
+	 * Gets the number of responses for the specified form definition version
+	 * @param formDefId Integer form definition identifier
+	 * @return Integer count of form_data
+	 */
+	Integer getFormDataCount(Integer formDefId);
 }

@@ -1,7 +1,6 @@
 package org.openxdata.server.dao.hibernate;
 
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
@@ -34,62 +33,6 @@ public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements Editab
 	/** The logger*/
 	private Logger log = LoggerFactory.getLogger(HibernateEditableDAO.class);
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<FormDataHeader> getFormData(Integer formDefId, Integer userId, Date fromDate, Date toDate){
-		Session session = getSession();
-
-		String sql = "select d.form_data_id,d.form_definition_version_id, "+
-		"fd.name as formName, fdv.name as versionName, u.user_name as creator, "+
-		"d.date_created, u2.user_name as changed_by, d.date_changed,d.description "+
-		"from form_data d inner join users u on u.user_id=d.creator "+
-		"inner join form_definition_version fdv on fdv.form_definition_version_id=d.form_definition_version_id "+
-		"inner join form_definition fd on fd.form_definition_id=fdv.form_definition_id "+
-		"left join users u2 on u2.user_id=d.changed_by ";
-
-		String filter = "";
-		if (formDefId != null) {
-			filter += " d.form_definition_version_id = :formDefId";
-		}
-		if (userId != null) {
-			if (!filter.equals("")) filter += " and";
-			filter += " d.creator = :userId";
-		}
-		if (fromDate != null) {
-			if (!filter.equals("")) filter += " and";
-			filter += " d.date_created >= :fromDate";
-		}
-		if (toDate != null) {
-			if (!filter.equals("")) filter += " and";
-			filter += " d.date_created <= :toDate";
-		}
-		if (!filter.equals("")) {
-			filter = "where " + filter;
-			sql += filter;
-		}
-		
-		sql += " order by d.date_changed desc, d.date_created desc";
-
-		SQLQuery query = session.createSQLQuery(sql);
-		query.addEntity(FormDataHeader.class);
-		if (formDefId != null) {
-			query.setInteger("formDefId", formDefId);
-		}
-		if (userId != null) {
-			query.setInteger("userId", userId);
-		}
-		if (fromDate != null) {
-			query.setDate("fromDate", fromDate);
-		}
-		if (toDate != null) {
-			query.setDate("toDate", toDate);
-		}
-
-		List<FormDataHeader> items = query.list();
-
-		return items;
-	}
-			
 	@Override
 	public Boolean hasEditableData(Editable item) {
 		Boolean hasData = false;
@@ -169,13 +112,6 @@ public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements Editab
 		return count;
 	}
 
-    @Override
-    public Integer getFormDataCount(Integer formDefId) {
-        Session session = getSession();
-        BigInteger count = (BigInteger) session.createSQLQuery("select count(*) from form_data where form_definition_version_id = "+formDefId).uniqueResult();
-        return count.intValue();
-    }
-    
     /**
 	 * Builds the SQL for checking if a FormDef has data.
 	 * 

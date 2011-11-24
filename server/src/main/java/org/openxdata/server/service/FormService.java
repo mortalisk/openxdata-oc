@@ -6,6 +6,7 @@ import java.util.Map;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -40,6 +41,15 @@ public interface FormService {
 	 * @return the form data.
 	 */
 	FormData getFormData(Integer formDataId);
+
+	/**
+	 * Retrieves the history of the specified FormData object
+	 * Deprecated - use FormService instead
+	 * @param formDataId Integer FormData identifier
+	 * @return List of FormDataVersion
+	 */
+	List<FormDataVersion> getFormDataVersion(Integer formDataId);
+
 	
 	/**
 	 * Deletes a form definition from the database.
@@ -114,13 +124,6 @@ public interface FormService {
      * @return Integer (positive number, 0 for no responses)
      */
     Integer getFormResponseCount(int formDefVersionId);
-    
-    /**
-     * Retrieves all the FormData for a specified formDefVersion
-     * @param formId int identifier of the form definition version
-     * @return List of FormData
-     */
-    List<FormData> getFormData(int formDefVersionId);
 
     /**
      * Checks if a study, form or form version has data collected for it.

@@ -228,8 +228,8 @@ public class LoadTest extends AbstractJUnit4SpringContextTests {
                         //System.out.println("getFormsForCurrentUser returned: "+(forms != null ? forms.size() : null)); 
                         break;
                     case 2 : 
-                        List<FormData> formData = formService.getFormData(form.getId());
-                        System.out.println("getFormData returned: "+(formData != null ? formData.size() : null)); 
+                        //List<FormData> formData = formService.getFormData(form.getId());
+                        //System.out.println("getFormData returned: "+(formData != null ? formData.size() : null)); 
                         break;
                     case 3 : 
                         Integer count = formService.getFormResponseCount(form.getId());

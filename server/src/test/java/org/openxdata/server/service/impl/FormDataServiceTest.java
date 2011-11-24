@@ -11,6 +11,7 @@ import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.FormService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Tests the FormService type contract.
@@ -49,4 +50,10 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 		formService.saveFormData(fd);
 		Assert.assertNotNull("Id has been set", fd.getId());
 	}
+	
+    @Test
+    @Transactional(readOnly = true)
+    public void getFormDataCount() {
+        Assert.assertSame(1,formService.getFormResponseCount(1));
+    }
 }

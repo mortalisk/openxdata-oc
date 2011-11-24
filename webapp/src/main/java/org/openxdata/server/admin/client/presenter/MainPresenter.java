@@ -20,23 +20,15 @@ import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
-import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.TaskDef;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 
 /**

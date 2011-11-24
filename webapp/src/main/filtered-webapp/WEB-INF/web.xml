@@ -168,15 +168,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>studymanager</servlet-name>
-    <servlet-class>org.openxdata.server.admin.server.StudyManagerServiceImpl</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>studymanager</servlet-name>
-    <url-pattern>/OpenXDataServerAdmin/StudyManagerService</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
     <servlet-name>smsservice</servlet-name>
     <servlet-class>org.openxdata.server.admin.server.SmsServiceImpl</servlet-class>
   </servlet>

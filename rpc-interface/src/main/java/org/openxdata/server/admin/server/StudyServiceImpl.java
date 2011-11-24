@@ -8,7 +8,6 @@ import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.rpc.OxdPersistentRemoteService;
@@ -45,16 +44,6 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
 	@Override
     public StudyDef getStudy(Integer studyId) throws OpenXDataSecurityException {
 	    return getStudyManagerService().getStudy(studyId);
-    }
-	
-    @Override
-    public void saveUserMappedStudy(UserStudyMap userMappedStudy) {
-        getStudyManagerService().saveUserMappedStudy(userMappedStudy);
-    }
-
-    @Override
-    public void deleteUserMappedStudy(UserStudyMap userMappedStudy) {
-        getStudyManagerService().deleteUserMappedStudy(userMappedStudy);
     }
 
 	@Override

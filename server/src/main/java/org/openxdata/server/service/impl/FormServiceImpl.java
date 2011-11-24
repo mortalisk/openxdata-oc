@@ -11,7 +11,7 @@ import org.hibernate.exception.SQLGrammarException;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
-import org.openxdata.server.admin.model.FormDataHeader;
+import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -69,7 +69,7 @@ public class FormServiceImpl implements FormService {
     @Override
     @Secured("Perm_View_Forms")
 	public Integer getFormResponseCount(int formDefVersionId) {
-        return studyDAO.getFormDataCount(formDefVersionId);
+        return formDataDAO.getFormDataCount(formDefVersionId);
     }
     
     @Override
@@ -110,6 +110,7 @@ public class FormServiceImpl implements FormService {
 	@Override
 	@Secured("Perm_Delete_Forms")
 	public void deleteForm(FormDef formDef) {
+		userFormMapDAO.deleteUserMappedForms(formDef.getId());
 		formDAO.deleteForm(formDef);
 	}
 	
@@ -157,20 +158,7 @@ public class FormServiceImpl implements FormService {
 	public FormData getFormData(Integer formDataId) {
 		return formDataDAO.getFormData(formDataId);
 	}
-	
-    @Override
-	@Transactional(readOnly = true)
-	@Secured("Perm_View_Form_Data")
-    public List<FormData> getFormData(int formDefVersionId) {
-        List<FormData> formData = new ArrayList<FormData>();
-        List<FormDataHeader> headers = studyDAO.getFormData(formDefVersionId, null, null, null);
-        for (FormDataHeader header : headers) {
-            formData.add(formDataDAO.getFormData(header.getId()));
-            log.debug("Loaded form data with id " + header.getId());
-        }
-        return formData;
-    }
-    
+
 	@Override
 	@Secured("Perm_View_Forms")
 	public FormDef getForm(int formId) {
@@ -336,5 +324,10 @@ public class FormServiceImpl implements FormService {
 				userFormMapDAO.deleteUserMappedForm(map);
 			}
 		}
+	}
+
+	@Override
+	public List<FormDataVersion> getFormDataVersion(Integer formDataId) {
+		return formDataDAO.getFormDataVersion(formDataId);
 	}
 }

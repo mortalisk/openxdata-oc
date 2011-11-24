@@ -64,11 +64,6 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 	}
 
     @Override
-	public List<FormData> getFormData(int formDefVersionId) {
-		return formService.getFormData(formDefVersionId);
-	}
-
-    @Override
 	public PagingLoadResult<ExportedFormData> getFormDataList(String formBinding,
 			String[] questionBindings, PagingLoadConfig  pagingLoadConfig) throws ExportedDataNotFoundException {
 		

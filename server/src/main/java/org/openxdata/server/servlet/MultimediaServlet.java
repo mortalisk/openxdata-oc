@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.binary.Base64;
 import org.openxdata.server.OpenXDataConstants;
 import org.openxdata.server.admin.model.FormData;
-import org.openxdata.server.service.StudyManagerService;
+import org.openxdata.server.service.FormService;
 import org.openxdata.server.util.XmlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ import org.w3c.dom.Document;
  */
 public class MultimediaServlet extends HttpServlet {
 
-	private StudyManagerService studyManagerService;
+	private FormService formService;
 	
 	private Logger log = LoggerFactory.getLogger(MultimediaServlet.class);
 	private static final long serialVersionUID = 1239820102030344L;
@@ -48,7 +48,7 @@ public class MultimediaServlet extends HttpServlet {
 		
 		ServletContext sctx = this.getServletContext();
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(sctx);
-		studyManagerService = (StudyManagerService) ctx.getBean("studyManagerService");
+		formService = (FormService) ctx.getBean("formService");
 	}
     
 	@Override
@@ -94,7 +94,7 @@ public class MultimediaServlet extends HttpServlet {
 			
 			if(bytes == null){
 				int id = Integer.parseInt(sFormId);
-				FormData formData = studyManagerService.getFormData(id);
+				FormData formData = formService.getFormData(id);
 				if(formData == null)
 					return;
 
