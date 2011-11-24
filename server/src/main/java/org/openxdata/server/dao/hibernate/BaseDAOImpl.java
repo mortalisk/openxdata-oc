@@ -122,7 +122,7 @@ abstract class BaseDAOImpl<T extends Editable> extends GenericDAOImpl<T, Long> i
 					filters[i] = Filter.equal(filter.getField(), filter.getValue());
 				}
 			}
-			search.addFilterOr(filters); // FIXME: are we sure that it is an or situation?
+			search.addFilterAnd(filters); 
 		}
 
 		// paging

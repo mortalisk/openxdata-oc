@@ -23,6 +23,7 @@ import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.FormDataDAO;
+import org.openxdata.server.dao.FormVersionDAO;
 import org.openxdata.server.dao.UserFormMapDAO;
 import org.openxdata.server.export.rdbms.task.RdmsDataExportTask;
 import org.openxdata.server.service.FormService;
@@ -42,7 +43,10 @@ public class FormServiceImpl implements FormService {
 
     @Autowired
     private FormDAO formDAO;
-    
+
+	@Autowired
+	private FormVersionDAO formVersionDAO;
+
     @Autowired
     private FormDataDAO formDataDAO;
     
@@ -83,6 +87,13 @@ public class FormServiceImpl implements FormService {
     
     @Override
     @Transactional(readOnly=true)
+    @Secured("Perm_View_Forms")
+	public PagingLoadResult<FormDefVersion> getFormVersions(User user, PagingLoadConfig loadConfig) {
+    	return formVersionDAO.getForms(user, loadConfig);
+    }
+    
+    @Override
+	@Transactional(readOnly = true)
 	@Secured("Perm_View_Forms")
 	public List<FormDef> getStudyForms(User user, Integer studyDefId) {
     	return formDAO.getStudyForms(user, studyDefId);

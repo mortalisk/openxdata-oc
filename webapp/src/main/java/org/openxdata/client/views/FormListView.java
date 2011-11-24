@@ -16,12 +16,18 @@ import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Permission;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.exception.OpenXDataParsingException;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BaseFilterConfig;
+import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.FilterConfig;
+import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
@@ -36,8 +42,6 @@ import com.extjs.gxt.ui.client.mvc.Controller;
 import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.store.GroupingStore;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.Store;
-import com.extjs.gxt.ui.client.store.StoreFilter;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
@@ -75,7 +79,6 @@ public class FormListView extends View implements Refreshable {
 	private PagingLoader<PagingLoadResult<FormSummary>> loader;
 
 	private CheckBox allVersions;
-	private CheckBox allForms;
 	private List<FormSummary> allFormSummaries = new ArrayList<FormSummary>();
 
 	public FormListView(Controller controller) {
@@ -89,7 +92,10 @@ public class FormListView extends View implements Refreshable {
 
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 		configs.add(new ColumnConfig("id", appMessages.id(), 20));
-		configs.add(new ColumnConfig("organisation", appMessages.study(), 290));
+		
+		ColumnConfig orgColConfig = new ColumnConfig("organisation", appMessages.study(), 290);
+		orgColConfig.setSortable(false);
+		configs.add(orgColConfig);
 		
 		GridCellRenderer<FormSummary> nameCellRender = new GridCellRenderer<FormSummary>() {  
 		      public String render(FormSummary summary, String property, ColumnData config, int rowIndex, int colIndex,  
@@ -109,12 +115,14 @@ public class FormListView extends View implements Refreshable {
 		      }  
 		 };
 		
-		ColumnConfig nameColConfig = new ColumnConfig("form", appMessages.form(), 570);
+		ColumnConfig nameColConfig = new ColumnConfig("name", appMessages.form(), 570);
 		nameColConfig.setRenderer(nameCellRender);
 		configs.add(nameColConfig);
 		ColumnConfig responsesColConfig = new ColumnConfig("responses",
 				appMessages.responses(), 70);
 		responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
+		responsesColConfig.setSortable(false);
+		responsesColConfig.setGroupable(false);
 		configs.add(responsesColConfig);
 
 		cm = new ColumnModel(configs);
@@ -122,32 +130,31 @@ public class FormListView extends View implements Refreshable {
 		
 		toolBar = new SearchPagingToolBar<FormSummary>(PAGE_SIZE);
 		loader = new BasePagingLoader<PagingLoadResult<FormSummary>>(
-		        new RpcProxy<PagingLoadResult<FormSummary>>() {
-			        @Override
-			        public void load(Object loadConfig,
-			                final AsyncCallback<PagingLoadResult<FormSummary>> callback) {
-				        ProgressIndicator.showProgressBar();
-				        final PagingLoadConfig pagingLoadConfig = (PagingLoadConfig) loadConfig;
-				        if (pagingLoadConfig.getSortField() == null
-				                || pagingLoadConfig.getSortField().trim().equals("")) {
-					        pagingLoadConfig.setSortField("name");
-					        pagingLoadConfig.setSortDir(SortDir.ASC);
-				        }
-				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "name");
-				        pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, toolBar.getSearchFilterValue());
-				        GWT.log("FormListListView RpcProxy:load loadConfig pageSize=" + pagingLoadConfig.getLimit()
-				                + " sortField=" + pagingLoadConfig.getSortField()
-				                + " filter=" + toolBar.getSearchFilterValue());
-				        Scheduler.get().scheduleDeferred(
-				                new ScheduledCommand() {
-					                @Override
-					                public void execute() {
-						                final FormListController controller = (FormListController) FormListView.this.getController();
-						                controller.getForms(pagingLoadConfig, callback);
-					                }
-				                });
-			        }
-		        });
+				new RpcProxy<PagingLoadResult<FormSummary>>() {
+					@Override
+					public void load(
+							Object loadConfig,
+							final AsyncCallback<PagingLoadResult<FormSummary>> callback) {
+						ProgressIndicator.showProgressBar();
+						final FilterPagingLoadConfig filterPagingLoadConfig = createNewFilterPagingLoadConfig((PagingLoadConfig) loadConfig);
+
+						Scheduler.get().scheduleDeferred(
+								new ScheduledCommand() {
+									@Override
+									public void execute() {
+										final FormListController controller = (FormListController) FormListView.this
+												.getController();
+										try {
+											controller.getFormVersions(
+													filterPagingLoadConfig,
+													callback);
+										} catch (OpenXDataParsingException e) {
+											e.printStackTrace();
+										}
+									}
+								});
+					}
+				});
 		loader.setRemoteSort(true);
 		toolBar.bind(loader);
 
@@ -158,41 +165,24 @@ public class FormListView extends View implements Refreshable {
 		GroupingStore<FormSummary> store = new GroupingStore<FormSummary>(loader);
 		store.groupBy("organisation", true);
 		grid = new Grid<FormSummary>(store, cm);
-		grid.setAutoExpandColumn("form");
+		grid.setAutoExpandColumn("name");
 		grid.setAutoExpandMax(10000);
 		grid.setStripeRows(true);
 		grid.setBorders(true);
 		grid.setView(view);
 		Registry.register(Emit.GRID, grid);
-		
-		final StoreFilter<FormSummary> showAllFormVersionsFilter = new StoreFilter<FormSummary>() {
+
+		grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<FormSummary>>() {
 			@Override
-            public boolean select(Store<FormSummary> store, FormSummary parent,
-                    FormSummary item, String property) {
-				if (!allVersions.getValue() && !item.isPublished()) {
-					return false;
-				} else if (!allForms.getValue() && item.getFormVersion() == null) {
-					return false;
+			public void handleEvent(GridEvent<FormSummary> be) {
+				ColumnConfig col = grid.getColumnModel().getColumn(be.getColIndex());
+				if (col.getId().equals("name")) {
+					captureData();
+				} else if (col.getId().equals("responses")) {
+					browseResponses();
 				}
-				return true;
-
-            }
-        };
-		store.addFilter(showAllFormVersionsFilter);
-		store.applyFilters(null);
-
-		grid.addListener(Events.CellDoubleClick,
-				new Listener<GridEvent<FormSummary>>() {
-					@Override
-					public void handleEvent(GridEvent<FormSummary> be) {
-						ColumnConfig col = grid.getColumnModel().getColumn(be.getColIndex());
-						if (col.getId().equals("form")) {
-							captureData();
-						} else if (col.getId().equals("responses")) {
-							browseResponses();
-						}
-					}
-				});
+			}
+		});
 
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
@@ -238,19 +228,10 @@ public class FormListView extends View implements Refreshable {
 		allVersions.addListener(Events.OnClick, new Listener<BaseEvent>() {
 			@Override
 			public void handleEvent(BaseEvent be) {
-				toggleAllFormVersions();
+				loader.load();
 			}
 		});
 		allVersions.hide();
-		allForms = new CheckBox();
-		allForms.setBoxLabel(appMessages.showAllForms());
-		allForms.addListener(Events.OnClick, new Listener<BaseEvent>() {
-			@Override
-			public void handleEvent(BaseEvent be) {
-				toggleAllForms();
-			}
-		});
-		allForms.hide();
 
 		export = new Button(appMessages.exportA());
 		export.addListener(Events.Select, new Listener<ButtonEvent>() {
@@ -316,7 +297,6 @@ public class FormListView extends View implements Refreshable {
 		filterBar.setLayout(new HBoxLayout());
 		filterBar.add(new Text(), flex);
 		filterBar.add(allVersions);
-		filterBar.add(allForms);
 
 		portlet = new DashboardPortlet();
 		portlet.setHeading(appMessages.listOfForms());
@@ -336,7 +316,6 @@ public class FormListView extends View implements Refreshable {
 			
 			newButton.show();
 			allVersions.show();
-			allForms.show();
 			showPublishedColumn(cm, false);
 		}
 		if (loggedInUser.hasPermission(Permission.PERM_EDIT_STUDIES, Permission.PERM_EDIT_FORMS,
@@ -344,7 +323,6 @@ public class FormListView extends View implements Refreshable {
 			
 			edit.show();
 			allVersions.show();
-			allForms.show();
 			showPublishedColumn(cm, false);
 		}
 		if (loggedInUser.hasPermission(Permission.PERM_DELETE_STUDIES, Permission.PERM_DELETE_FORMS,
@@ -352,7 +330,6 @@ public class FormListView extends View implements Refreshable {
 			
 			delete.show();
 			allVersions.show();
-			allForms.show();
 			showPublishedColumn(cm, false);
 		}
 		
@@ -411,35 +388,22 @@ public class FormListView extends View implements Refreshable {
 			controller.forwardToItemImportController(null);
 		}
 	}
-	
-	public List<FormSummary> createFormSummaries(FormDef formDef) {
-		List<FormSummary> summaries = new ArrayList<FormSummary>();
-		if (formDef.getVersions() == null || formDef.getVersions().size() == 0) {
-			FormSummary formSummary = new FormSummary(formDef);
-			formSummary.setResponses("0");
-			summaries.add(formSummary);
-		} else {
-			for (final FormDefVersion formVersion : formDef.getVersions()) {
-				if (formVersion != null) {
-					FormSummary formSummary = getFormSummary(String.valueOf(formVersion.getId()));
-					if (formSummary == null) {
-						formSummary = new FormSummary(formVersion);
-						summaries.add(formSummary);
-					}
-					formSummary.setStatus(appMessages.loading());
-					formSummary.setResponses(appMessages.loading());
-					// get response data
-					Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-						@Override
-						public void execute() {
-							((FormListController) FormListView.this.getController())
-									.hasFormData(formVersion);
-						}
-					});
-				}
+
+	public FormSummary createFormSummary(final FormDefVersion formDefVersion) {
+		
+		FormSummary formSummary = new FormSummary(formDefVersion);
+		formSummary.setStatus(appMessages.loading());
+		formSummary.setResponses(appMessages.loading());
+		
+		// get response data
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				((FormListController) FormListView.this.getController())
+						.hasFormData(formDefVersion);
 			}
-		}
-		return summaries;
+		});
+		return formSummary;
 	}
 	
 	public void setAllFormSummaries(List<FormSummary> formSummaries) {
@@ -447,7 +411,11 @@ public class FormListView extends View implements Refreshable {
 	}
 	
 	private void addFormDef(ListStore<FormSummary> store, FormDef formDef) {
-		List<FormSummary> newSummaries = createFormSummaries(formDef);
+		List<FormSummary> newSummaries = new ArrayList<FormSummary>();
+		for (int i = 0; i<formDef.getVersions().size(); i++) {
+			newSummaries.add(createFormSummary(formDef.getVersions().get(i)));
+		}
+		
 		for (final FormSummary fs : newSummaries) {
 			FormSummary formSummary = getFormSummary(fs.getId());
 			if (formSummary == null) {
@@ -507,28 +475,6 @@ public class FormListView extends View implements Refreshable {
 			MessageBox.alert(appMessages.listOfForms(),
 					appMessages.formMustBeSelected(), null);
 		}
-	}
-
-	private void toggleAllFormVersions() {
-		ProgressIndicator.showProgressBar();
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				grid.getStore().applyFilters(null);
-			}
-		});
-		ProgressIndicator.hideProgressBar();
-	}
-
-	private void toggleAllForms() {
-		ProgressIndicator.showProgressBar();
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				grid.getStore().applyFilters(null);
-			}
-		});
-		ProgressIndicator.hideProgressBar();
 	}
 
 	private void captureData() {
@@ -677,5 +623,47 @@ public class FormListView extends View implements Refreshable {
 				}
 			}
 		}
+	}
+	
+	FilterPagingLoadConfig createNewFilterPagingLoadConfig(PagingLoadConfig getSettingsFrom) {
+		
+		FilterPagingLoadConfig pagingLoadConfig = new BaseFilterPagingLoadConfig();
+
+		if (getSettingsFrom.getSortField() == null || getSettingsFrom.getSortField().trim().equals("")) {
+			pagingLoadConfig.setSortField("formDef.name");
+		} else {
+			pagingLoadConfig.setSortField("formDef."+getSettingsFrom.getSortField());
+		}
+
+		if ((getSettingsFrom.getSortDir() == null) || (getSettingsFrom.getSortDir() == SortDir.NONE) ) {
+			pagingLoadConfig.setSortDir(SortDir.ASC);
+		} else {
+			pagingLoadConfig.setSortDir(getSettingsFrom.getSortDir());
+		}
+		
+		pagingLoadConfig.setLimit(getSettingsFrom.getLimit());
+		pagingLoadConfig.setOffset(getSettingsFrom.getOffset());
+
+		pagingLoadConfig.set(RemoteStoreFilterField.PARM_FIELD, "formDef.name");
+		pagingLoadConfig.set(RemoteStoreFilterField.PARM_QUERY, toolBar.getSearchFilterValue());
+		GWT.log("FormListListView RpcProxy:load loadConfig pageSize=" + pagingLoadConfig.getLimit() + " sortField=" + pagingLoadConfig.getSortField() + " filter="
+				+ toolBar.getSearchFilterValue());
+
+		if (!allVersions.getValue()) {
+			List<FilterConfig> filterList = new ArrayList<FilterConfig>();
+			FilterConfig onlyPublished = new BaseFilterConfig("boolean", "EQUAL_TO", true) {
+
+				private static final long serialVersionUID = 1L;
+				@Override
+				public boolean isFiltered(ModelData model, Object test, String compariosn, Object value) {
+					return false;
+				}
+
+			};
+			onlyPublished.setField("isDefault");
+			filterList.add(onlyPublished);
+			pagingLoadConfig.setFilterConfigs(filterList);
+		}
+		return pagingLoadConfig;
 	}
 }

@@ -7,6 +7,7 @@ import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -144,4 +145,7 @@ public interface FormService extends RemoteService {
 	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException;
+
+	PagingLoadResult<FormDefVersion> getFormVersions(User user,
+			PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
 }

@@ -9,6 +9,7 @@ import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -49,6 +50,11 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 	@Override
     public PagingLoadResult<FormDef> getForms(User user, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
 	    return formService.getForms(user, loadConfig);
+    }
+	
+	@Override
+    public PagingLoadResult<FormDefVersion> getFormVersions(User user, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getFormVersions(user, loadConfig);
     }
 
     @Override

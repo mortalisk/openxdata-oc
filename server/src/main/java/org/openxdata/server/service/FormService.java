@@ -84,6 +84,14 @@ public interface FormService {
     PagingLoadResult<FormDef> getForms(User user, PagingLoadConfig loadConfig);
     
     /**
+     * Retrieves a page of form version definitions in the system
+     * @param user User
+     * @param loadConfig PagingLoadConfiguration specifying page number and size etc
+     * @return PagingLoadResult of Form Version Definitions
+     */
+	PagingLoadResult<FormDefVersion> getFormVersions(User user, PagingLoadConfig loadConfig);
+    
+    /**
 	 * Retrieves the Forms for the specified Study for which the user has permission
 	 * @param user User
 	 * @param studyDefId Integer identifier
