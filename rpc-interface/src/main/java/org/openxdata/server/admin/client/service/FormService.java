@@ -6,6 +6,7 @@ import java.util.Map;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -29,6 +30,22 @@ public interface FormService extends RemoteService {
 	 * @return FormDef
 	 */
 	FormDef getForm(int formId) throws OpenXDataSecurityException;
+	
+	/**
+	 * Returns a FormDefVersion given the ID
+	 * @param formDefVersionId
+	 * @return
+	 * @throws OpenXDataSecurityException
+	 */
+	FormDefVersion getFormVersion(Integer formDefVersionId) throws OpenXDataSecurityException;
+	
+	/**
+	 * Returns FormData given the ID
+	 * @param formDataId
+	 * @return
+	 * @throws OpenXDataSecurityException
+	 */
+	FormData getFormData(Integer formDataId) throws OpenXDataSecurityException;
 
     /**
      * Saves the data captured by the user for a particular form.
@@ -44,6 +61,22 @@ public interface FormService extends RemoteService {
      * @param formData FormData
      */
     void deleteFormData(FormData formData) throws OpenXDataSecurityException;
+    
+    /**
+     * Deletes all the submitted data specified by the ids
+     * NOTE: this method assumes the form data has not been exported (hence
+     * does not try to delete from exported tables)
+     * @param formDataIds
+     * @throws OpenXDataSecurityException
+     */
+    void deleteFormData(List<Integer> formDataIds) throws OpenXDataSecurityException;
+    
+    /**
+     * Reprocesses (runs RDMS Export) for all the specified form data
+     * @param formDataIds
+     * @throws OpenXDataSecurityException
+     */
+    void exportFormData(List<Integer> formDataIds) throws OpenXDataSecurityException;
     
     /**
      * Retrieves a page of form definitions that are available for the specified user.
@@ -149,4 +182,12 @@ public interface FormService extends RemoteService {
 
 	PagingLoadResult<FormDefVersion> getFormVersions(User user,
 			PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Retrieves a page of unexported Form Data
+	 * @param loadConfig
+	 * @return
+	 * @throws OpenXDataSecurityException
+	 */
+	PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
 }

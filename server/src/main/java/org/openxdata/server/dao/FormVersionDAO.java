@@ -14,4 +14,5 @@ public interface FormVersionDAO extends BaseDAO<FormDefVersion> {
 
 	PagingLoadResult<FormDefVersion> getForms(User user, PagingLoadConfig loadConfig);
 	
+	FormDefVersion getFormDefVersion(Integer formDefVersion);
 }

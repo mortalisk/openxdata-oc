@@ -1,12 +1,16 @@
 package org.openxdata.server.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.FormService;
 import org.openxdata.test.BaseContextSensitiveTest;
@@ -56,4 +60,12 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
     public void getFormDataCount() {
         Assert.assertSame(1,formService.getFormResponseCount(1));
     }
+	
+	@Test
+	public void getUnexportedData() throws Exception {
+		PagingLoadResult<FormDataHeader> result = formService.getUnexportedFormData(new PagingLoadConfig(0,10));
+		List<FormDataHeader> headers = result.getData();
+		Assert.assertNotNull(headers);
+		Assert.assertEquals(1, headers.size());
+	}
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefHeader;
@@ -26,6 +27,13 @@ public interface FormService {
 	 * @return FormDef
 	 */
 	FormDef getForm(int formId);
+
+	/**
+	 * Returns a FormDefVersion given the ID
+	 * @param formDefVersionId
+	 * @return
+	 */
+	FormDefVersion getFormVersion(Integer formDefVersionId);
 	
 	/**
 	 * Returns a FormDefVersion given the ID
@@ -64,6 +72,20 @@ public interface FormService {
 	 * @param formData FormData to delete
 	 */
 	void deleteFormData(FormData formData);
+
+	/**
+	 * Deletes all the submitted data specified by the ids
+	 * NOTE: this method assumes the form data has not been exported (hence
+	 * does not try to delete from exported tables)
+	 * @param formDataIds
+	 */
+	void deleteFormData(List<Integer> formDataIds);
+
+	/**
+	 * Reprocesses (runs RDMS Export) for all the specified form data
+	 * @param formDataIds
+	 */
+	void exportFormData(List<Integer> formDataIds);
 	
 	/**
 	 * Saves a given Form.
@@ -174,7 +196,7 @@ public interface FormService {
 	 * @param loadConfig
 	 * @return
 	 */
-	PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig);
 
 	/**
 	 * Get a page of Forms mapped to a specific user 
@@ -197,7 +219,13 @@ public interface FormService {
 	 * @param userId Integer id of specified form
 	 * @param formsToAdd List of forms to add to the user's access
 	 * @param formsToDelete List of forms to delete from the user's access
-	 * @throws OpenXDataSecurityException
 	 */
 	void saveMappedUserFormNames(Integer userId, List<FormDefHeader> formsToAdd, List<FormDefHeader> formsToDelete) throws OpenXDataSecurityException;
+	
+	/**
+	 * Retrieves a page of unexported Form Data
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig);
 }

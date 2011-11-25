@@ -15,6 +15,7 @@ import org.openxdata.client.controllers.ItemImportController;
 import org.openxdata.client.controllers.LoginController;
 import org.openxdata.client.controllers.NewEditUserController;
 import org.openxdata.client.controllers.NewStudyFormController;
+import org.openxdata.client.controllers.UnprocessedDataController;
 import org.openxdata.client.controllers.UserImportController;
 import org.openxdata.client.controllers.UserListController;
 import org.openxdata.client.controllers.UserProfileController;
@@ -40,6 +41,7 @@ import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
@@ -63,6 +65,8 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.layout.TableData;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
+import com.extjs.gxt.ui.client.widget.menu.Menu;
+import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -196,6 +200,7 @@ public class Emit implements EntryPoint, Refreshable {
         dispatcher.addController(new FormDesignerController(studyService, formService));
         dispatcher.addController(new NewEditUserController(userService, roleService, studyService, formService));
         dispatcher.addController(new UserImportController(userService));
+        dispatcher.addController(new UnprocessedDataController(formService));
         
         RefreshablePublisher publisher = RefreshablePublisher.get();
         publisher.subscribe(RefreshableEvent.Type.NAME_CHANGE, this);
@@ -269,12 +274,24 @@ public class Emit implements EntryPoint, Refreshable {
         northPanel.add(userBanner, userBannerTableData);
         
         admin = new Button(appMessages.admin());
+        Menu adminMenu = new Menu();
+        MenuItem adminMenuItem = new MenuItem(appMessages.admin());
+        MenuItem unprocessedDataMenuItem = new MenuItem("Manage unprocessed data");
+        adminMenu.add(adminMenuItem);
+        adminMenu.add(unprocessedDataMenuItem);
+        admin.setMenu(adminMenu);
         admin.hide();
-        admin.addListener(Events.Select, new Listener<ButtonEvent>() {
+        adminMenuItem.addListener(Events.Select, new Listener<MenuEvent>() {
         	@Override
-            public void handleEvent(ButtonEvent be) {
-                forwardToAdmin(); 
-            }
+        	public void handleEvent(MenuEvent be) {
+        		forwardToAdmin(); 
+        	}
+        });
+        unprocessedDataMenuItem.addListener(Events.Select, new Listener<MenuEvent>() {
+        	@Override
+        	public void handleEvent(MenuEvent be) {
+        		Dispatcher.get().dispatch(UnprocessedDataController.UNPROCESSED_DATA);
+        	}
         });
 
         Button myDetails = new Button(appMessages.myDetails());

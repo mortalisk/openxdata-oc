@@ -3,7 +3,10 @@ package org.openxdata.server.dao;
 import java.util.List;
 
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 /**
  *
@@ -63,7 +66,7 @@ public interface FormDataDAO extends BaseDAO<FormData> {
      * @return List of FormDataVersion
      */
     List<FormDataVersion> getFormDataVersion(Integer formDataId);
-    
+
 	
 	/**
 	 * Gets the number of responses for the specified form definition version
@@ -71,4 +74,12 @@ public interface FormDataDAO extends BaseDAO<FormData> {
 	 * @return Integer count of form_data
 	 */
 	Integer getFormDataCount(Integer formDefId);
+    
+	/**
+	 * Gets a paged list of all unexported/unviewable form data
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig);
+
 }

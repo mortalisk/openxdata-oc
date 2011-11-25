@@ -141,7 +141,7 @@ public class FormResponsesController  extends Controller {
                 List<FormDataSummary> results = new ArrayList<FormDataSummary>();
                 List<ExportedFormData> data = result.getData();
                 for (ExportedFormData d : data) {
-                	FormDataSummary formDataSummary = new FormDataSummary(formVersion.getFormDef(), d);
+                	FormDataSummary formDataSummary = new FormDataSummary(formVersion, d);
                     results.add(formDataSummary);
                 }
                 ProgressIndicator.hideProgressBar();

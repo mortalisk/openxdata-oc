@@ -36,4 +36,9 @@ public class HibernateFormVersionDAO extends BaseDAOImpl<FormDefVersion> impleme
 		}
 	}
 
+	@Override
+	public FormDefVersion getFormDefVersion(Integer formDefVersion) {
+		return find(formDefVersion);
+	}
+
 }

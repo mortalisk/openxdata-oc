@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.hibernate.exception.SQLGrammarException;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefHeader;
@@ -330,4 +332,37 @@ public class FormServiceImpl implements FormService {
 	public List<FormDataVersion> getFormDataVersion(Integer formDataId) {
 		return formDataDAO.getFormDataVersion(formDataId);
 	}
+
+	@Override
+    public FormDefVersion getFormVersion(Integer formDefVersionId) {
+	    return formVersionDAO.getFormDefVersion(formDefVersionId);
+    }
+
+	@Override
+	@Secured("Perm_Delete_Form_Data")
+    public void deleteFormData(List<Integer> formDataIds) {
+		User user = userService.getLoggedInUser();
+		for (Integer id : formDataIds) {
+			FormData formData = formDataDAO.getFormData(id);
+			formData.setChangedBy(user);
+			formData.setDateChanged(new Date());
+			deleteFormData(formData);
+		}
+    }
+
+	@Override
+	@Secured("Perm_Export_Form_Data")
+    public void exportFormData(List<Integer> formDataIds) {
+	    for (Integer id : formDataIds) {
+	    	FormData formData = formDataDAO.getFormData(id);
+	    	exportTask.exportFormData(formData); // note: runs on a separate thread
+	    }
+    }
+
+
+	@Override
+	@Secured("Perm_View_Form_Data")
+    public PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) {
+	    return formDataDAO.getUnexportedFormData(loadConfig);
+    }
 }

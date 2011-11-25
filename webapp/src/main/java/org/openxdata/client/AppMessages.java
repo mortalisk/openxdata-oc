@@ -304,4 +304,14 @@ public interface AppMessages extends Messages {
 	
 	String newUserEmailSubject();
 	String newUserEmail(String firstname, String username, String password, String loginUrl);
+	
+	String manageUnprocessedData();
+	String description();
+	String reprocess();
+	String reprocessMessage();
+	String selectDataToEdit();
+	String selectDataToDelete();
+	String selectDataToReprocess();
+	String selectOnlyOneDataRow();
+	
 }
