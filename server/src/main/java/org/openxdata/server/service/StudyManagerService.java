@@ -1,19 +1,13 @@
 package org.openxdata.server.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.FormData;
-import org.openxdata.server.admin.model.FormDataHeader;
-import org.openxdata.server.admin.model.FormDataVersion;
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.StudyDAO;
@@ -61,39 +55,6 @@ public interface StudyManagerService {
 	 * @param studyDef the study to delete.
 	 */
 	void deleteStudy(StudyDef studyDef);
-	
-	/**
-	 * Saves a form definition to the database.
-	 * Deprecated - use FormService instead
-	 * @param formDef the form definition.
-	 */
-	@Deprecated
-	void saveForm(FormDef formDef);
-	
-	/**
-	 * Deletes a form definition from the database.
-	 * Deprecated - use FormService instead
-	 * @param formDef the form definition to delete.
-	 */
-	@Deprecated
-	void deleteForm(FormDef formDef);
-	
-	/**
-	 * Deletes a row of data from the database.
-	 * Deprecated - use FormService instead
-	 * @param formDataId the identifier for the row of data to delete.
-	 */
-	@Deprecated
-	void deleteFormData(Integer formDataId);
-	
-	/**
-	 * Gets form data as identified by the id.
-	 * Deprecated - use FormService instead
-	 * @param formDataId the form data identifier.
-	 * @return the form data.
-	 */
-	@Deprecated
-	FormData getFormData(Integer formDataId);
 
 	/**
 	 * Checks if a study, form or form version has data collected for it.
@@ -103,71 +64,6 @@ public interface StudyManagerService {
 	 * @return true if it has, else false.
 	 */
 	Boolean hasEditableData(Editable item); 
-	
-	/**
-	 * Gets a list of headers for form data submitted to the database.
-	 * Deprecated - use FormService instead
-	 * @param formDefId
-	 * @param userId the user who submitted the data. If you want all users, pass null.
-	 * @param fromDate the submission date from which to start the search. To include all dates, pass null.
-	 * @param toDate the submission date up to which to do the search. To include all dates, pass null.
-	 * @return the form data header list.
-	 */
-	@Deprecated
-	List<FormDataHeader> getFormData(Integer formDefId, Integer userId, Date fromDate, Date toDate);
-	
-    /**
-     * Retrieves the history of the specified FormData object
-     * Deprecated - use FormService instead
-     * @param formDataId Integer FormData identifier
-     * @return List of FormDataVersion
-     */
-	@Deprecated
-    List<FormDataVersion> getFormDataVersion(Integer formDataId);
-	
-	/**
-	 * Gets a list of all StudyUserMap objects from the database
-	 * 
-	 * @return list of mapped objects
-	 */
-	List<UserStudyMap> getUserMappedStudies();
-	
-	/**
-	 * Gets a list of UserStudyMap objects for a specified Study
-	 * @param studyId
-	 * @return
-	 */
-	List<UserStudyMap> getUserMappedStudies(Integer studyId);
-	
-	/**
-	 * Saves a StudyUserMap object
-	 * @param map map to save
-	 */
-	void saveUserMappedStudy(UserStudyMap map);
-	
-	/**
-	 * Deletes a StudyUserMap object
-	 * @param map map to save
-	 */
-	void deleteUserMappedStudy(UserStudyMap map);
-	
-	/**
-	 * Deletes a given <code>UserFormMap.</code>
-	 * @param map map to delete.
-	 */
-	void deleteUserMappedForm(UserFormMap map);
-
-	/**
-	 * Fetches a List of <code>UserFormMap</code> definitions.
-	 * @return List of <code>UserFormMaps.</code>
-	 */
-	List<UserFormMap> getUserMappedForms();
-
-	/**
-	 * Saves a given <code>UserFormMap.</code>
-	 * @param map map to save.
-	 */
-	void saveUserMappedForm(UserFormMap map);
 
 	/**
 	 * Gets the key of a study with a given id.
@@ -194,16 +90,7 @@ public interface StudyManagerService {
 	 * @return a list of StudyDef objects
 	 */
 	List<StudyDef> getStudyByName(String studyName);
-	
-	/**
-	 * Get a list of forms with the specified name
-	 * Deprecated - use FormService instead
-	 * @param formName
-	 * @return a list of FormDef objects
-	 */
-	@Deprecated
-	List<FormDef> getFormByName(String formName);
-	
+
 	/**
 	 * Get a page of Users mapped to a specific study 
 	 * @param studyId
@@ -235,7 +122,15 @@ public interface StudyManagerService {
 	 * @param loadConfig PagingLoadConfig specifying page size and number
 	 * @return
 	 */
-	PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig);
+
+	/**
+	 * Get a page of Studies mapped to a specific User 
+	 * @param userId Integer id of specified user
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<StudyDefHeader> getMappedStudyNames(Integer userId, PagingLoadConfig loadConfig);
 	
 	/**
 	 * Get a page of Studies NOT mapped to the specified User
@@ -243,18 +138,11 @@ public interface StudyManagerService {
 	 * @param loadConfig PagingLoadConfig specifying page size and number
 	 * @return
 	 */
-	PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
-	
-	/**
-	 * Updates the studies currently mapped to the specified user.
-	 * @param userId Integer id of specified user
-	 * @param studiesToAdd List of studies to add to the user's access
-	 * @param studiesToDelete List of studies to delete from the user's access
-	 * @throws OpenXDataSecurityException
-	 */
-	void saveMappedUserStudies(Integer userId, List<StudyDef> studiesToAdd, List<StudyDef> studiesToDelete) throws OpenXDataSecurityException;
+	PagingLoadResult<StudyDefHeader> getUnmappedStudyNames(Integer userId, PagingLoadConfig loadConfig);
 	
 	StudyDef getStudy(String studyKey);
 
 	void setStudyDAO(StudyDAO studyDAO);
+	
+	void saveMappedUserStudyNames(Integer userId, List<StudyDefHeader> studiesToAdd, List<StudyDefHeader> studiesToDelete);
 }

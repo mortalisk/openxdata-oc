@@ -1,11 +1,9 @@
 package org.openxdata.server.dao;
 
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 
@@ -24,24 +22,6 @@ public interface EditableDAO extends BaseDAO<FormDef> {
 	 * @return true if it has, else false. 
 	 */ 
 	 Boolean hasEditableData(Editable item); 
-
-	/**
-	 * Gets a list of headers for form data submitted to the database.
-	 * 
-	 * @param formDefId
-	 * @param userId the user who submitted the data. If you want all users, pass null.
-	 * @param fromDate the submission date from which to start the search. To include all dates, pass null.
-	 * @param toDate the submission date up to which to do the search. To include all dates, pass null.
-	 * @return the form data header list.
-	 */
-	List<FormDataHeader> getFormData(Integer formDefId, Integer userId, Date fromDate, Date toDate);
-		
-	/**
-	 * Gets the number of responses for the specified form definition version
-	 * @param formDefId Integer form definition identifier
-	 * @return Integer count of form_data
-	 */
-	Integer getFormDataCount(Integer formDefId);
 
 	
 	/**

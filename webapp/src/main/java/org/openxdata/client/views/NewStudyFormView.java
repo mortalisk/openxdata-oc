@@ -108,13 +108,11 @@ public class NewStudyFormView extends WizardView {
 				nextButton.setEnabled(true);
 			}
 		} else if (activePage == 1) {
-                        saveAndExitButton.show();
+			saveAndExitButton.hide();
 			if (createFormFS.getSelectedRadio() == null) {
 				nextButton.setEnabled(false);
-                                saveAndExitButton.setEnabled(false);
 			} else {
 				nextButton.setEnabled(true);
-                                saveAndExitButton.setEnabled(true);
 			}
 			// check what was selected in the page before
 			if (createStudyFS.getSelectedRadio().equals(appMessages.addNewStudy())) {
@@ -133,8 +131,15 @@ public class NewStudyFormView extends WizardView {
 				setStudyForms();
 				existingForm.show();
 				userFormAccessListField.show();
+				if (existingFormName.getValue() == null) {
+					nextButton.setEnabled(false);
+				} else {
+					nextButton.setEnabled(true);
+				}
 			}
 		} else if (activePage == 2) {
+			saveAndExitButton.show();
+			saveAndExitButton.setEnabled(true);
 			if (createFormFS.getSelectedRadio().equals(appMessages.addNewForm())) {
 				formDefinitionVersionName.setValue("v1");
 				published.setValue(true);

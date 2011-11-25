@@ -1,12 +1,11 @@
 package org.openxdata.server.admin.client.view.listeners;
 
 import org.openxdata.server.admin.client.view.OpenXDataBaseView;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
 
 /**
  * Defines a contract for the {@linkplain OpenXDataBaseView}  
- * <tt>objects</tt> that want to listen to application level events like on the {@link OpenXDataToolBar} or {@link OpenXDataMenuBar}.</tt>
+ * <tt>objects</tt> that want to listen to application level events like on the {@link OpenXDataToolBar}.</tt>
  * 
  *
  */

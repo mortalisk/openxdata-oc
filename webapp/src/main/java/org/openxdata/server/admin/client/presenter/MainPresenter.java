@@ -20,23 +20,15 @@ import org.openxdata.server.admin.client.view.event.ViewEvent;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
-import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.SettingGroup;
 import org.openxdata.server.admin.model.TaskDef;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 
 /**
@@ -54,8 +46,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
         public void setCurrentDisplay(WidgetDisplay display);
 
         public void addMobileInstallHandler(MobileInstallEvent.Handler handler);
-
-        public void addViewDataHandler(ViewEvent.Handler<FormDefVersion> handler);
 
         public void addLogoutHandler(LogOutEvent.Handler handler);
 
@@ -115,14 +105,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
             @Override
             public void onInstall() {
                 showMobileInstaller();
-            }
-        });
-
-        display.addViewDataHandler(new ViewEvent.Handler<FormDefVersion>() {
-
-            @Override
-            public void onView() {
-                showDataList();
             }
         });
 
@@ -214,28 +196,6 @@ public class MainPresenter implements IPresenter<MainPresenter.Display> {
 
     private void logOut() {
         eventBus.fireEvent(new LogOutEvent());
-    }
-
-    private void showDataList() {
-        //TODO  widget code does not belong here
-        final DialogBox dataListBox = new DialogBox(false);
-        VerticalPanel vp = new VerticalPanel();
-        VerticalPanel bottomPanel = new VerticalPanel();
-        Button btn = new Button("Close");
-        btn.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                dataListBox.hide();
-            }
-        });
-        bottomPanel.setWidth("100%");
-        bottomPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        bottomPanel.add(new HTML("<br>"));
-        bottomPanel.add(btn);
-        vp.add(bottomPanel);
-        dataListBox.setWidget(vp);
-        dataListBox.center();
     }
 
     @Override

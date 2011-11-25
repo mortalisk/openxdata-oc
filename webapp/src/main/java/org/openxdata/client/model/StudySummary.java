@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
 
@@ -13,6 +14,7 @@ public class StudySummary extends BaseModel {
     private static final long serialVersionUID = 3037791298938446908L;
     
     private StudyDef studyDefinition;
+	private StudyDefHeader studyDefHeader;
 
     public StudySummary() {
 	}
@@ -36,6 +38,13 @@ public class StudySummary extends BaseModel {
 	    }
 	    setForms(studyDef.getForms());
     }
+
+	public StudySummary(StudyDefHeader studyDefHeader) {
+		this.studyDefHeader = studyDefHeader;
+		setId(String.valueOf(studyDefHeader.getId()));
+		setStudy(studyDefHeader.getName());
+		setName(studyDefHeader.getName());
+	}
 	
 	public StudySummary(String id, String study, String description, String creator, Date changed, List<FormDef> forms) {
 		setId(id);
@@ -117,5 +126,13 @@ public class StudySummary extends BaseModel {
 
 	public void setStudyDefinition(StudyDef studyDefinition) {
 		this.studyDefinition = studyDefinition;
+	}
+
+	public StudyDefHeader getStudyDefHeader() {
+		return studyDefHeader;
+	}
+
+	public void setStudyDefHeader(StudyDefHeader studyDefHeader) {
+		this.studyDefHeader = studyDefHeader;
 	}
 }

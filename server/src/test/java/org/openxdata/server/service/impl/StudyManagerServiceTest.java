@@ -8,14 +8,14 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormData;
-import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.UserFormMapDAO;
@@ -31,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Tests methods in the StudyManagerService which deal with StudyDef.
  *  
  */
-@SuppressWarnings("deprecation")
 public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired
@@ -83,8 +82,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		PagingLoadResult<FormDef> formsLoadResult = formService.getForms(new PagingLoadConfig(0,20));
 		List<FormDef> forms = formsLoadResult.getData();
 		int formDefVersionId = forms.get(0).getVersions().get(0).getId();
-		List<FormDataHeader> data = studyManagerService.getFormData(formDefVersionId, null, null, null);
-		int dataCount = data.size();
+		int dataCount = formService.getFormResponseCount(formDefVersionId);
 		
 		// create some form data
 		FormData formData = new FormData();
@@ -96,9 +94,8 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		
 		// check if the form data was created
 		Assert.assertNotNull("FormData Id is set", formData.getId());
-		data = studyManagerService.getFormData(formDefVersionId, null, null, null);
-		Assert.assertEquals("One extra FormData", dataCount+1, data.size());
-		dataCount = data.size();
+		int dataCount2 = formService.getFormResponseCount(formDefVersionId);
+		Assert.assertEquals("One extra FormData", dataCount+1, dataCount2);
 		
 		// try edit the form data and save
 		formData.setData("testing updated");
@@ -107,13 +104,13 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		formService.saveFormData(formData);
 		
 		// check if the form data was updated
-		data = studyManagerService.getFormData(formDefVersionId, null, null, null);
-		Assert.assertEquals("No extra FormData", dataCount, data.size());
-		FormData savedFormData = studyManagerService.getFormData(formData.getId());
+		int dataCount3 = formService.getFormResponseCount(formDefVersionId);
+		Assert.assertEquals("No extra FormData", dataCount2, dataCount3);
+		FormData savedFormData = formService.getFormData(new Integer(formData.getId()));
 		Assert.assertEquals("Data text is updated", "testing updated", savedFormData.getData());
 		
 		// check if the version was correctly saved
-		List<FormDataVersion> versions = studyManagerService.getFormDataVersion(formData.getId());
+		List<FormDataVersion> versions = formService.getFormDataVersion(formData.getId());
 		Assert.assertEquals("Only 1 previous version", 1, versions.size());
 		Assert.assertEquals("Previous version data text is correct", "testing", versions.get(0).getData());
 	}
@@ -167,11 +164,15 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		userService.saveUser(user);
 		
 		// create user study mapping
-		UserStudyMap userStudyMap = new UserStudyMap(user.getId(), study.getId());
-		studyManagerService.saveUserMappedStudy(userStudyMap);
+		List<StudyDefHeader> studiesToAdd = new ArrayList<StudyDefHeader>();
+		StudyDefHeader studyHeader = new StudyDefHeader(study.getId(),
+				study.getName());
+		studiesToAdd.add(studyHeader);
+		studyManagerService.saveMappedUserStudyNames(user.getId(),
+				studiesToAdd, null);
 
-		List<UserStudyMap> userMappedStudies = studyManagerService.getUserMappedStudies(study.getId());
-		Assert.assertEquals("Study has 1 mapped user", 1, userMappedStudies.size());
+		PagingLoadResult<User> mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		Assert.assertEquals("Study has 1 mapped user", 1, mappedUsers.getData().size());
 		
 		// create form
 		FormDef form = new FormDef();
@@ -189,11 +190,14 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
         formV.setIsDefault(true);
         formV.setFormDef(form);
         form.addVersion(formV);
-        studyManagerService.saveForm(form);
+        formService.saveForm(form);
         
 		// create user form mapping
-		UserFormMap userFormMap = new UserFormMap(user.getId(), form.getId());
-		studyManagerService.saveUserMappedForm(userFormMap);
+		List<FormDefHeader> formsToAdd = new ArrayList<FormDefHeader>();
+		FormDefHeader formHeader = new FormDefHeader(form.getId(),
+				form.getName());
+		formsToAdd.add(formHeader);
+		formService.saveMappedUserFormNames(user.getId(), formsToAdd, null);
 
 		List<UserFormMap> userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("Form has 1 mapped user", 1, userMappedForms.size());
@@ -203,8 +207,8 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		studies = studyManagerService.getStudyByName(studyName);
 		Assert.assertEquals("Deleted the study", 0, studies.size());
 		
-		userMappedStudies = studyManagerService.getUserMappedStudies(study.getId());
-		Assert.assertEquals("UserStudyMap was deleted", 0, userMappedStudies.size());
+		mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		Assert.assertEquals("Study has 1 mapped user", 0, mappedUsers.getData().size());
 		
 		userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("UserFormMap was deleted", 0, userMappedForms.size());
@@ -245,22 +249,25 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
         formV.setIsDefault(true);
         formV.setFormDef(form);
         form.addVersion(formV);
-        studyManagerService.saveForm(form);
+        formService.saveForm(form);
         
-        List<FormDef> forms = studyManagerService.getFormByName(form.getName());
-        Assert.assertEquals("Created the form", 1, forms.size());
+        FormDef savedForm = formService.getForm(form.getId());
+        Assert.assertNotNull("Created the form", savedForm);
         
 		// create user form mapping
-		UserFormMap userFormMap = new UserFormMap(user.getId(), form.getId());
-		studyManagerService.saveUserMappedForm(userFormMap);
+		List<FormDefHeader> formsToAdd = new ArrayList<FormDefHeader>();
+		FormDefHeader formHeader = new FormDefHeader(form.getId(),
+				form.getName());
+		formsToAdd.add(formHeader);
+		formService.saveMappedUserFormNames(user.getId(), formsToAdd, null);
 
 		List<UserFormMap> userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("Form has 1 mapped user", 1, userMappedForms.size());
 		
-		studyManagerService.deleteForm(form);
+		formService.deleteForm(form);
 		
-		forms = studyManagerService.getFormByName(form.getName());
-		Assert.assertEquals("Deleted the form", 0, forms.size());
+		FormDef savedForm2 = formService.getForm(form.getId());
+		Assert.assertNull("Deleted the form",savedForm2);
 		
 		userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
 		Assert.assertEquals("UserFormMap was deleted", 0, userMappedForms.size());
@@ -274,19 +281,14 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		
 		return null;
 	}
-	
-	@Test
-	public void testGetUserMappedStudies(){
-		List<UserStudyMap> permissions = studyManagerService.getUserMappedStudies();
-		Assert.assertEquals(8, permissions.size());
-	}
-	
+
 	@Test
 	public void testSetUserMappingForStudy(){
 		StudyDef study = studyManagerService.getStudies().get(0);
 		List<User> users = userService.getUsers();
 		
-		int initialCount = studyManagerService.getUserMappedStudies(study.getId()).size();
+		PagingLoadResult<User> mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		int initialCount = mappedUsers.getData().size();
 		
 		List<User> dummyPermissions = new ArrayList<User>();
 		dummyPermissions.add(users.get(0));
@@ -294,18 +296,14 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		dummyPermissions.add(users.get(2));
 		
 		studyManagerService.saveMappedStudyUsers(study.getId(), dummyPermissions, null);
-		Assert.assertEquals("added user permissions", initialCount+3, studyManagerService.getUserMappedStudies(study.getId()).size());
+		mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		Assert.assertEquals("added user permissions", initialCount+3, mappedUsers.getData().size());
 		
 		studyManagerService.saveMappedStudyUsers(study.getId(), null, dummyPermissions);
-		Assert.assertEquals("deleted user permissions", initialCount, studyManagerService.getUserMappedStudies(study.getId()).size());
+		mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		Assert.assertEquals("deleted user permissions", initialCount, mappedUsers.getData().size());
 	}
-	
-	@Test
-	public void testGetUserMappedForms(){
-		List<UserFormMap> permissions = studyManagerService.getUserMappedForms();
-		Assert.assertEquals(2, permissions.size());
-	}
-	
+
 	@Test
 	public void testSetUserMappingForForm(){
 		
@@ -340,8 +338,8 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void testGetUnMappedStudies() throws Exception {
 		PagingLoadConfig config = new PagingLoadConfig(0,10);
-		PagingLoadResult<StudyDef> result = studyManagerService.getUnmappedStudies(4, config);
-		List<StudyDef> data = result.getData();
+		PagingLoadResult<StudyDefHeader> result = studyManagerService.getUnmappedStudyNames(4, config);
+		List<StudyDefHeader> data = result.getData();
 		Assert.assertEquals(1, data.size());
 		Assert.assertEquals("More Sample Study", data.get(0).getName());
 	}
@@ -357,10 +355,10 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 	}
 	
 	@Test
-	public void testGetUnMappedForms() throws Exception {
+	public void testGetUnMappedFormNames() throws Exception {
 		PagingLoadConfig config = new PagingLoadConfig(0,10);
-		PagingLoadResult<FormDef> result = formService.getUnmappedForms(3, config);
-		List<FormDef> data = result.getData();
+		PagingLoadResult<FormDefHeader> result = formService.getUnmappedFormNames(3, config);
+		List<FormDefHeader> data = result.getData();
 		Assert.assertEquals(3, data.size());
 		Assert.assertEquals("Yet Another Sample Form", data.get(0).getName());
 		Assert.assertEquals("Sample Form2", data.get(1).getName());
@@ -381,5 +379,15 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		PagingLoadResult<FormDef> loadResult = formService.getForms(user, new PagingLoadConfig(0,10));
 		Assert.assertEquals(3, loadResult.getTotalLength());
 		Assert.assertEquals(3, loadResult.getData().size());
+	}
+	
+	@Test
+	public void testGetMappedFormNames() throws Exception {
+		PagingLoadConfig config = new PagingLoadConfig(0,10);
+		PagingLoadResult<FormDefHeader> result = formService.getMappedFormNames(3, config);
+		List<FormDefHeader> data = result.getData();
+		Assert.assertEquals(2, data.size());
+		Assert.assertEquals("Sample Form", data.get(0).getName());
+		Assert.assertEquals("Another Sample Form", data.get(1).getName());
 	}
 }

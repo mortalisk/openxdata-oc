@@ -5,7 +5,6 @@ import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.client.view.treeview.OpenXDataBaseTreeView;
 import org.openxdata.server.admin.client.view.treeview.listeners.ContextMenuInitListener;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
 import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
@@ -62,16 +61,9 @@ public interface OpenXDataWidgetFactory {
 	VerticalPanel getVerticalPanel();
 	
 	/**
-	 * Retrieves the <tt>Menu Bar</tt> that has been configured for this session.
-	 * 
-	 * @return Instance of {@link OpenXDataMenuBar}
-	 */
-	OpenXDataMenuBar getOpenXDataMenuBar();
-	
-	/**
 	 * Retrieves the <tt>Tool Bar</tt> that has been configured for this session.
 	 * 
-	 * @return Instance of {@link OpenXDataMenuBar}
+	 * @return Instance of {@link OpenXDataToolBar}
 	 */
 	OpenXDataToolBar getOpenXDataToolBar();
 

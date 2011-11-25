@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,9 @@ import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDataHeader;
+import org.openxdata.server.admin.model.FormDataVersion;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
@@ -23,6 +26,7 @@ import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.EditableDAO;
 import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.FormDataDAO;
+import org.openxdata.server.dao.FormVersionDAO;
 import org.openxdata.server.dao.UserFormMapDAO;
 import org.openxdata.server.export.rdbms.task.RdmsDataExportTask;
 import org.openxdata.server.service.FormService;
@@ -42,7 +46,10 @@ public class FormServiceImpl implements FormService {
 
     @Autowired
     private FormDAO formDAO;
-    
+
+	@Autowired
+	private FormVersionDAO formVersionDAO;
+
     @Autowired
     private FormDataDAO formDataDAO;
     
@@ -64,7 +71,7 @@ public class FormServiceImpl implements FormService {
     @Override
     @Secured("Perm_View_Forms")
 	public Integer getFormResponseCount(int formDefVersionId) {
-        return studyDAO.getFormDataCount(formDefVersionId);
+        return formDataDAO.getFormDataCount(formDefVersionId);
     }
     
     @Override
@@ -83,6 +90,13 @@ public class FormServiceImpl implements FormService {
     
     @Override
     @Transactional(readOnly=true)
+    @Secured("Perm_View_Forms")
+	public PagingLoadResult<FormDefVersion> getFormVersions(User user, PagingLoadConfig loadConfig) {
+    	return formVersionDAO.getForms(user, loadConfig);
+    }
+    
+    @Override
+	@Transactional(readOnly = true)
 	@Secured("Perm_View_Forms")
 	public List<FormDef> getStudyForms(User user, Integer studyDefId) {
     	return formDAO.getStudyForms(user, studyDefId);
@@ -98,6 +112,7 @@ public class FormServiceImpl implements FormService {
 	@Override
 	@Secured("Perm_Delete_Forms")
 	public void deleteForm(FormDef formDef) {
+		userFormMapDAO.deleteUserMappedForms(formDef.getId());
 		formDAO.deleteForm(formDef);
 	}
 	
@@ -145,20 +160,7 @@ public class FormServiceImpl implements FormService {
 	public FormData getFormData(Integer formDataId) {
 		return formDataDAO.getFormData(formDataId);
 	}
-	
-    @Override
-	@Transactional(readOnly = true)
-	@Secured("Perm_View_Form_Data")
-    public List<FormData> getFormData(int formDefVersionId) {
-        List<FormData> formData = new ArrayList<FormData>();
-        List<FormDataHeader> headers = studyDAO.getFormData(formDefVersionId, null, null, null);
-        for (FormDataHeader header : headers) {
-            formData.add(formDataDAO.getFormData(header.getId()));
-            log.debug("Loaded form data with id " + header.getId());
-        }
-        return formData;
-    }
-    
+
 	@Override
 	@Secured("Perm_View_Forms")
 	public FormDef getForm(int formId) {
@@ -294,33 +296,71 @@ public class FormServiceImpl implements FormService {
 
 	@Override
 	@Secured({"Perm_View_Forms", "Perm_View_Users"})
-    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return formDAO.getUnmappedForms(userId, loadConfig);
-    }
+	public PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formDAO.getMappedFormNames(userId, loadConfig);
+	}
+
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+	public PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formDAO.getUnmappedFormNames(userId, loadConfig);
+	}
 
 	@Override
 	@Secured({"Perm_Add_Users", "Perm_Add_Forms"})
-    public void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException {
+	public void saveMappedUserFormNames(Integer userId, List<FormDefHeader> formsToAdd, List<FormDefHeader> formsToDelete) throws OpenXDataSecurityException {
 		if (formsToAdd != null) {
-		    for (FormDef fd : formsToAdd) {
-		    	UserFormMap map = new UserFormMap(userId, fd.getId());
+			for (FormDefHeader fd : formsToAdd) {
+				UserFormMap map = new UserFormMap(userId, fd.getId());
 				userFormMapDAO.saveUserMappedForm(map);
-		    }
+			}
 		}
 		if (formsToDelete != null) {
-		    for (FormDef fd : formsToDelete) {
-		    	UserFormMap map = userFormMapDAO.getUserMappedForm(userId, fd.getId());
+			for (FormDefHeader fd : formsToDelete) {
+				UserFormMap map = userFormMapDAO.getUserMappedForm(userId, fd.getId());
 				userFormMapDAO.deleteUserMappedForm(map);
-		    }
+			}
 		}
-    }
+	}
 
 	@Override
 	public List<FormData> getFormData(FormDef form) {
 		return formDataDAO.getFormDataList(form);
 	}
 	
-	public FormDefVersion getFormVersion(int formVersionId) {
-		return formDAO.getFormVersion(formVersionId);
+	public List<FormDataVersion> getFormDataVersion(Integer formDataId) {
+		return formDataDAO.getFormDataVersion(formDataId);
 	}
+
+	@Override
+    public FormDefVersion getFormVersion(int formDefVersionId) {
+	    return formVersionDAO.getFormDefVersion(formDefVersionId);
+    }
+
+	@Override
+	@Secured("Perm_Delete_Form_Data")
+    public void deleteFormData(List<Integer> formDataIds) {
+		User user = userService.getLoggedInUser();
+		for (Integer id : formDataIds) {
+			FormData formData = formDataDAO.getFormData(id);
+			formData.setChangedBy(user);
+			formData.setDateChanged(new Date());
+			deleteFormData(formData);
+		}
+    }
+
+	@Override
+	@Secured("Perm_Export_Form_Data")
+    public void exportFormData(List<Integer> formDataIds) {
+	    for (Integer id : formDataIds) {
+	    	FormData formData = formDataDAO.getFormData(id);
+	    	exportTask.exportFormData(formData); // note: runs on a separate thread
+	    }
+    }
+
+	@Override
+	@Secured("Perm_View_Form_Data")
+    public PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) {
+	    return formDataDAO.getUnexportedFormData(loadConfig);
+    }
 }

@@ -22,8 +22,25 @@ public class DashboardWindow extends Window {
 	
 	protected final AppMessages appMessages = GWT.create(AppMessages.class);
 
+	/**
+	 * Creates a new Window with an exit "Are you sure" prompt
+	 * @param heading
+	 * @param width
+	 * @param height
+	 */
 	public DashboardWindow(String heading, int width, int height) {
-        setHeading(heading);
+		this(heading, width, height, true);
+	}
+	
+	/**
+	 * Creates a new Window without any exit prompt
+	 * @param heading
+	 * @param width
+	 * @param height
+	 * @param exitPrompt
+	 */
+	public DashboardWindow(String heading, int width, int height, boolean exitPrompt) {
+		setHeading(heading);
         setModal(true);
         setPlain(true);
         setMaximizable(true);
@@ -31,7 +48,9 @@ public class DashboardWindow extends Window {
         setResizable(true);
         setScrollMode(Scroll.AUTOY);
         setSize(width, height);
-        addListener(Events.BeforeHide, windowListener);
+        if (exitPrompt) {
+        	addListener(Events.BeforeHide, windowListener);
+        }
 	}
 	
 	final Listener<ComponentEvent> windowListener = new WindowListener();

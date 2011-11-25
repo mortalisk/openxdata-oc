@@ -54,4 +54,6 @@ public interface OpenXDataImages extends Resources {
     @ClientBundle.Source("org/freedesktop/tango/16x16/actions/view-refresh.png")
     ImageResource refresh();
 	
+    @ClientBundle.Source("org/freedesktop/tango/16x16/devices/multimedia-player.png")
+    ImageResource mobileInstaller();
 }

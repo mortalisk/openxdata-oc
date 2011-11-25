@@ -1,10 +1,11 @@
 package org.openxdata.server.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.server.admin.model.StudyDef;
+import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
-import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.StudyDAO;
@@ -80,7 +81,7 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
 	}
 
 	@Override
-    public PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+    public PagingLoadResult<StudyDef> getMappedStudies(Integer userId, PagingLoadConfig loadConfig) {
 		Search studySearch = getSearchFromLoadConfig(loadConfig, "name");
 		studySearch.addFilterSome("users", Filter.equal("id", userId));
 	    SearchResult<StudyDef> result = searchAndCount(studySearch);
@@ -88,10 +89,31 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
     }
 
 	@Override
-    public PagingLoadResult<StudyDef> getUnmappedStudies(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	public PagingLoadResult<StudyDefHeader> getMappedStudyNames(Integer userId, PagingLoadConfig loadConfig) {
+		Search studySearch = getSearchFromLoadConfig(loadConfig, "name");
+		studySearch.addFilterSome("users", Filter.equal("id", userId));
+		SearchResult<StudyDef> result = searchAndCount(studySearch);
+		return getStudyDefHeaderPagingLoadResult(loadConfig, result);
+	}
+
+	@Override
+	public PagingLoadResult<StudyDefHeader> getUnmappedStudyNames(Integer userId, PagingLoadConfig loadConfig) {
 		Search studySearch = getSearchFromLoadConfig(loadConfig, "name");
 		studySearch.addFilterAll("users", Filter.notEqual("id", userId));
-	    SearchResult<StudyDef> result = searchAndCount(studySearch);
-	    return getPagingLoadResult(loadConfig, result);
-    }
+		SearchResult<StudyDef> result = searchAndCount(studySearch);
+		return getStudyDefHeaderPagingLoadResult(loadConfig, result);
+	}
+	
+	private PagingLoadResult<StudyDefHeader> getStudyDefHeaderPagingLoadResult(PagingLoadConfig loadConfig, SearchResult<StudyDef> searchResult) {
+		List<StudyDef> list = searchResult.getResult();
+		List<StudyDefHeader> headerList = new ArrayList<StudyDefHeader>();
+		if (list != null) {
+			for (StudyDef fd : list) {
+				headerList.add(new StudyDefHeader(fd.getId(), fd.getName()));
+			}
+		}
+		int totalNum = searchResult.getTotalCount();
+		int offset = loadConfig == null ? 0 : loadConfig.getOffset();
+		return new PagingLoadResult<StudyDefHeader>(headerList, offset, list.size(), totalNum);
+	}
 }

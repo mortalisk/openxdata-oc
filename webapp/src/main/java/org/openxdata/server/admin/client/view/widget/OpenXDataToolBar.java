@@ -1,6 +1,5 @@
 package org.openxdata.server.admin.client.view.widget;
 
-import com.google.gwt.core.client.GWT;
 import java.util.List;
 import java.util.Vector;
 
@@ -9,15 +8,16 @@ import org.openxdata.server.admin.client.VersionInfo;
 import org.openxdata.server.admin.client.controller.facade.MainViewControllerFacade;
 import org.openxdata.server.admin.client.internationalization.OpenXdataConstants;
 import org.openxdata.server.admin.client.permissions.util.RolesListUtil;
+import org.openxdata.server.admin.client.view.event.LogOutEvent;
+import org.openxdata.server.admin.client.view.event.MobileInstallEvent;
 import org.openxdata.server.admin.client.view.event.dispatcher.ExtendedEventDispatcher;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataEventListener;
-import org.openxdata.server.admin.client.view.listeners.OpenXDataExportImportApplicationEventListener;
 import org.openxdata.server.admin.client.view.listeners.OpenXDataViewApplicationEventListener;
-import org.openxdata.server.admin.client.view.listeners.OpenXDataViewExtendedApplicationEventListener;
 import org.openxdata.server.admin.model.User;
 import org.purc.purcforms.client.util.FormUtil;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
@@ -26,7 +26,6 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.openxdata.server.admin.client.view.event.LogOutEvent;
 
 /**
  * 
@@ -42,6 +41,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	private PushButton btnNewItem;
 	private PushButton btnSave;
 	private PushButton btnAddNewChildItem;
+	private PushButton btnMobileInstaller;
 
 	/** Label to display the name of the currently logged on user. */
 	private Label lblTitleUser;
@@ -87,8 +87,11 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
         btnAddNewChildItem = createButton(images.addchild());
 
         btnRefresh = createButton(images.refresh());
-
+        
+        btnMobileInstaller = createButton(images.mobileInstaller());
+        
         btnLogout = createButton(images.logout());
+        
     }
 
     private void setButtonTitles() {
@@ -99,6 +102,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
         btnAddNewChildItem.setTitle(constants.label_add_new_child());
 
         btnRefresh.setTitle(constants.label_refresh());
+        btnMobileInstaller.setTitle(constants.label_mobile_installer());
         btnLogout.setTitle(constants.label_logout());
     }
 
@@ -130,6 +134,14 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 			@Override
 			public void onClick(ClickEvent event) {
 				notifyOnNewChildItemEventListeners();}});
+		
+		btnMobileInstaller.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				fireEvent(new MobileInstallEvent());}
+			
+		});	
 		
 		btnLogout.addClickHandler(new ClickHandler(){
 
@@ -178,6 +190,10 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
         panel.add(btnRefresh);
 	}
 
+	private void addMobileInstallerButton() {
+		panel.add(btnMobileInstaller);
+	}
+	
     private void addLogoutButton() {
 		panel.add(btnLogout);
 	}
@@ -190,6 +206,7 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	public OpenXDataToolBar instanceOfAdminUser() {
 		this.bindMenuBarFunctionalButtons();
 		
+		this.addMobileInstallerButton();
 		this.addLogoutButton();
 		
 		this.setCurrentlyLoggedOnUser();
@@ -208,6 +225,10 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 			this.bindMenuBarFunctionalButtons();			
 		}	
 		
+		 if (RolesListUtil.getPermissionResolver().isExtraPermission(
+	                "Perm_Mobile_Installer")) {
+			 this.addMobileInstallerButton();
+		 }
 		this.addLogoutButton();
 		
 		this.setCurrentlyLoggedOnUser();
@@ -227,43 +248,6 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 	}
 	
 	@Override
-	public void registerAdvancedApplicationEventListener(OpenXDataViewExtendedApplicationEventListener eventListener){
-		viewApplicationEventListeners.add(eventListener);
-	}
-	
-	@Override
-	public void removeAdvancedApplicationEventListener(OpenXDataViewExtendedApplicationEventListener eventListener){
-		viewApplicationEventListeners.remove(eventListener);
-	}
-
-	@Override
-	public void notifyOnExportEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).onExport();				
-			}
-		}	
-	}
-
-	@Override
-	public void notifyOnFormatEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataViewExtendedApplicationEventListener){
-				((OpenXDataViewExtendedApplicationEventListener)xViewAppEventListener).format();				
-			}
-		}
-	}
-
-	@Override
-	public void notifyOnImportEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener){
-				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).onImport();				
-			}
-		}
-	}
-
-	@Override
 	public void notifyOnNewItemEventListeners() {
 		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
 			if(xViewAppEventListener instanceof OpenXDataViewApplicationEventListener){
@@ -272,16 +256,6 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 		}
 	}
 
-	@Override
-	public void notifyOnOpenEventListeners() {
-		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
-			if(xViewAppEventListener instanceof OpenXDataExportImportApplicationEventListener){
-				((OpenXDataExportImportApplicationEventListener)xViewAppEventListener).onOpen();
-			}
-		}		
-	}
-
-	
 	@Override
 	public void notifyOnRefreshEventListeners() {
 		for(OpenXDataEventListener xViewAppEventListener : viewApplicationEventListeners){
@@ -316,18 +290,6 @@ public class OpenXDataToolBar extends Composite implements ExtendedEventDispatch
 				((OpenXDataViewApplicationEventListener)xViewAppEventListener).onDeleteItem();
 			}
 		}
-	}
-
-	@Override
-	public void registerExportImportApplicationEventListener(OpenXDataExportImportApplicationEventListener eventListener) {
-		viewApplicationEventListeners.add(eventListener);
-		
-	}
-
-	@Override
-	public void removeExportImportApplicationEventListener(OpenXDataExportImportApplicationEventListener eventListener) {
-		viewApplicationEventListeners.remove(eventListener);
-		
 	}
 
 }

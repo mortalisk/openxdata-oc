@@ -37,7 +37,7 @@
       <servlet path='/RoleService' class='org.openxdata.server.admin.server.RoleServiceImpl'/>
       <servlet path='/SmsService' class='org.openxdata.server.admin.server.SmsServiceImpl'/>
       <servlet path='/FormService' class='org.openxdata.server.admin.server.FormServiceImpl'/>
-      <servlet path='/StudyManagerService' class='org.openxdata.server.admin.server.StudyManagerServiceImpl'/>
+      <servlet path='/StudyService' class='org.openxdata.server.admin.server.StudyServiceImpl'/>
       <servlet path='/AuthenticationService' class='org.openxdata.server.admin.server.AuthenticationServiceImpl'/>
      
       <!-- Specify the application specific style sheet.              -->

@@ -8,6 +8,7 @@ import org.openxdata.server.admin.client.service.ReportServiceAsync;
 import org.openxdata.server.admin.client.service.RoleServiceAsync;
 import org.openxdata.server.admin.client.service.SettingServiceAsync;
 import org.openxdata.server.admin.client.service.SmsServiceAsync;
+import org.openxdata.server.admin.client.service.StudyServiceAsync;
 import org.openxdata.server.admin.client.service.TaskServiceAsync;
 import org.openxdata.server.admin.client.service.UserServiceAsync;
 import org.openxdata.server.admin.client.service.UtilityServiceAsync;
@@ -49,8 +50,10 @@ public class Context  {
 	private static UtilityServiceAsync utilityServiceAsync;
 	
 	private static SettingServiceAsync settingServiceAsync;
-	
 		
+	/** The study service async interface. */
+	private static StudyServiceAsync studyService;
+	
 	private static RoleServiceAsync roleServiceAsync;
 	
 	/** The currently logged on user. */
@@ -93,6 +96,7 @@ public class Context  {
 	 * Starts up the context.
 	 */
     public static void startup() {
+        studyService = StudyServiceAsync.Util.getInstance();
         authenticationServiceAsync = AuthenticationServiceAsync.Util.getInstance();
         smsServiceAsync = SmsServiceAsync.Util.getInstance();
         roleServiceAsync = RoleServiceAsync.Util.getInstance();
@@ -292,6 +296,15 @@ public class Context  {
 	 */
 	public static String getSetting(String name, String defaultValue){
 		return SettingGroup.getSetting(name,settingGroups,defaultValue);
+	}
+	
+	/**
+	 * Gets the study service async interface.
+	 * 
+	 * @return the interface.
+	 */
+	public static StudyServiceAsync getStudyManagerService(){ 
+		return studyService;
 	}
 
 	/**

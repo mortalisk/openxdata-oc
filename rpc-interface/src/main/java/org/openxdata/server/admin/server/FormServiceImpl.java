@@ -8,7 +8,10 @@ import javax.servlet.ServletException;
 import org.openxdata.server.admin.model.Editable;
 import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
+import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
+import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.ExportedDataNotFoundException;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
@@ -50,15 +53,15 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     public PagingLoadResult<FormDef> getForms(User user, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
 	    return formService.getForms(user, loadConfig);
     }
+	
+	@Override
+    public PagingLoadResult<FormDefVersion> getFormVersions(User user, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getFormVersions(user, loadConfig);
+    }
 
     @Override
 	public Integer getFormResponseCount(int formDefVersionId) {
 		return formService.getFormResponseCount(formDefVersionId);
-	}
-
-    @Override
-	public List<FormData> getFormData(int formDefVersionId) {
-		return formService.getFormData(formDefVersionId);
 	}
 
     @Override
@@ -105,12 +108,42 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     }
 
 	@Override
-    public PagingLoadResult<FormDef> getUnmappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return formService.getUnmappedForms(userId, loadConfig);
+	public PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formService.getMappedFormNames(userId, loadConfig);
+	}
+
+	@Override
+	public PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+		return formService.getUnmappedFormNames(userId, loadConfig);
+	}
+
+	@Override
+	public void saveMappedUserFormNames(Integer userId, List<FormDefHeader> formsToAdd, List<FormDefHeader> formsToDelete) throws OpenXDataSecurityException {
+		formService.saveMappedUserFormNames(userId, formsToAdd, formsToDelete);
+	}
+
+	@Override
+    public FormDefVersion getFormVersion(Integer formDefVersionId) throws OpenXDataSecurityException {
+	    return formService.getFormVersion(formDefVersionId);
     }
 
 	@Override
-    public void saveMappedUserForms(Integer userId, List<FormDef> formsToAdd, List<FormDef> formsToDelete) throws OpenXDataSecurityException {
-	    formService.saveMappedUserForms(userId, formsToAdd, formsToDelete);	    
+    public FormData getFormData(Integer formDataId) throws OpenXDataSecurityException {
+	    return formService.getFormData(formDataId);
+    }
+
+	@Override
+    public void deleteFormData(List<Integer> formDataIds) throws OpenXDataSecurityException {
+	    formService.deleteFormData(formDataIds);
+    }
+
+	@Override
+    public void exportFormData(List<Integer> formDataIds) throws OpenXDataSecurityException {
+		formService.exportFormData(formDataIds);
+    }
+
+	@Override
+    public PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return formService.getUnexportedFormData(loadConfig);
     }
 }

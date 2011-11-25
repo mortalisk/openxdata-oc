@@ -4,7 +4,6 @@ import org.openxdata.server.admin.client.presenter.MainPresenter;
 import org.openxdata.server.admin.client.view.DatasetView;
 import org.openxdata.server.admin.client.view.treeview.DatasetTreeView;
 import org.openxdata.server.admin.client.view.widget.OpenXDataLabel;
-import org.openxdata.server.admin.client.view.widget.OpenXDataMenuBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataNotificationBar;
 import org.openxdata.server.admin.client.view.widget.OpenXDataStackPanel;
 import org.openxdata.server.admin.client.view.widget.OpenXDataToolBar;
@@ -35,8 +34,6 @@ public interface OpenXDataWidgetGinInjector extends Ginjector {
     public OpenXDataWidgetFactory getWidgetFactory();
 
     public OpenXDataStackPanel getOpenXdataStackPanel();
-
-    public OpenXDataMenuBar getOpenXDataMenuBar();
 
     public OpenXDataLabel getNotificationLabel();
 

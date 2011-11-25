@@ -14,10 +14,12 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
-import org.openxdata.server.admin.model.mapping.UserFormMap;
-import org.openxdata.server.admin.model.mapping.UserStudyMap;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
+import org.openxdata.server.service.FormService;
 import org.openxdata.server.service.StudyManagerService;
 import org.openxdata.server.service.UserService;
 import org.openxdata.test.BaseContextSensitiveTest;
@@ -29,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Tests methods in the UserService which deal with users.
  *  
  */
-@SuppressWarnings("deprecation")
 public class UserServiceTest extends BaseContextSensitiveTest {
 
 	private static Logger log = LoggerFactory.getLogger(UserServiceTest.class);
@@ -39,6 +40,9 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	
 	@Autowired
 	private StudyManagerService studyService;
+	
+	@Autowired
+	private FormService formService;
 	
 	List<User> dummyUsers;
 	final String userName = "User Name";
@@ -199,24 +203,10 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Assert.assertTrue(user.getRoles().size() == 2);
 		
 		User user2 = userService.findUserByUsername("name7");
-		List<FormDef> forms = studyService.getFormByName("Sample Form");
-		List<UserFormMap> formMaps = studyService.getUserMappedForms();
-		int count = 0;
-		for (UserFormMap map : formMaps) {
-			if (map.getUserId() == user2.getId()) {
-				count++;
-				Assert.assertEquals(forms.get(0).getId(), map.getFormId());
-			}
-		}
-		Assert.assertEquals(1, count);
-		List<UserStudyMap> studyMaps = studyService.getUserMappedStudies();
-		count = 0;
-		for (UserStudyMap map : studyMaps) {
-			if (map.getUserId() == user2.getId()) {
-				count++;
-			}
-		}
-		Assert.assertEquals(2, count);		
+		PagingLoadResult<FormDef> mappedForms = formService.getMappedForms(user2.getId(), new PagingLoadConfig(0,100));
+		Assert.assertEquals(1, mappedForms.getData().size());
+		PagingLoadResult<StudyDef> mappedStudies = studyService.getMappedStudies(user2.getId(), new PagingLoadConfig(0,100));
+		Assert.assertEquals(2, mappedStudies.getData().size());		
 	}
 	
 	

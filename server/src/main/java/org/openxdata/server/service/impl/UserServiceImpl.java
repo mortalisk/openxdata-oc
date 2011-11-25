@@ -27,6 +27,8 @@ import org.openxdata.server.dao.FormDAO;
 import org.openxdata.server.dao.RoleDAO;
 import org.openxdata.server.dao.SettingDAO;
 import org.openxdata.server.dao.UserDAO;
+import org.openxdata.server.dao.UserFormMapDAO;
+import org.openxdata.server.dao.UserStudyMapDAO;
 import org.openxdata.server.security.OpenXDataSessionRegistry;
 import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.MailService;
@@ -78,6 +80,12 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private StudyManagerService studyService;
+    
+    @Autowired
+    private UserStudyMapDAO userStudyMapDAO;
+    
+    @Autowired
+    private UserFormMapDAO userFormMapDAO;
     
     @Autowired
     private FormDAO formDAO;
@@ -244,11 +252,11 @@ public class UserServiceImpl implements UserService {
 	             saveUser(user);
 	             for (UserStudyMap userStudyMap : userStudyMaps) {
 	            	 userStudyMap.setUserId(user.getId());
-	            	 studyService.saveUserMappedStudy(userStudyMap);
+	            	 userStudyMapDAO.saveUserMappedStudy(userStudyMap);
 	             }
 	             for (UserFormMap userFormMap : userFormMaps) {
 	            	 userFormMap.setUserId(user.getId());
-	            	 studyService.saveUserMappedForm(userFormMap);
+	            	 userFormMapDAO.saveUserMappedForm(userFormMap);
 	             }
 			} else {
 				hasErrors = true;

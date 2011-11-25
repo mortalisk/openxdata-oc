@@ -101,4 +101,22 @@
                 <column name="description" value="Ability for a User to edit their own captured data"/>
             </insert>
     </changeSet>
+    
+    <changeSet author="Dagmar" id="add_Perm_Export_Form_Data">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                SELECT count(*) FROM permission where name='Perm_Export_Form_Data';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Adding permission to enable exporting of form data
+        </comment>      
+            <insert tableName="permission">
+                <column name="name" value="Perm_Export_Form_Data"/>
+                <column name="description" value="Ability to export Form Data"/>
+            </insert>
+    </changeSet>
+    
 </databaseChangeLog>

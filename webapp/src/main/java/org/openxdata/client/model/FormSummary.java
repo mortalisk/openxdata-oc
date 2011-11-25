@@ -3,6 +3,7 @@ package org.openxdata.client.model;
 import java.util.Date;
 
 import org.openxdata.server.admin.model.FormDef;
+import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 
@@ -14,6 +15,7 @@ public class FormSummary extends BaseModel {
     
     private FormDef formDef;
     private FormDefVersion formVersion;
+	private FormDefHeader formDefHeader;
 
     public FormSummary() {
 	}
@@ -26,6 +28,10 @@ public class FormSummary extends BaseModel {
         setFormVersion(formDefVersion);
     }
     
+	public FormSummary(FormDefHeader formDefHeader) {
+		setFormDefHeader(formDefHeader);
+	}
+	
     public FormSummary(String id, String form) {
     	setId(id);
     	setForm(form);
@@ -132,6 +138,10 @@ public class FormSummary extends BaseModel {
 		return formVersion;
 	}
 
+	public FormDefHeader getFormDefHeader() {
+		return formDefHeader;
+	}
+
 	public void setFormVersion(FormDefVersion formVersion) {
 		this.formVersion = formVersion;
 		this.formDef = formVersion.getFormDef();
@@ -141,6 +151,11 @@ public class FormSummary extends BaseModel {
 	public void setFormDef(FormDef formDef) {
 		this.formDef = formDef;
 		updateFormDefinition(formDef);
+	}
+
+	public void setFormDefHeader(FormDefHeader formDefHeader) {
+		this.formDefHeader = formDefHeader;
+		updateFormDefHeader(formDefHeader);
 	}
 
 	public void updateFormDefinition(FormDef formDef) {
@@ -176,5 +191,11 @@ public class FormSummary extends BaseModel {
 		if (formDef.getDateChanged() == null) {
 			setChanged(formDef.getDateCreated());
 		}
+	}
+	
+	public void updateFormDefHeader(FormDefHeader formDefHeader) {
+		setId(String.valueOf(formDefHeader.getId()));
+		setForm(formDefHeader.getName());
+		setName(formDefHeader.getName());
 	}
 }

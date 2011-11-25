@@ -10,7 +10,7 @@ public class FilterConfig implements Serializable {
 	
 	private static final long serialVersionUID = -5500689821800568751L;
 
-	FilterComparison comparison = FilterComparison.LIKE;
+	FilterComparison comparison;
 	String field;
 	FilterType type;
 	String stringValue;
@@ -22,89 +22,35 @@ public class FilterConfig implements Serializable {
 		// default constructor
 	}
 	
-	public FilterConfig(String field, String value) {
+	public FilterConfig(String field, Object value, FilterComparison comparison) {
 		this.field = field;
-		this.stringValue = value;
-		this.type = FilterType.STRING;
-	}
-	
-	public FilterConfig(String field, Number value) {
-		this.field = field;
-		this.numberValue = value;
-		this.type = FilterType.NUMERIC;
-	}
-	
-	public static FilterConfig createFilterConfigGreaterThan(String field, Number value) {
-		FilterConfig config = new FilterConfig(field, value);
-		config.setComparison(FilterComparison.GREATER_THAN);
-		return config;
-	}
-	
-	public static FilterConfig createFilterConfigLessThan(String field, Number value) {
-		FilterConfig config = new FilterConfig(field, value);
-		config.setComparison(FilterComparison.LESS_THAN);
-		return config;
-	}
-	
-	public static FilterConfig createFilterConfigEqualTo(String field, Number value) {
-		FilterConfig config = new FilterConfig(field, value);
-		config.setComparison(FilterComparison.EQUAL_TO);
-		return config;
-	}
-	
-	public FilterConfig(String field, Date value) {
-		this.field = field;
-		this.dateValue = value;
-		this.type = FilterType.DATE;
-	}
-	
-	public static FilterConfig createFilterConfigBeforeDate(String field, Date value) {
-		FilterConfig config = new FilterConfig(field, value);
-		config.setComparison(FilterComparison.LESS_THAN);
-		return config;
-	}
-	
-	public static FilterConfig createFilterConfigAfterDate(String field, Date value) {
-		FilterConfig config = new FilterConfig(field, value);
-		config.setComparison(FilterComparison.GREATER_THAN);
-		return config;
-	}
-	
-	public static FilterConfig createFilterConfigOnDate(String field, Date value) {
-		FilterConfig config = new FilterConfig(field, value);
-		config.setComparison(FilterComparison.EQUAL_TO);
-		return config;
-	}
-	
-	public FilterConfig(String field, Boolean value) {
-		this.field = field;
-		this.booleanValue = value;
-		this.type = FilterType.BOOLEAN;
+		this.comparison = comparison;
+		setValue(value);
 	}
 	
 	public FilterComparison getComparison() {
-    	return comparison;
-    }
-	
+		return comparison;
+	}
+
 	public void setComparison(FilterComparison comparison) {
-    	this.comparison = comparison;
-    }
-	
+		this.comparison = comparison;
+	}
+
 	public String getField() {
-    	return field;
-    }
-	
+		return field;
+	}
+
 	public void setField(String field) {
-    	this.field = field;
-    }
-	
+		this.field = field;
+	}
+
 	public FilterType getType() {
-    	return type;
-    }
-	
+		return type;
+	}
+
 	public void setType(FilterType type) {
-    	this.type = type;
-    }
+		this.type = type;
+	}
 	
 	public Object getValue() {
 		switch (type) {
