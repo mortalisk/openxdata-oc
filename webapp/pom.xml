@@ -337,6 +337,7 @@
                                 <fileset>
                                     <directory>war</directory>
                                         <includes>
+                                        <include>Emit.css</include>
                                         <include>WEB-INF/lib/**</include>
                                         <include>WEB-INF/classes/**</include>
                                         <include>WEB-INF/deploy/**</include>
