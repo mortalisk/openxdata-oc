@@ -10,6 +10,9 @@ import com.google.gwt.user.client.ui.Tree.Resources;
  */
 public interface OpenXDataImages extends Resources {
 	
+	@ClientBundle.Source("org/freedesktop/tango/16x16/status/dialog-warning.png")
+	ImageResource warningIcon();
+	
 	ImageResource drafts();
 	ImageResource markRead();
 	ImageResource note();

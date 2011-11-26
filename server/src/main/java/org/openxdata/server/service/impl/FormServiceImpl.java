@@ -337,7 +337,7 @@ public class FormServiceImpl implements FormService {
     public FormDefVersion getFormVersion(Integer formDefVersionId) {
 	    return formVersionDAO.getFormDefVersion(formDefVersionId);
     }
-
+	
 	@Override
 	@Secured("Perm_Delete_Form_Data")
     public void deleteFormData(List<Integer> formDataIds) {
@@ -365,4 +365,9 @@ public class FormServiceImpl implements FormService {
     public PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) {
 	    return formDataDAO.getUnexportedFormData(loadConfig);
     }
+
+	@Override
+	public Integer getUnprocessedDataCount(int formDefVersionId) {
+		return formDataDAO.getUnprocessedDataCount(formDefVersionId);
+	}
 }

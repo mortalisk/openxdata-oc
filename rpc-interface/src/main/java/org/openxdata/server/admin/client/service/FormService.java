@@ -101,7 +101,15 @@ public interface FormService extends RemoteService {
      * @return Integer (positive number, 0 for no responses)
      */
     Integer getFormResponseCount(int formDefVersionId) throws OpenXDataSecurityException;
-
+	
+	/**
+	 * Calculates the number of responses which have not been exported for a specified formDefVersion
+	 * @param formDefVersionId int identifier for the form definition version
+	 * @return Integer (positive number and 0 for no unprocessed data)
+	 * @throws OpenXDataSecurityException
+	 */
+	Integer getUnprocessedDataCount(int formDefVersionId) throws OpenXDataSecurityException;
+	
     /**
      * Retrieves a page of the form data (directly from exported tables) for a specified form definition.
      * 

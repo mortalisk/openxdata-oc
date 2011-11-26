@@ -65,7 +65,15 @@ public interface FormDataDAO extends BaseDAO<FormData> {
      * @param formDataId Integer FormData identifier
      * @return List of FormDataVersion
      */
-    List<FormDataVersion> getFormDataVersion(Integer formDataId);
+	List<FormDataVersion> getFormDataVersion(Integer formDataId);
+	
+	/**
+	 * Retrieves the number of unprocessed (unexported) form data 
+	 * entries for the specified form
+	 * @param formDefVersionId
+	 * @return
+	 */
+	Integer getUnprocessedDataCount(Integer formDefVersionId);
 
 	
 	/**

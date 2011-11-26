@@ -10,6 +10,7 @@ import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.controllers.FormListController;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.client.view.images.OpenXDataImages;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -66,6 +67,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class FormListView extends View implements Refreshable {
 	final AppMessages appMessages = GWT.create(AppMessages.class);
+	final OpenXDataImages images = GWT.create(OpenXDataImages.class);
 
 	public static final int PAGE_SIZE = 10;
 	
@@ -118,8 +120,22 @@ public class FormListView extends View implements Refreshable {
 		ColumnConfig nameColConfig = new ColumnConfig("name", appMessages.form(), 570);
 		nameColConfig.setRenderer(nameCellRender);
 		configs.add(nameColConfig);
-		ColumnConfig responsesColConfig = new ColumnConfig("responses",
-				appMessages.responses(), 70);
+		
+		GridCellRenderer<FormSummary> responsesCellRender = new GridCellRenderer<FormSummary>() {  
+			public String render(FormSummary summary, String property, ColumnData config, int rowIndex, int colIndex,  
+					ListStore<FormSummary> store, Grid<FormSummary> grid) {
+				String responseCount = summary.getResponses();
+				String html = "<span style='white-space:pre;'>    </span>";
+				if (responseCount.endsWith("!")) {
+					responseCount = responseCount.substring(0, responseCount.length()-1);
+					html = "<img src='"+images.warningIcon().getURL()+"' height='12' width='12' title='"+appMessages.unprocessedDataWarning()+"' />";
+				}
+				return "<span qtitle='" + cm.getColumnById(property).getHeader() + "' qtip='" + responseCount 
+				+ "'>" + responseCount + "</span>" + html;
+			}
+		};
+		ColumnConfig responsesColConfig = new ColumnConfig("responses", appMessages.responses(), 70);
+		responsesColConfig.setRenderer(responsesCellRender);
 		responsesColConfig.setAlignment(HorizontalAlignment.RIGHT);
 		responsesColConfig.setSortable(false);
 		responsesColConfig.setGroupable(false);
@@ -522,10 +538,10 @@ public class FormListView extends View implements Refreshable {
 		}
 	}
 
-	public void setNumberOfFormResponses(FormDefVersion formDefVersion, Integer numberOfResponses) {
+	public void setNumberOfFormResponses(FormDefVersion formDefVersion, String numberOfResponses) {
 		FormSummary formSummary = getFormSummary(String.valueOf(formDefVersion.getId()));
 		if (formSummary != null) {
-			formSummary.setResponses(String.valueOf(numberOfResponses));
+			formSummary.setResponses(numberOfResponses);
 		}
 		grid.getView().refresh(false);
 	}

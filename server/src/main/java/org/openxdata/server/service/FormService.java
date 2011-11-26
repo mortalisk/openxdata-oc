@@ -146,6 +146,13 @@ public interface FormService {
      * @return Integer (positive number, 0 for no responses)
      */
     Integer getFormResponseCount(int formDefVersionId);
+    
+	/**
+	 * Calculates the number of responses which have not been exported for a specified formDefVersion
+	 * @param formDefVersionId int identifier for the form definition version
+	 * @return Integer (positive number and 0 for no unprocessed data)
+	 */
+	Integer getUnprocessedDataCount(int formDefVersionId);
 
     /**
      * Checks if a study, form or form version has data collected for it.
