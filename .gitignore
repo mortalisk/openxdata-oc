@@ -26,6 +26,7 @@ webapp/src/main/java/org/openxdata/client/PurcformsText_pt.properties
 webapp/src/main/java/org/openxdata/client/PurcformsText_st.properties
 webapp/src/main/java/org/openxdata/server/admin/client/VersionInfo.java
 webapp/target/
+webapp/war/Emit.css
 webapp/war/WEB-INF/classes/
 protocol-providers/mforms-proto/.classpath
 protocol-providers/mforms-proto/.project

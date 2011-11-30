@@ -64,6 +64,12 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
 		return formService.getFormResponseCount(formDefVersionId);
 	}
 
+	@Override
+	public Integer getUnprocessedDataCount(int formDefVersionId)
+			throws OpenXDataSecurityException {
+		return formService.getUnprocessedDataCount(formDefVersionId);
+	}
+	
     @Override
 	public PagingLoadResult<ExportedFormData> getFormDataList(String formBinding,
 			String[] questionBindings, PagingLoadConfig  pagingLoadConfig) throws ExportedDataNotFoundException {
@@ -146,4 +152,5 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     public PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
 	    return formService.getUnexportedFormData(loadConfig);
     }
+
 }

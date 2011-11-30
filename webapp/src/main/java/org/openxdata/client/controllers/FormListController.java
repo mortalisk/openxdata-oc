@@ -134,13 +134,23 @@ public class FormListController extends Controller {
     	GWT.log("FormListController : hasFormData");
         formService.getFormResponseCount(formDefVersion.getId(), new EmitAsyncCallback<Integer>() {
             @Override
-			public void onSuccess(Integer result) {
-                if (result > 0) {
+			public void onSuccess(final Integer formResponseCount) {
+                if (formResponseCount > 0) {
                     formListView.setFormStatus(formDefVersion.getFormDef(), true);
                 } else {
                     formListView.setFormStatus(formDefVersion.getFormDef(), false);
                 }
-                formListView.setNumberOfFormResponses(formDefVersion, result);
+				formService.getUnprocessedDataCount(formDefVersion.getId(), new EmitAsyncCallback<Integer>() {
+					@Override
+					public void onSuccess(Integer unprocessedDataCount) {
+						String numberOfFormResponses = String.valueOf(formResponseCount);
+						GWT.log("unprocessedDataCount:"+unprocessedDataCount);
+						if (unprocessedDataCount > 0) {
+							numberOfFormResponses = numberOfFormResponses + "!";
+						}
+						formListView.setNumberOfFormResponses(formDefVersion, numberOfFormResponses);
+					}
+				});
             }
         });
     }

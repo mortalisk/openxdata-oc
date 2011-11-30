@@ -120,4 +120,13 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 		FormDefVersion result = (FormDefVersion)_searchUnique(FormDefVersion.class, formDefVersionSearch);
 		return result;
 	}
+	
+	@Override
+	public Integer getUnprocessedDataCount(Integer formDefVersionId) {
+		Search unprocessedDataSearch = new Search();
+		// FIXME: see ticket #560
+		unprocessedDataSearch.addFilterEqual("exported", 0);
+		unprocessedDataSearch.addFilterEqual("formDefVersionId", formDefVersionId);
+		return count(unprocessedDataSearch);
+	}
 }
