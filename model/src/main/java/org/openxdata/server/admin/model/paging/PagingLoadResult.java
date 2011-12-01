@@ -17,12 +17,27 @@ public class PagingLoadResult<Data> implements Serializable {
 		// default constructor
 	}
 	
+	/**
+	 * Constructor used to create a new instance of <tt>PagingLoadResult</tt>.
+	 *
+	 * @param data Data returned from the server.
+	 * @param offset The index at which to start returning results from.
+	 * @param length Size of Data that has been returned.
+	 */
 	public PagingLoadResult(List<Data> data, int offset, int length) {
 		this.data = data;
 		this.offset = offset;
 		this.length = length;
 	}
 	
+	/**
+	 * Constructor used to create a new instance of <tt>PagingLoadResult</tt>.
+	 *
+	 * @param data Data returned from the server.
+	 * @param offset The index at which to start returning results from.
+	 * @param length Total number of items returned in a particular page.
+	 * @param totalLength Total number of all items fetched.
+	 */
 	public PagingLoadResult(List<Data> data, int offset, int length, int totalLength) {
 		this(data, offset, length);
 		this.totalLength = totalLength;

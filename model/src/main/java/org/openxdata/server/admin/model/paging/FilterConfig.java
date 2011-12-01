@@ -79,4 +79,40 @@ public class FilterConfig implements Serializable {
 			throw new UnexpectedException("Value of type "+value.getClass()+" is not supported in Filter Config");
 		}
     }
+	
+	public boolean isTypeBoolean() {
+		FilterType filterType = getType();
+		Boolean isTypeBoolean = false;
+		if(filterType == FilterType.BOOLEAN) {
+			isTypeBoolean = true;
+		}
+		return isTypeBoolean;
+	}
+
+	public boolean isTypeDate() {
+		FilterType filterType = getType();
+		Boolean isTypeDate = false;
+		if(filterType == FilterType.DATE) {
+			isTypeDate = true;
+	}
+		return isTypeDate;
+	}
+
+	public boolean isTypeNumeric() {
+		FilterType filterType = getType();
+		Boolean isTypeNumeric = false;
+		if(filterType == FilterType.NUMERIC) {
+			isTypeNumeric = true;
+		}
+			return isTypeNumeric;
+	}
+
+	public boolean isTypeString() {
+		FilterType filterType = getType();
+		Boolean isTypeString = false;
+		if(filterType == FilterType.STRING) {
+			isTypeString = true;
+		}
+			return isTypeString;
+	}
 }

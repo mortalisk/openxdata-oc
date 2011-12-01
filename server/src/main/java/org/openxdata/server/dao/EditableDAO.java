@@ -37,7 +37,8 @@ public interface EditableDAO extends BaseDAO<FormDef> {
 	 * Get the number of responses for a form
 	 * 
 	 * @param formBinding
+	 * @param pagingLoadConfig paging related settings
 	 * @return
 	 */
-	BigInteger getNumberOfResponses(String formBinding);
+	BigInteger getNumberOfResponses(String formBinding, PagingLoadConfig pagingLoadConfig);
 }

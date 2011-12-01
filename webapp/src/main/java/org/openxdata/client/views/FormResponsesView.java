@@ -1,6 +1,7 @@
 package org.openxdata.client.views;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
@@ -50,7 +51,6 @@ import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.DateField;
-import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -77,7 +77,8 @@ public class FormResponsesView extends View implements Refreshable  {
     final AppMessages appMessages = GWT.create(AppMessages.class);
     public static final int PAGE_SIZE = 10;
 
-    private FieldSet searchPanel;
+    private LayoutContainer searchPanel;
+    private Button searchButton;
     private DateField searchTo;
     private DateField searchFrom;
     private ComboBox<UserSummary> searchUser;
@@ -136,12 +137,22 @@ public class FormResponsesView extends View implements Refreshable  {
 		userLoader.setRemoteSort(true);
 		ListStore<UserSummary> store = new ListStore<UserSummary>(userLoader);
 		searchUser.setStore(store);
-        LayoutContainer insideSearchPanel = new LayoutContainer();
-        insideSearchPanel.setLayout(new ColumnLayout());
-        insideSearchPanel.add(createFormContainer(appMessages.from(), searchFrom));
-        insideSearchPanel.add(createFormContainer(appMessages.to(), searchTo));
-        insideSearchPanel.add(createFormContainer(appMessages.capturer(), searchUser));
+		searchPanel = new LayoutContainer();
+		searchPanel.setLayout(new ColumnLayout());
+		searchPanel.add(createFormContainer(appMessages.from(), searchFrom));
+		searchPanel.add(createFormContainer(appMessages.to(), searchTo));
+		searchPanel.add(createFormContainer(appMessages.capturer(), searchUser));
         
+		searchButton = new Button(appMessages.search());
+		searchButton.setStyleAttribute("paddingLeft", "10px"); 
+     	searchButton.setStyleAttribute("paddingTop", "10px"); 
+     	searchButton.addListener(Events.Select, new Listener<ButtonEvent>() {
+			@Override
+			public void handleEvent(ButtonEvent be) {
+				searchResponses(); 
+			}
+		});
+		
         // can't do anything here because we don't have the column model
         exportButton = new Button(appMessages.exportToCSV());
         exportButton.setStyleAttribute("paddingLeft", "10px");
@@ -181,10 +192,7 @@ public class FormResponsesView extends View implements Refreshable  {
              }
          });
         
-        insideSearchPanel.add(exportButton);
-        searchPanel = new FieldSet();
-        searchPanel.setHeading(appMessages.exportResponses());
-        searchPanel.add(insideSearchPanel);
+        searchPanel.add(searchButton);
     }
     
     private Component createFormContainer(String label, TextField<?> field) {
@@ -205,9 +213,10 @@ public class FormResponsesView extends View implements Refreshable  {
         ColumnConfig formId = new ColumnConfig("openxdata_form_data_id", appMessages.id(), 50);
         configs.add(formId);
 
-        ColumnConfig date = new ColumnConfig("openxdata_date_created", appMessages.date(), 125);
+        ColumnConfig date = new ColumnConfig("openxdata_form_data_date_created", appMessages.date(), 125);
         date.setDateTimeFormat(DateTimeFormat.getFormat("d MMM y HH:mm:ss"));
-        date.setSortable(false); // FIXME: has to be like this because the column doesn't exist yet in the table (we must add it)
+        date.setSortable(true);
+        date.setToolTip("Date When Exported"); 
         configs.add(date);
 
         configs.add(new ColumnConfig("openxdata_user_name", appMessages.capturer(), 60));
@@ -363,7 +372,7 @@ public class FormResponsesView extends View implements Refreshable  {
         });
     }
 
-    private void initializePagingLoader() {
+    private void initializePagingLoader(final boolean isSearchRequest) {
     	GWT.log("FormResponsesView : initializePagingLoader");
 
         // initialise paging loader (aka place where the data will be loaded from)
@@ -378,8 +387,25 @@ public class FormResponsesView extends View implements Refreshable  {
                             @Override
 							public void execute() {
                                 final FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController();
-                                controller.getFormDataSummary(formVersion, formDataBinding,
-                                		pagingLoadConfig, callback);
+                                if (isSearchRequest){ 
+                                 	Date startDate = null; 
+                                 	Date endDate = null; 
+                                 	String userId = null; 
+                                 	
+                                 	if (searchFrom.getValue() != null) { 
+                                 		startDate = searchFrom.getValue(); 
+                                 	} 
+                                 	if (searchTo.getValue() != null) { 
+                                 		endDate = searchTo.getValue(); 
+                                 	} 
+                                 	if (searchUser.getValue() != null) { 
+                                 		userId = ((UserSummary)searchUser.getValue()).getId(); 
+                                 	} 
+                                 	controller.getSearchFormDataSummary(formVersion, formDataBinding, pagingLoadConfig, callback,  
+                                 			startDate, endDate, userId); 
+                                 } else { 
+                                 	controller.getFormDataSummary(formVersion, formDataBinding, pagingLoadConfig, callback); 
+                                 } 
                             }
                         });
                     }
@@ -437,7 +463,7 @@ public class FormResponsesView extends View implements Refreshable  {
                 // Date and Time question type. This has both the date and time components
             case QuestionDef.QTN_TYPE_DATE_TIME:
                 DateField d2 = new DateField();
-                d2.getPropertyEditor().setFormat(DateTimeFormat.getFormat("MM/dd/yyyy HH:mm:ss"));
+                d2.getPropertyEditor().setFormat(DateTimeFormat.getFormat("d MMM y HH:mm:ss"));
                 colConfig.setEditor(new CellEditor(d2));
                 colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
                 break;
@@ -489,7 +515,7 @@ public class FormResponsesView extends View implements Refreshable  {
                      FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController();
                      formDataBinding = controller.getFormDataColumnModel(formVersion);
                      initializeColumnModel();
-                     initializePagingLoader();
+                     initializePagingLoader(false);
                      initializeGrid();
                      controller.getUser();
                      ProgressIndicator.hideProgressBar();
@@ -517,10 +543,12 @@ public class FormResponsesView extends View implements Refreshable  {
         cp.setBorders(false);
         cp.setBottomComponent(bottomComponent);
         cp.add(component);
-        window.add(cp);
         LayoutContainer searchComponent = new LayoutContainer();
         searchComponent.add(searchPanel);
-        window.setBottomComponent(searchComponent);
+        searchComponent.setStyleAttribute("paddingBottom", "10px");
+        window.setTopComponent(searchComponent);
+        window.add(cp);
+        window.addButton(exportButton);
         window.setSize(600, 450);
 	    window.show();        
     }
@@ -543,4 +571,23 @@ public class FormResponsesView extends View implements Refreshable  {
         	deleteButton.setVisible(true);
         }
 	}
+	
+	private void searchResponses() { 
+	 	GWT.log("handling search response request "+System.currentTimeMillis()); 
+	 	ProgressIndicator.showProgressBar(); 
+
+	 	Scheduler.get().scheduleDeferred(new ScheduledCommand() { 
+	 		@Override 
+	 		public void execute() { 
+	 			ProgressIndicator.showProgressBar(); 
+	 			FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController(); 
+	 			formDataBinding = controller.getFormDataColumnModel(formVersion); 
+	 			initializeColumnModel(); 
+	 			initializePagingLoader(true); 
+	 			initializeGrid(); 
+	 			controller.getUser(); 
+	 			ProgressIndicator.hideProgressBar(); 
+	 		} 
+	 	}); 
+	 } 
 }
