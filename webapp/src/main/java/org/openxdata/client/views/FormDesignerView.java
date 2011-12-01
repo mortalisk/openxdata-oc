@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.Viewport;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.XMLParser;
+import org.openxdata.client.util.FormDefVersionUtil;
 
 /**
  * 
@@ -122,7 +123,7 @@ public class FormDesignerView extends View implements IFormSaveListener {
 		} else {
 			GWT.log("loading new form for creation");
 			formDesigner.addNewForm(formName + "_" + formVersionName,
-					getDefaultFormBinding(formDefVersion), formDefVersion.getId());
+					FormDefVersionUtil.generateDefaultFormBinding(formDefVersion), formDefVersion.getId());
 		}
 	}
 
@@ -142,22 +143,6 @@ public class FormDesignerView extends View implements IFormSaveListener {
 		FormdesignerContainer container = new FormdesignerContainer(formDesigner, fullName);
 		RootPanel.get().add(container);
         ProgressIndicator.hideProgressBar();
-	}
-
-	/**
-	 * Creates a unique form binding.
-	 * 
-	 * @param formDefVersion
-	 *            the form definition-version object we manipulating.
-	 * 
-	 * @return the form binding.
-	 */
-	private String getDefaultFormBinding(FormDefVersion formDefVersion) {
-		FormDef formDef = formDefVersion.getFormDef();
-		String binding = formDef.getStudy().getName() + "_" + formDef.getName()
-				+ "_" + formDefVersion.getName();
-		// FIXME: check the format using a regex expression for bindings
-		return FormDesignerUtil.getXmlTagName(binding);
 	}
 
 	@Override
