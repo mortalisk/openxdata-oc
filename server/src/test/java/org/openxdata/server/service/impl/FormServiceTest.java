@@ -8,6 +8,7 @@ import static org.easymock.EasyMock.replay;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -133,7 +134,7 @@ public class FormServiceTest {
 			Object[] expectedData = dataList.get(i);
 			for (int j = 0; j < questionBindings.length; j++) {
 				ExportedDataType exportedField = data.getExportedField(questionBindings[j]);
-				Object object = expectedData[j+1];
+				Object object = expectedData[j+2];
 				object = service.adaptUnsupportedDataTypes(object);
 				assertEquals(object.toString(), exportedField.getValue().toString());
 			}
@@ -150,18 +151,20 @@ public class FormServiceTest {
 	private List<Object[]> getResponseData(int numResponses) {
 		List<Object[]> responses = new ArrayList<Object[]>();
 		for (int i = 0; i < numResponses; i++) {
-			Object[] data = new Object[8];
+			Object[] data = new Object[9];
 			// formDataId as string
 			data[0] = String.valueOf(Double.valueOf(Math.random()*Integer.MAX_VALUE).intValue());
+			// exported date 
+			data[1] = new Timestamp(new Date().getTime());
 			
 			// data values
-			data[1] = BigInteger.valueOf(Double.valueOf(Math.random()*Integer.MAX_VALUE).longValue());
-			data[2] = BigDecimal.valueOf(Double.valueOf(Math.random()*Double.MAX_VALUE));
-			data[3] = Double.valueOf(Math.random()*Integer.MAX_VALUE).intValue();
-			data[4] = Double.valueOf(Math.random()*Double.MAX_VALUE).toString();
-			data[5] = Boolean.valueOf(Math.random() > 0.5);
-			data[6] = Double.valueOf(Math.random()*Double.MAX_VALUE);
-			data[7] = new Date();
+			data[2] = BigInteger.valueOf(Double.valueOf(Math.random()*Integer.MAX_VALUE).longValue());
+			data[3] = BigDecimal.valueOf(Double.valueOf(Math.random()*Double.MAX_VALUE));
+			data[4] = Double.valueOf(Math.random()*Integer.MAX_VALUE).intValue();
+			data[5] = Double.valueOf(Math.random()*Double.MAX_VALUE).toString();
+			data[6] = Boolean.valueOf(Math.random() > 0.5);
+			data[7] = Double.valueOf(Math.random()*Double.MAX_VALUE);
+			data[8] = new Date();
 			responses.add(data);
 		}
 		return responses;

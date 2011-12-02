@@ -45,7 +45,7 @@ public class RdmsDataExportTask {
     /** cache of form definitions */
     private Hashtable<Integer, FormDefVersion> formDefCache = new Hashtable<Integer, FormDefVersion>();
     /** cache of SQL to create tables */
-    private Hashtable<FormDefVersion, List<TableQuery>> tableQueryCache = new Hashtable<FormDefVersion, List<TableQuery>>();
+    private Hashtable<Integer, List<TableQuery>> tableQueryCache = new Hashtable<Integer, List<TableQuery>>();
     /** dao used to create exported tables and insert/update exported data  */
     RdmsExporterDAO exporter;
     /** contains all the date related settings (required to format submitted data) */
@@ -104,11 +104,11 @@ public class RdmsDataExportTask {
 	 * @return
 	 */
 	private List<TableQuery> getTableQeuries(FormDefVersion formDefVersion) {
-		List<TableQuery> tables = tableQueryCache.get(formDefVersion);
+		List<TableQuery> tables = tableQueryCache.get(formDefVersion.getId());
 		if (tables == null) {
 		    // if the tables weren't already cached
 		    tables = RdmsEngine.getStructureSql(formDefVersion.getXform());
-		    tableQueryCache.put(formDefVersion, tables);
+		    tableQueryCache.put(formDefVersion.getId(), tables);
 		}
 		return tables;
 	}
@@ -192,7 +192,13 @@ public class RdmsDataExportTask {
 				for (TableQuery table : tables) {
 					int rows = exporter.deleteData(formData.getId(), table.getTableName());
 					log.debug(rows + " deleted from table " + table.getTableName());
-					exporter.deleteTableIfEmtpy(table.getTableName());
+					boolean tableDeleted = exporter.deleteTableIfEmtpy(table.getTableName());
+					if (tableDeleted){
+						// remove the FormDefVersion from the cache since changes can 
+						// now be made that may affect the exported table schema 
+						formDefCache.remove(formDefVersion.getId());
+						tableQueryCache.remove(formDefVersion.getId());
+					}
 				}
 			}
 		} catch (Exception ex) {

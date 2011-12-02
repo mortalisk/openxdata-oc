@@ -1,6 +1,5 @@
 package org.openxdata.client.model;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.openxdata.server.admin.model.ExportedDataType;
@@ -34,7 +33,6 @@ public class FormDataSummary extends BaseModel {
         FormData formData = exportedFormData.getFormData();
         if (formData != null) {
             setCapturer(formData.getCreator().getName());
-            setCaptureDate(formData.getDateCreated());
         }
         setStatus("submitted");
         Map<String, ExportedDataType> data = exportedFormData.getExportedFields();
@@ -46,17 +44,12 @@ public class FormDataSummary extends BaseModel {
 	private void convertFormDataHeader() {
 		setId(formDataHeader.getId());
 		setForm(formDataHeader.getFormName() + "(" + formDataHeader.getVersionName()+")");
-		set("dateCreated", formDataHeader.getDateCreated());
 		set("userName",formDataHeader.getCreator());
 		setDescription(formDataHeader.getDescription());
 	}
 
     public void setCapturer(String capturer) {
         set("openxdata_user_name", capturer);
-    }
-    
-    public void setCaptureDate(Date date) {
-        set("openxdata_date_created", date);
     }
     
 	public void setDescription(String description) {

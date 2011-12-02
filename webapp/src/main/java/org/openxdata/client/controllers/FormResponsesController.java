@@ -24,6 +24,8 @@ import org.openxdata.server.admin.model.ExportedFormData;
 import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.paging.FilterComparison;
+import org.openxdata.server.admin.model.paging.FilterConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.purc.purcforms.client.model.PageDef;
 import org.purc.purcforms.client.model.QuestionDef;
@@ -149,6 +151,43 @@ public class FormResponsesController  extends Controller {
             }
     	});
     }
+    
+    public void getSearchFormDataSummary(final FormDefVersion formVersion, final FormDataBinding formDataBinding,  
+    	 	final PagingLoadConfig pagingLoadConfig,  
+    	 	final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<FormDataSummary>> callback,  
+    	 	Date startDate, Date endDate, String userId) { 
+    	GWT.log("FormResponsesController : getSearchFormDataSummary"); 
+    	ProgressIndicator.showProgressBar(); 
+
+    	Collection<String> questionBindingsList = formDataBinding.getQuestionBindingKeys(); 
+    	String[] questionBindings = questionBindingsList.toArray(new String[questionBindingsList.size()]); 
+    	org.openxdata.server.admin.model.paging.PagingLoadConfig searchPagingLoadConfig = PagingUtil.createPagingLoadConfig(pagingLoadConfig); 
+ 
+    	if(startDate != null){ 
+    	 	searchPagingLoadConfig.addFilter(new FilterConfig ("openxdata_form_data_date_created", startDate, FilterComparison.GREATER_THAN_OR_EQUAL_TO)); 
+    	}  
+    	if (endDate != null) { 
+    	 	searchPagingLoadConfig.addFilter(new FilterConfig ("openxdata_form_data_date_created", endDate, FilterComparison.LESS_THAN_OR_EQUAL_TO)); 
+    	}  
+    	if (userId != null) { 
+    	 	FilterConfig userFilter = new FilterConfig("openxdata_user_id", userId, FilterComparison.EQUAL_TO); 
+    	 	searchPagingLoadConfig.addFilter(userFilter); 
+    	}        
+    	formService.getFormDataList(formDataBinding.getFormBinding(), questionBindings,  
+    			searchPagingLoadConfig, new EmitAsyncCallback<PagingLoadResult<ExportedFormData>>() { 
+    	 	@Override 
+    	 	public void onSuccess(PagingLoadResult<ExportedFormData> result) { 
+    	 		List<FormDataSummary> results = new ArrayList<FormDataSummary>(); 
+    	 		List<ExportedFormData> data = result.getData(); 
+    	 		for (ExportedFormData d : data) { 
+    	 			FormDataSummary formDataSummary = new FormDataSummary(formVersion, d); 
+    	 			results.add(formDataSummary); 
+    	 		} 
+    	 		ProgressIndicator.hideProgressBar(); 
+    	 		callback.onSuccess(new BasePagingLoadResult<FormDataSummary>(results, result.getOffset(), result.getTotalLength())); 
+    	 	} 
+    	 }); 
+    } 
     
     public void getUserSummary(final PagingLoadConfig pagingLoadConfig, 
             final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<UserSummary>> callback) {

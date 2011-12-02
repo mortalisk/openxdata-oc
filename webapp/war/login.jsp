@@ -64,10 +64,12 @@
                 },{
                     fieldLabel: '<fmt:message key="username"/>',
                     name: 'j_username',
+                    width:150,
                     allowBlank: false
                 },{
                     fieldLabel: '<fmt:message key="password"/>',
                     name: 'j_password',
+                    width:150,
                     allowBlank: false,
                     inputType: 'password'
                 }
@@ -101,7 +103,7 @@
         // The login object is passed to the items collection.       
         var win = new Ext.Window({
             modal: true,
-            width:300,
+            width:320,
             closable: false,
             resizable: false,
             draggable: false,

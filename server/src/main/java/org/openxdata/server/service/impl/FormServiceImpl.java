@@ -3,6 +3,7 @@ package org.openxdata.server.service.impl;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -187,7 +188,7 @@ public class FormServiceImpl implements FormService {
         // find out the total size
     	BigInteger count = null;
     	try {
-		    count = studyDAO.getNumberOfResponses(formBinding);
+		    count = studyDAO.getNumberOfResponses(formBinding, pagingLoadConfig);
 		    log.debug("total number of responses "+count+" for form "+formBinding);
     	} catch (SQLGrammarException e) {
     		// if this simple query fails then the exported data does not exist 
@@ -212,10 +213,13 @@ public class FormServiceImpl implements FormService {
 		    String formDataId = (String)d[0];
 		    FormData formData = formDataDAO.getFormData(Integer.parseInt(formDataId));
 		    ExportedFormData exportedFormData = new ExportedFormData(formData);
+		    // skipping first two elements because they contain data for form_data_id and 
+		    // form_data_date_created auditing fields respectively 
 		    exportedFormData.putExportedField("openxdata_form_data_id", formDataId);
-		    for (int i=1, j=d.length; i<j; i++) {
+		    exportedFormData.putExportedField("openxdata_form_data_date_created", new Date(((Timestamp)d[1]).getTime()));
+		    for (int i=2, j=d.length; i<j; i++) {
 		        Object dataElement = d[i];
-				String binding = questionBindings[i-1];
+				String binding = questionBindings[i-2];
 				populateFormData(exportedFormData, dataElement, binding);
 
 		    }

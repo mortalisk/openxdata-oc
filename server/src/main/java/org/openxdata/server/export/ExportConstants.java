@@ -7,6 +7,7 @@ public final class ExportConstants {
 	 */ 
 	public static final Integer EXPORT_BIT_RDBMS = 1;
 	public static final Integer EXPORT_BIT_HTTP_POST = 2;
+	public static final Integer EXPORT_BIT_DHIS2 = 4;
 
 }
 
