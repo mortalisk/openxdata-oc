@@ -85,6 +85,6 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void countUnprocessedData() throws Exception {
 		Integer count = formService.getUnprocessedDataCount(1);
-		Assert.assertSame("One unprocessed form data", 1, count);
+		assertSame("One unprocessed form data", 1, count);
 	}
 }
