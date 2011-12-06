@@ -579,14 +579,7 @@ public class FormResponsesView extends View implements Refreshable  {
 	 	Scheduler.get().scheduleDeferred(new ScheduledCommand() { 
 	 		@Override 
 	 		public void execute() { 
-	 			ProgressIndicator.showProgressBar(); 
-	 			FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController(); 
-	 			formDataBinding = controller.getFormDataColumnModel(formVersion); 
-	 			initializeColumnModel(); 
-	 			initializePagingLoader(true); 
-	 			initializeGrid(); 
-	 			controller.getUser(); 
-	 			ProgressIndicator.hideProgressBar(); 
+	 			loader.load(); 
 	 		} 
 	 	}); 
 	 } 
