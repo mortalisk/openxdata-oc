@@ -190,14 +190,16 @@ public class RdmsDataExportTask {
 			if (formDefVersion != null) {
 				List<TableQuery> tables = getTableQeuries(formDefVersion);
 				for (TableQuery table : tables) {
-					int rows = exporter.deleteData(formData.getId(), table.getTableName());
-					log.debug(rows + " deleted from table " + table.getTableName());
-					boolean tableDeleted = exporter.deleteTableIfEmtpy(table.getTableName());
-					if (tableDeleted){
-						// remove the FormDefVersion from the cache since changes can 
-						// now be made that may affect the exported table schema 
-						formDefCache.remove(formDefVersion.getId());
-						tableQueryCache.remove(formDefVersion.getId());
+					if (exporter.tableExists(table.getTableName())) {
+						int rows = exporter.deleteData(formData.getId(), table.getTableName());
+						log.debug(rows + " deleted from table " + table.getTableName());
+						boolean tableDeleted = exporter.deleteTableIfEmtpy(table.getTableName());
+						if (tableDeleted) {
+							// remove the FormDefVersion from the cache since changes can
+							// now be made that may affect the exported table schema
+							formDefCache.remove(formDefVersion.getId());
+							tableQueryCache.remove(formDefVersion.getId());
+						}
 					}
 				}
 			}
