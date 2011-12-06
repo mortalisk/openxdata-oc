@@ -239,6 +239,10 @@ public class FormResponsesView extends View implements Refreshable  {
     private void preInitialise(final ListStore<FormDataSummary> store, ColumnModel columnModel) {
         GWT.log("FormResponsesView : preInitialise");
 
+        searchTo.reset();
+        searchFrom.reset();
+        searchUser.reset(); 
+        
         grid = new Grid<FormDataSummary>(store, columnModel);
         grid.setStripeRows(true);
         toolBar = new AdjustablePagingToolBar(PAGE_SIZE);
@@ -372,7 +376,7 @@ public class FormResponsesView extends View implements Refreshable  {
         });
     }
 
-    private void initializePagingLoader(final boolean isSearchRequest) {
+    private void initializePagingLoader() {
     	GWT.log("FormResponsesView : initializePagingLoader");
 
         // initialise paging loader (aka place where the data will be loaded from)
@@ -387,25 +391,20 @@ public class FormResponsesView extends View implements Refreshable  {
                             @Override
 							public void execute() {
                                 final FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController();
-                                if (isSearchRequest){ 
-                                 	Date startDate = null; 
-                                 	Date endDate = null; 
-                                 	String userId = null; 
-                                 	
-                                 	if (searchFrom.getValue() != null) { 
-                                 		startDate = searchFrom.getValue(); 
-                                 	} 
-                                 	if (searchTo.getValue() != null) { 
-                                 		endDate = searchTo.getValue(); 
-                                 	} 
-                                 	if (searchUser.getValue() != null) { 
-                                 		userId = ((UserSummary)searchUser.getValue()).getId(); 
-                                 	} 
-                                 	controller.getSearchFormDataSummary(formVersion, formDataBinding, pagingLoadConfig, callback,  
-                                 			startDate, endDate, userId); 
-                                 } else { 
-                                 	controller.getFormDataSummary(formVersion, formDataBinding, pagingLoadConfig, callback); 
-                                 } 
+                                Date startDate = null;
+                                Date endDate = null;
+                                String userId = null;
+                                if (searchFrom.getValue() != null) {
+                                	startDate = searchFrom.getValue();
+                                }
+                                if (searchTo.getValue() != null) {
+                                	endDate = searchTo.getValue();
+                                }
+                                if (searchUser.getValue() != null) {
+                                	userId = ((UserSummary)searchUser.getValue()).getId();  
+                                }  
+                                controller.getSearchFormDataSummary(formVersion, formDataBinding, pagingLoadConfig, callback,   
+                                                startDate, endDate, userId); 
                             }
                         });
                     }
@@ -515,7 +514,7 @@ public class FormResponsesView extends View implements Refreshable  {
                      FormResponsesController controller = (FormResponsesController)FormResponsesView.this.getController();
                      formDataBinding = controller.getFormDataColumnModel(formVersion);
                      initializeColumnModel();
-                     initializePagingLoader(false);
+                     initializePagingLoader();
                      initializeGrid();
                      controller.getUser();
                      ProgressIndicator.hideProgressBar();
