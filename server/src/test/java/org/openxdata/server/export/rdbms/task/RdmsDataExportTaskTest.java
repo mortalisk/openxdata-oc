@@ -67,6 +67,8 @@ public class RdmsDataExportTaskTest {
         FormDefVersion formDefVersion = getFormDefVersion();
         
         // set up mock
+        EasyMock.expect(exporter.tableExists("patientreg")).andReturn(true); 
+        EasyMock.expect(exporter.tableExists("kid")).andReturn(true);
         EasyMock.expect(exporter.deleteData(formData.getId(), "patientreg")).andReturn(1);
         EasyMock.expect(exporter.deleteData(formData.getId(), "kid")).andReturn(1);
         EasyMock.expect(exporter.deleteTableIfEmtpy("patientreg")).andReturn(true);
