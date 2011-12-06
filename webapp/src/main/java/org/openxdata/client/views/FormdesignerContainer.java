@@ -34,11 +34,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class FormdesignerContainer extends DialogBox {
 	
 	final AppMessages appMessages = GWT.create(AppMessages.class);
+	
+	private boolean clickClosed = false;
 
     public FormdesignerContainer(final FormDesignerWidget widget, String formName) {
         Button closeButton = new Button("Close");
         closeButton.addClickHandler(new ClickHandler() {
-            @SuppressWarnings("unchecked")
             @Override
             public void onClick(ClickEvent event) {
             	// would be nice to have some way to determine if there are unsaved changes in the formDesigner
@@ -54,12 +55,17 @@ public class FormdesignerContainer extends DialogBox {
 			            	// do nothing (don't exit)
 	    				} else {
 	    					if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
+								// mark to close window and save
+								clickClosed = true;
 	    						widget.saveSelectedForm();
-	    					}
-	    					// now exit
-		    				RootPanel.get().remove(FormdesignerContainer.this);
-			            	((Viewport)Registry.get(Emit.VIEWPORT)).show();
-			            	((Grid<FormSummary>)Registry.get(Emit.GRID)).getView().refresh(true);
+							} else {
+								if (be.getButtonClicked().getItemId()
+										.equals(Dialog.NO)) {
+									// close window but don't save
+									clickClosed = true;
+									finishCloseButtonAction();
+								}
+							}
 	    				}
                     }
                 });
@@ -85,4 +91,20 @@ public class FormdesignerContainer extends DialogBox {
         setWidget(wrapper);
 
     }
+    
+	@SuppressWarnings("unchecked")
+	public void finishCloseButtonAction() {
+
+		if (clickClosed)  {
+			RootPanel.get().remove(FormdesignerContainer.this);
+			((Viewport) Registry.get(Emit.VIEWPORT)).show();
+			((Grid<FormSummary>) Registry.get(Emit.GRID)).getView().refresh(
+					true);
+		}
+		clickClosed = false;
+	}
+	
+	public void setCloseDesigner(boolean closeDesigner) {
+		this.clickClosed = closeDesigner;
+	}
 }

@@ -82,6 +82,8 @@ public class FormListView extends View implements Refreshable {
 
 	private CheckBox allVersions;
 	private List<FormSummary> allFormSummaries = new ArrayList<FormSummary>();
+	
+	private User loggedInUser;
 
 	public FormListView(Controller controller) {
 		super(controller);
@@ -128,7 +130,9 @@ public class FormListView extends View implements Refreshable {
 				String html = "<span style='white-space:pre;'>    </span>";
 				if (responseCount.endsWith("!")) {
 					responseCount = responseCount.substring(0, responseCount.length()-1);
-					html = "<img src='"+images.warningIcon().getURL()+"' height='12' width='12' title='"+appMessages.unprocessedDataWarning()+"' />";
+					if (getLoggedInUser().hasPermission(Permission.PERM_VIEW_UNEXPORTED_FORM_DATA)) {
+						html = "<img src='"+images.warningIcon().getURL()+"' height='12' width='12' title='"+appMessages.unprocessedDataWarning()+"' />";
+					}
 				}
 				return "<span qtitle='" + cm.getColumnById(property).getHeader() + "' qtip='" + responseCount 
 				+ "'>" + responseCount + "</span>" + html;
@@ -289,12 +293,8 @@ public class FormListView extends View implements Refreshable {
 		});
 		browseResponses.hide();
 
-		User loggedInUser = Registry.get(Emit.LOGGED_IN_USER_NAME);
-		if (loggedInUser != null) {
-			checkLoggedInUserPermissions(cm, loggedInUser);
-		} else {
-			GWT.log("Could not find logged in user, so could not determine permissions");
-		}
+		
+		checkLoggedInUserPermissions(cm);
 
 		LayoutContainer buttonBar = new LayoutContainer();
 		buttonBar.setLayout(new HBoxLayout());
@@ -327,7 +327,19 @@ public class FormListView extends View implements Refreshable {
 		portlet.setTopComponent(filterBar);
 	}
 
-	private void checkLoggedInUserPermissions(ColumnModel cm, User loggedInUser) {
+	
+	private User getLoggedInUser() {
+		if (loggedInUser == null) {
+			loggedInUser = Registry.get(Emit.LOGGED_IN_USER_NAME);
+		}
+		return loggedInUser;
+	}
+	
+	private void checkLoggedInUserPermissions(ColumnModel cm) {
+		if (getLoggedInUser() == null) {
+			GWT.log("Could not find logged in user, so could not determine permissions");
+			return;
+		}
 		if (loggedInUser.hasPermission(Permission.PERM_ADD_STUDIES, Permission.PERM_ADD_FORMS,
 				Permission.PERM_ADD_FORM_VERSIONS)) {
 			
