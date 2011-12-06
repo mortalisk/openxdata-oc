@@ -63,7 +63,7 @@ public class MailServiceImpl implements MailService {
         @Override
 		public void run() {
         	if (log.isDebugEnabled()) {
-        		log.debug("Sending email message from:"+msg.getFrom()+" to:"+msg.getTo()[0]+" subject:"+msg.getSubject()+" text:"+msg.getText());
+        		log.debug("Sending email message from:"+msg.getFrom()+" to:"+msg.getTo()[0]+" subject:"+msg.getSubject());
         	}
         	mailSender.send(msg);
         }
