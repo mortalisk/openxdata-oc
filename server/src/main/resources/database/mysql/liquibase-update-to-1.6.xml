@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+			http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	<!-- 
+	
+		See http://www.liquibase.org/manual/home#available_database_refactorings 
+		for a list of supported elements and attributes 
+		
+	-->
+	
+	<changeSet author="Dagmar" id="add_Perm_View_Unexported_Form_Data">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">
+				<![CDATA[
+				SELECT count(*) FROM permission where name='Perm_View_Unexported_Form_Data';
+				]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to view unexported form data
+		</comment>
+			<insert tableName="permission">
+				<column name="name" value="Perm_View_Unexported_Form_Data"/>
+				<column name="description" value="Ability to view unexported Form Data"/>
+		</insert>
+	</changeSet>
+
+</databaseChangeLog>

@@ -19,4 +19,5 @@
 	<include file="database/mysql/liquibase-update-to-1.3.xml" />
 	<include file="database/mysql/liquibase-foreign-keys.xml" />
 	<include file="database/mysql/liquibase-update-to-1.4.xml" />
+	<include file="database/mysql/liquibase-update-to-1.6.xml" />
 </databaseChangeLog>

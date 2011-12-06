@@ -85,6 +85,8 @@ public class Permission extends AbstractEditable {
 	public static final String PERM_DELETE_FORM_DATA = "Perm_Delete_Form_Data";
 	public static final String PERM_EDIT_FORM_DATA = "Perm_Edit_Form_Data";
 	public static final String PERM_EDIT_MY_FORM_DATA = "Perm_Edit_My_Form_Data";
+	public static final String PERM_EXPORT_FORM_DATA = "Perm_Export_Form_Data";
+	public static final String PERM_VIEW_UNEXPORTED_FORM_DATA = "Perm_View_Unexported_Form_Data";
 
 	/* Reports Permissions*/
 	public static final String PERM_ADD_REPORTS = "Perm_Add_Reports";
