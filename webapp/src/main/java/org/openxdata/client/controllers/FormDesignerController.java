@@ -78,9 +78,18 @@ public class FormDesignerController extends Controller {
 		            	FormDefVersion version = result.getForm(form.getName()).getVersion(formDefVersion.getName());
 		                formDesignerView.savedFormDefVersion(version);
 		                RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.UPDATE_STUDY, result));
+		                formDesignerView.finishSaving();
 		                ProgressIndicator.hideProgressBar();
 		            }
+		            @Override
+		            public void onFailurePostProcessing(Throwable throwable) {
+		            	formDesignerView.abortSaving();
+		            }
             	});
+            }
+            @Override
+            public void onFailurePostProcessing(Throwable throwable) {
+            	formDesignerView.abortSaving();
             }
         });
     }

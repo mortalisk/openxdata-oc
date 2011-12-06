@@ -3,13 +3,12 @@ package org.openxdata.client.views;
 import org.openxdata.client.AppMessages;
 import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.FormDesignerController;
+import org.openxdata.client.util.FormDefVersionUtil;
 import org.openxdata.client.util.ProgressIndicator;
-import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.FormDefVersionText;
 import org.purc.purcforms.client.FormDesignerWidget;
 import org.purc.purcforms.client.controller.IFormSaveListener;
-import org.purc.purcforms.client.util.FormDesignerUtil;
 import org.purc.purcforms.client.util.LanguageUtil;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -20,7 +19,6 @@ import com.extjs.gxt.ui.client.widget.Viewport;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.XMLParser;
-import org.openxdata.client.util.FormDefVersionUtil;
 
 /**
  * 
@@ -34,6 +32,8 @@ public class FormDesignerView extends View implements IFormSaveListener {
 	private FormDesignerWidget formDesigner;
 	
 	private FormDefVersion formDefVersion;
+	
+	private FormdesignerContainer container;
 
 	public FormDesignerView(FormDesignerController controller, FormDefVersion formDefVersion) {
 		super(controller);
@@ -141,7 +141,7 @@ public class FormDesignerView extends View implements IFormSaveListener {
 	private void createFormDesignerWindow(FormDefVersion formDefVersion) {
 		((Viewport)Registry.get(Emit.VIEWPORT)).hide();
 		String fullName = formDefVersion.getFormDef().getStudy().getName() + "-" + formDefVersion.getFormDef().getName() + "-" + formDefVersion.getName();
-		FormdesignerContainer container = new FormdesignerContainer(formDesigner, fullName);
+		container = new FormdesignerContainer(formDesigner, fullName);
 		RootPanel.get().add(container);
         ProgressIndicator.hideProgressBar();
 	}
@@ -202,4 +202,12 @@ public class FormDesignerView extends View implements IFormSaveListener {
 			openFormForEditing(true);
 		}
     }
+	
+	public void finishSaving() {
+		container.finishCloseButtonAction();
+	}
+	
+	public void abortSaving() {
+		container.setCloseDesigner(false);
+	}
 }
