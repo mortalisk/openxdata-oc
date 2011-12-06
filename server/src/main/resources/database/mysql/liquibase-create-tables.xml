@@ -888,4 +888,17 @@
             referencedColumnNames="form_data_id" referencedTableName="form_data"  
             deferrable="false" initiallyDeferred="false" />
     </changeSet>
+    
+    <changeSet author="raghu.mittal@handsrel.com" id="add_javascriptsrc_column">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="form_definition_version"
+					columnName="javascript_src" />
+			</not>
+		</preConditions>
+		<comment>Add Javascript src column to form_definition_version table</comment>
+		<addColumn tableName="form_definition_version">
+			<column name="javascript_src" type="text" />
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

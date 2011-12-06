@@ -101,6 +101,7 @@ public class FormDesignerView extends View implements IFormSaveListener {
 		// get the xforms and layout xml
 		String xform = formDefVersion.getXform();
 		String layout = formDefVersion.getLayout();
+		String javaScriptSrc = formDefVersion.getJavaScriptSrc();
 
 		// if not empty load it in the form designer for editing
 		if (xform != null && xform.trim().length() > 0) {
@@ -119,7 +120,7 @@ public class FormDesignerView extends View implements IFormSaveListener {
 				}
 			}
 			GWT.log("loading existing form for editing");
-			formDesigner.loadForm(formDefVersion.getId(), xform, layout, "", readOnly);
+			formDesigner.loadForm(formDefVersion.getId(), xform, layout, javaScriptSrc, readOnly);
 		} else {
 			GWT.log("loading new form for creation");
 			formDesigner.addNewForm(formName + "_" + formVersionName,
@@ -155,6 +156,7 @@ public class FormDesignerView extends View implements IFormSaveListener {
 
 			formDefVersion.setXform(xformsXml);
 			formDefVersion.setLayout(layoutXml);
+			formDefVersion.setJavaScriptSrc(javaScriptSrc);
 			formDefVersion.setDirty(true);
 
 			return true;

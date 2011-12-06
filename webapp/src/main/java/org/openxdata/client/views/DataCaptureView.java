@@ -99,14 +99,20 @@ public class DataCaptureView extends View implements SubmitListener {
                 	 formData = event.getData("formData");
                      window.setHeading(appMessages.captureData() + " : " +formVersion.getFormDef().getName());
 		             if (formVersion != null && formVersion.getXform() != null) {
+		            	 
+		            	 window.show(); 
+		            	 window.maximize();
+		            	 
 		            	 if (formData == null) {
-		            		 widget.loadForm(formVersion.getId(),formVersion.getXform(),null,formVersion.getLayout(),null);
+		            		 widget.loadForm(formVersion.getId(), formVersion.getXform(), null, formVersion.getLayout(), formVersion.getJavaScriptSrc());
 		            	 } else {
-		            		 widget.loadForm(formData.getId(),formVersion.getXform(),formData.getData(),formVersion.getLayout(),null);
+		            		 widget.loadForm(formVersion.getId(), formVersion.getXform(), formData.getData(), formVersion.getLayout(), formVersion.getJavaScriptSrc());
 		            	 }
-		                  window.show();
-		          	      window.maximize();
-		          	      ProgressIndicator.hideProgressBar();
+		            	 
+		            	// this layout function needs to be called, so the java script operations work 
+		            	window.layout(); 
+		          	    ProgressIndicator.hideProgressBar();
+		          	      
 		             } else {
 		            	 ProgressIndicator.hideProgressBar();
 		            	 MessageBox.alert(appMessages.error(), appMessages.errorWhileRetrievingForms(), null);

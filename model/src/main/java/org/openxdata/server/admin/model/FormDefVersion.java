@@ -22,6 +22,8 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 	
 	private String xform;
 	private String layout;
+	private String javaScriptSrc;
+
 	private Boolean isDefault = true;
 	
 	/** A list of the form text for different locales. */
@@ -87,6 +89,14 @@ public class FormDefVersion extends AbstractEditable implements Exportable {
 
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
+	}
+	
+	public void setJavaScriptSrc(String javaScriptSrc) {
+		this.javaScriptSrc = javaScriptSrc;
+	}
+
+	public String getJavaScriptSrc() {
+		return javaScriptSrc;
 	}
 	
 	@Override
