@@ -22,7 +22,7 @@ public class Permission extends AbstractEditable {
 
 	/* UI permissions */
 	public static final String PERM_FORM_DESIGN = "Perm_Form_Design";
-	public static final String PERM_EMIT= "Perm_Emit";
+	public static final String PERM_DASHBOARD = "Perm_Dashboard";
 	public static final String PERM_DATA_ENTRY = "Perm_Data_Entry";
     public static final String PERM_DATA_EDIT = "Perm_Data_Edit";
     public static final String PERM_EXPORT_REPORTS ="Perm_Export_Reports";

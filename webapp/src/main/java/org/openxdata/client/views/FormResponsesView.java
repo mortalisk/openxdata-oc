@@ -464,7 +464,7 @@ public class FormResponsesView extends View implements Refreshable  {
                 DateField d2 = new DateField();
                 d2.getPropertyEditor().setFormat(DateTimeFormat.getFormat("d MMM y HH:mm:ss"));
                 colConfig.setEditor(new CellEditor(d2));
-                colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+                colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
                 break;
                 // Question with true and false answers.
             case QuestionDef.QTN_TYPE_BOOLEAN:

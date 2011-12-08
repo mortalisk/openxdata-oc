@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldSetEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
@@ -117,6 +118,12 @@ public class EditStudyFormView extends WizardView {
 		fs.setCollapsible(true);
 		fs.setExpanded(false);
 		fs.add(userAccessToStudy);
+		fs.addListener(Events.Expand, new Listener<FieldSetEvent>() {
+			public void handleEvent(FieldSetEvent be) {
+				userAccessToStudy.refresh();
+				userAccessToStudy.unmask();
+			}
+		});
 		userAccessToStudy.mask();
 		formPanel.add(fs);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
@@ -153,6 +160,12 @@ public class EditStudyFormView extends WizardView {
 		fs.setCollapsible(true);
 		fs.setExpanded(false);
 		fs.add(userAccessToForm);
+		fs.addListener(Events.Expand, new Listener<FieldSetEvent>() {
+			public void handleEvent(FieldSetEvent be) {
+				userAccessToForm.refresh();
+				userAccessToForm.unmask();
+			}
+		});
 		userAccessToForm.mask();
 		formPanel.add(fs);
 		formPanel.setButtonAlign(HorizontalAlignment.LEFT);
@@ -224,15 +237,11 @@ public class EditStudyFormView extends WizardView {
 			studyName.setValue(study.getName());
 			studyDescription.setValue(study.getDescription());
 			controller.setStudyForAccessControl(formDefVersion.getFormDef().getStudy());
-			userAccessToStudy.refresh();
-			userAccessToStudy.unmask();
 			
 			// page 2
 			formName.setValue(form.getName());
 			formDescription.setValue(form.getDescription());
 			controller.setFormForAccessControl(formDefVersion.getFormDef());
-			userAccessToForm.refresh();
-			userAccessToForm.unmask();
 			
 			// page 3
 			formVersion.setValue(formDefVersion.getName());

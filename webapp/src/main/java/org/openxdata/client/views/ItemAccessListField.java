@@ -19,7 +19,6 @@ import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldSetEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -141,14 +140,6 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
             }
         };
         userTable.add(toField);
-        
-		addListener(Events.Expand, new Listener<FieldSetEvent>() {
-			public void handleEvent(FieldSetEvent be) {
-				toField.loadData();
-				fromField.loadData();
-			}
-		});
-
         add(userTable);
     }
     
@@ -314,8 +305,7 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
             field.setDisplayField("name");
             field.setSize(185, listSize);
             field.getListView().setLoadingText(messages.getLoading());
-            
-            setScrollMode(Scroll.AUTOY);
+
             add(field);
         }
         
