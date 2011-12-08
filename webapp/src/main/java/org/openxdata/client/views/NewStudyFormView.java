@@ -21,6 +21,7 @@ import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.FieldSetEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
@@ -55,7 +56,9 @@ public class NewStudyFormView extends WizardView {
 	private RadioFieldSet createStudyFS;
 	private Radio newStudy;
 	private Radio existingStdyRdio;
+	private FieldSet userStudyAccessListFieldSet;
 	private ItemAccessListField<UserSummary> userStudyAccessListField;
+	private FieldSet userFormAccessListFieldSet;
 	private ItemAccessListField<UserSummary> userFormAccessListField;
 	// input fields for new form page
 	private RadioFieldSet createFormFS;
@@ -122,7 +125,7 @@ public class NewStudyFormView extends WizardView {
 				newForm.hide();
 				newForm.setValue(true);
 				existingForm.hide();
-				userFormAccessListField.hide();
+				userFormAccessListFieldSet.hide();
 			} else if (createStudyFS.getSelectedRadio().equals(appMessages.existingStudy())) {
 				// make sure all radio buttons are showing (if they were previous hidden by the code above)
 				existingFormName.show();
@@ -130,7 +133,7 @@ public class NewStudyFormView extends WizardView {
 				newForm.show();
 				setStudyForms();
 				existingForm.show();
-				userFormAccessListField.show();
+				userFormAccessListFieldSet.show();
 				if (existingFormName.getValue() == null) {
 					nextButton.setEnabled(false);
 				} else {
@@ -204,7 +207,8 @@ public class NewStudyFormView extends WizardView {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-				userStudyAccessListField.setEnabled(false); // can't map a new study
+				userStudyAccessListFieldSet.setEnabled(false); // can't map a new study
+				userStudyAccessListFieldSet.setExpanded(false);
 				if (existingStudyName.getValue() != null) {
 					existingStudyName.clearSelections();
 					existingStudyDescription.setValue("");
@@ -226,9 +230,12 @@ public class NewStudyFormView extends WizardView {
 						ProgressIndicator.showProgressBar();
 						Integer studyId = new Integer(se.getSelectedItem().getId());
 						nextButton.setEnabled(false);
+						userStudyAccessListFieldSet.setExpanded(false); 
+						userStudyAccessListFieldSet.setEnabled(true); 
 						userStudyAccessListField.mask();
 						studyDef = null; formDef = null;
 						existingFormName.clearSelections();
+						userFormAccessListFieldSet.setExpanded(false);
 						controller.getStudyDef(studyId);
 						controller.getForms(studyId);
 					}
@@ -242,7 +249,6 @@ public class NewStudyFormView extends WizardView {
 					@Override
 					public void handleEvent(FieldEvent be) {
 						nextButton.setEnabled(false);
-						userStudyAccessListField.setEnabled(true);
 						newStudyName.setValue("");
 						newStudyDescription.setValue("");
 						// set the preselected study if applicable or if it there is only one study
@@ -270,13 +276,19 @@ public class NewStudyFormView extends WizardView {
         		"search="+appMessages.searchForAUser()+"\n" +
         		"loading="+appMessages.loading());
 		userStudyAccessListField = new ItemAccessListField<UserSummary>(messages, controller.getUserStudyAccessController());
-		FieldSet fs = new FieldSet();
-		fs.setHeading(appMessages.setUserAccessToStudy());
-		fs.setCollapsible(true);
-		fs.setExpanded(false);
-		fs.add(userStudyAccessListField);
-		userStudyAccessListField.setEnabled(false);
-		createStudyFS.add(fs);
+		userStudyAccessListFieldSet = new FieldSet();
+		userStudyAccessListFieldSet.setHeading(appMessages.setUserAccessToStudy());
+		userStudyAccessListFieldSet.setCollapsible(true);
+		userStudyAccessListFieldSet.setExpanded(false);
+		userStudyAccessListFieldSet.add(userStudyAccessListField);
+		userStudyAccessListFieldSet.addListener(Events.Expand, new Listener<FieldSetEvent>() {
+			public void handleEvent(FieldSetEvent be) {
+				userStudyAccessListField.refresh();
+				userStudyAccessListField.unmask();
+			}
+		});
+		userStudyAccessListFieldSet.setEnabled(false);
+		createStudyFS.add(userStudyAccessListFieldSet);
 
 		return createStudyPanel;
 	}
@@ -321,7 +333,8 @@ public class NewStudyFormView extends WizardView {
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
                                 saveAndExitButton.setEnabled(false);
-				userFormAccessListField.setEnabled(false);
+				userFormAccessListFieldSet.setEnabled(false);
+				userFormAccessListFieldSet.setExpanded(false);
 				if (existingFormName.getValue() != null) {
 					existingFormName.clearSelections();
 					existingFormDescription.setValue("");
@@ -348,10 +361,10 @@ public class NewStudyFormView extends WizardView {
 							@Override
 							public void execute() {
 								ProgressIndicator.showProgressBar();
+								userFormAccessListFieldSet.setExpanded(false); 
+								userFormAccessListFieldSet.setEnabled(true);
 								userFormAccessListField.mask();
 								controller.setFormForAccessControl(formDef);
-								userFormAccessListField.refresh();
-								userFormAccessListField.unmask();
 								ProgressIndicator.hideProgressBar();
 							}
 						});
@@ -366,7 +379,6 @@ public class NewStudyFormView extends WizardView {
 			@Override
 			public void handleEvent(FieldEvent be) {
 				nextButton.setEnabled(false);
-				userFormAccessListField.setEnabled(true);
 				newFormName.setValue("");
 				newFormDescription.setValue("");
 				// set preselected form if applicable
@@ -393,13 +405,19 @@ public class NewStudyFormView extends WizardView {
         		"search="+appMessages.searchForAUser()+"\n" +
         		"loading="+appMessages.loading());
 		userFormAccessListField = new ItemAccessListField<UserSummary>(messages, controller.getUserFormAccessController());
-		FieldSet fs = new FieldSet();
-		fs.setHeading(appMessages.setUserAccessToForm());
-		fs.setCollapsible(true);
-		fs.setExpanded(false);
-		fs.add(userFormAccessListField);
-		userFormAccessListField.setEnabled(false);
-		createFormFS.add(fs);
+		userFormAccessListFieldSet = new FieldSet();
+		userFormAccessListFieldSet.setHeading(appMessages.setUserAccessToForm());
+		userFormAccessListFieldSet.setCollapsible(true);
+		userFormAccessListFieldSet.setExpanded(false);
+		userFormAccessListFieldSet.add(userFormAccessListField);
+		userFormAccessListFieldSet.addListener(Events.Expand, new Listener<FieldSetEvent>() {
+			public void handleEvent(FieldSetEvent be) {
+				userFormAccessListField.refresh();
+				userFormAccessListField.unmask();
+			}
+		});
+		userFormAccessListFieldSet.setEnabled(false);
+		createFormFS.add(userFormAccessListFieldSet);
 
 		return createFormPanel;
 	}
@@ -585,8 +603,6 @@ public class NewStudyFormView extends WizardView {
 		this.studyDef = studyDef;
 		existingStudyDescription.setValue(studyDef.getDescription());
 		controller.setStudyForAccessControl(studyDef);
-		userStudyAccessListField.refresh();
-		userStudyAccessListField.unmask();
 		nextButton.setEnabled(true);
 		ProgressIndicator.hideProgressBar();
 	}
