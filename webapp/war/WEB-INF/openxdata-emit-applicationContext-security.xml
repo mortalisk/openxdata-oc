@@ -22,7 +22,7 @@
     <http auto-config="true" realm="Emit" access-decision-manager-ref="accessDecisionManager">
         <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/login.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <intercept-url pattern="/Emit.html" access="Perm_Emit" />
+        <intercept-url pattern="/Emit.html" access="Perm_Dashboard" />
         <form-login login-page="/login.html" authentication-failure-url="/login.html?login_error=1" default-target-url="/Emit.html" />
         <logout logout-success-url="/login.html"/>
     </http>
