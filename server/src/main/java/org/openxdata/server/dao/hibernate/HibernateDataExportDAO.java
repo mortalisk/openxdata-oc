@@ -72,16 +72,21 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
 
     private String addIntegerFilter(String filter, String fieldName, Integer value) {
         if (value != null) {
-            if (filter == null) {
-                filter = " where " + fieldName;
-            } else {
-                filter += " and " + fieldName;
-            }
+            filter = applyWhereAndClause(filter, fieldName);
 
             filter += " = " + value;
         }
         return filter;
     }
+
+	private String applyWhereAndClause(String filter, String fieldName) {
+		if (filter == null) {
+		    filter = " where " + fieldName;
+		} else {
+		    filter += " and " + fieldName;
+		}
+		return filter;
+	}
 
     /**
      * Adds a date where clause to an sql statement.
@@ -94,21 +99,13 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
      */
     private String addDateFilter(String filter, String fieldName, Date fromValue, Date toValue) {
         if (fromValue != null) {
-            if (filter == null) {
-                filter = " where " + fieldName;
-            } else {
-                filter += " and " + fieldName;
-            }
+            filter = applyWhereAndClause(filter, fieldName);
 
             filter += " >= '" + fromDate2DisplayString(fromValue) + "'";
         }
 
         if (toValue != null) {
-            if (filter == null) {
-                filter = " where " + fieldName;
-            } else {
-                filter += " and " + fieldName;
-            }
+            filter = applyWhereAndClause(filter, fieldName);
 
             filter += " <= '" + fromDate2DisplayString(toValue) + "'";
         }
