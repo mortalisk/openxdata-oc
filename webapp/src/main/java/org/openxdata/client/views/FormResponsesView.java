@@ -441,6 +441,7 @@ public class FormResponsesView extends View implements Refreshable  {
                 break;
             case QuestionDef.QTN_TYPE_TIME:
                 TimeField time = new TimeField();
+                time.setIncrement(1);
                 time.setEditable(false); // avoids them entering invalid data
                 time.setFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
                 colConfig.setDateTimeFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT));
