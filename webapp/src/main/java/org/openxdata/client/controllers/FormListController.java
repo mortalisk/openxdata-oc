@@ -14,6 +14,7 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.FormListView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.model.Editable;
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataParsingException;
@@ -92,14 +93,19 @@ public class FormListController extends Controller {
     }
     
     public void forwardToEditStudyFormController(FormSummary formSummary){
-    	
-       	GWT.log("FormListController : forwardToEditStudyFormController");
-        Dispatcher dispatcher = Dispatcher.get();
-        AppEvent event = new AppEvent(EditStudyFormController.EDITSTUDYFORM);
-        event.setData("formVersion", formSummary.getFormVersion());
-        
-    	dispatcher.dispatch(event);
-    }
+		GWT.log("FormListController : forwardToEditStudyFormController");
+		final FormDefVersion formDefVersion = formSummary.getFormVersion();
+		formService.getForm(formDefVersion.getFormDef().getId(), new EmitAsyncCallback<FormDef>() { 
+			@Override 
+			public void onSuccess(FormDef result) { 
+				Dispatcher dispatcher = Dispatcher.get();
+				AppEvent event = new AppEvent(EditStudyFormController.EDITSTUDYFORM);
+				FormDefVersion latestFormDefVersion = result.getVersion(formDefVersion.getName()); 
+				event.setData("formVersion", latestFormDefVersion);
+				dispatcher.dispatch(event);
+			}
+		});
+	}
     
     public void forwardToDeleteStudyFormController(FormSummary formSummary){
     	GWT.log("FormListController : forwardToDeleteStudyFormController");
