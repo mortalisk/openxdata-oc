@@ -120,8 +120,11 @@ public class FormServiceImpl implements FormService {
 	@Override
 	@Secured("Perm_Delete_Form_Data")
 	public void deleteFormData(FormData formData){
-		formDataDAO.saveFormDataVersion(formData, true);
-		formDataDAO.deleteFormData(formData.getId());
+		User user = userService.getLoggedInUser();
+		formData.setChangedBy(user);
+		formData.setDateChanged(new Date());
+		formData.setVoided(true);
+		formDataDAO.saveFormData(formData);
 		exportTask.deleteFormData(formData);
 	}
 	
@@ -345,11 +348,8 @@ public class FormServiceImpl implements FormService {
 	@Override
 	@Secured("Perm_Delete_Form_Data")
     public void deleteFormData(List<Integer> formDataIds) {
-		User user = userService.getLoggedInUser();
 		for (Integer id : formDataIds) {
 			FormData formData = formDataDAO.getFormData(id);
-			formData.setChangedBy(user);
-			formData.setDateChanged(new Date());
 			deleteFormData(formData);
 		}
     }

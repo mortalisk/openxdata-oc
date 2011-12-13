@@ -49,8 +49,9 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
         // FIXME: see HibernateEditableDAO.getFormData
         String filter = null;
         if (!(formDefVersionId == null && fromDate == null && toDate == null && userId == null)) {
-            filter = addIntegerFilter(filter, "d.form_definition_version_id", formDefVersionId);
-            filter = addIntegerFilter(filter, "d.creator", userId);
+            filter = addRawFilter(filter, "d.form_definition_version_id", formDefVersionId);
+            filter = addRawFilter(filter, "d.creator", userId);
+            filter = addRawFilter(filter, "d.voided", false);
             filter = addDateFilter(filter, "d.date_created", fromDate, toDate);
             if (!filter.equals("")) {
                 sql += filter += " and u.user_id = d.creator;";
@@ -70,7 +71,7 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
         return items;
     }
 
-    private String addIntegerFilter(String filter, String fieldName, Integer value) {
+    private String addRawFilter(String filter, String fieldName, Object value) {
         if (value != null) {
             filter = applyWhereAndClause(filter, fieldName);
 

@@ -27,6 +27,9 @@ public class FormData extends AbstractEditable {
 
 	/** Bitwise flag to indicate if the data has been exported. */
 	private Integer exported = 0;
+	
+	/** Boolean field used to mark data as deleted */
+	private boolean voided = false;
 
 	public FormData() {
 
@@ -146,5 +149,13 @@ public class FormData extends AbstractEditable {
 	 */
 	public void setExported(Integer exported) {
 		this.exported = exported;
+	}
+	
+	public void setVoided(boolean voided) {
+		this.voided = voided;
+	}
+
+	public boolean isVoided() {
+		return voided;
 	}
 }

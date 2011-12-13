@@ -11,7 +11,6 @@ import org.openxdata.server.admin.model.FormDataHeader;
 import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
-import org.openxdata.server.security.util.OpenXDataSecurityUtil;
 import org.openxdata.server.service.FormService;
 import org.openxdata.test.BaseContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +38,11 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 	}
 
 	@Test
-	public void deleteFormData_shouldDeleteFormDataWithGivenId() throws Exception {
+	public void deleteFormData_shouldVoidFormDataWithGivenId() throws Exception {
 		FormData formData = formService.getFormData(new Integer(1));
 		Assert.assertNotNull("form data does not exist", formData);
-		formData.setChangedBy(OpenXDataSecurityUtil.getLoggedInUser());
-		formData.setDateChanged(new Date());
 		formService.deleteFormData(formData);
-		Assert.assertNull("formData still exists", formService.getFormData(new Integer(1)));
+		Assert.assertTrue("formData is not voided", formService.getFormData(new Integer(1)).isVoided());
 	}
 	
 	@Test

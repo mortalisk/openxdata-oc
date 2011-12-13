@@ -516,6 +516,13 @@ public class FormDownloadServiceImpl implements FormDownloadService {
 					+" but data "+formDataId+" is actually for form version "+formData.getFormDefVersionId());
 			throw new ProtocolInvalidSessionReferenceException("Invalid session reference");
 		}
+		// check that the form data has not been deleted
+		if (formData.isVoided()) {
+			// the specified form version does match the actual form version
+			log.error("User "+user.getName()+" requested form data with id "+formDataId
+					+" but data is voided");
+			throw new ProtocolInvalidSessionReferenceException("Invalid session reference: data has been deleted");
+		}
 		if (!user.hasPermission(Permission.PERM_EDIT_FORM_DATA) && formData.getCreator() != user) {
 			// the user only has permission to edit their own data
 			log.error("User "+user.getName()+" does not have permission to edit data "+formDataId
