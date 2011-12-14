@@ -38,4 +38,6 @@ public interface XForm {
      * @return the original unmodified XForm
      */
     String getXForm();
+
+	List<String> getRepeatFields();
 }
