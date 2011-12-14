@@ -93,7 +93,12 @@ public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements Editab
 	
 	public String getFilterSQL(FilterConfig config, int position) {
 		StringBuilder filterSql = new StringBuilder();
-        filterSql.append(config.getField());
+		if (config.isTypeDate()){
+	        filterSql.append("DATE(" + config.getField() + ")");
+		} else {
+	        filterSql.append(config.getField());
+		}
+
         if (config.getComparison() == null) {
         	filterSql.append(" like");
         } else if (config.getComparison() == FilterComparison.EQUAL_TO) {
