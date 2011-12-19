@@ -75,6 +75,24 @@ public class DomReadOnlyXForm implements XForm {
         return fields;
     }
 
+    public List<String> getRepeatFields() {
+        List<String> fields = new ArrayList<String>();
+
+        NodeList nodes = document.getElementsByTagNameNS("*", "repeat");
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node node = nodes.item(i);            
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+            String name = ((Element)node).getAttribute("bind");
+            if (!StringUtils.isBlank(name)) {
+            	fields.add(name);
+            }
+        }
+
+        return fields;
+    }
+    
     public List<String> getMultimediaFields() {
         List<String> fields = new ArrayList<String>();
 

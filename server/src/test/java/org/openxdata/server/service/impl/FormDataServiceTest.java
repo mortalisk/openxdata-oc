@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,9 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 		formData.setDateChanged(new Date());
 		formService.deleteFormData(formData);
 		assertNull("formData still exists", formService.getFormData(new Integer(1)));
+		assertNotNull("form data does not exist", formData);
+		formService.deleteFormData(formData);
+		assertTrue("formData is not voided", formService.getFormData(new Integer(1)).isVoided());
 	}
 	
 	@Test

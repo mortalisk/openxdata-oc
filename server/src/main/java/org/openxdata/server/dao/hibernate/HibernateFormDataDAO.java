@@ -28,11 +28,6 @@ import com.googlecode.genericdao.search.SearchResult;
 public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormDataDAO {
 
 	@Override
-	public void deleteFormData(Integer formDataId){
-		removeById(formDataId);
-	}
-
-	@Override
 	public FormData getFormData(Integer formDataId) {
 		return find(formDataId);
 	}
@@ -85,6 +80,7 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	public Integer getFormDataCount(Integer formDefId) {
 		Search dataCountSearch = new Search();
 		dataCountSearch.addFilterEqual("formDefVersionId", formDefId);
+		dataCountSearch.addFilterEqual("voided", false);
 		return count(dataCountSearch);
 	}
 
@@ -93,6 +89,7 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	public PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) {
 		Search formSearch = getSearchFromLoadConfig(loadConfig, "id");
 		formSearch.addFilterEqual("exported", 0);
+		formSearch.addFilterEqual("voided", false);
 		SearchResult<FormData> result = searchAndCount(formSearch);
 		List<FormDataHeader> list = new ArrayList<FormDataHeader>();
 		Map<Integer, FormDefVersion> formDefVersions = new HashMap<Integer, FormDefVersion>();
@@ -126,6 +123,7 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 		Search unprocessedDataSearch = new Search();
 		// FIXME: see ticket #560
 		unprocessedDataSearch.addFilterEqual("exported", 0);
+		unprocessedDataSearch.addFilterEqual("voided", false);
 		unprocessedDataSearch.addFilterEqual("formDefVersionId", formDefVersionId);
 		return count(unprocessedDataSearch);
 	}

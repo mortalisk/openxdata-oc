@@ -49,8 +49,9 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
         // FIXME: see HibernateEditableDAO.getFormData
         String filter = null;
         if (!(formDefVersionId == null && fromDate == null && toDate == null && userId == null)) {
-            filter = addIntegerFilter(filter, "d.form_definition_version_id", formDefVersionId);
-            filter = addIntegerFilter(filter, "d.creator", userId);
+            filter = addRawFilter(filter, "d.form_definition_version_id", formDefVersionId);
+            filter = addRawFilter(filter, "d.creator", userId);
+            filter = addRawFilter(filter, "d.voided", false);
             filter = addDateFilter(filter, "d.date_created", fromDate, toDate);
             if (!filter.equals("")) {
                 sql += filter += " and u.user_id = d.creator;";
@@ -70,18 +71,23 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
         return items;
     }
 
-    private String addIntegerFilter(String filter, String fieldName, Integer value) {
+    private String addRawFilter(String filter, String fieldName, Object value) {
         if (value != null) {
-            if (filter == null) {
-                filter = " where " + fieldName;
-            } else {
-                filter += " and " + fieldName;
-            }
+            filter = applyWhereAndClause(filter, fieldName);
 
             filter += " = " + value;
         }
         return filter;
     }
+
+	private String applyWhereAndClause(String filter, String fieldName) {
+		if (filter == null) {
+		    filter = " where " + fieldName;
+		} else {
+		    filter += " and " + fieldName;
+		}
+		return filter;
+	}
 
     /**
      * Adds a date where clause to an sql statement.
@@ -94,21 +100,13 @@ public class HibernateDataExportDAO extends BaseDAOImpl<Editable> implements Dat
      */
     private String addDateFilter(String filter, String fieldName, Date fromValue, Date toValue) {
         if (fromValue != null) {
-            if (filter == null) {
-                filter = " where " + fieldName;
-            } else {
-                filter += " and " + fieldName;
-            }
+            filter = applyWhereAndClause(filter, fieldName);
 
             filter += " >= '" + fromDate2DisplayString(fromValue) + "'";
         }
 
         if (toValue != null) {
-            if (filter == null) {
-                filter = " where " + fieldName;
-            } else {
-                filter += " and " + fieldName;
-            }
+            filter = applyWhereAndClause(filter, fieldName);
 
             filter += " <= '" + fromDate2DisplayString(toValue) + "'";
         }

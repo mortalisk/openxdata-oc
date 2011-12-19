@@ -192,6 +192,17 @@ public class FormDownloadServiceTest extends BaseContextSensitiveTest {
 		}
 	}
 	
+	@Test(expected=ProtocolInvalidSessionReferenceException.class)
+	public void testGetFormData_voidedFormData() throws Exception {
+		User admin = userService.findUserByUsername("admin");
+		FormData formData = new FormData(1, "<data></data>", "admin data", new Date(), admin);
+		formData.setVoided(true);
+		formDownloadService.saveFormData(formData);
+		Assert.assertFalse("FormData has an ID", 0 == formData.getId());
+		formDownloadService.getFormData(admin, 2, formData.getId());
+		// expect ProtocolInvalidSessionReferenceException
+	}
+	
 	@Test
 	public void testUpdateFormData() throws Exception {
 		User user = userService.findUserByUsername("user");

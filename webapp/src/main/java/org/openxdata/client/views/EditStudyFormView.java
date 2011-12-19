@@ -8,6 +8,7 @@ import org.openxdata.client.Emit;
 import org.openxdata.client.controllers.EditStudyFormController;
 import org.openxdata.client.controllers.FormDesignerController;
 import org.openxdata.client.model.UserSummary;
+import org.openxdata.client.util.FormDefVersionUtil;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
@@ -36,7 +37,6 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.openxdata.client.util.FormDefVersionUtil;
 
 /**
  * Encapsulates UI functionality for Editing a given Study/Form/Form version..
@@ -329,6 +329,13 @@ public class EditStudyFormView extends WizardView {
 	}
 	
 	public void launchDesigner(boolean readOnly) {
+		formDefVersion.getFormDef().getStudy().setName(studyName.getValue());
+		formDefVersion.getFormDef().getStudy().setDescription(studyDescription.getValue());
+		formDefVersion.getFormDef().setName(formName.getValue());
+		formDefVersion.getFormDef().setDescription(formDescription.getValue());		
+		formDefVersion.setName(formVersion.getValue());
+		formDefVersion.setDescription(formVersionDescription.getValue());
+		formDefVersion.setIsDefault(published.getValue());
 		AppEvent event = new AppEvent((readOnly ? FormDesignerController.READONLY_FORM : FormDesignerController.EDIT_FORM));
         event.setData("formDefVersion", formDefVersion);
         Dispatcher.get().dispatch(event);

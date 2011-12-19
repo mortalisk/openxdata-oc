@@ -21,7 +21,6 @@ public class FormDesignerController extends Controller {
 	AppMessages appMessages = GWT.create(AppMessages.class);
 	
     private StudyServiceAsync studyService;
-    private FormServiceAsync formService;
     private FormDesignerView formDesignerView;
 
     public final static EventType NEW_FORM = new EventType();
@@ -31,7 +30,6 @@ public class FormDesignerController extends Controller {
     public FormDesignerController(StudyServiceAsync aStudyService, FormServiceAsync aFormService) {
         super();
         studyService = aStudyService;
-        formService = aFormService;
         registerEventTypes(NEW_FORM);
         registerEventTypes(EDIT_FORM);
         registerEventTypes(READONLY_FORM);
@@ -47,19 +45,12 @@ public class FormDesignerController extends Controller {
     	GWT.log("NewStudyFormController : handleEvent");
         EventType type = event.getType();
         if (type == NEW_FORM || type == EDIT_FORM || type == READONLY_FORM) {
-        	final FormDefVersion formDefVersion = event.getData("formDefVersion");
-        	ProgressIndicator.showProgressBar();
-        	formService.getForm(formDefVersion.getFormDef().getId(), new EmitAsyncCallback<FormDef>() {
-		            @Override
-		            public void onSuccess(FormDef result) {
-		            	// ensure that we have the latest copy of the form def to avoid overwriting newer changes
-		            	FormDefVersion latestFormDefVersion = result.getVersion(formDefVersion.getName());
-		            	formDesignerView = new FormDesignerView(FormDesignerController.this, latestFormDefVersion);
-		                forwardToView(formDesignerView, event);
-		                ProgressIndicator.hideProgressBar();
-		            }
-        	});
-        	
+			final FormDefVersion formDefVersion = event.getData("formDefVersion");
+			ProgressIndicator.showProgressBar();
+			formDesignerView = new FormDesignerView(
+					FormDesignerController.this, formDefVersion);
+			forwardToView(formDesignerView, event);
+			ProgressIndicator.hideProgressBar();
         }
     }
     

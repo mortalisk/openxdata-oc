@@ -28,6 +28,8 @@
 		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
         
         <property name="exported" type="int" column="exported" />
+        
+        <property name="voided" type="boolean" column="voided" not-null="true" />
 		
 	</class>
 	

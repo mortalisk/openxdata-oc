@@ -28,5 +28,24 @@
 				<where>name='Perm_Emit'</where>
 		</update>
 	</changeSet>
-
+	<changeSet author="Simon" id="add_voided_to_formdata">
+		<comment>
+			Add a voided column to the form_data table
+		</comment>
+		<addColumn tableName="form_data">
+			<column name="voided" type="BOOLEAN" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+    <changeSet author="simon@cell-life.org" id="restore_non_null_on_form_data_version.form_data_id">
+    	<comment>restore not null constraint on form_data_version.form_data_id</comment>
+    	<delete tableName="form_data_version">
+    		<where>
+    			form_data_id is null
+    		</where>
+    	</delete>
+    	<addNotNullConstraint tableName="form_data_version" columnName="form_data_id"
+    		columnDataType="INT"/>
+    </changeSet>
 </databaseChangeLog>

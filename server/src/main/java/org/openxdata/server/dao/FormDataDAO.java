@@ -15,13 +15,6 @@ import org.openxdata.server.admin.model.paging.PagingLoadResult;
 public interface FormDataDAO extends BaseDAO<FormData> {
 
 	/**
-	 * Deletes a row of data from the database.
-	 * 
-	 * @param formDataId the identifier for the row of data to delete.
-	 */
-	void deleteFormData(Integer formDataId);
-	
-	/**
 	 * Gets form data as identified by the id.
 	 * 
 	 * @param formDataId the form data identifier.

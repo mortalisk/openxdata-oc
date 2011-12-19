@@ -37,6 +37,8 @@ public class CSVDataExport implements DataExport {
     @Autowired
     private DataExportService dataExportService;
     private static SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
+    ArrayList<Map<String, String>> processedData;
+    List<String> header;
 
     /**
      * Writes data, collected for a particular form version, to a stream in a CSV format.
@@ -49,6 +51,8 @@ public class CSVDataExport implements DataExport {
      */
     @Override
     public void export(Writer out, Integer formId, Date fromDate, Date toDate, Integer userId) {
+    	 processedData = new ArrayList<Map<String, String>>();
+    	 header = new ArrayList<String>();    	
         // Check to ensure that we have such a form version as identified by the formId.
         FormDefVersion formDefVersion = dataExportService.getFormDefVersion(formId);
         if (formDefVersion == null) {
@@ -60,13 +64,16 @@ public class CSVDataExport implements DataExport {
         XForm xform = new DomReadOnlyXForm(formDefVersion.getXform());
         List<String> gpsFields = xform.getGPSFields();
         List<String> multimediaFields = xform.getMultimediaFields();
+        List<String> repeatFields = xform.getRepeatFields();
         Map<String, List<String>> multiSelFields = xform.getMultiSelectFields();
 
-        List<String> header = getHeader(xform, multimediaFields, gpsFields, multiSelFields);
+        header = getHeader(xform, multimediaFields, gpsFields, multiSelFields);        
+        for (Object[] line : data) {
+           processedData.add(getDataLine(line, multimediaFields, gpsFields, multiSelFields, repeatFields));            
+        }
         try {
             writeHeader(out, header);
-            for (Object[] line : data) {
-                Map<String, String> dataLine = getDataLine(line, multimediaFields, gpsFields, multiSelFields);
+            for (Map<String, String> dataLine : processedData) {
                 writeDataLine(out, header, dataLine);
             }
         } catch (IOException ex) {
@@ -85,15 +92,17 @@ public class CSVDataExport implements DataExport {
             String d = dataLine.get(h);
             if (line.length() > 0) {
                 line.append(",");
+                if (d == null) { d = ""; }
             }
             line.append(d);
         }
         out.write(line + "\n");
     }
 
-    private Map<String, String> getDataLine(Object[] data, List<String> multimediaFields, List<String> gpsFields, Map<String, List<String>> multiSelFields) throws DOMException {
+    private Map<String, String> getDataLine(Object[] data, List<String> multimediaFields, List<String> gpsFields, Map<String, List<String>> multiSelFields, List<String> repeatFields) throws DOMException {
         Map<String, String> dataLine = new HashMap<String, String>();
         addAuditFields(dataLine, data);
+        Map<String, Integer> repeatCount = new HashMap<String,Integer>();
         // other data
         String xml = ((String) data[3]).trim();
         NodeList nodes = XmlUtil.fromString2Doc(xml).getDocumentElement().getChildNodes();
@@ -115,12 +124,54 @@ public class CSVDataExport implements DataExport {
             } else if (multiSelFields.keySet().contains(name)) {
                 addMultiSelectField(dataLine, multiSelFields, name, value);
             } else {
-                dataLine.put(name.toUpperCase(), formatCSV(value));
+				dataLine = processNode(dataLine, node, repeatCount, repeatFields);
             }
         }
         return dataLine;
     }
 
+	private Map<String, String> processNode(Map<String, String> dataLine, Node node, Map<String, Integer> repeatCount, List<String> repeatNodes) {
+
+		NodeList childNodes = node.getChildNodes();
+		int currentRepeat = 1;
+		String nodeName = "";	
+		
+		if (childNodes.getLength() > 1) { // there are child nodes with data that needs processing
+			header.remove(node.getLocalName().toUpperCase());				
+			for (int i = 0; i < childNodes.getLength(); i++) {
+				if (childNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					dataLine = processNode(dataLine, childNodes.item(i), repeatCount, repeatNodes);
+				}
+			}
+		} else { // no child nodes that need processing
+			if (repeatNodes.contains(node.getParentNode().getLocalName())) { // if this column already exists in this dataline						
+				if (repeatCount.containsKey(node.getLocalName().toUpperCase())) { // find the number of times this column has been repeated
+					currentRepeat = repeatCount.get(node.getLocalName().toUpperCase());
+					nodeName = node.getParentNode().getLocalName().toUpperCase() + "_" + node.getLocalName().toUpperCase() + "_" + currentRepeat;
+					if (!header.contains(nodeName)) {
+						header.add(nodeName); 
+						header.remove(node.getLocalName().toUpperCase());
+					}					
+				} else {
+					currentRepeat = 1;
+					nodeName = node.getParentNode().getLocalName().toUpperCase() + "_" + node.getLocalName().toUpperCase() + "_" + currentRepeat;
+					if (!header.contains(nodeName)) {	
+						header.add(header.indexOf(node.getLocalName().toUpperCase()), nodeName);
+						header.remove(node.getLocalName().toUpperCase());
+					}					
+				}
+				
+				dataLine.put(nodeName, formatCSV(node.getTextContent().trim()));				
+				repeatCount.put(node.getLocalName().toUpperCase(), currentRepeat + 1);
+			}
+			else { // the column does not exist yet
+				dataLine.put(node.getLocalName().toUpperCase(), formatCSV(node.getTextContent().trim())); // if this column doesn't exist, we can just add it
+			}
+		}
+
+		return dataLine;
+	}
+	
     private List<String> getHeader(XForm xform,
             List<String> multimediaFields,
             List<String> gpsFields,
