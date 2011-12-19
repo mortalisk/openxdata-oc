@@ -70,6 +70,10 @@ public class FormSummary extends BaseModel {
 		return get("name");
 	}
 	
+	public String getFormVersionName() {
+		return getForm() + " (" + getVersion() + ")";
+	}
+	
 	public void setName(String name) {
 		set("name", name);
 	}

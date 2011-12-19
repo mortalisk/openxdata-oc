@@ -48,4 +48,41 @@
     	<addNotNullConstraint tableName="form_data_version" columnName="form_data_id"
     		columnDataType="INT"/>
     </changeSet>
+
+	<changeSet author="Dagmar" id="add_Perm_List_Users">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0"> 
+		                                <![CDATA[ 
+		                                SELECT count(*) FROM permission where name='Perm_List_Users'; 
+		                                ]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding permission to view a list of Users
+		</comment>
+		<insert tableName="permission">
+			<column name="name" value="Perm_List_Users" />
+			<column name="description" value="Ability to view a list of Users" />
+		</insert>
+	</changeSet>
+
+	<changeSet author="Dagmar" id="add_role_data_manager_perm_list_users">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0"> 
+ 		                                <![CDATA[ 
+ 		                                SELECT count(*) FROM role r, role_permission rp, permission p where r.name='Role_Data_Manager' 
+ 		                                and r.role_id = rp.role_id and p.permission_id = rp.permission_id and p.name='Perm_List_Users'; 
+ 		                                ]]>
+			</sqlCheck>
+		</preConditions>
+		<comment>
+			Adding Perm_List_Users permissions to role Data Manager in role_permission
+			table
+		</comment>
+		<sql>
+			insert into role_permission (role_id, permission_id)
+			values ((select role_id from role where name='Role_Data_Manager'),
+			(select permission_id from permission where name='Perm_List_Users'));
+		</sql>
+	</changeSet>
 </databaseChangeLog>

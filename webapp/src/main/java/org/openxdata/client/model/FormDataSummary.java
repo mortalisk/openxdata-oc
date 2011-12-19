@@ -43,7 +43,7 @@ public class FormDataSummary extends BaseModel {
     
 	private void convertFormDataHeader() {
 		setId(formDataHeader.getId());
-		setForm(formDataHeader.getFormName() + "(" + formDataHeader.getVersionName()+")");
+		setForm(formDataHeader.getFormName() + " (" + formDataHeader.getVersionName()+")");
 		set("userName",formDataHeader.getCreator());
 		setDescription(formDataHeader.getDescription());
 	}
@@ -62,6 +62,10 @@ public class FormDataSummary extends BaseModel {
 
 	public void setForm(String formName) {
 		set("form", formName);
+	}
+
+	public String getForm() {
+		return get("form");
 	}
 
     public void setStatus(String status) {

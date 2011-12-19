@@ -76,7 +76,7 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements org.o
 
     @Override
 	public User findUserByEmail(String email) throws UserNotFoundException {
-        return userService.findUserByUsername(email);
+        return userService.findUserByEmail(email);
     }
     
     @Override

@@ -52,6 +52,8 @@ public class NewEditUserView extends WizardView {
 	
 	private String checkedUserName;
 	private boolean userNameUnique;
+	private String checkedEmail;
+	private boolean emailUnique;
 
 	private ItemAccessListField<StudySummary> studyUserAccessListField;
 	private ItemAccessListField<FormSummary> formUserAccessListField;
@@ -181,6 +183,9 @@ public class NewEditUserView extends WizardView {
 						if (user != null && user.hasAdministrativePrivileges()) {
 							return appMessages.cannotDisableRoleAdministrator();
 						}
+					} else {
+						// need to validate email address when status is active to ensure it is unique
+						email.validate();
 					}
 				}
 				return null;
@@ -265,6 +270,30 @@ public class NewEditUserView extends WizardView {
 		email.setFieldLabel(appMessages.eMail());
 		email.setRegex("^[\\w-]+(\\.[\\w-]+)*@(?:[\\w-]+\\.)+[a-zA-Z]{2,7}$");
 		email.getMessages().setRegexText(appMessages.invalidEmailAddress());
+		email.setValidator(new Validator() {
+			@Override
+			public String validate(Field<?> field, final String value) {
+				GWT.log("validate:"+value+" checkedEmail="+checkedEmail+" status="+status.getSelectedIndex());
+				if (value != null) {
+					if (!value.equals(checkedEmail)) {
+						// make sure we don't make 101 RP calls unless the value has changed!
+						if (status.getSelectedIndex() == User.ACTIVE) {
+							// only check email if user is active
+							Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+								@Override
+								public void execute() {
+									NewEditUserController controller = (NewEditUserController) NewEditUserView.this.getController();
+									controller.isEmailUnique(value);
+								}
+							});
+						}
+					} else if (!emailUnique) {
+						return "Email address is already in use"; //appMessages.emailIsNotUnique();
+					}
+				}
+				return null;
+			}
+		});
 		createUserPanel.add(email);
 		phoneNo = new TextField<String>();
 		phoneNo.setFieldLabel(appMessages.phoneNo());
@@ -357,6 +386,18 @@ public class NewEditUserView extends WizardView {
 		} else {
 			// username is not valid
 			this.userName.markInvalid(appMessages.usernameIsNotUnique());
+		}
+	}
+	
+	public void setEmailUnique(String email, Boolean unique) {
+		checkedEmail = email;
+		emailUnique = unique;
+		if (unique && this.email.getValue().equals(email)) {
+			// email is valid
+			this.email.clearInvalid();
+		} else {
+			// email is not valid
+			this.email.markInvalid("Email is not unique");
 		}
 	}
 	

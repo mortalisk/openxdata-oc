@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.openxdata.server.admin.model.exception.OpenXdataDataAccessException;
 import org.openxdata.server.dao.RdmsExporterDAO;
+import org.openxdata.server.export.rdbms.engine.Constants;
 import org.openxdata.server.export.rdbms.engine.DataQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
 	
     @Override
 	public int deleteData(Integer formDataId, String tableName) {
-        String statement = "delete from "+tableName+" where openxdata_form_data_id="+formDataId;
+        String statement = "delete from "+escape(tableName)+" where openxdata_form_data_id="+formDataId;
         Connection connection = getConnection();
 		try {
             Statement st = connection.createStatement();
@@ -63,8 +64,8 @@ public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
     
     @Override
 	public boolean deleteTableIfEmtpy(String tableName) {
-    	String countStatement = "select count(*) from " + tableName;
-        String deleteStatement = "drop table " + tableName;
+    	String countStatement = "select count(*) from "+ escape(tableName);
+        String deleteStatement = "drop table " + escape(tableName);
         
         Connection connection = getConnection();
 		try {
@@ -90,7 +91,7 @@ public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
 
     @Override
 	public boolean dataExists(Integer formDataId, String tableName) {
-        String statement = "select count(*) from "+tableName+" where openxdata_form_data_id="+formDataId;
+        String statement = "select count(*) from "+escape(tableName)+" where openxdata_form_data_id="+formDataId;
         Connection connection = getConnection();
 		try {
             Statement st = connection.createStatement();
@@ -201,5 +202,9 @@ public class JdbcRdmsExporterDAO implements RdmsExporterDAO {
 		} catch (SQLException e) {
 			throw new OpenXdataDataAccessException(e);
 		}
+	}
+
+	private String escape(String textToEscape) {
+		return Constants.ESCAPE_CHAR + textToEscape + Constants.ESCAPE_CHAR;
 	}
 }

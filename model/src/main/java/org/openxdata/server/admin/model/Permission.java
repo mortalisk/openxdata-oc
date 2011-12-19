@@ -112,6 +112,7 @@ public class Permission extends AbstractEditable {
 	public static final String PERM_VIEW_USERS = "Perm_View_Users";
 	public static final String PERM_EDIT_USERS = "Perm_Edit_Users";
 	public static final String PERM_IMPORT_USERS = "Perm_Import_Users";
+	public static final String PERM_LIST_USERS = "Perm_List_Users";
 
 	/*study permissions*/
 	public static final String PERM_ADD_STUDIES = "Perm_Add_Studies";

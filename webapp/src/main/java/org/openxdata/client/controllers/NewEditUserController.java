@@ -80,7 +80,23 @@ public class NewEditUserController extends Controller {
             }
         });
     }
-    
+
+	public void isEmailUnique(final String email) {
+		GWT.log("NewUserController : getCheckEmailUnique ");
+		userService.findUserByEmail(email, new AsyncCallback<User>() {
+			@Override
+			public void onSuccess(User result) {
+				newUserView.setEmailUnique(email, false);
+			}
+			@Override
+			public void onFailure(Throwable throwable) {
+				if (throwable instanceof UserNotFoundException) {
+					newUserView.setEmailUnique(email, true);
+				}
+			}
+		});
+	}
+
     public void saveUser(final User user, final boolean triggerRefreshEvent, final boolean notifyMe) {
         GWT.log("NewUserController : saveUser");
         userService.saveUser(user, new EmitAsyncCallback<User>() {

@@ -51,6 +51,7 @@ public class FormListController extends Controller {
         RefreshablePublisher.get().subscribe(RefreshableEvent.Type.UPDATE_STUDY, formListView);
         RefreshablePublisher.get().subscribe(RefreshableEvent.Type.CREATE_STUDY, formListView);
         RefreshablePublisher.get().subscribe(RefreshableEvent.Type.DELETE, formListView);
+		RefreshablePublisher.get().subscribe(RefreshableEvent.Type.REFRESH_UNEXPORTED_DATA, formListView);
     }
 
     @Override

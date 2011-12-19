@@ -16,6 +16,7 @@ import org.openxdata.server.admin.model.paging.FilterComparison;
 import org.openxdata.server.admin.model.paging.FilterConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.dao.EditableDAO;
+import org.openxdata.server.export.rdbms.engine.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -49,9 +50,13 @@ public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements Editab
 	public List<Object[]> getResponseData(String formBinding, String[] questionBindings, PagingLoadConfig pagingLoadConfig) {
 		StringBuilder sql = new StringBuilder();
         sql.append("select openxdata_form_data_id,openxdata_form_data_date_created,");
-        sql.append(StringUtils.arrayToCommaDelimitedString(questionBindings));
+        sql.append(Constants.ESCAPE_CHAR);
+        sql.append(StringUtils.arrayToDelimitedString(questionBindings, Constants.ESCAPE_CHAR+","+Constants.ESCAPE_CHAR));
+        sql.append(Constants.ESCAPE_CHAR);
         sql.append(" from ");
+        sql.append(Constants.ESCAPE_CHAR);
         sql.append(formBinding);
+        sql.append(Constants.ESCAPE_CHAR);
         
         StringBuilder filterSql = new StringBuilder();
         List<FilterConfig> filters = pagingLoadConfig.getFilters();
@@ -142,7 +147,9 @@ public class HibernateEditableDAO extends BaseDAOImpl<FormDef> implements Editab
 	public BigInteger getNumberOfResponses(String formBinding, PagingLoadConfig pagingLoadConfig) {
 		StringBuilder sql = new StringBuilder();
         sql.append("select count(*) from ");
+        sql.append(Constants.ESCAPE_CHAR);
         sql.append(formBinding);
+        sql.append(Constants.ESCAPE_CHAR);
         StringBuilder filterSql = new StringBuilder();
         List<FilterConfig> filters = pagingLoadConfig.getFilters();
         addFilterFieldsToSql(sql, filterSql, filters);

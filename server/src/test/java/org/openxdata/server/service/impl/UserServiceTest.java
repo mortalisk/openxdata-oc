@@ -76,14 +76,14 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		List<User> users = userService.getUsers();
 
 		Assert.assertNotNull(users);
-		Assert.assertEquals("There are 6 users", 6, users.size());
+		Assert.assertEquals("There are 7 users", 7, users.size());
 	}
 
 	@Test
 	public void saveUser_shouldSaveUser() throws Exception {
 
 		List<User> users = userService.getUsers();
-		Assert.assertEquals("There are 6 users", 6, users.size());
+		Assert.assertEquals("There are 7 users", 7, users.size());
 		Assert.assertNull(getUser(userName, users));
 
 		User user = new User(userName);
@@ -93,38 +93,38 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		userService.saveUser(user);
 
 		users = userService.getUsers();
-		Assert.assertEquals("Added 1 user so now there are 7", 7, userService.getUsers().size());
+		Assert.assertEquals("Added 1 user so now there are 8", 8, userService.getUsers().size());
 		Assert.assertNotNull(getUser(userName, users));
 	}
 	
 	@Test
 	public void testSaveUsers(){
 		List<User> users = userService.getUsers();
-		Assert.assertEquals("There are 6 users", 6, users.size());
+		Assert.assertEquals("There are 7 users", 7, users.size());
 		Assert.assertNull(getUser(userName, users));
 		
 		userService.saveUsers(dummyUsers);
-		Assert.assertEquals("Added 3 users so now there are 9", 9, userService.getUsers().size());
+		Assert.assertEquals("Added 3 users so now there are 10", 10, userService.getUsers().size());
 	}
 	
 	@Test
 	public void testDeleteUsers(){
 		List<User> users = userService.getUsers();
-		Assert.assertEquals("There are 6 users", 6, users.size());
+		Assert.assertEquals("There are 7 users", 7, users.size());
 		Assert.assertNull(getUser(userName, users));
 		
 		userService.saveUsers(dummyUsers);
-		Assert.assertEquals("Added 3 users so now there are 9", 9, userService.getUsers().size());
+		Assert.assertEquals("Added 3 users so now there are 10", 10, userService.getUsers().size());
 		
 		userService.deleteUsers(dummyUsers);
-		Assert.assertEquals("Deleted 3 users so now there are 6", 6, userService.getUsers().size());
+		Assert.assertEquals("Deleted 3 users so now there are 7", 7, userService.getUsers().size());
 	}
 
 	@Test
 	public void deleteUser_shouldDeleteGivenUser() throws Exception {
 
 		List<User> users = userService.getUsers();
-		Assert.assertEquals("There are 6 users", 6, users.size());
+		Assert.assertEquals("There are 7 users", 7, users.size());
 		Assert.assertNull(getUser(userName, users));
 
 		User user = new User(userName);
@@ -133,7 +133,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 
 		userService.saveUser(user);
 		users = userService.getUsers();
-		Assert.assertEquals("Added 1 user so now there are 7", 7, users.size());
+		Assert.assertEquals("Added 1 user so now there are 8", 8, users.size());
 
 		user = getUser(userName, users);
 		Assert.assertNotNull(user);
@@ -141,7 +141,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		userService.deleteUser(user);
 
 		users = userService.getUsers();
-		Assert.assertEquals("Deleted the user so now there are 6", 6, users.size());
+		Assert.assertEquals("Deleted the user so now there are 7", 7, users.size());
 		Assert.assertNull(getUser(userName, users));
 	}
 
@@ -150,13 +150,23 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		User user = userService.findUserByEmail("cattabanks@gmail.com");
 		Assert.assertNotNull("mark's users is there", user);
 		Assert.assertEquals("his username is admin", "admin", user.getName());
-
 	}
 
     @Test(expected=UserNotFoundException.class)
     public void findUserByEmailShouldThrowExceptionWhenNoUsersFound() throws UserNotFoundException {
 		userService.findUserByEmail("nothere@gmail.com");		
     }
+
+	public void testFindUserByEmailDuplicate() throws Exception {
+		User user = userService.findUserByEmail("user@openxdata.org");
+		Assert.assertNotNull("user is there", user);
+		Assert.assertEquals("his username is user", "user", user.getName());
+	}
+
+	@Test(expected=UserNotFoundException.class)
+	public void testFindUserByEmailDisabled() throws Exception {
+		userService.findUserByEmail("disabled@openxdata.org");
+	}
 
 	@Test
 	public void testFindUserByPhoneNo() throws Exception {
