@@ -8,6 +8,7 @@ import org.openxdata.client.Emit;
 import org.openxdata.client.Refreshable;
 import org.openxdata.client.RefreshableEvent;
 import org.openxdata.client.controllers.FormListController;
+import org.openxdata.client.model.FormDataSummary;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.client.view.images.OpenXDataImages;
@@ -106,7 +107,7 @@ public class FormListView extends View implements Refreshable {
 		          ListStore<FormSummary> store, Grid<FormSummary> grid) {
 		    	  String name = summary.getForm();
 		    	  if (summary.getFormVersion() != null) {
-		    		  name = summary.getForm() + "   (" + summary.getVersion() + ")";
+		    		  name = summary.getFormVersionName();
 		    	  }
 		    	  
 		    	  String style = "color: black";
@@ -646,6 +647,27 @@ public class FormListView extends View implements Refreshable {
 					if (summary.getFormVersion() == event.getData()) {
 						store.remove(summary);
 						break; // no chance to have more than one
+					}
+				}
+			}
+		} else if (event.getEventType() == RefreshableEvent.Type.REFRESH_UNEXPORTED_DATA) {
+			List<FormDataSummary> formData = event.getData();
+			List<String> processedForms = new ArrayList<String>();
+			ListStore<FormSummary> store = grid.getStore();
+			for (FormDataSummary fdSummary : formData) {
+				if (!processedForms.contains(fdSummary.getForm())) {
+					// only process a form version once (in case there is multiple data for each form version)
+					processedForms.add(fdSummary.getForm()); 
+					for (final FormSummary fSummary : store.getModels()) {
+						if (fSummary.getFormVersionName().equals(fdSummary.getForm())) {
+							Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+								@Override
+								public void execute() {
+									((FormListController) FormListView.this
+											.getController()).hasFormData(fSummary.getFormVersion());
+								}
+							});
+						}
 					}
 				}
 			}

@@ -101,12 +101,12 @@ public class UnprocessedDataController  extends Controller {
 			public void onSuccess(Void result) {
 				GWT.log("Successful delete of form data");
 				ProgressIndicator.hideProgressBar();
-				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.REFRESH_UNEXPORTED_DATA));
+				RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.REFRESH_UNEXPORTED_DATA, formDataList));
 			}
 		});
 	}
 	
-	public void reprocessFormData(List<FormDataSummary> formDataList) {
+	public void reprocessFormData(final List<FormDataSummary> formDataList) {
 		formService.exportFormData(convertFormDataSummaryList(formDataList), new EmitAsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {
@@ -116,7 +116,7 @@ public class UnprocessedDataController  extends Controller {
 					@Override
 					public void handleEvent(MessageBoxEvent be) {
 						if (be.getButtonClicked().getItemId().equals(Dialog.OK)){
-							RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.REFRESH_UNEXPORTED_DATA));
+							RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.REFRESH_UNEXPORTED_DATA, formDataList));
 						}
 					}
 				});
