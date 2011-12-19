@@ -30,7 +30,16 @@ public class HibernateUserDAO extends BaseDAOImpl<User> implements UserDAO {
 
 	@Override
 	public User findUserByEmail(String email) {
-        return searchUniqueByPropertyEqual("email", email);
+		Search search = new Search();
+		search.addFilterEqual("email", email);
+		search.addFilterEqual("status", User.ACTIVE);
+		List<User> users =  search(search);
+		if (users != null && users.size() > 0) {
+			// note: email address should now be unique since there are UI checks in place, 
+			// but historically might not be the case
+			return users.get(0);
+		}
+		return null;
 	}
 	
 	@Override
