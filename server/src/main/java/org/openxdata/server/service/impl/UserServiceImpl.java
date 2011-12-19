@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     
 	@Override
 	@Transactional(readOnly = true)
-	@Secured("Perm_View_Users")
+	@Secured({"Perm_View_Users", "Perm_List_Users"})
     public PagingLoadResult<User> getUsers(PagingLoadConfig pagingLoadConfig) {
 		return userDAO.findAllByPage(pagingLoadConfig, "name");
     }
