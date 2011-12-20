@@ -1,6 +1,6 @@
 package org.openxdata.client.views;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
@@ -9,7 +9,6 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.exception.OpenXDataValidationException;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
