@@ -68,6 +68,7 @@ public class FormResponsesController  extends Controller {
     	GWT.log("FormResponsesController : initialize");
         formResponsesView = new FormResponsesView(this);
         RefreshablePublisher.get().subscribe(RefreshableEvent.Type.CAPTURE, formResponsesView);
+        RefreshablePublisher.get().subscribe(RefreshableEvent.Type.DELETE, formResponsesView);
     }
 
     @Override
@@ -334,7 +335,7 @@ public class FormResponsesController  extends Controller {
 			public void onSuccess(Void result) {
                 GWT.log("Successful delete of form data");
                 ProgressIndicator.hideProgressBar();
-                RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.CAPTURE, formData)); 
+                RefreshablePublisher.get().publish(new RefreshableEvent(RefreshableEvent.Type.DELETE, formData)); 
             }
         });
 	}

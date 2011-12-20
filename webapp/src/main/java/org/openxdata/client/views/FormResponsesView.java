@@ -14,6 +14,7 @@ import org.openxdata.client.model.FormDataSummary;
 import org.openxdata.client.model.FormSummary;
 import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.ProgressIndicator;
+import org.openxdata.server.admin.model.FormData;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.Permission;
@@ -338,9 +339,7 @@ public class FormResponsesView extends View implements Refreshable  {
 							.deleteFormData(user, summary.getExportedFormData().getFormData());
 							re.stopEditing(false);
 							
-							if (count > 1) {
-								refresh(null);
-							} else {
+							if (count <= 1) {
 								MessageBox.info("No more data", 
 										"There are no more responses.", 
 										new Listener<MessageBoxEvent>() {
@@ -556,7 +555,17 @@ public class FormResponsesView extends View implements Refreshable  {
 	@Override
 	public void refresh(RefreshableEvent event) {
     	GWT.log("FormResponseView : refresh response view");
-    	toolBar.refresh();
+    	if (RefreshableEvent.Type.DELETE == event.getEventType()
+    			&& event.getData() instanceof FormData){
+    		ListStore<FormDataSummary> store = grid.getStore();
+			for (final FormDataSummary summary : store.getModels()) {
+				if (summary.getExportedFormData().getFormData() == event.getData()) {
+					store.remove(summary);
+				}
+			}
+    	} else {
+    		toolBar.refresh();
+    	}
 	} 
 	
 	public void setUser(User user) {
