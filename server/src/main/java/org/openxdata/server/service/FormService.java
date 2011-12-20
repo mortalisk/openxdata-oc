@@ -172,30 +172,7 @@ public interface FormService {
      */
     PagingLoadResult<ExportedFormData> getFormDataList(String formBinding, String[] questionBindings, 
     		PagingLoadConfig pagingLoadConfig) throws ExportedDataNotFoundException;
-    
-	/**
-	 * Get a page of Users mapped to a specific form 
-	 * @param formId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig);
-	
-	/**
-	 * Get a page of Users NOT mapped to the specified form
-	 * @param studyId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig);
-	
-	/**
-	 * Updates the users currently mapped to the specified form.
-	 * @param formId Integer id of specified form
-	 * @param usersToAdd List of users to add to the study mapping
-	 * @param usersToDelete List of users to delete from the study mapping
-	 */
-	void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete);
+
 	
 	/**
 	 * Get a page of Forms mapped to a specific user 

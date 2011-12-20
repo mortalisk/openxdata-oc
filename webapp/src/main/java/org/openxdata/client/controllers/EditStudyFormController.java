@@ -8,6 +8,7 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.EditStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
+import org.openxdata.server.admin.client.service.UserServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
@@ -28,6 +29,7 @@ public class EditStudyFormController extends Controller {
 
 	private StudyServiceAsync studyService;
 	private FormServiceAsync formService;
+	private UserServiceAsync userService;
 
 	private EditStudyFormView editStudyFormView;
 
@@ -38,13 +40,14 @@ public class EditStudyFormController extends Controller {
 	private UserFormAccessController userFormAccessController;
 	private UserStudyAccessController userStudyAccessController;
 
-	public EditStudyFormController(StudyServiceAsync studyService, FormServiceAsync formService) {
+	public EditStudyFormController(StudyServiceAsync studyService, FormServiceAsync formService, UserServiceAsync userService) {
 		super();
 		this.studyService = studyService;
 		this.formService = formService;
+		this.userService = userService;
 		registerEventTypes(OPENREADONLY, EDITSTUDYFORM, CREATENEWVERSION);
-		userFormAccessController = new UserFormAccessController(formService);
-		userStudyAccessController = new UserStudyAccessController(studyService);
+		userFormAccessController = new UserFormAccessController(this.userService);
+		userStudyAccessController = new UserStudyAccessController(this.userService);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package org.openxdata.server.admin.client.service;
 import java.util.List;
 
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.UserHeader;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -140,4 +141,54 @@ public interface UserService extends RemoteService {
      * @throws OpenXDataSecurityException
      */
     String importUsers(String importFileContents) throws OpenXDataSecurityException;
+
+	/**
+	 * Get a page of Users mapped to a specific study 
+	 * @param studyId Integer id of specified study
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getMappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Get a page of Users NOT mapped to the specified study
+	 * @param studyId Integer id of specified study
+	 * @param loadConfig PagingLoadConfig specifying page size and number
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getUnmappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+
+	/**
+	 * Updates the users currently mapped to the specified study.
+	 * @param studyId Integer id of specified study
+	 * @param usersToAdd List of users to add to the study mapping
+	 * @param usersToDelete List of users to delete from the study mapping
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedStudyUserNames(Integer studyId, List<UserHeader> usersToAdd, List<UserHeader> usersToDelete) throws OpenXDataSecurityException;
+
+	/**
+	 * Get a page of Users mapped to a specific form 
+	 * @param formId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getMappedFormUserNames(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Get a page of Users NOT mapped to the specified form
+	 * @param studyId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getUnmappedFormUserNames(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
+	
+	/**
+	 * Updates the users currently mapped to the specified form.
+	 * @param formId Integer id of specified form
+	 * @param usersToAdd List of users to add to the study mapping
+	 * @param usersToDelete List of users to delete from the study mapping
+	 * @throws OpenXDataSecurityException
+	 */
+	void saveMappedFormUserNames(Integer formId, List<UserHeader> usersToAdd, List<UserHeader> usersToDelete) throws OpenXDataSecurityException;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.UserHeader;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.UserNotFoundException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -116,5 +117,35 @@ public class UserServiceImpl extends OxdPersistentRemoteService implements org.o
     public String importUsers(String importFileContents)
             throws OpenXDataSecurityException {
 	    return userService.importUsers(importFileContents);
+    }
+
+	@Override
+    public PagingLoadResult<UserHeader> getMappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig) {
+	    return userService.getMappedStudyUserNames(studyId, loadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<UserHeader> getUnmappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig) {
+	    return userService.getUnmappedStudyUserNames(studyId, loadConfig);
+    }
+	
+	@Override
+    public void saveMappedStudyUserNames(Integer studyId, List<UserHeader> usersToAdd, List<UserHeader> usersToDelete) throws OpenXDataSecurityException {
+		userService.saveMappedStudyUserNames(studyId, usersToAdd, usersToDelete);
+    }
+
+	@Override
+    public PagingLoadResult<UserHeader> getMappedFormUserNames(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return userService.getMappedFormUserNames(formId, loadConfig);
+    }
+
+	@Override
+    public PagingLoadResult<UserHeader> getUnmappedFormUserNames(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
+	    return userService.getUnmappedFormUserNames(formId, loadConfig);
+    }
+
+	@Override
+    public void saveMappedFormUserNames(Integer formId, List<UserHeader> usersToAdd, List<UserHeader> usersToDelete) throws OpenXDataSecurityException {
+		userService.saveMappedFormUserNames(formId, usersToAdd, usersToDelete);
     }
 }

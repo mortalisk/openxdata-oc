@@ -77,6 +77,16 @@
 				<column name="role_id" />
 			</many-to-many>
 		</set>
+		
+		<set name="mappedForms" table="user_form">
+			<key column="user_id" />
+			<one-to-many class="org.openxdata.server.admin.model.mapping.UserFormMap"/>
+		</set>
+		
+		<set name="mappedStudies" table="study_user">
+			<key column="user_id" />
+			<one-to-many class="org.openxdata.server.admin.model.mapping.UserStudyMap"/>
+		</set>
 	</class>
 	
 </hibernate-mapping>

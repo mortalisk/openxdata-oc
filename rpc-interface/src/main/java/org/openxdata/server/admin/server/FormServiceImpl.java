@@ -94,21 +94,6 @@ public class FormServiceImpl extends OxdPersistentRemoteService implements
     }
 
 	@Override
-    public PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return formService.getMappedUsers(formId, loadConfig);
-    }
-
-	@Override
-    public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
-	    return formService.getUnmappedUsers(formId, loadConfig);
-    }
-
-	@Override
-    public void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException {
-	    formService.saveMappedFormUsers(formId, usersToAdd, usersToDelete);
-    }
-
-	@Override
     public PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
 	    return formService.getMappedForms(userId, loadConfig);
     }

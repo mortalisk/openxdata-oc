@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
@@ -58,23 +57,7 @@ public interface StudyDAO extends BaseDAO<StudyDef>{
 	 * @return the name of the study or null if not found
 	 */
 	String getStudyName(int studyId);
-	
-	/**
-	 * Get a page of Users mapped to a specific study 
-	 * @param studyId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig);
-	
-	/**
-	 * Get a page of Users NOT mapped to the specified study
-	 * @param studyId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig);
-	
+
 	/**
 	 * Get a page of Studies mapped to a specific User 
 	 * @param userId Integer id of specified user

@@ -2,7 +2,11 @@ package org.openxdata.server.dao;
 
 import java.util.List;
 
+import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.UserHeader;
+import org.openxdata.server.admin.model.paging.PagingLoadConfig;
+import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 /**
  * Provides data access 
@@ -74,4 +78,36 @@ public interface UserDAO extends BaseDAO<User> {
 	 * @param user User to set online status for.
 	 */
 	void saveOnlineStatus(User user);
+
+	/**
+	 * Get a page of Users mapped to a specific study 
+	 * @param studyId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getMappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig);
+
+	/**
+	 * Get a page of Users NOT mapped to the specified study
+	 * @param studyId
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getUnmappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig);
+
+	/**
+	 * Get a page of Users mapped to a specific form 
+	 * @param form
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getMappedFormUserNames(FormDef form, PagingLoadConfig loadConfig);
+
+	/**
+	 * Get a page of Users NOT mapped to the specified form
+	 * @param form
+	 * @param loadConfig
+	 * @return
+	 */
+	PagingLoadResult<UserHeader> getUnmappedFormUserNames(FormDef form, PagingLoadConfig loadConfig);
 }

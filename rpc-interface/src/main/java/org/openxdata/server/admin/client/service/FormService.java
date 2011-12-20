@@ -129,31 +129,6 @@ public interface FormService extends RemoteService {
      * @return true if it has, else false.
      */
     Boolean hasEditableData(Editable item) throws OpenXDataSecurityException;
-    
-	/**
-	 * Get a page of Users mapped to a specific form 
-	 * @param formId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
-	
-	/**
-	 * Get a page of Users NOT mapped to the specified form
-	 * @param studyId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
-	
-	/**
-	 * Updates the users currently mapped to the specified form.
-	 * @param formId Integer id of specified form
-	 * @param usersToAdd List of users to add to the study mapping
-	 * @param usersToDelete List of users to delete from the study mapping
-	 * @throws OpenXDataSecurityException
-	 */
-	void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
 	
 	/**
 	 * Get a page of Forms mapped to a specific user 

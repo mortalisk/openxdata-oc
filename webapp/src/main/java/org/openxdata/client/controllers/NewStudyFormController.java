@@ -9,6 +9,7 @@ import org.openxdata.client.RefreshablePublisher;
 import org.openxdata.client.views.NewStudyFormView;
 import org.openxdata.server.admin.client.service.FormServiceAsync;
 import org.openxdata.server.admin.client.service.StudyServiceAsync;
+import org.openxdata.server.admin.client.service.UserServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.StudyDef;
 
@@ -22,6 +23,7 @@ public class NewStudyFormController extends Controller {
     AppMessages appMessages = GWT.create(AppMessages.class);
     private StudyServiceAsync studyService;
     private FormServiceAsync formService;
+    private UserServiceAsync userService;
     private NewStudyFormView newStudyFormView;
 
     public final static EventType NEWSTUDYFORM = new EventType();
@@ -29,13 +31,14 @@ public class NewStudyFormController extends Controller {
 	private UserFormAccessController userFormAccessController;
 	private UserStudyAccessController userStudyAccessController;
 
-    public NewStudyFormController(FormServiceAsync aFormService,StudyServiceAsync aStudyService) {
+    public NewStudyFormController(FormServiceAsync aFormService,StudyServiceAsync aStudyService, UserServiceAsync aUserService) {
         super();
         studyService = aStudyService;
         formService = aFormService;
+        userService = aUserService;
         registerEventTypes(NEWSTUDYFORM);
-        userFormAccessController = new UserFormAccessController(formService);
-    	userStudyAccessController = new UserStudyAccessController(studyService);
+        userFormAccessController = new UserFormAccessController(userService);
+    	userStudyAccessController = new UserStudyAccessController(userService);
     }
     
     @Override

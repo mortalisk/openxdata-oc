@@ -9,7 +9,6 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.mapping.UserStudyMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
@@ -158,35 +157,6 @@ public class StudyManagerServiceImpl implements StudyManagerService {
 	public List<StudyDef> getStudyByName(String studyName) {
 		return studyDao.searchByPropertyEqual("name", studyName);
 	}
-
-	@Override
-	@Secured({"Perm_View_Studies", "Perm_View_Users"})
-    public PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
-	    return studyDao.getMappedUsers(studyId, loadConfig);
-    }
-
-	@Override
-	@Secured({"Perm_View_Studies", "Perm_View_Users"})
-    public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
-	    return studyDao.getUnmappedUsers(studyId, loadConfig);
-    }
-
-	@Override
-	@Secured({"Perm_Add_Users", "Perm_Add_Studies"})
-    public void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) {
-		if (usersToAdd != null) {
-			for (User u : usersToAdd) {
-				UserStudyMap map = new UserStudyMap(u.getId(), studyId);
-				userStudyMapDAO.saveUserMappedStudy(map);
-			}
-		}
-		if (usersToDelete != null) {
-			for (User u : usersToDelete) {
-				UserStudyMap map = userStudyMapDAO.getUserStudyMap(u.getId(), studyId);
-				userStudyMapDAO.deleteUserMappedStudy(map);
-			}
-		}
-    }
 
 	@Override
 	@Secured({"Perm_View_Studies", "Perm_View_Users"})

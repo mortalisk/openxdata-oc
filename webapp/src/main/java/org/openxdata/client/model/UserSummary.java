@@ -1,7 +1,11 @@
 package org.openxdata.client.model;
 
-import com.extjs.gxt.ui.client.data.BaseModel;
+import org.openxdata.client.AppMessages;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.UserHeader;
+
+import com.extjs.gxt.ui.client.data.BaseModel;
+import com.google.gwt.core.client.GWT;
 
 /**
  *
@@ -10,8 +14,10 @@ import org.openxdata.server.admin.model.User;
 public class UserSummary extends BaseModel {
 
 	private static final long serialVersionUID = -483245623678099579L;
+	private final AppMessages appMessages = GWT.create(AppMessages.class);
 	
 	private User user;
+	private UserHeader userHeader;
 
     public UserSummary() {
     }
@@ -19,6 +25,10 @@ public class UserSummary extends BaseModel {
     public UserSummary(User user) {
         setUser(user);
     }
+
+	public UserSummary(UserHeader userHeader) {
+		setUserHeader(userHeader);
+	}
 
     public UserSummary(String id, String userName) {
         setId(id);
@@ -108,4 +118,24 @@ public class UserSummary extends BaseModel {
         setEmail(user.getEmail());
         setPhoneNo(user.getPhoneNo());
     }
+
+	public void setUserHeader(UserHeader userHeader) {
+		this.userHeader = userHeader;
+		updateUserHeader(userHeader);
+	}
+
+	public UserHeader getUserHeader() {
+		return userHeader;
+	}
+
+	public void updateUserHeader(UserHeader userHeader) {
+		setId(String.valueOf(userHeader.getId()));
+		if (userHeader.isStudyAccess()) {
+			setName(userHeader.getName()+" ("+appMessages.studyAccess()+")");
+			set("disabled", true);
+		} else {
+			setName(userHeader.getName());
+			set("disabled", false);
+		}
+	}
 }

@@ -15,6 +15,7 @@ import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.Role;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.UserHeader;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.exception.OpenXDataSessionExpiredException;
 import org.openxdata.server.admin.model.exception.UnexpectedException;
@@ -415,4 +416,64 @@ public class UserServiceImpl implements UserService {
     		deleteUser(user);
     	}
 	}
+
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+	public PagingLoadResult<UserHeader> getMappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig) {
+		return userDAO.getMappedStudyUserNames(studyId, loadConfig);
+	}
+
+	@Override
+	@Secured({"Perm_View_Studies", "Perm_View_Users"})
+	public PagingLoadResult<UserHeader> getUnmappedStudyUserNames(Integer studyId, PagingLoadConfig loadConfig) {
+		return userDAO.getUnmappedStudyUserNames(studyId, loadConfig);
+	}
+
+	@Override
+	@Secured({"Perm_Add_Users", "Perm_Add_Studies"})
+	public void saveMappedStudyUserNames(Integer studyId, List<UserHeader> usersToAdd, List<UserHeader> usersToDelete) {
+		if (usersToAdd != null) {
+			for (UserHeader u : usersToAdd) {
+				UserStudyMap map = new UserStudyMap(u.getId(), studyId);
+				userStudyMapDAO.saveUserMappedStudy(map);
+			}
+		}
+		if (usersToDelete != null) {
+			for (UserHeader u : usersToDelete) {
+				UserStudyMap map = userStudyMapDAO.getUserStudyMap(u.getId(), studyId);
+				userStudyMapDAO.deleteUserMappedStudy(map);
+			}
+		}
+	}
+	
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+	public PagingLoadResult<UserHeader> getMappedFormUserNames(Integer formId, PagingLoadConfig loadConfig) {
+		FormDef form = formDAO.getForm(formId);
+		return userDAO.getMappedFormUserNames(form, loadConfig);
+	}
+
+	@Override
+	@Secured({"Perm_View_Forms", "Perm_View_Users"})
+	public PagingLoadResult<UserHeader> getUnmappedFormUserNames(Integer formId, PagingLoadConfig loadConfig) {
+		FormDef form = formDAO.getForm(formId);
+		return userDAO.getUnmappedFormUserNames(form, loadConfig);
+	}
+
+	@Override
+	@Secured({"Perm_Add_Users", "Perm_Add_Forms"})
+	public void saveMappedFormUserNames(Integer formId, List<UserHeader> usersToAdd, List<UserHeader> usersToDelete) {
+		if (usersToAdd != null) {
+			for (UserHeader u : usersToAdd) {
+				UserFormMap map = new UserFormMap(u.getId(), formId);
+				userFormMapDAO.saveUserMappedForm(map);
+			}
+		}
+		if (usersToDelete != null) {
+			for (UserHeader u : usersToDelete) {
+				UserFormMap map = userFormMapDAO.getUserMappedForm(u.getId(), formId);
+				userFormMapDAO.deleteUserMappedForm(map);
+			}
+		}
+    }
 }
