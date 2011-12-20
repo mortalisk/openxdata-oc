@@ -1,6 +1,7 @@
 package org.openxdata.server.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.FormDataDAO;
+import org.openxdata.server.export.ExportConstants;
 import org.springframework.stereotype.Repository;
 
 import com.googlecode.genericdao.search.Search;
@@ -80,7 +82,7 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	@Override
 	public PagingLoadResult<FormDataHeader> getUnexportedFormData(PagingLoadConfig loadConfig) {
 		Search formSearch = getSearchFromLoadConfig(loadConfig, "id");
-		formSearch.addFilterEqual("exported", 0);
+		formSearch.addFilterIn("exported", Arrays.asList(ExportConstants.RDMS_EXPORT_BIT_0));
 		formSearch.addFilterEqual("voided", false);
 		SearchResult<FormData> result = searchAndCount(formSearch);
 		List<FormDataHeader> list = new ArrayList<FormDataHeader>();
@@ -113,8 +115,7 @@ public class HibernateFormDataDAO extends BaseDAOImpl<FormData> implements FormD
 	@Override
 	public Integer getUnprocessedDataCount(Integer formDefVersionId) {
 		Search unprocessedDataSearch = new Search();
-		// FIXME: see ticket #560
-		unprocessedDataSearch.addFilterEqual("exported", 0);
+		unprocessedDataSearch.addFilterIn("exported", Arrays.asList(ExportConstants.RDMS_EXPORT_BIT_0));
 		unprocessedDataSearch.addFilterEqual("voided", false);
 		unprocessedDataSearch.addFilterEqual("formDefVersionId", formDefVersionId);
 		return count(unprocessedDataSearch);
