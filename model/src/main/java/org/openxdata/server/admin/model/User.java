@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.openxdata.server.admin.model.mapping.UserFormMap;
+import org.openxdata.server.admin.model.mapping.UserStudyMap;
+
 /**
  * This class is used to represent a user who can access the system.
  */
@@ -62,6 +65,12 @@ public class User extends AbstractEditable {
 	
 	/** Flag to determine if <code>User</code> is disabled or not*/
 	private int status = 0;
+	
+	/** A list of all the studies the user has access to */
+	private Set<UserStudyMap> mappedStudies;
+
+	/** A list of all the forms the user has access to */
+	private Set<UserFormMap> mappedForms;
 	
 	/** Models an active <code>User</code> */
 	public static final int ACTIVE = 0;
@@ -440,4 +449,54 @@ public class User extends AbstractEditable {
     		return false;
     	}
     }
+
+	/**
+	 * Retrieve all the Studies mapped to the user
+	 * @return
+	 */
+	public Set<UserStudyMap> getMappedStudies() {
+		return mappedStudies;
+	}
+
+	/**
+	 * Set the study mapped to the user
+	 * @param mappedStudies
+	 */
+	public void setMappedStudies(Set<UserStudyMap> mappedStudies) {
+		this.mappedStudies = mappedStudies;
+	}
+
+	/**
+	 * Retrieve all the Forms mapped to the user
+	 * @return
+	 */
+	public Set<UserFormMap> getMappedForms() {
+		return mappedForms;
+	}
+
+	/**
+	 * Set the Forms mapped to the user
+	 * @param mappedForms
+	 */
+	public void setMappedForms(Set<UserFormMap> mappedForms) {
+		this.mappedForms = mappedForms;
+	}
+
+	/**
+	 * Determines if the specified Form is mapped directly to this User
+	 * (could still be mapped via a Study)
+	 * @param form
+	 * @return
+	 */
+	public boolean isMappedForm(FormDef form) {
+		boolean mapped = false;
+		if (mappedForms != null) {
+			for (UserFormMap ufm : mappedForms) {
+				if (form.getId() == ufm.getFormId()) {
+					return true;
+				}
+			}
+		}
+		return mapped;
+	}
 }

@@ -50,10 +50,9 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 		formData.setChangedBy(OpenXDataSecurityUtil.getLoggedInUser());
 		formData.setDateChanged(new Date());
 		formService.deleteFormData(formData);
-		assertNull("formData still exists", formService.getFormData(new Integer(1)));
 		assertNotNull("form data does not exist", formData);
 		formService.deleteFormData(formData);
-		assertTrue("formData is not voided", formService.getFormData(new Integer(1)).isVoided());
+		assertTrue("formData is voided", formService.getFormData(new Integer(1)).isVoided());
 	}
 	
 	@Test
@@ -69,13 +68,13 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
     	List<FormData> formDataList = formService.getFormData(form);
     	
     	assertNotNull(formDataList);
-    	assertEquals(3, formDataList.size());
+    	assertEquals(4, formDataList.size());
     	
     }
     @Test
     @Transactional(readOnly = true)
     public void getFormDataCount() {
-        assertSame(3,formService.getFormResponseCount(1));
+        assertSame(4,formService.getFormResponseCount(1));
     }
 	
 	@Test
@@ -83,12 +82,12 @@ public class FormDataServiceTest extends BaseContextSensitiveTest {
 		PagingLoadResult<FormDataHeader> result = formService.getUnexportedFormData(new PagingLoadConfig(0,10));
 		List<FormDataHeader> headers = result.getData();
 		assertNotNull(headers);
-		assertEquals(1, headers.size());
+		assertEquals(2, headers.size());
 	}
 	
 	@Test
 	public void countUnprocessedData() throws Exception {
 		Integer count = formService.getUnprocessedDataCount(1);
-		assertSame("One unprocessed form data", 1, count);
+		assertSame("Two unprocessed form data", 2, count);
 	}
 }

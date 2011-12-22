@@ -6,7 +6,6 @@ import java.util.Map;
 import org.openxdata.server.admin.client.service.StudyService;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
@@ -46,21 +45,6 @@ public class StudyServiceImpl extends OxdPersistentRemoteService implements Stud
 	    return getStudyManagerService().getStudy(studyId);
     }
 
-	@Override
-    public PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
-	    return getStudyManagerService().getMappedUsers(studyId, loadConfig);
-    }
-
-	@Override
-    public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
-	    return getStudyManagerService().getUnmappedUsers(studyId, loadConfig);
-    }
-	
-	@Override
-    public void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException {
-		getStudyManagerService().saveMappedStudyUsers(studyId, usersToAdd, usersToDelete);
-    }
-	
     private org.openxdata.server.service.StudyManagerService getStudyManagerService() {
         if (studyService == null) {
             WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext());

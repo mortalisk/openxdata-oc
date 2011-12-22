@@ -2,10 +2,8 @@ package org.openxdata.server.dao.hibernate;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.openxdata.server.admin.model.Editable;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.FilterComparison;
 import org.openxdata.server.admin.model.paging.FilterConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
@@ -47,49 +45,7 @@ abstract class BaseDAOImpl<T extends Editable> extends GenericDAOImpl<T, Long> i
 	    SearchResult<T> result = searchAndCount(userSearch);
 	    return getPagingLoadResult(pagingLoadConfig, result);
 	}
-	
-	@SuppressWarnings("unchecked")
-    protected PagingLoadResult<User> findAllUsersByPage(PagingLoadConfig loadConfig, boolean mapped, Class<T> entityClass, Integer id) {
-		// filter query
-        StringBuilder filterQuery = new StringBuilder();
-        for (FilterConfig filter : loadConfig.getFilters()) {
-        	filterQuery.append(" and user.");
-        	filterQuery.append(filter.getField());
-        	filterQuery.append(" like '%");
-        	filterQuery.append(filter.getValue());
-        	filterQuery.append("%'");
-        }
-        StringBuilder whereQuery = new StringBuilder();
-        whereQuery.append(" where item.id = :itemId");
-        if (mapped) {
-        	whereQuery.append(" and user in elements(item.users)");
-        } else {
-        	whereQuery.append(" and user not in elements(item.users)");
-        }
-        whereQuery.append(filterQuery);
-        Query query = getSession().createQuery(
-					"select distinct user from "+entityClass.getSimpleName()+" as item, User as user" +
-					 whereQuery + " order by user.name");
-        Query countQuery = getSession().createQuery(
-				"select count(user) from "+entityClass.getSimpleName()+" as item, User as user" +
-				 whereQuery);
-		query.setInteger("itemId", id);
-		countQuery.setInteger("itemId", id);
-		// paging
-		query.setFirstResult(loadConfig.getOffset());
-        query.setFetchSize(loadConfig.getLimit());
-        query.setMaxResults(loadConfig.getLimit());
-        
-        // execute
-	    List<User> result = query.list();
-	    Long count = (Long)countQuery.uniqueResult();
-	    
-	    // convert to PagingLoadResult
-	    PagingLoadResult<User> pagingResult = new PagingLoadResult<User>(result, loadConfig.getOffset(), result.size(), count.intValue());
-	    
-	    return pagingResult;
-	}
-	
+
 	/**
 	 * @param entityClass the class to search for
 	 * @param loadConfig

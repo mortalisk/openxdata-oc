@@ -3,26 +3,25 @@ package org.openxdata.server.admin.model;
 import net.sf.gilead.pojo.gwt.LightEntity;
 
 /**
- * Lightweight FormDef object used when just the name
- * needs to be displayed to the user - instead of retrieving
- * the whole FormDef object (e.g. in lists)
+ * Lightweight User object used when just the name needs to be displayed to the
+ * user - instead of retrieving the whole User object (e.g. in lists)
  */
-public class FormDefHeader extends LightEntity {
-	private static final long serialVersionUID = 2596766993739570623L;
+public class UserHeader extends LightEntity {
+	private static final long serialVersionUID = 6980413279121919952L;
 
 	private int id = 0;
-	
+
 	/** descriptive name of the form */
 	private String name;
-	
-	/** study access indicates that a user has access to this form via the form's study*/
+
+	/** indicates that this user has access to a form via its study */
 	private boolean studyAccess = false;
-	
-	public FormDefHeader() {
+
+	public UserHeader() {
 		// default constructor for GWT serialization
 	}
 
-	public FormDefHeader(int id, String name) {
+	public UserHeader(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}

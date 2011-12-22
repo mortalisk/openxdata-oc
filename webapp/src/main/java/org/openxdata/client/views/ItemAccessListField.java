@@ -1,5 +1,6 @@
 package org.openxdata.client.views;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openxdata.client.AppMessages;
@@ -8,7 +9,6 @@ import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.server.admin.model.exception.OpenXDataValidationException;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
@@ -74,8 +74,6 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
     }
 
     private void init() {
-    	setAutoWidth(true);
-    	
     	fromCounter=0;
     	toCounter=0;
 
@@ -151,27 +149,31 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
     	buttonLeft(toField.field.getSelection());
     }
     
-    /**
-     * delete from right(to), add to left (from)
-     */
-    private void buttonLeft(final List<M> sel) {
-    	toCounter = toCounter+sel.size();
-    	fromCounter = fromCounter-sel.size();
-    	toItems = sel;
-    	fromItems = null;
-    	ProgressIndicator.showProgressBar();
-    	Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-            @Override
-			public void execute() {
-            	try {
-	                controller.deleteMapping(sel, ItemAccessListField.this);
-                } catch (OpenXDataValidationException e) {
-                	ProgressIndicator.hideProgressBar();
-                	MessageBox.alert(appMessages.error(), e.getMessage(), null);
-                }
-            }
-    	});
-    }
+     
+	/**
+	 * delete from right(to), add to left (from)
+	 */
+	private void buttonLeft(final List<M> sel) {
+		final List<M> newSel = removeDisabledItems(sel);
+		if (newSel.size() > 0) {
+			toCounter = toCounter + newSel.size();
+			fromCounter = fromCounter - newSel.size();
+			toItems = newSel;
+			fromItems = null;
+			ProgressIndicator.showProgressBar();
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+				@Override
+				public void execute() {
+					try {
+						controller.deleteMapping(newSel, ItemAccessListField.this);
+					} catch (OpenXDataValidationException e) {
+						ProgressIndicator.hideProgressBar();
+						MessageBox.alert(appMessages.error(), e.getMessage(), null);
+					}
+				}
+			});
+		}
+	}
 
     private void onButtonAllRight(ButtonEvent be) {
         buttonRight(fromField.field.getStore().getModels());
@@ -181,58 +183,98 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
         buttonRight(fromField.field.getSelection());
 	}
     
-    /**
-     * add to right(to), delete from left(from)
-     */
-    private void buttonRight(final List<M> sel) {
-        fromCounter = fromCounter+sel.size();
-        toCounter = toCounter-sel.size();
-    	fromItems = sel;
-    	toItems = null;
-    	ProgressIndicator.showProgressBar();
-        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-            @Override
-			public void execute() {
-		    	try {
-	                controller.addMapping(sel, ItemAccessListField.this);
-                } catch (OpenXDataValidationException e) {
-                	ProgressIndicator.hideProgressBar();
-                	MessageBox.alert(appMessages.error(), e.getMessage(), null);
-                }
-            }
-        });
-    }
+	/**
+	 * add to right(to), delete from left(from)
+	 */
+	private void buttonRight(List<M> sel) {
+		final List<M> newSel = removeDisabledItems(sel);
+		if (newSel.size() > 0) {
+			fromCounter = fromCounter + newSel.size();
+			toCounter = toCounter - newSel.size();
+			fromItems = newSel;
+			toItems = null;
+			ProgressIndicator.showProgressBar();
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+				@Override
+				public void execute() {
+					try {
+						controller.addMapping(newSel, ItemAccessListField.this);
+					} catch (OpenXDataValidationException e) {
+						ProgressIndicator.hideProgressBar();
+						MessageBox.alert(appMessages.error(), e.getMessage(), null);
+					}
+				}
+			});
+		}
+	}
 
-    public void refresh() {
-    	if ( ((fromItems == null || fromItems.size()==0) && (toItems == null || toItems.size()==0)) // first time around
-    		|| fromCounter>=pageSize || toCounter>=pageSize) // one of the counters is bigger than pageSize (indicating the other is empty)  
-    	{ 
-    		// do a full (server side) refresh of data in the lists
-    		fromCounter=0;
-    		fromField.refresh();
-    		toCounter=0;
-    		toField.refresh();
-    	} else {
-    		// manually add/remove items to/from the lists
-    		if (fromItems != null) {
-	    		for (M model : fromItems) {
-	        		fromField.field.getStore().remove(model);
-	        		if (!toField.field.getStore().contains(model)) {
-	        			toField.field.getStore().add(model);
-	        		}
-	        	}
-    		}
-    		if (toItems != null) {
-	    		for (M model : toItems) {
-	        		toField.field.getStore().remove(model);
-	        		if (!fromField.field.getStore().contains(model)) {
-	        			fromField.field.getStore().add(model);
-	        		}
-	        	}
-    		}
-    	}
-        ProgressIndicator.hideProgressBar();
-    }
+	private List<M> removeDisabledItems(List<M> sel) {
+		List<M> cleanSel = new ArrayList<M>();
+		for (M m : sel) {
+			Boolean disabled = m.get("disabled");
+			if (disabled == null || disabled == Boolean.FALSE) {
+				cleanSel.add(m);
+			}
+		}
+		return cleanSel;
+	}
+
+	public void refresh() {
+		// manually add/remove items to/from the lists
+		if (fromItems != null) {
+			for (M model : fromItems) {
+				fromField.field.getStore().remove(model);
+				if (!toField.field.getStore().contains(model)) {
+					toField.field.getStore().add(model);
+				}
+			}
+		}
+		if (toItems != null) {
+			for (M model : toItems) {
+				toField.field.getStore().remove(model);
+				if (!fromField.field.getStore().contains(model)) {
+					fromField.field.getStore().add(model);
+				}
+			}
+		}
+		if (doRefresh()) {
+			// do a full (server side) refresh of data in the lists
+			fromCounter = 0;
+			fromField.refresh();
+			toCounter = 0;
+			toField.refresh();
+		}
+		ProgressIndicator.hideProgressBar();
+	}
+	
+	private boolean doRefresh() {
+		if ((fromItems == null || fromItems.size() == 0)
+				&& (toItems == null || toItems.size() == 0)) {
+			// first time around
+			return true;
+		}
+		if (fromCounter >= pageSize || toCounter >= pageSize) {
+			// one of the counters is bigger than pageSize (indicating the other
+			// is empty)
+			return true;
+		}
+		if (!hasNonDisabledItem(toField.field.getStore().getModels())
+				|| !hasNonDisabledItem(fromField.field.getStore().getModels())) {
+			// one of the lists is empty (or has only disabled item(s) left)
+			return true;
+		}
+		return false;
+	}
+
+	private boolean hasNonDisabledItem(List<M> models) {
+		for (M m : models) {
+			Boolean disabled = m.get("disabled");
+			if (disabled == null || disabled == Boolean.FALSE) {
+				return true;
+			}
+		}
+		return false;
+	}
     
     abstract class PagingFilterListField extends ContentPanel {
     	ListField<M> field = new ListField<M>();
@@ -302,12 +344,20 @@ public class ItemAccessListField<M extends ModelData> extends LayoutContainer {
 
             field.setStore(store);
             field.setBorders(false);
-            field.setDisplayField("name");
+            field.setTemplate(getTemplate());
             field.setSize(185, listSize);
             field.getListView().setLoadingText(messages.getLoading());
 
             add(field);
         }
+        
+		private native String getTemplate() /*-{  
+			return [ 
+			'<tpl for=".">', 
+			'<div class="x-combo-list-item" qtip="{name}" <tpl if="typeof disabled != \'undefined\' && disabled != null && disabled !=\'\' && disabled==true">style="color:grey"</tpl>>{name}</div>', 
+			'</tpl>' 
+			].join("");  
+		}-*/;
         
         void refresh() {
         	pagingToolBar.enable();

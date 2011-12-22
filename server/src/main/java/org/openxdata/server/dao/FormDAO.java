@@ -80,22 +80,7 @@ public interface FormDAO extends BaseDAO<FormDef> {
 	 * @param formDef the form definition to delete.
 	 */
 	void deleteForm(FormDef formDef);
-	
-	/**
-	 * Get a page of Users mapped to a specific form 
-	 * @param formId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig);
-	
-	/**
-	 * Get a page of Users NOT mapped to the specified form
-	 * @param studyId
-	 * @param loadConfig
-	 * @return
-	 */
-	PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig);
+
 	
 	/**
 	 * Get a page of Forms mapped to a specific user 

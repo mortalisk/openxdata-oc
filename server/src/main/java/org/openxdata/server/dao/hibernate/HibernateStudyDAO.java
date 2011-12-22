@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 import org.openxdata.server.dao.StudyDAO;
@@ -63,16 +62,6 @@ public class HibernateStudyDAO extends BaseDAOImpl<StudyDef> implements StudyDAO
 		return searchUnique(search);
 	}
 
-	@Override
-    public PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
-		return findAllUsersByPage(loadConfig, true, StudyDef.class, studyId);
-    }
-
-	@Override
-    public PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) {
-		return findAllUsersByPage(loadConfig, false, StudyDef.class, studyId);
-    }
-	
 	@Override
 	public StudyDef getStudy(String studyKey) {
 		Search search = new Search(StudyDef.class);

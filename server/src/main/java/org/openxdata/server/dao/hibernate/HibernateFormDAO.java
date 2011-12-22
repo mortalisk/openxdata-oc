@@ -96,16 +96,6 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	}
 
 	@Override
-    public PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) {
-		return findAllUsersByPage(loadConfig, true, FormDef.class, formId);
-    }
-
-	@Override
-    public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) {
-		return findAllUsersByPage(loadConfig, false, FormDef.class, formId);
-    }
-
-	@Override
     public PagingLoadResult<FormDef> getMappedForms(Integer userId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException {
 		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
 		formSearch.addFilterSome("users", Filter.equal("id", userId));
@@ -122,25 +112,41 @@ public class HibernateFormDAO extends BaseDAOImpl<FormDef> implements FormDAO {
 	@Override
 	public PagingLoadResult<FormDefHeader> getMappedFormNames(Integer userId, PagingLoadConfig loadConfig) {
 		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
-		formSearch.addFilterSome("users", Filter.equal("id", userId));
+		formSearch.addFilterOr(
+				Filter.some("users", Filter.equal("id", userId)),
+				Filter.some("study.users", Filter.equal("id", userId)));
 	    SearchResult<FormDef> result = searchAndCount(formSearch);
-	    return getFormDefHeaderPagingLoadResult(loadConfig, result);
+	    return getFormDefHeaderPagingLoadResult(userId, loadConfig, result);
 	}
 
 	@Override
 	public PagingLoadResult<FormDefHeader> getUnmappedFormNames(Integer userId, PagingLoadConfig loadConfig) {
 		Search formSearch = getSearchFromLoadConfig(loadConfig, "name");
-		formSearch.addFilterAll("users", Filter.notEqual("id", userId));
+		formSearch.addFilterAnd(
+				Filter.all("users", Filter.notEqual("id", userId)),
+				Filter.all("study.users",Filter.notEqual("id", userId)));
 		SearchResult<FormDef> result = searchAndCount(formSearch);
-		return getFormDefHeaderPagingLoadResult(loadConfig, result);
+		return getFormDefHeaderPagingLoadResult(null, loadConfig, result);
 	}
 	
-	private PagingLoadResult<FormDefHeader> getFormDefHeaderPagingLoadResult(PagingLoadConfig loadConfig, SearchResult<FormDef> searchResult) {
+	private PagingLoadResult<FormDefHeader> getFormDefHeaderPagingLoadResult(Integer userId, PagingLoadConfig loadConfig, SearchResult<FormDef> searchResult) {
 		List<FormDef> list = searchResult.getResult();
 		List<FormDefHeader> headerList = new ArrayList<FormDefHeader>();
 		if (list != null) {
 			for (FormDef fd : list) {
-				headerList.add(new FormDefHeader(fd.getId(), fd.getName()));
+				FormDefHeader formName = new FormDefHeader(fd.getId(), fd.getName());
+				if (userId != null) {
+					// check if this form has study access instead of form access
+					boolean studyAccess = true;
+					for (User u : fd.getUsers()) {
+						if (u.getId() == userId) {
+							studyAccess = false;
+							break;
+						}
+					}
+					formName.setStudyAccess(studyAccess);
+				}
+				headerList.add(formName);
 			}
 		}
 		int totalNum = searchResult.getTotalCount();

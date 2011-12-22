@@ -595,7 +595,8 @@ public class FormListView extends View implements Refreshable {
 	@Override
 	public void refresh(RefreshableEvent event) {
 		GWT.log("Refreshing...");
-		if (event.getEventType() == RefreshableEvent.Type.CAPTURE) {
+		if (event.getEventType() == RefreshableEvent.Type.CAPTURE
+				|| event.getEventType() == RefreshableEvent.Type.DELETE) {
 			ListStore<FormSummary> store = grid.getStore();
 			FormData data = event.getData();
 			for (final FormSummary summary : store.getModels()) {

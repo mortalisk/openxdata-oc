@@ -2,16 +2,19 @@ package org.openxdata.client.model;
 
 import java.util.Date;
 
+import org.openxdata.client.AppMessages;
 import org.openxdata.server.admin.model.FormDef;
 import org.openxdata.server.admin.model.FormDefHeader;
 import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
+import com.google.gwt.core.client.GWT;
 
 public class FormSummary extends BaseModel {
 
     private static final long serialVersionUID = 3037791298938446908L;
+    private final AppMessages appMessages = GWT.create(AppMessages.class);
     
     private FormDef formDef;
     private FormDefVersion formVersion;
@@ -200,6 +203,12 @@ public class FormSummary extends BaseModel {
 	public void updateFormDefHeader(FormDefHeader formDefHeader) {
 		setId(String.valueOf(formDefHeader.getId()));
 		setForm(formDefHeader.getName());
-		setName(formDefHeader.getName());
+		if (formDefHeader.isStudyAccess()) {
+			setName(formDefHeader.getName() + " ("+appMessages.studyAccess()+")");
+			set("disabled", true);
+		} else {
+			setName(formDefHeader.getName());
+			set("disabled", false);
+		}
 	}
 }

@@ -8,9 +8,9 @@ import org.openxdata.client.model.UserSummary;
 import org.openxdata.client.util.PagingUtil;
 import org.openxdata.client.util.ProgressIndicator;
 import org.openxdata.client.views.ItemAccessListField;
-import org.openxdata.server.admin.client.service.FormServiceAsync;
+import org.openxdata.server.admin.client.service.UserServiceAsync;
 import org.openxdata.server.admin.model.FormDef;
-import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.UserHeader;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -23,14 +23,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class UserFormAccessController implements ItemAccessController<UserSummary> {
 	
 	private FormDef form;
-	private FormServiceAsync formService;
+	private UserServiceAsync userService;
 	
-	public UserFormAccessController(FormServiceAsync formService) {
-		this.formService = formService;
+	public UserFormAccessController(UserServiceAsync userService) {
+		this.userService = userService;
 	}
 	
-	public UserFormAccessController(FormServiceAsync formService, FormDef form) {
-		this.formService = formService;
+	public UserFormAccessController(UserServiceAsync userService, FormDef form) {
+		this.userService = userService;
 		this.form = form;
 	}
 	
@@ -42,10 +42,10 @@ public class UserFormAccessController implements ItemAccessController<UserSummar
     public void getMappedData(
             PagingLoadConfig pagingLoadConfig,
             final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<UserSummary>> callback) {
-		formService.getMappedUsers(form.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
-				new EmitAsyncCallback<PagingLoadResult<User>>() {
+		userService.getMappedFormUserNames(form.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<UserHeader>>() {
             @Override
-            public void onSuccess(PagingLoadResult<User> result) {
+            public void onSuccess(PagingLoadResult<UserHeader> result) {
                 ProgressIndicator.hideProgressBar();
             	callback.onSuccess(new BasePagingLoadResult<UserSummary>(convertUserResults(result), 
             			result.getOffset(), result.getTotalLength()));
@@ -57,10 +57,10 @@ public class UserFormAccessController implements ItemAccessController<UserSummar
     public void getUnMappedData(
             PagingLoadConfig pagingLoadConfig,
             final AsyncCallback<com.extjs.gxt.ui.client.data.PagingLoadResult<UserSummary>> callback) {
-		formService.getUnmappedUsers(form.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
-				new EmitAsyncCallback<PagingLoadResult<User>>() {
+		userService.getUnmappedFormUserNames(form.getId(), PagingUtil.createPagingLoadConfig(pagingLoadConfig), 
+				new EmitAsyncCallback<PagingLoadResult<UserHeader>>() {
             @Override
-            public void onSuccess(PagingLoadResult<User> result) {
+            public void onSuccess(PagingLoadResult<UserHeader> result) {
                 ProgressIndicator.hideProgressBar();
             	callback.onSuccess(new BasePagingLoadResult<UserSummary>(convertUserResults(result), 
             			result.getOffset(), result.getTotalLength()));
@@ -68,11 +68,11 @@ public class UserFormAccessController implements ItemAccessController<UserSummar
         });
     }
 	
-	private List<UserSummary> convertUserResults(PagingLoadResult<User> result) {
+	private List<UserSummary> convertUserResults(PagingLoadResult<UserHeader> result) {
         List<UserSummary> results = new ArrayList<UserSummary>();
-    	List<User> users = result.getData();
-        for (User u : users) {
-        	results.add(new UserSummary(u));
+    	List<UserHeader> users = result.getData();
+        for (UserHeader uh : users) {
+        	results.add(new UserSummary(uh));
         }
         return results;
     }
@@ -80,7 +80,7 @@ public class UserFormAccessController implements ItemAccessController<UserSummar
 	@Override
     public void addMapping(List<UserSummary> usersToAdd,
             final ItemAccessListField<UserSummary> userAccessListField) {
-	    formService.saveMappedFormUsers(form.getId(), convertUserList(usersToAdd), null, new EmitAsyncCallback<Void>() {
+	    userService.saveMappedFormUserNames(form.getId(), convertUserList(usersToAdd), null, new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                userAccessListField.refresh();
@@ -91,7 +91,7 @@ public class UserFormAccessController implements ItemAccessController<UserSummar
 	@Override
     public void deleteMapping(List<UserSummary> usersToDelete,
             final ItemAccessListField<UserSummary> userAccessListField) {
-		formService.saveMappedFormUsers(form.getId(), null, convertUserList(usersToDelete), new EmitAsyncCallback<Void>() {
+		userService.saveMappedFormUserNames(form.getId(), null, convertUserList(usersToDelete), new EmitAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                userAccessListField.refresh();
@@ -99,10 +99,10 @@ public class UserFormAccessController implements ItemAccessController<UserSummar
         });
     }
 	
-	private List<User> convertUserList(List<UserSummary> userList) {
-		List<User> users = new ArrayList<User>();
+	private List<UserHeader> convertUserList(List<UserSummary> userList) {
+		List<UserHeader> users = new ArrayList<UserHeader>();
 		for (UserSummary u : userList) {
-			users.add(u.getUser());
+			users.add(u.getUserHeader());
 		}
 		return users;
 	}

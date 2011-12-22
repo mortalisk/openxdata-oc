@@ -171,18 +171,6 @@ public class FormServiceImpl implements FormService {
 		return formDAO.getForm(formId);
 	}
 
-	@Override
-	@Secured({"Perm_View_Forms", "Perm_View_Users"})
-    public PagingLoadResult<User> getMappedUsers(Integer formId, PagingLoadConfig loadConfig) {
-	    return formDAO.getMappedUsers(formId, loadConfig);
-    }
-
-	@Override
-	@Secured({"Perm_View_Forms", "Perm_View_Users"})
-    public PagingLoadResult<User> getUnmappedUsers(Integer formId, PagingLoadConfig loadConfig) {
-	    return formDAO.getUnmappedUsers(formId, loadConfig);
-    }
-
     @Override
     @Transactional(readOnly = true)
     @Secured("Perm_View_Form_Data")
@@ -277,23 +265,6 @@ public class FormServiceImpl implements FormService {
     public void setStudyDAO(EditableDAO studyDAO) {
 		this.studyDAO = studyDAO;
 	}
-
-	@Override
-	@Secured({"Perm_Add_Users", "Perm_Add_Forms"})
-    public void saveMappedFormUsers(Integer formId, List<User> usersToAdd, List<User> usersToDelete) {
-		if (usersToAdd != null) {
-			for (User u : usersToAdd) {
-				UserFormMap map = new UserFormMap(u.getId(), formId);
-				userFormMapDAO.saveUserMappedForm(map);
-			}
-		}
-		if (usersToDelete != null) {
-			for (User u : usersToDelete) {
-				UserFormMap map = userFormMapDAO.getUserMappedForm(u.getId(), formId);
-				userFormMapDAO.deleteUserMappedForm(map);
-			}
-		}
-    }
 
 	@Override
 	@Secured({"Perm_View_Forms", "Perm_View_Users"})

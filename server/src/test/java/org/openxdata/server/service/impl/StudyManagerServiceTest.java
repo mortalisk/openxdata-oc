@@ -15,6 +15,7 @@ import org.openxdata.server.admin.model.FormDefVersion;
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
 import org.openxdata.server.admin.model.User;
+import org.openxdata.server.admin.model.UserHeader;
 import org.openxdata.server.admin.model.mapping.UserFormMap;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
@@ -171,7 +172,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		studyManagerService.saveMappedUserStudyNames(user.getId(),
 				studiesToAdd, null);
 
-		PagingLoadResult<User> mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		PagingLoadResult<UserHeader> mappedUsers = userService.getMappedStudyUserNames(study.getId(), new PagingLoadConfig(0,100));
 		Assert.assertEquals("Study has 1 mapped user", 1, mappedUsers.getData().size());
 		
 		// create form
@@ -207,7 +208,7 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		studies = studyManagerService.getStudyByName(studyName);
 		Assert.assertEquals("Deleted the study", 0, studies.size());
 		
-		mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		mappedUsers = userService.getMappedStudyUserNames(study.getId(), new PagingLoadConfig(0,100));
 		Assert.assertEquals("Study has 1 mapped user", 0, mappedUsers.getData().size());
 		
 		userMappedForms = userFormMapDAO.getUserMappedForms(form.getId());
@@ -287,20 +288,20 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		StudyDef study = studyManagerService.getStudies().get(0);
 		List<User> users = userService.getUsers();
 		
-		PagingLoadResult<User> mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		PagingLoadResult<UserHeader> mappedUsers = userService.getMappedStudyUserNames(study.getId(), new PagingLoadConfig(0,100));
 		int initialCount = mappedUsers.getData().size();
 		
-		List<User> dummyPermissions = new ArrayList<User>();
-		dummyPermissions.add(users.get(0));
-		dummyPermissions.add(users.get(1));
-		dummyPermissions.add(users.get(2));
+		List<UserHeader> dummyPermissions = new ArrayList<UserHeader>();
+		dummyPermissions.add(new UserHeader(users.get(0).getId(), users.get(0).getName()));
+		dummyPermissions.add(new UserHeader(users.get(1).getId(), users.get(1).getName()));
+		dummyPermissions.add(new UserHeader(users.get(2).getId(), users.get(2).getName()));
 		
-		studyManagerService.saveMappedStudyUsers(study.getId(), dummyPermissions, null);
-		mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		userService.saveMappedStudyUserNames(study.getId(), dummyPermissions, null);
+		mappedUsers = userService.getMappedStudyUserNames(study.getId(), new PagingLoadConfig(0,100));
 		Assert.assertEquals("added user permissions", initialCount+3, mappedUsers.getData().size());
 		
-		studyManagerService.saveMappedStudyUsers(study.getId(), null, dummyPermissions);
-		mappedUsers = studyManagerService.getMappedUsers(study.getId(), new PagingLoadConfig(0,100));
+		userService.saveMappedStudyUserNames(study.getId(), null, dummyPermissions);
+		mappedUsers = userService.getMappedStudyUserNames(study.getId(), new PagingLoadConfig(0,100));
 		Assert.assertEquals("deleted user permissions", initialCount, mappedUsers.getData().size());
 	}
 
@@ -312,15 +313,15 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		
 		int initialCount = userFormMapDAO.getUserMappedForms(form.getId()).size();
 		
-		List<User> dummyPermissions = new ArrayList<User>();
-		dummyPermissions.add(users.get(0));
-		dummyPermissions.add(users.get(1));
-		dummyPermissions.add(users.get(2));
+		List<UserHeader> dummyPermissions = new ArrayList<UserHeader>();
+		dummyPermissions.add(new UserHeader(users.get(0).getId(), users.get(0).getName()));
+		dummyPermissions.add(new UserHeader(users.get(1).getId(), users.get(1).getName()));
+		dummyPermissions.add(new UserHeader(users.get(2).getId(), users.get(2).getName()));
 		
-		formService.saveMappedFormUsers(form.getId(), dummyPermissions, null);
+		userService.saveMappedFormUserNames(form.getId(), dummyPermissions, null);
 		Assert.assertEquals("added user permissions", initialCount+3, userFormMapDAO.getUserMappedForms(form.getId()).size());
 		
-		formService.saveMappedFormUsers(form.getId(), null, dummyPermissions);
+		userService.saveMappedFormUserNames(form.getId(), null, dummyPermissions);
 		Assert.assertEquals("deleted user permissions", initialCount, userFormMapDAO.getUserMappedForms(form.getId()).size());
 	}
 	
@@ -359,10 +360,9 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		PagingLoadConfig config = new PagingLoadConfig(0,10);
 		PagingLoadResult<FormDefHeader> result = formService.getUnmappedFormNames(3, config);
 		List<FormDefHeader> data = result.getData();
-		Assert.assertEquals(3, data.size());
+		Assert.assertEquals(2, data.size());
 		Assert.assertEquals("Yet Another Sample Form", data.get(0).getName());
-		Assert.assertEquals("Sample Form2", data.get(1).getName());
-		Assert.assertEquals("Another Sample Form2", data.get(2).getName());
+		Assert.assertEquals("Another Sample Form2", data.get(1).getName());
 	}
 	
 	@Test
@@ -386,8 +386,12 @@ public class StudyManagerServiceTest extends BaseContextSensitiveTest {
 		PagingLoadConfig config = new PagingLoadConfig(0,10);
 		PagingLoadResult<FormDefHeader> result = formService.getMappedFormNames(3, config);
 		List<FormDefHeader> data = result.getData();
-		Assert.assertEquals(2, data.size());
+		Assert.assertEquals(3, data.size());
 		Assert.assertEquals("Sample Form", data.get(0).getName());
+		Assert.assertFalse("Sample Form is form access", data.get(0).isStudyAccess());
 		Assert.assertEquals("Another Sample Form", data.get(1).getName());
+		Assert.assertFalse("Form is not study access", data.get(1).isStudyAccess());
+		Assert.assertEquals("Sample Form2", data.get(2).getName());
+		Assert.assertTrue("Study Access Form", data.get(2).isStudyAccess());
 	}
 }

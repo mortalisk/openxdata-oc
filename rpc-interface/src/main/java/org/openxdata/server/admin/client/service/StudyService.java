@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.openxdata.server.admin.model.StudyDef;
 import org.openxdata.server.admin.model.StudyDefHeader;
-import org.openxdata.server.admin.model.User;
 import org.openxdata.server.admin.model.exception.OpenXDataSecurityException;
 import org.openxdata.server.admin.model.paging.PagingLoadConfig;
 import org.openxdata.server.admin.model.paging.PagingLoadResult;
@@ -25,32 +24,6 @@ public interface StudyService extends RemoteService {
     StudyDef saveStudy(StudyDef studyDef) throws OpenXDataSecurityException;
 
     void deleteStudy(StudyDef studyDef) throws OpenXDataSecurityException;
-
-    
-	/**
-	 * Get a page of Users mapped to a specific study 
-	 * @param studyId Integer id of specified study
-	 * @param loadConfig PagingLoadConfig specifying page size and number
-	 * @return
-	 */
-	PagingLoadResult<User> getMappedUsers(Integer studyId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
-	
-	/**
-	 * Get a page of Users NOT mapped to the specified study
-	 * @param studyId Integer id of specified study
-	 * @param loadConfig PagingLoadConfig specifying page size and number
-	 * @return
-	 */
-	PagingLoadResult<User> getUnmappedUsers(Integer studyId, PagingLoadConfig loadConfig) throws OpenXDataSecurityException;
-
-	/**
-	 * Updates the users currently mapped to the specified study.
-	 * @param studyId Integer id of specified study
-	 * @param usersToAdd List of users to add to the study mapping
-	 * @param usersToDelete List of users to delete from the study mapping
-	 * @throws OpenXDataSecurityException
-	 */
-	void saveMappedStudyUsers(Integer studyId, List<User> usersToAdd, List<User> usersToDelete) throws OpenXDataSecurityException;
 	
 	/**
 	 * Get a page of Studies mapped to a specific User 
